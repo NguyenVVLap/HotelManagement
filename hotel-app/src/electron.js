@@ -13,7 +13,7 @@ function createWindow() {
     autoHideMenuBar: true,
     // fullscreen: true,
     fullscreenable: true,
-    resizable: false,
+    resizable: true,
     // resizable: false,
     simpleFullscreen: true,
   });

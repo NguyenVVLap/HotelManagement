@@ -40,11 +40,15 @@ function Menu() {
               </button>
               <button className="btn-sub">
                 <BsDoorOpen />
+                <p className="btn-sub-title">Nhận phòng</p>
+              </button>
+              <button className="btn-sub">
+                <BsDoorOpen />
                 <p className="btn-sub-title">Hủy phòng</p>
               </button>
               <button className="btn-sub">
                 <BsDoorOpen />
-                <p className="btn-sub-title">Xem danh sách phòng</p>
+                <p className="btn-sub-title">Quản lý phòng</p>
               </button>
             </div>
           )}

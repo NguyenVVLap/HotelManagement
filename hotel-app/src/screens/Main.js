@@ -1,8 +1,22 @@
 import React from "react";
+import { useEffect } from "react";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Menu from "../components/Menu";
 
 function Main() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
+  const checkLogin = async () => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    } else {
+    }
+  };
   return (
     <Container>
       <Menu></Menu>
@@ -17,7 +31,7 @@ const Container = styled.div`
   .wrapper {
     width: 100%;
     height: 100vh;
-    background-color: black;
+    /* background-color: black; */
   }
 `;
 
