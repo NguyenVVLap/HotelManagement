@@ -1,16 +1,24 @@
 import React from "react";
+import { useState } from "react";
 import { useEffect } from "react";
-import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import FrmDatPhong from "../components/FrmDatPhong";
 import Menu from "../components/Menu";
 
 function Main() {
   const navigate = useNavigate();
+  const [navSelected, setNavSelected] = useState({
+    room: true,
+    guest: false,
+    staff: false,
+    booking: false,
+  });
+  const [subNavSelected, setSubNavSelected] = useState("book");
 
   useEffect(() => {
     checkLogin();
-  }, []);
+  });
   const checkLogin = async () => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
@@ -19,13 +27,22 @@ function Main() {
   };
   return (
     <Container>
-      <Menu></Menu>
-      <div className="wrapper"></div>
+      <Menu
+        navSelected={navSelected}
+        setNavSelected={setNavSelected}
+        subNavSelected={subNavSelected}
+        setSubNavSelected={setSubNavSelected}
+      ></Menu>
+      <div className="wrapper">
+        {subNavSelected === "book" && <FrmDatPhong />}
+      </div>
     </Container>
   );
 }
 
 const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: grid;
   grid-template-columns: 20% 80%;
   .wrapper {

@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @IdClass(RoomEquipmentPK.class)
 @Table(name="room_equipment")
 public class RoomEquipment {
+
 	@Id
 	@ManyToOne
 	@JoinColumn(name="equipment_id")

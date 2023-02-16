@@ -7,14 +7,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Setter @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Entity
 @Table(name = "room_type")
-public class RoomType {
+public class RoomType{
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "room_type_id")
@@ -36,5 +38,13 @@ public class RoomType {
 	
 	@Column(name = "number_of_beds")
 	private int numberOfBeds;
+
+	@Override
+	public String toString() {
+		return "RoomType [roomTypeId=" + roomTypeId + ", roomTypeName=" + roomTypeName + ", roomTypeCost="
+				+ roomTypeCost + ", capacity=" + capacity + ", smokeFriendly=" + smokeFriendly + ", petFriendly="
+				+ petFriendly + ", numberOfBeds=" + numberOfBeds + "]";
+	}
+	
 	
 }
