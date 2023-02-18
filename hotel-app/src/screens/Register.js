@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import axios from "axios";
 import { checkPhoneExistRoute, registerRoute } from "../utils/APIRoutes";
-// import { toast, ToastContainer } from "react-toastify";
+
 
 function Register() {
   const navigate = useNavigate();
@@ -27,22 +27,28 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const otpInputRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]; // Khởi tạo mảng refs để lưu trữ ô nhập mã OTP
+  const handleChangeOTP = (event, index) => {
+    const { value } = event.target;
 
-  const [otp, setOtp] = useState("");
+    setOtp([...otp.slice(0, index), value, ...otp.slice(index + 1)]);
+
+
+    if (value !== "") { // Nếu người dùng đã nhập giá trị vào ô hiện tại
+      if (index < otp.length - 1) { // Và ô đó không phải là ô cuối cùng
+        otpInputRefs[index + 1].current.focus(); // Di chuyển focus đến ô tiếp theo
+      }
+    }
+  };
   // const [step, setStep] = useState("INPUT_PHONE_NUMBER");
   // const [step, setStep] = useState("VERIFY_SUCCESS");
   const [step, setStep] = useState("VERIFY_OTP");
   const [result, setResult] = useState("");
   const [toast, setToast] = useState(null);
-  const ref = useRef();
 
-  const toastOptions = {
-    position: "bottom-right",
-    autoClose: 8000,
-    draggable: true,
-    pauseOnHover: true,
-    theme: "dark",
-  };
+
+
 
   const firebaseConfig = {
     apiKey: "AIzaSyCG3-eQmgLGHPPlefU_Ft7ohWbfH6mZYKA",
@@ -271,7 +277,7 @@ function Register() {
 
     return true;
   };
-
+  console.log("OTP[]", otp);
   return (
     <>
       <Container>
@@ -327,25 +333,44 @@ function Register() {
                   <div className="box-login">
                     <div className="header_login">
                       <span className="title_header">Xác thực OTP</span>
-                      <header></header>
+                      <header>Nhập mã otp gồm 6 số</header>
                     </div>
-                    <div className="form-container">
-                      <Form onSubmit={(e) => ValidateOtp(e)}>
-                        <Form.Group className="mb-3" controlId="formBasicUsername">
-                          <Form.Label>Mã OTP</Form.Label>
-                          <Form.Control type="text" placeholder="Enter OTP" maxlength="6" />
-                        </Form.Group>
-                        <div className="btn-container">
-                          <span>
-                            Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
-                          </span>
-                          <Button variant="success" type="submit">
-                            Xác thực
-                          </Button>
-                        </div>
-                      </Form>
+                    <div className="otp-container">
+                      {otp.map((item, index) => (
+                        <input type="text" className="otp" maxLength='1' key={index} value={item} onChange={(event) => handleChangeOTP(event, index)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Backspace" && index > 0) { // Nếu người dùng nhấn phím Backspace và không phải ô đầu tiên
+
+
+                              setOtp([...otp.slice(0, index), "", ...otp.slice(index + 1)]);
+                              otpInputRefs[index - 1].current.focus(); // Di chuyển focus đến ô trước đó
+                            }
+                          }}
+
+                          ref={otpInputRefs[index]} // Gán ref cho ô nhập hiện tại
+                        />
+                      ))
+
+                      }
+
 
                     </div>
+                    <div className="btn-container">
+                      <span>
+                        Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
+                      </span>
+                      <Button variant="success" onClick={() => {
+                        let result = '';
+                        otp.map((item) => {
+                          result += item;
+
+                        })
+                        alert(result);
+                      }}>
+                        Xác thực
+                      </Button>
+                    </div>
+
                   </div>
                 </div>
                 <div className="item-grid-slider">
@@ -678,6 +703,27 @@ header {
       cursor: pointer;
       &:hover {
         opacity: 0.8;
+      }
+    }
+    .otp-container{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+      .otp{
+        background-color: rgba(255,255,255,0.6);
+        border-radius: 10px;
+        border: 1px solid #eee;
+        font-size: 30px;
+        width: 75px;
+        height: 80px;
+        margin: 10px;
+        text-align: center;
+        font-weight: 300;
+      &:valid{
+        border-color: #9861c2;
+        box-shadow: 0 10px 10px -5px rgba(0,0,0,0.25);
+      }
       }
     }
     
