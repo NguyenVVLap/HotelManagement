@@ -30,7 +30,8 @@ function Register() {
 
   const [otp, setOtp] = useState("");
   // const [step, setStep] = useState("INPUT_PHONE_NUMBER");
-  const [step, setStep] = useState("VERIFY_SUCCESS");
+  // const [step, setStep] = useState("VERIFY_SUCCESS");
+  const [step, setStep] = useState("VERIFY_OTP");
   const [result, setResult] = useState("");
   const [toast, setToast] = useState(null);
   const ref = useRef();
@@ -59,6 +60,7 @@ function Register() {
   const signin = async (event) => {
     event.preventDefault();
     const { phoneNumber } = values;
+    console.log("phone number input: ", phoneNumber)
     if (phoneNumber === "") {
       // toast.error("Phone number is required", toastOptions);
     } else {
@@ -186,17 +188,7 @@ function Register() {
           },
         }
       );
-      // console.log(data);
-      //   username,
-      //   phone: "+84" + phone,
-      //   email,
-      //   password,
-      //   // dayOfBirth: new Date(dayOfBirth),
-      //   gender: gender === "male",
-      // });
-      // if (data.status === false) {
-      //   toast.error(data.msg, toastOptions);
-      // }
+
       if (data !== "Username or Identification already exist") {
         localStorage.setItem("token", JSON.stringify(data));
         navigate("/");
@@ -267,10 +259,7 @@ function Register() {
       });
       return false;
     } else if (password != confirmPassword) {
-      // toast.error(
-      //   "Password and Confirm Password should be the same",
-      //   toastOptions
-      // );
+
       setToast({
         header: "Mật khẩu và Nhập lại mật khẩu phải giống nhau",
         content: "",
@@ -287,159 +276,222 @@ function Register() {
     <>
       <Container>
         <div className="form-container">
-          <div className="title">
-            <h1>Đăng ký</h1>
-          </div>
-          {step === "INPUT_PHONE_NUMBER" && (
-            <Form onSubmit={(e) => signin(e)}>
-              <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon1">+84</InputGroup.Text>
-                <Form.Control
-                  placeholder="Phone number"
-                  aria-label="Phone number"
-                  aria-describedby="basic-addon1"
-                  name="phoneNumber"
-                  onChange={(e) => handleOnChange(e)}
-                />
-              </InputGroup>
-              <div className="btn-container">
-                <span>
-                  Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
-                </span>
-                <Button variant="success" type="submit">
-                  Gửi OTP
-                </Button>
-              </div>
-            </Form>
-          )}
-          {step === "VERIFY_OTP" && (
-            <Form onSubmit={(e) => ValidateOtp(e)}>
-              <Form.Group className="mb-3" controlId="formBasicUsername">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter username" />
-              </Form.Group>
-              <div className="btn-container">
-                <span>
-                  Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
-                </span>
-                <Button variant="success" type="submit">
-                  Xác thực
-                </Button>
-              </div>
-            </Form>
-          )}
-          {step === "VERIFY_SUCCESS" && (
-            <Form className="custom-form" onSubmit={(e) => handleSubmit(e)}>
-              <div className="custom-input">
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Họ và tên"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Họ và tên"
-                    name="fullname"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="CCCD"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Căn cước công dân"
-                    name="identification"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Số điện thoại"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Số điện thoại"
-                    name="phoneNumber"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Địa chỉ"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Địa chỉ"
-                    name="address"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Email"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Tài khoản"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Tài khoản"
-                    name="username"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
 
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Mật khẩu"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="password"
-                    placeholder="Mật khẩu"
-                    name="password"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Nhập lại mật khẩu"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="password"
-                    placeholder="Nhập lại mật khẩu"
-                    name="confirmPassword"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
+          {/* Bước nhập số điện thoại để nhận OTP */}
+          {step === "INPUT_PHONE_NUMBER" && (
+            <div className="wrapper">
+              <div className="grid-container">
+                <div className="item-grid-login">
+                  <div className="box-login">
+                    <div className="header_login">
+                      <span className="title_header">Nhận mã OTP</span>
+                      <header></header>
+                    </div>
+                    <div className="form-container">
+                      <Form onSubmit={(e) => signin(e)}>
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text id="basic-addon1">+84</InputGroup.Text>
+                          <Form.Control
+                            placeholder="Phone number"
+                            aria-label="Phone number"
+                            aria-describedby="basic-addon1"
+                            name="phoneNumber"
+                            onChange={(e) => handleOnChange(e)}
+                          />
+                        </InputGroup>
+                        <div className="btn-container">
+                          <span>
+                            Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
+                          </span>
+                          <Button variant="success" type="submit">
+                            Nhận OTP
+                          </Button>
+                        </div>
+                      </Form>
+
+
+                    </div>
+                  </div>
+                </div>
+                <div className="item-grid-slider">
+                  <div className='grid-slider-container-input-phonenumber'></div>
+                </div>
               </div>
-              <div className="btn-container">
-                <span>
-                  Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
-                </span>
-                <Button variant="success" type="submit">
-                  Đăng ký
-                </Button>
+            </div>
+          )}
+          {/* Bước nhập mã otp gửi đến số điện thoại */}
+          {step === "VERIFY_OTP" && (
+            <div className="wrapper">
+              <div className="grid-container">
+                <div className="item-grid-login">
+                  <div className="box-login">
+                    <div className="header_login">
+                      <span className="title_header">Xác thực OTP</span>
+                      <header></header>
+                    </div>
+                    <div className="form-container">
+                      <Form onSubmit={(e) => ValidateOtp(e)}>
+                        <Form.Group className="mb-3" controlId="formBasicUsername">
+                          <Form.Label>Mã OTP</Form.Label>
+                          <Form.Control type="text" placeholder="Enter OTP" maxlength="6" />
+                        </Form.Group>
+                        <div className="btn-container">
+                          <span>
+                            Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
+                          </span>
+                          <Button variant="success" type="submit">
+                            Xác thực
+                          </Button>
+                        </div>
+                      </Form>
+
+                    </div>
+                  </div>
+                </div>
+                <div className="item-grid-slider">
+                  <div className='grid-slider-container-input-phonenumber'></div>
+                </div>
               </div>
-            </Form>
+            </div>
+          )}
+
+          {/* Bước Verify success */}
+          {step === "VERIFY_SUCCESS" && (
+            <div className="wrapper">
+              <div className="grid-container">
+                <div className="item-grid-login">
+                  <div className="box-login">
+                    <div className="header_login">
+                      <span className="title_header">Điền thông tin</span>
+                      <header>Đăng Ký</header>
+                    </div>
+                    <div className="form-container">
+                      <Form className="custom-form" onSubmit={(e) => handleSubmit(e)}>
+                        <div className="custom-input">
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Họ và tên"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Họ và tên"
+                              name="fullname"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="CCCD"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Căn cước công dân"
+                              name="identification"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Số điện thoại"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Số điện thoại"
+                              name="phoneNumber"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Địa chỉ"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Địa chỉ"
+                              name="address"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Email"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="email"
+                              placeholder="Email"
+                              name="email"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Tài khoản"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Tài khoản"
+                              name="username"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Mật khẩu"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="password"
+                              placeholder="Mật khẩu"
+                              name="password"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Nhập lại mật khẩu"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="password"
+                              placeholder="Nhập lại mật khẩu"
+                              name="confirmPassword"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                        </div>
+                        <div className="btn-container">
+                          <span>
+                            Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
+                          </span>
+                          <Button variant="success" type="submit">
+                            Đăng ký
+                          </Button>
+                        </div>
+                      </Form>
+
+
+                    </div>
+                  </div>
+                </div>
+                <div className="item-grid-slider">
+                  <div className='grid-slider-container-verifysuccess'></div>
+                </div>
+              </div>
+            </div>
           )}
         </div>
+
+
+
+
+
         {toast && (
           <ToastContainer
             position="bottom-end"
@@ -466,32 +518,53 @@ function Register() {
             </Toast>
           </ToastContainer>
         )}
+
+
       </Container>
     </>
   );
 }
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: linear-gradient(#373b44, #1095c1);
-  .form-container {
-    height: 90%;
-    /* overflow: scroll; */
-    .custom-form {
-      height: 90%;
+  .wrapper {
+    height: 100vh;
+    background: linear-gradient(55deg, #d2001a, #7462ff, #f48e21, #23d5ab);
+    background-size: 300% 300%;
+    animation: color 11s ease-in-out infinite;
+    padding: 100px 50px 100px 50px;
+    box-sizing: border-box;
 
-      .custom-input {
-        padding: 0.5rem 1rem;
-        height: 90%;
-        overflow: scroll;
-        input {
-          outline: none;
-        }
-        &::-webkit-scrollbar {
+}
+@keyframes color {
+    0% {
+        background-position: 0 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0 50%;
+    }
+}
+.grid-container {
+    /* background-color: yellowgreen; */
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.item-grid-login {
+    background-color: rgba(240, 247, 247, 0.493);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 100%;
+    overflow:auto;
+    /* background-color: #d2001a; */
+    &::-webkit-scrollbar {
           width: 0.2rem;
           &-thumb {
             background-image: linear-gradient(#373b44, #1095c1);
@@ -499,6 +572,95 @@ const Container = styled.div`
             border-radius: 1rem;
           }
         }
+}
+
+.item-grid-slider {
+    background-color: rgba(32, 35, 35, 0.493);
+    width: 100%;
+    height: 100%;
+  
+}
+.wrapper-slide{
+    background-color:red;
+    width:100%;
+    height:90%;
+}
+.load-wrap{
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(55deg, #d2001a, #7462ff, #f48e21, #23d5ab);
+    display: flex;
+    justify-content:center;
+    align-items:center;
+   
+}
+.grid-slider-container-verifysuccess{
+    background-image: url("https://img.freepik.com/free-vector/sign-concept-illustration_114360-125.jpg?w=740&t=st=1676724421~exp=1676725021~hmac=40d402a5dc6b284720197c8559260b926b25cf5f1675dab7f267298b61df37c1");
+   background-size:cover;
+   background-repeat:no-repeat;
+    height: 100%;
+    background-position:center;
+}
+.grid-slider-container-input-phonenumber{
+    background-image: url("https://img.freepik.com/premium-vector/authentication-code-illustration-isometric-style-illustration_108061-562.jpg?w=740");
+   background-size:cover;
+   background-repeat:no-repeat;
+    height: 100%;
+    background-position:center;
+
+}
+.grid-slider-container-verify-otp{
+  background-image: url("https://img.freepik.com/free-vector/enter-otp-concept-illustration_114360-7897.jpg?w=740&t=st=1676728797~exp=1676729397~hmac=16e28cda1d191945535f94d0e6c4c75f3c8cb103c8150e69d5489276a67e9e08");
+   background-size:cover;
+   background-repeat:no-repeat;
+    height: 100%;
+    background-position:center;
+}
+
+.box-login {
+    /* background-color: #f48e21; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px 0 15px;
+    max-height:100%;
+    .header_login {
+    /* background-color: #d2001a; */
+    margin-bottom: 20px;
+    padding: 15px 5px 15px 5px;
+    .title_header {
+      color: rgb(3, 3, 3);
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 10px 0;
+    }
+}
+}
+
+
+header {
+    color: rgb(3, 3, 3);
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 10px 0;
+}
+  /* --------------------- */
+  .form-container {
+    text-align: left;
+    .custom-form {
+      height: 90%;
+
+      .custom-input {
+        padding: 0.5rem 1rem;
+        height: 90%;
+        overflow: auto;
+        input {
+          outline: none;
+        }
+       
       }
     }
 
@@ -509,6 +671,7 @@ const Container = styled.div`
     .btn-container {
       display: flex;
       justify-content: space-between;
+      margin-bottom:21px;
     }
     .btn-forgot-password {
       width: fit-content;
@@ -517,11 +680,7 @@ const Container = styled.div`
         opacity: 0.8;
       }
     }
-    text-align: left;
-    width: 30%;
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 5px;
+    
   }
 `;
 

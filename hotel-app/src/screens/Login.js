@@ -229,7 +229,7 @@ const Container = styled.div`
    
 }
 .grid-slider-container{
-    background-image: url("https://blog.vantagecircle.com/content/images/2020/08/Employee-Onboarding.png");
+    background-image: url("https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg?w=740&t=st=1676720129~exp=1676720729~hmac=00e2f15b1d0bc342bb3aa7ed8132be58b00f5f7042b3c72b122776a1c9a3f1aa");
    background-size:cover;
    background-repeat:no-repeat;
     height: 100%;
