@@ -4,8 +4,10 @@ import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { InputGroup } from "react-bootstrap";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+
+
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,9 +15,15 @@ import { useState } from "react";
 import { useRef } from "react";
 import axios from "axios";
 import { checkPhoneExistRoute, registerRoute } from "../utils/APIRoutes";
+import { authentication } from "../utils/firebase-config";
+
+
+
+
 
 
 function Register() {
+
   const navigate = useNavigate();
   const [values, setValues] = useState({
     fullname: "",
@@ -27,6 +35,7 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
+
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const otpInputRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]; // Khởi tạo mảng refs để lưu trữ ô nhập mã OTP
   const handleChangeOTP = (event, index) => {
@@ -41,127 +50,92 @@ function Register() {
       }
     }
   };
-  // const [step, setStep] = useState("INPUT_PHONE_NUMBER");
+  const generateRecapcha = () => {
+    window.recaptchaVerifier = new RecaptchaVerifier('recapcha-container', {
+      'size': 'invisible',
+      'callback': (response) => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+
+      }
+    }, authentication);
+  }
+  const handleSendCode = async (e) => {
+    e.preventDefault();
+    const { phoneNumber } = values;
+    const phone = "+84" + phoneNumber;
+    const config = {
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+      },
+    };
+    const data = {
+      phone: phone,
+    };
+    const res = await axios.post(`${checkPhoneExistRoute}`, data, config);
+    if (res.data) {
+      generateRecapcha();
+      let appVerifier = window.recaptchaVerifier;
+      signInWithPhoneNumber(authentication, phone, appVerifier)
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          setToast({
+            header: "Mã otp đã được gửi",
+            content: "",
+            bg: "success",
+            textColor: "#fff",
+          });
+          setStep("VERIFY_OTP")
+        }).catch((error) => {
+          setToast({
+            header: "Lỗi:" + error,
+            content: "",
+            bg: "danger",
+            textColor: "#fff",
+          });
+        });
+    }
+    else {
+      setToast({
+        header: "Tài khoản đã được đăng ký!",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+    }
+
+
+
+  }
+  const handleVerifyOTP = () => {
+    let otpInput = '';
+    otp.map((item) => {
+      otpInput += item;
+    })
+    if (otpInput.length === 6) {
+      let confirmationResult = window.confirmationResult;
+      confirmationResult.confirm(otpInput).then((result) => {
+        //success verify
+        setStep("VERIFY_SUCCESS");
+      }).catch((error) => {
+        setToast({
+          header: "Otp nhập sai",
+          content: "",
+          bg: "danger",
+          textColor: "#fff",
+        });
+
+      })
+    }
+  }
+
+  const [step, setStep] = useState("INPUT_PHONE_NUMBER");
   // const [step, setStep] = useState("VERIFY_SUCCESS");
-  const [step, setStep] = useState("VERIFY_OTP");
+  // const [step, setStep] = useState("VERIFY_OTP");
   const [result, setResult] = useState("");
   const [toast, setToast] = useState(null);
 
 
 
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCG3-eQmgLGHPPlefU_Ft7ohWbfH6mZYKA",
-    authDomain: "hotel-management-4a379.firebaseapp.com",
-    projectId: "hotel-management-4a379",
-    storageBucket: "hotel-management-4a379.appspot.com",
-    messagingSenderId: "590358523478",
-    appId: "1:590358523478:web:75b11b80dc18f90bbe55f7",
-    measurementId: "G-0HSHJ0L467",
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-
-  const signin = async (event) => {
-    event.preventDefault();
-    const { phoneNumber } = values;
-    console.log("phone number input: ", phoneNumber)
-    if (phoneNumber === "") {
-      // toast.error("Phone number is required", toastOptions);
-    } else {
-      const config = {
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-      };
-      const data = {
-        phone: "+84" + phoneNumber,
-      };
-      const res = await axios.post(`${checkPhoneExistRoute}`, data, config);
-      if (res.data) {
-        let verify = new firebase.auth.RecaptchaVerifier(
-          "recaptcha-container",
-          {
-            size: "invisible",
-          }
-        );
-        auth
-          .signInWithPhoneNumber("+84" + phoneNumber, verify)
-          .then((result) => {
-            setResult(result);
-            setStep("VERIFY_OTP");
-          })
-          .catch((err) => {
-            alert(err);
-          });
-        // let verify = new firebase.auth.RecaptchaVerifier(
-        //   "recaptcha-container",
-        //   {
-        //     size: "invisible",
-        //   }
-        // );
-        // auth
-        //   .signInWithPhoneNumber("+84" + phoneNumber, verify)
-        //   .then((result) => {
-        //     setResult(result);
-        //     setStep("VERIFY_OTP");
-        //   })
-        //   .catch((err) => {
-        //     alert(err);
-        //   });
-      } else {
-        // toast.error("This phone number already exist", toastOptions);
-      }
-      // fetch(`${checkPhoneExistRoute}`, {
-      //   body: JSON.stringify(data),
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   mode: "cors",
-      // })
-      // .then((response) => response.json())
-      // .then((res) => {
-      //   if (res) {
-      //     let verify = new firebase.auth.RecaptchaVerifier(
-      //       "recaptcha-container",
-      //       {
-      //         size: "invisible",
-      //       }
-      //     );
-      //     auth
-      //       .signInWithPhoneNumber("+84" + phoneNumber, verify)
-      //       .then((result) => {
-      //         setResult(result);
-      //         setStep("VERIFY_OTP");
-      //       })
-      //       .catch((err) => {
-      //         alert(err);
-      //       });
-      //   } else {
-      //     toast.error("This phone number already exist", toastOptions);
-      //   }
-      // })
-      // .catch((e) => {
-      //   console.log("Delete order error: ", e);
-      // });
-    }
-  };
-
-  const ValidateOtp = (event) => {
-    event.preventDefault();
-    if (otp === null) return;
-
-    result
-      .confirm(otp)
-      .then((result) => {
-        setStep("VERIFY_SUCCESS");
-      })
-      .catch((err) => {
-        // toast.error("Incorrect code", toastOptions);
-      });
-  };
   const handleOnChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -294,7 +268,7 @@ function Register() {
                       <header></header>
                     </div>
                     <div className="form-container">
-                      <Form onSubmit={(e) => signin(e)}>
+                      <Form onSubmit={(e) => handleSendCode(e)}>
                         <InputGroup className="mb-3">
                           <InputGroup.Text id="basic-addon1">+84</InputGroup.Text>
                           <Form.Control
@@ -313,6 +287,7 @@ function Register() {
                             Nhận OTP
                           </Button>
                         </div>
+                        <div id="recapcha-container"></div>
                       </Form>
 
 
@@ -359,14 +334,7 @@ function Register() {
                       <span>
                         Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
                       </span>
-                      <Button variant="success" onClick={() => {
-                        let result = '';
-                        otp.map((item) => {
-                          result += item;
-
-                        })
-                        alert(result);
-                      }}>
+                      <Button variant="success" onClick={() => handleVerifyOTP()}>
                         Xác thực
                       </Button>
                     </div>
@@ -374,7 +342,7 @@ function Register() {
                   </div>
                 </div>
                 <div className="item-grid-slider">
-                  <div className='grid-slider-container-input-phonenumber'></div>
+                  <div className='grid-slider-container-verify-otp'></div>
                 </div>
               </div>
             </div>
