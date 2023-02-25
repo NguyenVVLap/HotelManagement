@@ -15,21 +15,24 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@IdClass(RoomEquipmentPK.class)
-@Table(name="room_equipment")
-public class RoomEquipment {
-
+@IdClass(ChiTietDichVuPK.class)
+@Table(name = "phieu_dich_vu")
+public class ChiTietDichVu {
 	@Id
 	@ManyToOne
-	@JoinColumn(name="equipment_id")
-	private Equipment equipment;
+	@JoinColumn(name="ma_phieu_dat_phong")
+	private PhieuDatPhong phieuDatPhong;
 	
 	@Id
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="room_id")
-	private Room room;
+	@JoinColumn(name="ma_dich_vu")
+	private DichVu dichVu;
 	
-	@Column(name = "quantity")
-	private int quantity;
+	@Column(name = "so_luong")
+	private int soLuong;
+	
+	@Column(name = "tong_tien_dich_vu")
+	private double tongTienDichVu;
+	
 	
 }

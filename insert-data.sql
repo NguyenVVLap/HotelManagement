@@ -16,11 +16,7 @@ delete from floors;
 delete from room_type;
 delete from hotels;
 
-Insert into roles(role_id, name) values 
-(1, 'ROLE_USER');
-
-Insert into users(username, password, role_id) values 
-('lap', '12345678', 1);
+select * from users
 
 
 Insert into room_type(room_type_id, capacity, number_of_beds, pet_friendly, room_type_cost, room_type_name, smoke_friendly) values

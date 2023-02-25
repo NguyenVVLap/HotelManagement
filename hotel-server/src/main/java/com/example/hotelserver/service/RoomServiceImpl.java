@@ -9,53 +9,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.hotelserver.dto.RoomsResponseDto;
-import com.example.hotelserver.entity.Damage;
-import com.example.hotelserver.entity.Equipment;
-import com.example.hotelserver.entity.Room;
-import com.example.hotelserver.entity.RoomEquipment;
-import com.example.hotelserver.repository.FloorRepo;
+import com.example.hotelserver.entity.Phong;
+import com.example.hotelserver.entity.PhongThietBi;
 import com.example.hotelserver.repository.RoomRepo;
-import com.example.hotelserver.repository.RoomTypeRepo;
 
 @Service
 public class RoomServiceImpl implements RoomService{
 	@Autowired
 	private RoomRepo roomRepo;
 	
-	@Autowired
-	private RoomTypeRepo roomTypeRepo;
-
-	@Autowired
-	private FloorRepo floorRepo;
-	
 	@Override
 	public List<Map<String, Object>> getRoomsOrderByState() {
-		List<Room> rooms = roomRepo.getRoomsOrderByState();
+		List<Phong> rooms = roomRepo.getRoomsOrderByState();
 		List<Map<String, Object>> result = new ArrayList<>();
-		for (Room room : rooms) {
+		for (Phong room : rooms) {
 			Map<String, Object> map = new HashMap<>();
-			List<RoomEquipment> roomEquipments = new ArrayList<>();
-			for (RoomEquipment roomEquipment : room.getRoomEquipments()) {
-				roomEquipment.setRoom(null);
+			List<PhongThietBi> roomEquipments = new ArrayList<>();
+			for (PhongThietBi roomEquipment : room.getPhongThietBi()) {
+				roomEquipment.setPhong(null);
 				roomEquipments.add(roomEquipment);
 			}
 			
-			List<Damage> damages = new ArrayList<>();
-			for (Damage damage : room.getDamages()) {
-				damages.add(damage);
-			}
-			RoomsResponseDto roomsResponseDto = new RoomsResponseDto(room.getRoomId()
-					, room.getRoomName(), room.isRoomState(), room.getRoomImageUrl()
-					, room.getRoomDescription()
-					, room.getFloor().getFloorId(), room.getFloor().getFloorName()
-					, room.getRoomType().getRoomTypeId(), room.getRoomType().getRoomTypeName()
-					, room.getRoomType().getRoomTypeCost(), room.getRoomType().getCapacity()
-					, room.getRoomType().isSmokeFriendly(), room.getRoomType().isPetFriendly()
-					, room.getRoomType().getNumberOfBeds());
+			RoomsResponseDto roomsResponseDto = new RoomsResponseDto(room.getMaPhong()
+					, room.getTenPhong(), room.isTrangThaiPhong(), room.getHinhAnhPhong()
+					, room.getMoTaPhong()
+					, room.getTang().getMaTang(), room.getTang().getTenTang()
+					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
+					, room.getLoaiPhong().getGiaLoaiPhong(), room.getLoaiPhong().getSucChua()
+					, room.getLoaiPhong().isDuocHutThuoc(), room.getLoaiPhong().isMangThuCung()
+					, room.getLoaiPhong().getSoGiuong());
 			map.put("room", roomsResponseDto);
 //			map.put("roomType", roomTypeRepo.findById(room.getRoomType().getRoomTypeId()).get());
 //			map.put("floor", floorRepo.findById(room.getFloor().getFloorId()).get());
-			map.put("damages", damages);
 			map.put("roomEquipment", roomEquipments);
 			result.add(map);
 		}

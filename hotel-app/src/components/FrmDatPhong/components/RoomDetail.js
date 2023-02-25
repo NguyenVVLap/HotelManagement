@@ -5,7 +5,7 @@ import { Card, Carousel, Table } from "react-bootstrap";
 function RoomDetail({ room, setShowDetail }) {
   return (
     <StyledContainer>
-      <div className="header">
+      <div className="header-detail">
         <SlArrowLeft onClick={() => setShowDetail(undefined)} />
         <h2>
           {room.room.roomName} - {room.room.roomTypeName} -{" "}
@@ -181,7 +181,7 @@ const StyledContainer = styled.div`
       border-radius: 1rem;
     }
   }
-  .header {
+  .header-detail {
     display: flex;
     align-items: center;
     gap: 2rem;

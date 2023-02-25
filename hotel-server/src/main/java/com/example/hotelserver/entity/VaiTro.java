@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor @AllArgsConstructor
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "vai_tro")
+public class VaiTro {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "role_id")
-	private long roleId;
+	@Column(name = "ma_vai_tro")
+	private long maVaiTro;
 	
-	@Column(columnDefinition = "nvarchar(255)")
-	private String name;
+	@Column(columnDefinition = "nvarchar(255)", name = "ten_vai_tro")
+	private String tenVaiTro;
 }

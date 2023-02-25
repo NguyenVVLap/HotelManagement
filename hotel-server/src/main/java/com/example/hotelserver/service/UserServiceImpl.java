@@ -13,8 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.hotelserver.entity.Role;
-import com.example.hotelserver.entity.User;
+import com.example.hotelserver.entity.VaiTro;
+import com.example.hotelserver.entity.TaiKhoan;
 import com.example.hotelserver.repository.RoleRepo;
 import com.example.hotelserver.repository.UserRepo;
 
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepo.findByUsername(username).get();
+		TaiKhoan user = userRepo.findByTenTaiKhoan(username).get();
 		
 		if(user == null) {
 			System.out.println("User not found in database");
@@ -44,55 +44,55 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			System.out.println("User found in database: " + username);
 		}
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+		authorities.add(new SimpleGrantedAuthority(user.getVaiTro().getTenVaiTro()));
 		return new org.springframework.security.core.userdetails.User(user.getUsername()
 				, user.getPassword(), authorities);
 	}
 	
 	@Override
-	public User addUser(User user) {
+	public TaiKhoan addUser(TaiKhoan user) {
 		System.out.println("Saving new user " + user.getUsername() + " to database");
 		
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setMatKhau(passwordEncoder.encode(user.getPassword()));
 		
 		return userRepo.save(user);
 	}
 
 	@Override
-	public Role addRole(Role role) {
-		System.out.println("Saving new role " + role.getName() + " to database");
+	public VaiTro addRole(VaiTro role) {
+		System.out.println("Saving new role " + role.getTenVaiTro() + " to database");
 		return roleRepo.save(role);
 	}
 
 	@Override
 	public void addRoleToUser(String username, String roleName) {		
 		System.out.println("Adding role " + roleName + " to user " + username);
-		Optional<User> temp = userRepo.findByUsername(username);
-		User user = temp.get();
-		Role role = roleRepo.findByName(roleName);
+		Optional<TaiKhoan> temp = userRepo.findByTenTaiKhoan(username);
+		TaiKhoan user = temp.get();
+		VaiTro role = roleRepo.findByTenVaiTro(roleName);
 		if (role == null) {
-			roleRepo.save(new Role(0, roleName));
+			roleRepo.save(new VaiTro(0, roleName));
 		}
-		user.setRole(role);
+		user.setVaiTro(role);
 		userRepo.save(user);
 	}
 
 	@Override
-	public User getUser(String username) {
+	public TaiKhoan getUser(String username) {
 		System.out.println("Fetching user " + username);
-		return userRepo.findByUsername(username).get();
+		return userRepo.findByTenTaiKhoan(username).get();
 	}
 
 	@Override
-	public List<User> getUsers() {
+	public List<TaiKhoan> getUsers() {
 		System.out.println("Fetching all users");
 		return userRepo.findAll();
 	}
 
 	@Override
-	public User getUserById(long id) {
-		User user = null; 
-		Optional<User> result = userRepo.findById(id);
+	public TaiKhoan getUserById(long id) {
+		TaiKhoan user = null; 
+		Optional<TaiKhoan> result = userRepo.findById(id);
 		
 		if (result.isPresent()) {
 			user = result.get();

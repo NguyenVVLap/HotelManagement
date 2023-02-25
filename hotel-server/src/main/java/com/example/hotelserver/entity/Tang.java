@@ -7,22 +7,28 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Setter @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name = "positions")
-public class Position {
+@Table(name = "tang")
+public class Tang {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "position_id")
-	private long positionId;
+	@Column(name = "ma_tang")
+	private int maTang;
 	
-	@Column(name = "position_name", columnDefinition = "nvarchar(255)")
-	private String positionName;
+	@Column(name = "ten_tang", columnDefinition = "nvarchar(255)")
+	private String tenTang;
+
+	@Override
+	public String toString() {
+		return "Floor [floorId=" + maTang + ", floorName=" + tenTang + "]";
+	}
 	
-	@Column(name = "position_description", columnDefinition = "nvarchar(255)")
-	private String positionDescription;
+	
 }

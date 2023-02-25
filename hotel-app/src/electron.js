@@ -16,6 +16,7 @@ function createWindow() {
     resizable: true,
     // resizable: false,
     simpleFullscreen: true,
+    // titleBarStyle: "hidden",
   });
   win.maximize();
   // and load the index.html of the app.

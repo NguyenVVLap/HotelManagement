@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Embeddable
-public class RoomEquipmentPK implements Serializable{
+public class ChiTietDichVuPK implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private long equipment;
-	private long room;
+	private long phieuDatPhong;
+	private long dichVu;
 }

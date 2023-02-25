@@ -3,11 +3,14 @@ package com.example.hotelserver.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import com.example.hotelserver.entity.User;
+import com.example.hotelserver.entity.TaiKhoan;
 
 
 
-public interface UserRepo extends JpaRepository<User, Long> {
-	Optional<User> findByUsername(String username);
+public interface UserRepo extends JpaRepository<TaiKhoan, Long> {
+	@Query(nativeQuery = true, value = "select * from tai_khoan tk where tk.ten_tai_khoan =: tenTaiKhoan")
+	Optional<TaiKhoan> findByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan);
 }

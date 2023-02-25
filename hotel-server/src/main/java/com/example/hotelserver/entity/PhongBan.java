@@ -13,20 +13,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name = "equipments")
-public class Equipment {
+@Table(name = "phong_ban")
+public class PhongBan {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "equipment_id")
-	private long equipmentId;
+	@Column(name = "ma_phong_ban")
+	private long maPhongBan;
 	
-	@Column(name = "equipment_name", columnDefinition = "nvarchar(255)")
-	private String equipmentName;
+	@Column(name = "ten_phong_Ban", columnDefinition = "nvarchar(255)")
+	private String tenPhongBan;
 	
-	@Column(name = "equipment_price")
-	private double equipmentPrice;
-	
-//	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, mappedBy = "equipment")
-//	@Nullable
-//	private List<RoomEquipment> roomEquipments;
+	@Column(name = "mo_ta_pb", columnDefinition = "nvarchar(255)")
+	private String moTaPB;
 }

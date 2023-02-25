@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.example.hotelserver.entity.Room;
+import com.example.hotelserver.entity.Phong;
 
 @Repository
-public interface RoomRepo extends JpaRepository<Room, Long>{
+public interface RoomRepo extends JpaRepository<Phong, Long>{
 	@Query(nativeQuery = true, value = ("select * from rooms order by room_state desc;"))
-	List<Room> getRoomsOrderByState();
+	List<Phong> getRoomsOrderByState();
 }

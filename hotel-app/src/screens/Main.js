@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FrmDatPhong from "../components/FrmDatPhong";
 import Menu from "../components/Menu";
+import TitleBar from "../components/TitleBar";
 
 function Main() {
   const navigate = useNavigate();
@@ -33,8 +34,11 @@ function Main() {
         subNavSelected={subNavSelected}
         setSubNavSelected={setSubNavSelected}
       ></Menu>
-      <div className="wrapper">
-        {subNavSelected === "book" && <FrmDatPhong />}
+      <div className="big-container">
+        {/* <TitleBar /> */}
+        <div className="wrapper">
+          {subNavSelected === "book" && <FrmDatPhong />}
+        </div>
       </div>
     </Container>
   );
@@ -42,13 +46,17 @@ function Main() {
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   display: grid;
   grid-template-columns: 20% 80%;
-  .wrapper {
-    width: 100%;
-    height: 100vh;
-    /* background-color: black; */
+  .big-container {
+    display: flex;
+    flex-direction: column;
+    .wrapper {
+      width: 100%;
+      height: 100vh;
+      /* background-color: black; */
+    }
   }
 `;
 

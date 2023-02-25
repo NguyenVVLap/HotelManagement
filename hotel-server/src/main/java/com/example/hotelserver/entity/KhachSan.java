@@ -13,27 +13,27 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name = "hotels")
-public class Hotel {
+@Table(name = "khach_san")
+public class KhachSan {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "hotel_id")
-	private int hotelId;
+	@Column(name = "ma_khach_san")
+	private int maKhachSan;
 	
-	@Column(name = "hotel_name", columnDefinition = "nvarchar(255)")
-	private String hotelName;
+	@Column(name = "ten_khach_san", columnDefinition = "nvarchar(255)")
+	private String tenKhachSan;
 	
-	@Column(name = "hotel_address", columnDefinition = "nvarchar(255)")
-	private String hotelAddress;
+	@Column(name = "dia_chi_ks", columnDefinition = "nvarchar(255)")
+	private String diaChiKS;
 	
-	@Column(name = "hotel_email", columnDefinition = "nvarchar(255)")
-	private String hotelEmail;
+	@Column(name = "email_khach_san", columnDefinition = "nvarchar(255)")
+	private String emailKhachSan;
 	
-	@Column(name = "hotel_phone_number", columnDefinition = "nvarchar(255)")
-	private String hotelPhoneNumber;
+	@Column(name = "so_dien_thoai_ks", columnDefinition = "nvarchar(255)")
+	private String soDienThoaiKS;
 	
-	@Column(name = "star_rating")
-	private int starRating;
+	@Column(name = "so_sao")
+	private int soSao;
 	
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel")
 //	private List<User> users;

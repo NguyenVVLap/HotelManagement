@@ -2,6 +2,7 @@ package com.example.hotelserver.entity;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,26 +20,24 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name = "attendances")
-public class Attendance {
+@Table(name = "hoa_don")
+public class HoaDon {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "attendance_id")
-	private long attendanceId;
+	@Column(name = "ma_hoa_don")
+	private long maHoaDon;
 	
-	@Column(name = "attendance_date")
-	private Date attendanceDate;
+	@Column(name = "ngay_lap")
+	private Date ngayLap;
 	
-	@Column(name = "is_present")
-	private boolean isPresent;
-	
-	private String note;
+	@Column(name = "tong_tien")
+	private double tongTien;
 	
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "asignment_id")
-	private Asignment asignment;
+	@JoinColumn(name = "ma_phieu_dat_phong")
+	private PhieuDatPhong phieuDatPhong;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "payroll_id")
-	private Payroll payroll;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "ma_nhan_vien")
+	private NhanVien nhanVien;
 }

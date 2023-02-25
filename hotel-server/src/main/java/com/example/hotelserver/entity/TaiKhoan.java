@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User implements UserDetails {
+@Table(name = "tai_khoan")
+public class TaiKhoan implements UserDetails {
 	/**
 	 * 
 	 */
@@ -35,25 +35,27 @@ public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	private long userId;
+	@Column(name = "ma_tai_khoan")
+	private long maTaiKhoan;
 	
-	private String username;
+	@Column(name = "ten_tai_khoan")
+	private String tenTaiKhoan;
 	
-	private String password;
+	@Column(name = "mat_khau")
+	private String matKhau;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "role_id")
-	private Role role;
+	@JoinColumn(name = "ma_vai_tro")
+	private VaiTro vaiTro;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role.getName()));
+		return List.of(new SimpleGrantedAuthority(vaiTro.getTenVaiTro()));
 	}
 
 	@Override
 	public String getUsername() {
-		return username;
+		return tenTaiKhoan;
 	}
 	@Override
 	public boolean isAccountNonExpired() {
@@ -78,7 +80,7 @@ public class User implements UserDetails {
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub
-		return password;
+		return matKhau;
 	}
 	
 

@@ -3,8 +3,8 @@ package com.example.hotelserver.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.hotelserver.entity.RoomType;
+import com.example.hotelserver.entity.LoaiPhong;
 
 @Repository
-public interface RoomTypeRepo extends JpaRepository<RoomType, Long>{
+public interface RoomTypeRepo extends JpaRepository<LoaiPhong, Long>{
 }

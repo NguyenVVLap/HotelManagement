@@ -20,48 +20,45 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name = "employees")
-public class Employee {
+@Table(name = "nhan_vien")
+public class NhanVien {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "employee_id")
-	private long employeeId;
+	@Column(name = "ma_nhan_vien")
+	private long maNhanVien;
 	
-	@Column(name = "fullname", columnDefinition = "nvarchar(255)")
-	private String fullname;
+	@Column(name = "ho_ten", columnDefinition = "nvarchar(255)")
+	private String hoTen;
 	
-	@Column(name = "address", columnDefinition = "nvarchar(255)")
-	private String address;
+	@Column(name = "dia_chi", columnDefinition = "nvarchar(255)")
+	private String diaChi;
 	
 	@Column(name = "email", columnDefinition = "nvarchar(255)")
 	private String email;
 
-	@Column(name = "phone", columnDefinition = "nvarchar(255)")
-	private String phone;
+	@Column(name = "so_dien_thoai", columnDefinition = "nvarchar(255)")
+	private String soDienThoai;
 	
-	private String identification;
+	private String cccd;
 	
-	@Column(name = "day_of_birth")
-	private Date dayOfBirth;
+	@Column(name = "ngay_sinh")
+	private Date ngaySinh;
 	
-	private double salary;
+	@Column(name = "luong_co_Ban")
+	private double luongCoBan;
 	
-	@Column(name = "start_work")
-	private Date startWork;
+	@Column(name = "ngay_vao_lam")
+	private Date ngayVaoLam;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "hotel_id")
-	private Hotel hotel;
+	@JoinColumn(name = "ma_khach_san")
+	private KhachSan khachSan;
 	
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "ma_tai_khoan")
+	private TaiKhoan taiKhoan;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "department_id")
-	private Department department;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "position_id")
-	private Position position;
+	@JoinColumn(name = "ma_phong_ban")
+	private PhongBan phongBan;
 }

@@ -7,28 +7,26 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter @Getter
+@Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name = "floors")
-public class Floor {
-
+@Table(name = "dich_vu")
+public class DichVu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "floor_id")
-	private int floorId;
+	@Column(name = "ma_dich_vu")
+	private long maDichVu;
 	
-	@Column(name = "floor_name", columnDefinition = "nvarchar(255)")
-	private String floorName;
-
-	@Override
-	public String toString() {
-		return "Floor [floorId=" + floorId + ", floorName=" + floorName + "]";
-	}
+	@Column(name = "ten_dich_vu", columnDefinition = "nvarchar(255)")
+	private String tenDichVu;
 	
+	@Column(name = "giaDichVu")
+	private double giaDichVu;
 	
+//	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+//	@Nullable
+//	private Set<BookingProduct> bookingProducts;
 }

@@ -1,7 +1,5 @@
 package com.example.hotelserver.entity;
 
-import java.util.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,26 +15,21 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@IdClass(BookingDetailPK.class)
-@Table(name="booking_detail")
-public class BookingDetail {
+@IdClass(PhongThietBiPK.class)
+@Table(name="phong_thiet_bi")
+public class PhongThietBi {
+
 	@Id
 	@ManyToOne
-	@JoinColumn(name="booking_id")
-	private Booking booking;
+	@JoinColumn(name="ma_thiet_bi")
+	private ThietBi thietBi;
 	
 	@Id
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="room_id")
-	private Room room;
+	@JoinColumn(name="ma_phong")
+	private Phong phong;
 	
-	@Column(name = "check_in_date")
-	private Date checkInDate;
-	
-	@Column(name = "check_out_date")
-	private Date checkOutDate;
-	
-	@Column(name = "duration_of_stay")
-	private int durationOfStay;
+	@Column(name = "so_luong")
+	private int soLuong;
 	
 }

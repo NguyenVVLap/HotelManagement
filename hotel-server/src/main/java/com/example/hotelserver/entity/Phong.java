@@ -26,56 +26,52 @@ import lombok.Setter;
 @Setter @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name = "rooms")
-public class Room {
+@Table(name = "phong")
+public class Phong {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "room_id")
-	private long roomId;
+	@Column(name = "ma_phong")
+	private long maPhong;
 	
-	@Column(name = "room_name", columnDefinition = "nvarchar(255)")
-	private String roomName;
+	@Column(name = "ten_phong", columnDefinition = "nvarchar(255)")
+	private String tenPhong;
 	
-	@Column(name = "room_state")
-	private boolean roomState;
+	@Column(name = "trang_thai_phong")
+	private boolean trangThaiPhong;
 	
-	@Column(name = "room_image_url", columnDefinition = "varchar(8000)")
+	@Column(name = "hinh_anh_phong", columnDefinition = "varchar(8000)")
 	@MapKeyColumn(columnDefinition="varchar(8000)")
 	@ElementCollection(fetch = FetchType.EAGER)
-	@JoinTable(name = "room_image_url", joinColumns = @JoinColumn(name = "room_id"))
-	private List<String> roomImageUrl;
+	@JoinTable(name = "hinh_anh_phong", joinColumns = @JoinColumn(name = "ma_phong"))
+	private List<String> hinhAnhPhong;
 	
-	@Column(name = "room_description", columnDefinition = "nvarchar(255)")
-	private String roomDescription;
-	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-	@JsonIgnore
-	@JoinColumn(name = "floor_id")
-	private Floor floor;
+	@Column(name = "mo_ta_phong", columnDefinition = "nvarchar(255)")
+	private String moTaPhong;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	@JsonIgnore
-	@JoinColumn(name = "room_type_id")
-	private RoomType roomType;
-	
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy = "room")
-	@JsonIgnore
-	private List<RoomEquipment> roomEquipments;
+	@JoinColumn(name = "ma_tang")
+	private Tang tang;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	@JsonIgnore
-	@JoinColumn(name = "hotel_id")
-	private Hotel hotel;
+	@JoinColumn(name = "ma_loai_phong")
+	private LoaiPhong loaiPhong;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy = "room")
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy = "phong")
 	@JsonIgnore
-	private List<Damage> damages;
-
+	private List<PhongThietBi> phongThietBi;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	@JsonIgnore
+	@JoinColumn(name = "ma_khach_san")
+	private KhachSan khachSan;
+	
 	@Override
 	public String toString() {
-		return "Room [roomId=" + roomId + ", roomName=" + roomName + ", roomState=" + roomState + ", roomImageUrl="
-				+ roomImageUrl + ", roomDescription=" + roomDescription + "]";
+		return "Phong [maPhong=" + maPhong + ", tenPhong=" + tenPhong + ", trangThaiPhong=" + trangThaiPhong
+				+ ", hinhAnhPhong=" + hinhAnhPhong + ", moTaPhong=" + moTaPhong + "]";
 	}
-
+	
 	
 }

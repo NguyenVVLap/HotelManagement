@@ -1,19 +1,28 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button, Container, Table } from "react-bootstrap";
+import { Button, CloseButton, Container, Table } from "react-bootstrap";
 import styled from "styled-components";
 import { GrRadial, GrRadialSelected } from "react-icons/gr";
 import { getRoomsRoute } from "../../../utils/APIRoutes";
 import RoomDetail from "./RoomDetail";
 
-function Rooms({ showRooms, setRoomChoosen, roomChoosen, setShowRooms }) {
+function Rooms({
+  showRooms,
+  setRoomChoosen,
+  roomChoosen,
+  setShowRooms,
+  showDetail,
+  setShowDetail,
+}) {
   const [rooms, setRooms] = useState([]);
-  const [roomsSelected, setRoomsSelected] = useState(roomChoosen);
-  const [showDetail, setShowDetail] = useState(undefined);
+  const [roomsSelected, setRoomsSelected] = useState([]);
+
   useEffect(() => {
     loadRoomData();
   }, []);
-
+  useEffect(() => {
+    setRoomsSelected([...roomsSelected, ...roomChoosen]);
+  }, [roomChoosen]);
   const loadRoomData = async () => {
     const config = {
       headers: {
@@ -24,8 +33,19 @@ function Rooms({ showRooms, setRoomChoosen, roomChoosen, setShowRooms }) {
     // console.log(data);
     setRooms(data);
   };
+  const isSelected = (room) => {
+    let result = false;
+    roomsSelected.map((selected) => {
+      if (selected.room.roomId === room.room.roomId) {
+        result = true;
+        return true;
+      }
+    });
+    return result;
+  };
   const onHandleSelected = (room) => {
     const temp = [...roomsSelected];
+
     for (var i = 0; i < temp.length; i++) {
       if (temp[i].room.roomId === room.room.roomId) {
         temp.splice(i, 1);
@@ -35,12 +55,16 @@ function Rooms({ showRooms, setRoomChoosen, roomChoosen, setShowRooms }) {
     }
     setRoomsSelected([...temp, room]);
   };
-  console.log(showDetail);
+  // console.log("roomChoosen", roomChoosen);
+  // console.log(roomsSelected);
 
   return (
     <StyledContainer>
       <div className="container-styled">
-        <h2 className="header-title">Chọn phòng</h2>
+        <div className="header">
+          <h2 className="header-title">Chọn phòng</h2>
+          <CloseButton onClick={() => setShowRooms(undefined)} />
+        </div>
         <div className="filter-btn"></div>
         <div className="table-container">
           <Table striped hover>
@@ -61,20 +85,16 @@ function Rooms({ showRooms, setRoomChoosen, roomChoosen, setShowRooms }) {
               {rooms &&
                 rooms !== [] &&
                 rooms.map((room, index) => {
+                  // console.log(isSelected(room));
                   return (
                     <tr
                       key={index}
-                      className={`${
-                        roomsSelected.includes(room) ? "row-selected" : ""
-                      }`}
+                      className={`${isSelected(room) ? "row-selected" : ""}`}
+                      s
                       onClick={() => onHandleSelected(room)}
                     >
                       <td>
-                        {roomsSelected.includes(room) ? (
-                          <GrRadialSelected />
-                        ) : (
-                          <GrRadial />
-                        )}
+                        {isSelected(room) ? <GrRadialSelected /> : <GrRadial />}
                       </td>
                       <td>{room.room.roomName}</td>
                       <td
@@ -107,7 +127,7 @@ function Rooms({ showRooms, setRoomChoosen, roomChoosen, setShowRooms }) {
               variant="primary"
               type="submit"
               onClick={() => {
-                setRoomChoosen([...roomChoosen, roomsSelected]);
+                setRoomChoosen([...roomsSelected]);
                 setShowRooms(undefined);
               }}
             >
@@ -156,7 +176,11 @@ const StyledContainer = styled.div`
     text-align: start;
     background-color: #fff;
     position: relative;
-    .header-title {
+    .header {
+      display: flex;
+      justify-content: space-between;
+      .header-title {
+      }
     }
     .table-container {
       width: 100%;

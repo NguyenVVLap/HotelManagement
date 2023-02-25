@@ -3,7 +3,7 @@ package com.example.hotelserver.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.hotelserver.entity.Guest;
+import com.example.hotelserver.entity.KhachHang;
 import com.example.hotelserver.repository.GuestRepo;
 
 @Service
@@ -13,14 +13,14 @@ public class GuestServiceImpl implements GuestService{
 	
 	
 	@Override
-	public Guest findByGuestIdentification(String guestIdentification) {
-		return guestRepo.findByGuestIdentification(guestIdentification);
+	public KhachHang findByGuestIdentification(String guestIdentification) {
+		return guestRepo.findByCccdKhachHang(guestIdentification);
 	}
 
 
 	@Override
-	public Guest findByGuestPhoneNumber(String guestPhoneNumber) {
-		return guestRepo.findByGuestPhoneNumber(guestPhoneNumber);
+	public KhachHang findByGuestPhoneNumber(String guestPhoneNumber) {
+		return guestRepo.findBySoDienThoaiKH(guestPhoneNumber);
 	}
 
 }
