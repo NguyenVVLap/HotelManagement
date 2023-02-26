@@ -4,8 +4,10 @@ import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { InputGroup } from "react-bootstrap";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+
+
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,9 +15,15 @@ import { useState } from "react";
 import { useRef } from "react";
 import axios from "axios";
 import { checkPhoneExistRoute, registerRoute } from "../utils/APIRoutes";
-// import { toast, ToastContainer } from "react-toastify";
+import { authentication } from "../utils/firebase-config";
+
+
+
+
+
 
 function Register() {
+
   const navigate = useNavigate();
   const [values, setValues] = useState({
     fullname: "",
@@ -28,132 +36,106 @@ function Register() {
     confirmPassword: "",
   });
 
-  const [otp, setOtp] = useState("");
-  // const [step, setStep] = useState("INPUT_PHONE_NUMBER");
-  const [step, setStep] = useState("VERIFY_SUCCESS");
-  const [result, setResult] = useState("");
-  const [toast, setToast] = useState(null);
-  const ref = useRef();
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const otpInputRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]; // Khởi tạo mảng refs để lưu trữ ô nhập mã OTP
+  const handleChangeOTP = (event, index) => {
+    const { value } = event.target;
 
-  const toastOptions = {
-    position: "bottom-right",
-    autoClose: 8000,
-    draggable: true,
-    pauseOnHover: true,
-    theme: "dark",
-  };
+    setOtp([...otp.slice(0, index), value, ...otp.slice(index + 1)]);
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCG3-eQmgLGHPPlefU_Ft7ohWbfH6mZYKA",
-    authDomain: "hotel-management-4a379.firebaseapp.com",
-    projectId: "hotel-management-4a379",
-    storageBucket: "hotel-management-4a379.appspot.com",
-    messagingSenderId: "590358523478",
-    appId: "1:590358523478:web:75b11b80dc18f90bbe55f7",
-    measurementId: "G-0HSHJ0L467",
-  };
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-
-  const signin = async (event) => {
-    event.preventDefault();
-    const { phoneNumber } = values;
-    if (phoneNumber === "") {
-      // toast.error("Phone number is required", toastOptions);
-    } else {
-      const config = {
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-      };
-      const data = {
-        phone: "+84" + phoneNumber,
-      };
-      const res = await axios.post(`${checkPhoneExistRoute}`, data, config);
-      if (res.data) {
-        let verify = new firebase.auth.RecaptchaVerifier(
-          "recaptcha-container",
-          {
-            size: "invisible",
-          }
-        );
-        auth
-          .signInWithPhoneNumber("+84" + phoneNumber, verify)
-          .then((result) => {
-            setResult(result);
-            setStep("VERIFY_OTP");
-          })
-          .catch((err) => {
-            alert(err);
-          });
-        // let verify = new firebase.auth.RecaptchaVerifier(
-        //   "recaptcha-container",
-        //   {
-        //     size: "invisible",
-        //   }
-        // );
-        // auth
-        //   .signInWithPhoneNumber("+84" + phoneNumber, verify)
-        //   .then((result) => {
-        //     setResult(result);
-        //     setStep("VERIFY_OTP");
-        //   })
-        //   .catch((err) => {
-        //     alert(err);
-        //   });
-      } else {
-        // toast.error("This phone number already exist", toastOptions);
+    if (value !== "") { // Nếu người dùng đã nhập giá trị vào ô hiện tại
+      if (index < otp.length - 1) { // Và ô đó không phải là ô cuối cùng
+        otpInputRefs[index + 1].current.focus(); // Di chuyển focus đến ô tiếp theo
       }
-      // fetch(`${checkPhoneExistRoute}`, {
-      //   body: JSON.stringify(data),
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   mode: "cors",
-      // })
-      // .then((response) => response.json())
-      // .then((res) => {
-      //   if (res) {
-      //     let verify = new firebase.auth.RecaptchaVerifier(
-      //       "recaptcha-container",
-      //       {
-      //         size: "invisible",
-      //       }
-      //     );
-      //     auth
-      //       .signInWithPhoneNumber("+84" + phoneNumber, verify)
-      //       .then((result) => {
-      //         setResult(result);
-      //         setStep("VERIFY_OTP");
-      //       })
-      //       .catch((err) => {
-      //         alert(err);
-      //       });
-      //   } else {
-      //     toast.error("This phone number already exist", toastOptions);
-      //   }
-      // })
-      // .catch((e) => {
-      //   console.log("Delete order error: ", e);
-      // });
     }
   };
+  const generateRecapcha = () => {
+    window.recaptchaVerifier = new RecaptchaVerifier('recapcha-container', {
+      'size': 'invisible',
+      'callback': (response) => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
 
-  const ValidateOtp = (event) => {
-    event.preventDefault();
-    if (otp === null) return;
-
-    result
-      .confirm(otp)
-      .then((result) => {
-        setStep("VERIFY_SUCCESS");
-      })
-      .catch((err) => {
-        // toast.error("Incorrect code", toastOptions);
+      }
+    }, authentication);
+  }
+  const handleSendCode = async (e) => {
+    e.preventDefault();
+    const { phoneNumber } = values;
+    const phone = "+84" + phoneNumber;
+    const config = {
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+      },
+    };
+    const data = {
+      phone: phone,
+    };
+    const res = await axios.post(`${checkPhoneExistRoute}`, data, config);
+    if (res.data) {
+      generateRecapcha();
+      let appVerifier = window.recaptchaVerifier;
+      signInWithPhoneNumber(authentication, phone, appVerifier)
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          setToast({
+            header: "Mã otp đã được gửi",
+            content: "",
+            bg: "success",
+            textColor: "#fff",
+          });
+          setStep("VERIFY_OTP")
+        }).catch((error) => {
+          setToast({
+            header: "Lỗi:" + error,
+            content: "",
+            bg: "danger",
+            textColor: "#fff",
+          });
+        });
+    }
+    else {
+      setToast({
+        header: "Tài khoản đã được đăng ký!",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
       });
-  };
+    }
+
+
+
+  }
+  const handleVerifyOTP = () => {
+    let otpInput = '';
+    otp.map((item) => {
+      otpInput += item;
+    })
+    if (otpInput.length === 6) {
+      let confirmationResult = window.confirmationResult;
+      confirmationResult.confirm(otpInput).then((result) => {
+        //success verify
+        setStep("VERIFY_SUCCESS");
+      }).catch((error) => {
+        setToast({
+          header: "Otp nhập sai",
+          content: "",
+          bg: "danger",
+          textColor: "#fff",
+        });
+
+      })
+    }
+  }
+
+  const [step, setStep] = useState("INPUT_PHONE_NUMBER");
+  // const [step, setStep] = useState("VERIFY_SUCCESS");
+  // const [step, setStep] = useState("VERIFY_OTP");
+  const [result, setResult] = useState("");
+  const [toast, setToast] = useState(null);
+
+
+
   const handleOnChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -186,17 +168,7 @@ function Register() {
           },
         }
       );
-      // console.log(data);
-      //   username,
-      //   phone: "+84" + phone,
-      //   email,
-      //   password,
-      //   // dayOfBirth: new Date(dayOfBirth),
-      //   gender: gender === "male",
-      // });
-      // if (data.status === false) {
-      //   toast.error(data.msg, toastOptions);
-      // }
+
       if (data !== "Username or Identification already exist") {
         localStorage.setItem("token", JSON.stringify(data));
         navigate("/");
@@ -267,10 +239,7 @@ function Register() {
       });
       return false;
     } else if (password != confirmPassword) {
-      // toast.error(
-      //   "Password and Confirm Password should be the same",
-      //   toastOptions
-      // );
+
       setToast({
         header: "Mật khẩu và Nhập lại mật khẩu phải giống nhau",
         content: "",
@@ -282,164 +251,240 @@ function Register() {
 
     return true;
   };
-
+  console.log("OTP[]", otp);
   return (
     <>
       <Container>
         <div className="form-container">
-          <div className="title">
-            <h1>Đăng ký</h1>
-          </div>
-          {step === "INPUT_PHONE_NUMBER" && (
-            <Form onSubmit={(e) => signin(e)}>
-              <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon1">+84</InputGroup.Text>
-                <Form.Control
-                  placeholder="Phone number"
-                  aria-label="Phone number"
-                  aria-describedby="basic-addon1"
-                  name="phoneNumber"
-                  onChange={(e) => handleOnChange(e)}
-                />
-              </InputGroup>
-              <div className="btn-container">
-                <span>
-                  Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
-                </span>
-                <Button variant="success" type="submit">
-                  Gửi OTP
-                </Button>
-              </div>
-            </Form>
-          )}
-          {step === "VERIFY_OTP" && (
-            <Form onSubmit={(e) => ValidateOtp(e)}>
-              <Form.Group className="mb-3" controlId="formBasicUsername">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter username" />
-              </Form.Group>
-              <div className="btn-container">
-                <span>
-                  Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
-                </span>
-                <Button variant="success" type="submit">
-                  Xác thực
-                </Button>
-              </div>
-            </Form>
-          )}
-          {step === "VERIFY_SUCCESS" && (
-            <Form className="custom-form" onSubmit={(e) => handleSubmit(e)}>
-              <div className="custom-input">
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Họ và tên"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Họ và tên"
-                    name="fullname"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="CCCD"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Căn cước công dân"
-                    name="identification"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Số điện thoại"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Số điện thoại"
-                    name="phoneNumber"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Địa chỉ"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Địa chỉ"
-                    name="address"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Email"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Tài khoản"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Tài khoản"
-                    name="username"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
 
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Mật khẩu"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="password"
-                    placeholder="Mật khẩu"
-                    name="password"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Nhập lại mật khẩu"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="password"
-                    placeholder="Nhập lại mật khẩu"
-                    name="confirmPassword"
-                    onChange={(e) => handleOnChange(e)}
-                  />
-                </FloatingLabel>
+          {/* Bước nhập số điện thoại để nhận OTP */}
+          {step === "INPUT_PHONE_NUMBER" && (
+            <div className="wrapper">
+              <div className="grid-container">
+                <div className="item-grid-login">
+                  <div className="box-login">
+                    <div className="header_login">
+                      <span className="title_header">Nhận mã OTP</span>
+                      <header></header>
+                    </div>
+                    <div className="form-container">
+                      <Form onSubmit={(e) => handleSendCode(e)}>
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text id="basic-addon1">+84</InputGroup.Text>
+                          <Form.Control
+                            placeholder="Phone number"
+                            aria-label="Phone number"
+                            aria-describedby="basic-addon1"
+                            name="phoneNumber"
+                            onChange={(e) => handleOnChange(e)}
+                          />
+                        </InputGroup>
+                        <div className="btn-container">
+                          <span>
+                            Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
+                          </span>
+                          <Button variant="success" type="submit">
+                            Nhận OTP
+                          </Button>
+                        </div>
+                        <div id="recapcha-container"></div>
+                      </Form>
+
+
+                    </div>
+                  </div>
+                </div>
+                <div className="item-grid-slider">
+                  <div className='grid-slider-container-input-phonenumber'></div>
+                </div>
               </div>
-              <div className="btn-container">
-                <span>
-                  Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
-                </span>
-                <Button variant="success" type="submit">
-                  Đăng ký
-                </Button>
+            </div>
+          )}
+          {/* Bước nhập mã otp gửi đến số điện thoại */}
+          {step === "VERIFY_OTP" && (
+            <div className="wrapper">
+              <div className="grid-container">
+                <div className="item-grid-login">
+                  <div className="box-login">
+                    <div className="header_login">
+                      <span className="title_header">Xác thực OTP</span>
+                      <header>Nhập mã otp gồm 6 số</header>
+                    </div>
+                    <div className="otp-container">
+                      {otp.map((item, index) => (
+                        <input type="text" className="otp" maxLength='1' key={index} value={item} onChange={(event) => handleChangeOTP(event, index)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Backspace" && index > 0) { // Nếu người dùng nhấn phím Backspace và không phải ô đầu tiên
+
+
+                              setOtp([...otp.slice(0, index), "", ...otp.slice(index + 1)]);
+                              otpInputRefs[index - 1].current.focus(); // Di chuyển focus đến ô trước đó
+                            }
+                          }}
+
+                          ref={otpInputRefs[index]} // Gán ref cho ô nhập hiện tại
+                        />
+                      ))
+
+                      }
+
+
+                    </div>
+                    <div className="btn-container">
+                      <span>
+                        Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
+                      </span>
+                      <Button variant="success" onClick={() => handleVerifyOTP()}>
+                        Xác thực
+                      </Button>
+                    </div>
+
+                  </div>
+                </div>
+                <div className="item-grid-slider">
+                  <div className='grid-slider-container-verify-otp'></div>
+                </div>
               </div>
-            </Form>
+            </div>
+          )}
+
+          {/* Bước Verify success */}
+          {step === "VERIFY_SUCCESS" && (
+            <div className="wrapper">
+              <div className="grid-container">
+                <div className="item-grid-login">
+                  <div className="box-login">
+                    <div className="header_login">
+                      <span className="title_header">Điền thông tin</span>
+                      <header>Đăng Ký</header>
+                    </div>
+                    <div className="form-container">
+                      <Form className="custom-form" onSubmit={(e) => handleSubmit(e)}>
+                        <div className="custom-input">
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Họ và tên"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Họ và tên"
+                              name="fullname"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="CCCD"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Căn cước công dân"
+                              name="identification"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Số điện thoại"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Số điện thoại"
+                              name="phoneNumber"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Địa chỉ"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Địa chỉ"
+                              name="address"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Email"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="email"
+                              placeholder="Email"
+                              name="email"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Tài khoản"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="text"
+                              placeholder="Tài khoản"
+                              name="username"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Mật khẩu"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="password"
+                              placeholder="Mật khẩu"
+                              name="password"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                          <FloatingLabel
+                            controlId="floatingInput"
+                            label="Nhập lại mật khẩu"
+                            className="mb-3"
+                          >
+                            <Form.Control
+                              type="password"
+                              placeholder="Nhập lại mật khẩu"
+                              name="confirmPassword"
+                              onChange={(e) => handleOnChange(e)}
+                            />
+                          </FloatingLabel>
+                        </div>
+                        <div className="btn-container">
+                          <span>
+                            Bạn đã có tài khoản ? <Link to="/login">Đăng nhập</Link>
+                          </span>
+                          <Button variant="success" type="submit">
+                            Đăng ký
+                          </Button>
+                        </div>
+                      </Form>
+
+
+                    </div>
+                  </div>
+                </div>
+                <div className="item-grid-slider">
+                  <div className='grid-slider-container-verifysuccess'></div>
+                </div>
+              </div>
+            </div>
           )}
         </div>
+
+
+
+
+
         {toast && (
           <ToastContainer
             position="bottom-end"
@@ -466,32 +511,53 @@ function Register() {
             </Toast>
           </ToastContainer>
         )}
+
+
       </Container>
     </>
   );
 }
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: linear-gradient(#373b44, #1095c1);
-  .form-container {
-    height: 90%;
-    /* overflow: scroll; */
-    .custom-form {
-      height: 90%;
+  .wrapper {
+    height: 100vh;
+    background: linear-gradient(55deg, #d2001a, #7462ff, #f48e21, #23d5ab);
+    background-size: 300% 300%;
+    animation: color 11s ease-in-out infinite;
+    padding: 100px 50px 100px 50px;
+    box-sizing: border-box;
 
-      .custom-input {
-        padding: 0.5rem 1rem;
-        height: 90%;
-        overflow: scroll;
-        input {
-          outline: none;
-        }
-        &::-webkit-scrollbar {
+}
+@keyframes color {
+    0% {
+        background-position: 0 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0 50%;
+    }
+}
+.grid-container {
+    /* background-color: yellowgreen; */
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.item-grid-login {
+    background-color: rgba(240, 247, 247, 0.493);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 100%;
+    overflow:auto;
+    /* background-color: #d2001a; */
+    &::-webkit-scrollbar {
           width: 0.2rem;
           &-thumb {
             background-image: linear-gradient(#373b44, #1095c1);
@@ -499,6 +565,95 @@ const Container = styled.div`
             border-radius: 1rem;
           }
         }
+}
+
+.item-grid-slider {
+    background-color: rgba(32, 35, 35, 0.493);
+    width: 100%;
+    height: 100%;
+  
+}
+.wrapper-slide{
+    background-color:red;
+    width:100%;
+    height:90%;
+}
+.load-wrap{
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(55deg, #d2001a, #7462ff, #f48e21, #23d5ab);
+    display: flex;
+    justify-content:center;
+    align-items:center;
+   
+}
+.grid-slider-container-verifysuccess{
+    background-image: url("https://img.freepik.com/free-vector/sign-concept-illustration_114360-125.jpg?w=740&t=st=1676724421~exp=1676725021~hmac=40d402a5dc6b284720197c8559260b926b25cf5f1675dab7f267298b61df37c1");
+   background-size:cover;
+   background-repeat:no-repeat;
+    height: 100%;
+    background-position:center;
+}
+.grid-slider-container-input-phonenumber{
+    background-image: url("https://img.freepik.com/premium-vector/authentication-code-illustration-isometric-style-illustration_108061-562.jpg?w=740");
+   background-size:cover;
+   background-repeat:no-repeat;
+    height: 100%;
+    background-position:center;
+
+}
+.grid-slider-container-verify-otp{
+  background-image: url("https://img.freepik.com/free-vector/enter-otp-concept-illustration_114360-7897.jpg?w=740&t=st=1676728797~exp=1676729397~hmac=16e28cda1d191945535f94d0e6c4c75f3c8cb103c8150e69d5489276a67e9e08");
+   background-size:cover;
+   background-repeat:no-repeat;
+    height: 100%;
+    background-position:center;
+}
+
+.box-login {
+    /* background-color: #f48e21; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px 0 15px;
+    max-height:100%;
+    .header_login {
+    /* background-color: #d2001a; */
+    margin-bottom: 20px;
+    padding: 15px 5px 15px 5px;
+    .title_header {
+      color: rgb(3, 3, 3);
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 10px 0;
+    }
+}
+}
+
+
+header {
+    color: rgb(3, 3, 3);
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 10px 0;
+}
+  /* --------------------- */
+  .form-container {
+    text-align: left;
+    .custom-form {
+      height: 90%;
+
+      .custom-input {
+        padding: 0.5rem 1rem;
+        height: 90%;
+        overflow: auto;
+        input {
+          outline: none;
+        }
+       
       }
     }
 
@@ -509,6 +664,7 @@ const Container = styled.div`
     .btn-container {
       display: flex;
       justify-content: space-between;
+      margin-bottom:21px;
     }
     .btn-forgot-password {
       width: fit-content;
@@ -517,11 +673,28 @@ const Container = styled.div`
         opacity: 0.8;
       }
     }
-    text-align: left;
-    width: 30%;
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 5px;
+    .otp-container{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+      .otp{
+        background-color: rgba(255,255,255,0.6);
+        border-radius: 10px;
+        border: 1px solid #eee;
+        font-size: 30px;
+        width: 75px;
+        height: 80px;
+        margin: 10px;
+        text-align: center;
+        font-weight: 300;
+      &:valid{
+        border-color: #9861c2;
+        box-shadow: 0 10px 10px -5px rgba(0,0,0,0.25);
+      }
+      }
+    }
+    
   }
 `;
 
