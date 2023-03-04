@@ -33,6 +33,12 @@ public class HoaDon {
 	@Column(name = "tong_tien")
 	private double tongTien;
 	
+	@Column(name = "tien_nha")
+	private double tienNhan;
+	
+	@Column(name = "tien_thoi")
+	private double tienThoi;
+	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ma_phieu_dat_phong")
 	private PhieuDatPhong phieuDatPhong;

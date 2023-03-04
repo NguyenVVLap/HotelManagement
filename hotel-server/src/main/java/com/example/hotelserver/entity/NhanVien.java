@@ -2,7 +2,6 @@ package com.example.hotelserver.entity;
 
 import java.util.Date;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -49,10 +48,6 @@ public class NhanVien {
 	
 	@Column(name = "ngay_vao_lam")
 	private Date ngayVaoLam;
-	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "ma_khach_san")
-	private KhachSan khachSan;
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ma_tai_khoan")

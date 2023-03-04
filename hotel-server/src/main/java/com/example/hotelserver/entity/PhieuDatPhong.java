@@ -32,7 +32,6 @@ public class PhieuDatPhong {
 	@Column(name = "ngay_dat_phong")
 	private Date ngayDatPhong;
 	
-	
 	@Column(name = "giam_gia")
 	private double giamGia;
 	
@@ -48,8 +47,8 @@ public class PhieuDatPhong {
 	@Column(name = "da_nhan_phong")
 	private boolean daNhanPhong;
 	
-	@Column(name = "tong_tien_dat_phong")
-	private double tongTienDatPhong;
+	@Column(name = "tong_tien")
+	private double tongTien;
 	
 	@ManyToMany
 	private List<Phong> phong;
@@ -60,8 +59,4 @@ public class PhieuDatPhong {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "ma_khach_hang")
 	private KhachHang khachHang;
-	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "ma_nhan_vien")
-	private NhanVien nhanVien;
 }

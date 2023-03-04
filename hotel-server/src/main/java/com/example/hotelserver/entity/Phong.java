@@ -62,11 +62,6 @@ public class Phong {
 	@JsonIgnore
 	private List<PhongThietBi> phongThietBi;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-	@JsonIgnore
-	@JoinColumn(name = "ma_khach_san")
-	private KhachSan khachSan;
-	
 	@Override
 	public String toString() {
 		return "Phong [maPhong=" + maPhong + ", tenPhong=" + tenPhong + ", trangThaiPhong=" + trangThaiPhong
