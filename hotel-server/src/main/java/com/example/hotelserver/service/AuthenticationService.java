@@ -30,6 +30,7 @@ public class AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 	
 	public String register(RegisterRequest request) {
+		System.out.println(request);
 		if (checkUserExist(request.getUsername(), request.getIdentification())) {
 			VaiTro role = roleRepo.findByTenVaiTro("ROLE_USER");
 			if (role == null) {

@@ -19,9 +19,10 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
         <div className="img-container">
           <img className="logo-img" src={Logo} />
         </div>
-        <p className="title">Tên khách sạn</p>
+        <p className="title">Khách Sạn Sama</p>
       </div>
       <div className="btn-container">
+        {/* Phòng */}
         <button className={`btn ${navSelected.room && "btn-selected"}`}>
           <div
             className="menu-content"
@@ -41,41 +42,20 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
                 <BsDoorOpen />
                 <p className="btn-sub-title">Đặt phòng</p>
               </button>
-              <button
-                className={`btn-sub ${subNavSelected === "check-in" && "btn-sub-selected"
-                  }`}
-                onClick={() => onHandleSelectedSubNav("check-in")}
-              >
-                <BsDoorOpen />
-                <p className="btn-sub-title">Nhận phòng</p>
-              </button>
-              <button
-                className={`btn-sub ${subNavSelected === "cancel" && "btn-sub-selected"
-                  }`}
-                onClick={() => onHandleSelectedSubNav("cancel")}
-              >
-                <BsDoorOpen />
-                <p className="btn-sub-title">Hủy phòng</p>
-              </button>
-              <button
-                className={`btn-sub ${subNavSelected === "damage" && "btn-sub-selected"
-                  }`}
-                onClick={() => onHandleSelectedSubNav("damage")}
-              >
-                <BsDoorOpen />
-                <p className="btn-sub-title">Hư hại</p>
-              </button>
+
+
               <button
                 className={`btn-sub ${subNavSelected === "manage-room" && "btn-sub-selected"
                   }`}
                 onClick={() => onHandleSelectedSubNav("manage-room")}
               >
                 <BsDoorOpen />
-                <p className="btn-sub-title">Quản lý</p>
+                <p className="btn-sub-title">Quản lý phòng</p>
               </button>
             </div>
           )}
         </button>
+        {/* Khách hàng */}
         <button className={`btn ${navSelected.guest && "btn-selected"}`}>
           <div
             className="menu-content"
@@ -85,6 +65,7 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
             <p className="btn-title">Khách hàng</p>
           </div>
         </button>
+
         <button className={`btn ${navSelected.staff && "btn-selected"}`}>
           <div
             className="menu-content"
@@ -93,7 +74,21 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
             <BsDoorOpen />
             <p className="btn-title">Nhân viên</p>
           </div>
+          {navSelected.staff && (
+            <div className="sub-menu-container">
+              <button
+                className={`btn-sub ${subNavSelected === "manage-staff" && "btn-sub-selected"
+                  }`}
+                onClick={() => onHandleSelectedSubNav("manage-staff")}
+              >
+                <BsDoorOpen />
+                <p className="btn-sub-title">Quản lý nhân viên</p>
+              </button>
+
+            </div>
+          )}
         </button>
+
         <button className={`btn ${navSelected.booking && "btn-selected"}`}>
           <div
             className="menu-content"
@@ -110,7 +105,7 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
                 onClick={() => onHandleSelectedSubNav("manage-booking")}
               >
                 <BsDoorOpen />
-                <p className="btn-sub-title">Quản lý</p>
+                <p className="btn-sub-title">Lập hoá đơn</p>
               </button>
               <button
                 className={`btn-sub ${subNavSelected === "record" && "btn-sub-selected"
@@ -145,7 +140,9 @@ const Container = styled.div`
     padding: 0.5rem;
     margin-left: 0.5rem;
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
+   
+    
     .img-container {
       display: flex;
       align-items: center;
@@ -160,6 +157,7 @@ const Container = styled.div`
       color: #fff;
       font-weight: bold;
       font-size: 1.5rem;
+      align-self: center;
     }
   }
   .btn-container {
@@ -211,7 +209,8 @@ const Container = styled.div`
     .btn-selected {
       .menu-content {
         background-color: #1095c1;
-        background-image: linear-gradient(#1095c1, #1095c1);
+        /* background: linear-gradient(#1095c1, #1095c1); */
+        /* background: linear-gradient( #feac5e, #c779d0, #4bc0c8); */
         .btn-title {
           font-weight: bold;
         }

@@ -30,7 +30,7 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-		System.out.println(request.getFullname());
+
 		String token = service.register(request);
 		if (token == null) {
 			return ResponseEntity.ok("Username or Identification already exist");

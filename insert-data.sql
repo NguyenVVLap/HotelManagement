@@ -19,24 +19,24 @@ delete from hotels;
 select * from users
 
 
-Insert into room_type(room_type_id, capacity, number_of_beds, pet_friendly, room_type_cost, room_type_name, smoke_friendly) values
-(1, 1, 1, 1, 100000, 'Single Room', 1),
-(2, 2, 1, 1, 100000, 'Double Room', 1),
-(3, 3, 3, 1, 100000, 'Triple Room', 1),
-(4, 4, 2, 1, 100000, 'Quad Room', 1),
-(5, 2, 2, 1, 100000, 'Twin Room', 1);
+Insert into loai_phong(ma_loai_phong, duoc_hut_thuoc, gia_loai_phong,mang_thu_cung, so_giuong,suc_chua, ten_loai_phong) values
+(1, 1, 1100000, 1, 1,1, 'Single Room'),
+(2, 1, 1100000, 1, 2,2,'Double Room'),
+(3, 1, 3100000, 1, 3,3, 'Triple Room'),
+(4, 1, 2100000, 1, 4,4, 'Quad Room'),
+(5, 1, 2100000, 1, 5,5, 'Twin Room');
 
-Insert into hotels(hotel_id, hotel_address, hotel_email, hotel_name, hotel_phone_number, star_rating) values
-(1, N'12 Trần Hưng Đạo', 'hotel@gmail.com', 'Blue Sky Hotel', '0123456789', 2);
+Insert into khach_san(ma_khach_san,dia_chi_ks, email_khach_san, so_dien_thoai_ks, so_sao, ten_khach_san) values
+(1, N'12 Trần Hưng Đạo', 'hotel@gmail.com','0123456789', 2 ,'Blue Sky Hotel' );
 
-Insert into floors(floor_id, floor_name) values
+Insert into tang(ma_tang, ten_tang) values
 (1, N'Tầng 1'),
 (2, N'Tầng 2'),
 (3, N'Tầng 3'),
 (4, N'Tầng 4'),
 (5, N'Tầng 5');
 
-Insert into rooms(room_id, room_description, room_name, room_state, floor_id, hotel_id, room_type_id) values
+Insert into phong(ma_phong, mo_ta_phong, ten_phong, trang_thai_phong, ma_tang, ma_khach_san, ma_loai_phong) values
 (1, N'Không có mô tả', N'Phòng 101', 1, 1, 1, 1),
 (2, N'Không có mô tả', N'Phòng 102', 1, 1, 1, 2),
 (3, N'Không có mô tả', N'Phòng 103', 0, 1, 1, 3),
@@ -73,7 +73,7 @@ Insert into rooms(room_id, room_description, room_name, room_state, floor_id, ho
 (30, N'Không có mô tả', N'Phòng 506', 0, 5, 1, 1);
 
 
-Insert into room_image_url(room_id, room_image_url) values
+Insert into hinh_anh_phong(ma_phong, hinh_anh_phong) values
 (1, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW8OHFXYiMye-iZhQxLQdgO7n-cd-2o-aGJGFizObT8Mc88FeMHmBmnQzjXY8sAa3MUHA&usqp=CAU'),
 (2, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9HGGkFWqa2Agtm6WpOwAuz16NEGdMTzu1sbdWFr24aeuw7QdFuoj7gBULAGJFbnsFvLE&usqp=CAU'),
 (3, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdfLuJaAVHCnjqnwPmgXAkH-pZENovp48ZQkZpukUmFUreQZGXAHvGR7RonA5PB3GALKY&usqp=CAU'),
@@ -145,7 +145,7 @@ Insert into room_image_url(room_id, room_image_url) values
 (30, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-gSljIcniHWOYEqZhcxCebSX5iN80B7Hl7g&usqp=CAU');
 
 
-Insert into equipments(equipment_id, equipment_name, equipment_price) values
+Insert into thiet_bi(ma_thiet_bi, ten_thiet_bi,gia_thiet_bi) values
 (1, N'Tivi', 10000000),
 (2, N'Remote TV', 50000),
 (3, N'Tủ lạnh', 25000000),
@@ -154,7 +154,7 @@ Insert into equipments(equipment_id, equipment_name, equipment_price) values
 (6, N'Bàn trang điểm', 5000000);
 
 
-Insert into room_equipment(equipment_id, quantity, room_id) values
+Insert into phong_thiet_bi(ma_thiet_bi, so_luong, ma_phong) values
 (1, 1, 1), 
 (2, 1, 1),
 (3, 1, 1),
@@ -162,7 +162,3 @@ Insert into room_equipment(equipment_id, quantity, room_id) values
 (5, 1, 1),
 (6, 1, 1);
 
-Insert into damages(damage_id, damage_description, damage_name, damage_price, room_id) values
-(1, N'Không có mô tả', N'Hư cửa', 500000, 2),
-(2, N'Không có mô tả', N'Hư rèm',35000, 2),
-(3, N'Không có mô tả', N'Hư giường', 1000000, 3);

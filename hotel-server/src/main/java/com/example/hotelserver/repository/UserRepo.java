@@ -11,6 +11,6 @@ import com.example.hotelserver.entity.TaiKhoan;
 
 
 public interface UserRepo extends JpaRepository<TaiKhoan, Long> {
-	@Query(nativeQuery = true, value = "select * from tai_khoan tk where tk.ten_tai_khoan =: tenTaiKhoan")
+	@Query(nativeQuery = true, value = "select * from tai_khoan tk where tk.ten_tai_khoan = :tenTaiKhoan")
 	Optional<TaiKhoan> findByTenTaiKhoan(@Param("tenTaiKhoan") String tenTaiKhoan);
 }
