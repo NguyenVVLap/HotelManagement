@@ -54,6 +54,7 @@ public class UserController {
 	
 	@PostMapping("/checkPhoneExist")
 	public ResponseEntity<Boolean> checkPhoneExist(@RequestBody Map<String, Object> request) {
+//				System.out.println(request);
 		boolean result = false;
 		if (guestService.findByGuestPhoneNumber(request.get("phone").toString()) == null) {
 			result = true;
