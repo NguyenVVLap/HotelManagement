@@ -1,6 +1,5 @@
 package com.example.hotelserver.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -15,9 +14,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@IdClass(ChiTietDichVuPK.class)
-@Table(name = "chi_tiet_dich_vu")
-public class ChiTietDichVu {
+@IdClass(ChiTietHoaDon.class)
+@Table(name = "chi_tiet_hoa_don")
+public class ChiTietHoaDon {
 	@Id
 	@ManyToOne
 	@JoinColumn(name="ma_hoa_don")
@@ -25,14 +24,6 @@ public class ChiTietDichVu {
 	
 	@Id
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="ma_dich_vu")
-	private DichVu dichVu;
-	
-	@Column(name = "so_luong")
-	private int soLuong;
-	
-	@Column(name = "tong_tien_dich_vu")
-	private double tongTienDichVu;
-	
-	
+	@JoinColumn(name="ma_phong")
+	private Phong phong;
 }

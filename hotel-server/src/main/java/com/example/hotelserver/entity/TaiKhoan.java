@@ -43,6 +43,9 @@ public class TaiKhoan implements UserDetails {
 	
 	@Column(name = "mat_khau")
 	private String matKhau;
+
+	@Column(name = "da_kich_hoat")
+	private boolean daKichHoat;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "ma_vai_tro")
