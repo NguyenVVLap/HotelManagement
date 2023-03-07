@@ -1,5 +1,6 @@
 package com.example.hotelserver.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,12 +38,20 @@ public class AuthenticationService {
 				role = new VaiTro(0, "ROLE_EMPLOYEE");
 				vaiTroRepo.save(role);
 			}
-			var user = TaiKhoan.builder()
+			var taikhoan = TaiKhoan.builder()
 					.tenTaiKhoan(request.getSoDienThoai())
 					.matKhau(passwordEncoder.encode(request.getMatKhau()))
+					.daKichHoat(false)
 					.vaiTro(role)
 					.build();
-			repository.save(user);
+			repository.save(taikhoan);
+			Date currentDate = new Date();
+			var newNhanVien = NhanVien.builder().hoTen(request.getHoTen())
+					.cccd(request.getCccd())
+					.email(request.getEmail())
+					.diaChi(request.getDiaChi())
+					.ngayVaoLam(currentDate).soDienThoai(request.getSoDienThoai()).taiKhoan(taikhoan).build();
+			nhanVienRepo.save(newNhanVien);
 //			TaiKhoan newUser = repository.findByTenTaiKhoan(request.getUsername()).get();
 //			if (newUser != null) {
 //				KhachHang guest = new KhachHang(0, request.getFullname()
@@ -54,7 +63,7 @@ public class AuthenticationService {
 			nhanVienRepo.save(new NhanVien(0, request.getHoTen(), request.getDiaChi()
 					, request.getEmail(), request.getSoDienThoai()
 					, request.getCccd(), null, 0, null, newUser));
-			String jwtToken = jwtService.generateToken(user);
+			String jwtToken = jwtService.generateToken(taikhoan);
 			return jwtToken;
 		} else {
 			return null;

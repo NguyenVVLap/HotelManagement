@@ -19,34 +19,37 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-	private final JwtAuthenticationFilter jwtAuthFilter;
-	private final AuthenticationProvider authenticationProvider;
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		
-		http
-			.csrf()
-			.disable()
-			.cors().disable()
-			.authorizeHttpRequests()
-			.requestMatchers("/api/auth/**")
-			.permitAll()
-			.requestMatchers(HttpMethod.GET, "/api/rooms/**")
-			.permitAll()
-			.requestMatchers("/api/tang/**")
-			.permitAll()
-			.anyRequest()
-			.authenticated()
-			.and()
-			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-			.authenticationProvider(authenticationProvider)
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-			
-			
-		return http.build();
-	}
-	
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+                .csrf()
+                .disable()
+                .cors().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/api/auth/**")
+                .permitAll()
+                .requestMatchers("/api/nhanvien/**")
+                .permitAll()
+                .requestMatchers("/api/dichvu/**")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/rooms/**")
+                .permitAll()
+                .requestMatchers("/api/tang/**")
+    			.permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+
+        return http.build();
+    }
 }
