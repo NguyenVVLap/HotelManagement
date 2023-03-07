@@ -1,79 +1,69 @@
-﻿use hotel
+﻿use khachsan
 
-select * from rooms where room_name='Phòng 105';
-select * from room_type where room_type_id=5
+delete from tai_khoan
+delete from khach_hang
+delete from vai_tro
 
-delete from users
-delete from guests
-delete from roles
-
-delete from room_image_url;
-delete from room_equipment;
-delete from equipments;
-delete from damages;
-delete from rooms;
-delete from floors;
-delete from room_type;
-delete from hotels;
-
-select * from users
+delete from hinh_anh_phong;
+delete from phong_thiet_bi;
+delete from thiet_bi;
+delete from phong;
+delete from tang;
+delete from loai_phong;
 
 
-Insert into room_type(room_type_id, capacity, number_of_beds, pet_friendly, room_type_cost, room_type_name, smoke_friendly) values
+Insert into loai_phong(ma_loai_phong, suc_chua, so_giuong, mang_thu_cung, gia_loai_phong, ten_loai_phong, duoc_hut_thuoc) values
 (1, 1, 1, 1, 100000, 'Single Room', 1),
 (2, 2, 1, 1, 100000, 'Double Room', 1),
 (3, 3, 3, 1, 100000, 'Triple Room', 1),
 (4, 4, 2, 1, 100000, 'Quad Room', 1),
 (5, 2, 2, 1, 100000, 'Twin Room', 1);
 
-Insert into hotels(hotel_id, hotel_address, hotel_email, hotel_name, hotel_phone_number, star_rating) values
-(1, N'12 Trần Hưng Đạo', 'hotel@gmail.com', 'Blue Sky Hotel', '0123456789', 2);
-
-Insert into floors(floor_id, floor_name) values
+Insert into tang(ma_tang, ten_tang) values
 (1, N'Tầng 1'),
 (2, N'Tầng 2'),
 (3, N'Tầng 3'),
 (4, N'Tầng 4'),
 (5, N'Tầng 5');
 
-Insert into rooms(room_id, room_description, room_name, room_state, floor_id, hotel_id, room_type_id) values
-(1, N'Không có mô tả', N'Phòng 101', 1, 1, 1, 1),
-(2, N'Không có mô tả', N'Phòng 102', 1, 1, 1, 2),
-(3, N'Không có mô tả', N'Phòng 103', 0, 1, 1, 3),
-(4, N'Không có mô tả', N'Phòng 104', 0, 1, 1, 4),
-(5, N'Không có mô tả', N'Phòng 105', 1, 1, 1, 5),
-(6, N'Không có mô tả', N'Phòng 106', 1, 1, 1, 1),
+Insert into phong(ma_phong, mo_ta_phong, ten_phong, trang_thai_phong, ma_tang, ma_loai_phong) values
+(1, N'Không có mô tả', N'Phòng 101', 1, 1, 1),
+(2, N'Không có mô tả', N'Phòng 102', 1, 1, 2),
+(3, N'Không có mô tả', N'Phòng 103', 0, 1, 3),
+(4, N'Không có mô tả', N'Phòng 104', 0, 1, 4),
+(5, N'Không có mô tả', N'Phòng 105', 1, 1, 5),
+(6, N'Không có mô tả', N'Phòng 106', 1, 1, 1),
 
-(7, N'Không có mô tả', N'Phòng 201', 1, 2, 1, 1),
-(8, N'Không có mô tả', N'Phòng 202', 1, 2, 1, 2),
-(9, N'Không có mô tả', N'Phòng 203', 0, 2, 1, 3),
-(10, N'Không có mô tả', N'Phòng 204', 0, 2, 1, 4),
-(11, N'Không có mô tả', N'Phòng 205', 0, 2, 1, 5),
-(12, N'Không có mô tả', N'Phòng 206', 0, 2, 1, 1),
+(7, N'Không có mô tả', N'Phòng 201', 1, 2, 1),
+(8, N'Không có mô tả', N'Phòng 202', 1, 2, 2),
+(9, N'Không có mô tả', N'Phòng 203', 0, 2, 3),
+(10, N'Không có mô tả', N'Phòng 204', 0, 2, 4),
+(11, N'Không có mô tả', N'Phòng 205', 0, 2, 5),
+(12, N'Không có mô tả', N'Phòng 206', 0, 2, 1),
 
-(13, N'Không có mô tả', N'Phòng 301', 0, 3, 1, 1),
-(14, N'Không có mô tả', N'Phòng 302', 1, 3, 1, 2),
-(15, N'Không có mô tả', N'Phòng 303', 0, 3, 1, 3),
-(16, N'Không có mô tả', N'Phòng 304', 1, 3, 1, 4),
-(17, N'Không có mô tả', N'Phòng 305', 0, 3, 1, 5),
-(18, N'Không có mô tả', N'Phòng 306', 1, 3, 1, 1),
+(13, N'Không có mô tả', N'Phòng 301', 0, 3, 1),
+(14, N'Không có mô tả', N'Phòng 302', 1, 3, 2),
+(15, N'Không có mô tả', N'Phòng 303', 0, 3, 3),
+(16, N'Không có mô tả', N'Phòng 304', 1, 3, 4),
+(17, N'Không có mô tả', N'Phòng 305', 0, 3, 5),
+(18, N'Không có mô tả', N'Phòng 306', 1, 3, 1),
 
-(19, N'Không có mô tả', N'Phòng 401', 0, 4, 1, 1),
-(20, N'Không có mô tả', N'Phòng 402', 0, 4, 1, 2),
-(21, N'Không có mô tả', N'Phòng 403', 0, 4, 1, 3),
-(22, N'Không có mô tả', N'Phòng 404', 0, 4, 1, 4),
-(23, N'Không có mô tả', N'Phòng 405', 0, 4, 1, 5),
-(24, N'Không có mô tả', N'Phòng 406', 1, 4, 1, 1),
+(19, N'Không có mô tả', N'Phòng 401', 0, 4, 1),
+(20, N'Không có mô tả', N'Phòng 402', 0, 4, 2),
+(21, N'Không có mô tả', N'Phòng 403', 0, 4, 3),
+(22, N'Không có mô tả', N'Phòng 404', 0, 4, 4),
+(23, N'Không có mô tả', N'Phòng 405', 0, 4, 5),
+(24, N'Không có mô tả', N'Phòng 406', 1, 4, 1),
 
-(25, N'Không có mô tả', N'Phòng 501', 0, 5, 1, 1),
-(26, N'Không có mô tả', N'Phòng 502', 1, 5, 1, 2),
-(27, N'Không có mô tả', N'Phòng 503', 1, 5, 1, 3),
-(28, N'Không có mô tả', N'Phòng 504', 1, 5, 1, 4),
-(29, N'Không có mô tả', N'Phòng 505', 1, 5, 1, 5),
-(30, N'Không có mô tả', N'Phòng 506', 0, 5, 1, 1);
+(25, N'Không có mô tả', N'Phòng 501', 0, 5, 1),
+(26, N'Không có mô tả', N'Phòng 502', 1, 5, 2),
+(27, N'Không có mô tả', N'Phòng 503', 1, 5, 3),
+(28, N'Không có mô tả', N'Phòng 504', 1, 5, 4),
+(29, N'Không có mô tả', N'Phòng 505', 1, 5, 5),
+(30, N'Không có mô tả', N'Phòng 506', 0, 5, 1);
 
 
-Insert into room_image_url(room_id, room_image_url) values
+Insert into hinh_anh_phong(ma_phong, hinh_anh_phong) values
 (1, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW8OHFXYiMye-iZhQxLQdgO7n-cd-2o-aGJGFizObT8Mc88FeMHmBmnQzjXY8sAa3MUHA&usqp=CAU'),
 (2, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9HGGkFWqa2Agtm6WpOwAuz16NEGdMTzu1sbdWFr24aeuw7QdFuoj7gBULAGJFbnsFvLE&usqp=CAU'),
 (3, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdfLuJaAVHCnjqnwPmgXAkH-pZENovp48ZQkZpukUmFUreQZGXAHvGR7RonA5PB3GALKY&usqp=CAU'),
@@ -145,7 +135,7 @@ Insert into room_image_url(room_id, room_image_url) values
 (30, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-gSljIcniHWOYEqZhcxCebSX5iN80B7Hl7g&usqp=CAU');
 
 
-Insert into equipments(equipment_id, equipment_name, equipment_price) values
+Insert into thiet_bi(ma_thiet_bi, ten_thiet_bi, gia_thiet_bi) values
 (1, N'Tivi', 10000000),
 (2, N'Remote TV', 50000),
 (3, N'Tủ lạnh', 25000000),
@@ -154,15 +144,10 @@ Insert into equipments(equipment_id, equipment_name, equipment_price) values
 (6, N'Bàn trang điểm', 5000000);
 
 
-Insert into room_equipment(equipment_id, quantity, room_id) values
+Insert into phong_thiet_bi(ma_thiet_bi, so_luong, ma_phong) values
 (1, 1, 1), 
 (2, 1, 1),
 (3, 1, 1),
 (4, 1, 1),
 (5, 1, 1),
 (6, 1, 1);
-
-Insert into damages(damage_id, damage_description, damage_name, damage_price, room_id) values
-(1, N'Không có mô tả', N'Hư cửa', 500000, 2),
-(2, N'Không có mô tả', N'Hư rèm',35000, 2),
-(3, N'Không có mô tả', N'Hư giường', 1000000, 3);

@@ -31,8 +31,5 @@ public class ChiTietDichVu {
 	@Column(name = "so_luong")
 	private int soLuong;
 	
-	@Column(name = "tong_tien_dich_vu")
-	private double tongTienDichVu;
-	
 	
 }

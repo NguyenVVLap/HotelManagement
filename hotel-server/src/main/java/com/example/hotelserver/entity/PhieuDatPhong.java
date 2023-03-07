@@ -48,16 +48,25 @@ public class PhieuDatPhong {
 	@Column(name = "da_nhan_phong")
 	private boolean daNhanPhong;
 	
-	@Column(name = "tong_tien")
-	private double tongTien;
-	
 	@Enumerated(EnumType.STRING)
 	private TrangThaiDatPhong trangThaiDatPhong;
 	
 	@ManyToMany
-	private List<Phong> phong;
+	private List<Phong> dsPhong;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "ma_khach_hang")
 	private KhachHang khachHang;
+	
+	public double tinhTongTien() {
+		if (dsPhong == null || dsPhong.isEmpty()) {
+			return 0;
+		}
+		double result = 0;
+		for (Phong phong : dsPhong) {
+			result += phong.getLoaiPhong().getGiaLoaiPhong();
+		}
+		
+		return result;
+	}
 }
