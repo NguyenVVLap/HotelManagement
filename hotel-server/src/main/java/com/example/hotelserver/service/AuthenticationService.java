@@ -1,8 +1,11 @@
 package com.example.hotelserver.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.hotelserver.entity.NhanVien;
+import com.example.hotelserver.repository.EmployeeRepo;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationService {
 	private final UserRepo repository;
 	private final RoleRepo roleRepo;
+	private final EmployeeRepo employeeRepo;
 	private final GuestRepo guestRepo;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtService jwtService;
@@ -36,12 +40,20 @@ public class AuthenticationService {
 				role = new VaiTro(0, "ROLE_USER");
 				roleRepo.save(role);
 			}
-			var user = TaiKhoan.builder()
+			var taikhoan = TaiKhoan.builder()
 					.tenTaiKhoan(request.getUsername())
 					.matKhau(passwordEncoder.encode(request.getPassword()))
+					.daKichHoat(false)
 					.vaiTro(role)
 					.build();
-			repository.save(user);
+			repository.save(taikhoan);
+			Date currentDate = new Date();
+			var newNhanVien = NhanVien.builder().hoTen(request.getFullname())
+					.cccd(request.getIdentification())
+					.email(request.getEmail())
+					.diaChi(request.getAddress())
+					.ngayVaoLam(currentDate).soDienThoai(request.getPhoneNumber()).taiKhoan(taikhoan).build();
+			employeeRepo.save(newNhanVien);
 //			TaiKhoan newUser = repository.findByTenTaiKhoan(request.getUsername()).get();
 //			if (newUser != null) {
 //				KhachHang guest = new KhachHang(0, request.getFullname()
@@ -49,7 +61,7 @@ public class AuthenticationService {
 //						, request.getAddress(), request.getEmail());
 //				guestRepo.save(guest);
 //			}
-			String jwtToken = jwtService.generateToken(user);
+			String jwtToken = jwtService.generateToken(taikhoan);
 			return jwtToken;
 		} else {
 			return null;

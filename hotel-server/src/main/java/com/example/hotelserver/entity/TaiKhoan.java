@@ -85,7 +85,12 @@ public class TaiKhoan implements UserDetails {
 		// TODO Auto-generated method stub
 		return matKhau;
 	}
-	
 
-	
+	public boolean isDaKichHoat() {
+		return daKichHoat;
+	}
+
+	public void setDaKichHoat(boolean daKichHoat) {
+		this.daKichHoat = daKichHoat;
+	}
 }

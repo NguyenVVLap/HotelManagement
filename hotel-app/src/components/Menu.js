@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { BsDoorOpen } from "react-icons/bs";
-
+import FastfoodOutlinedIcon from '@mui/icons-material/FastfoodOutlined';
 import Logo from "../assets/logo.png";
-
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }) {
 
 
@@ -19,7 +19,7 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
         <div className="img-container">
           <img className="logo-img" src={Logo} />
         </div>
-        <p className="title">Tên khách sạn</p>
+        <p className="title">Khách Sạn Sama</p>
       </div>
       <div className="btn-container">
         <button className={`btn ${navSelected.room && "btn-selected"}`}>
@@ -119,6 +119,28 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Thống kê</p>
+              </button>
+            </div>
+          )}
+        </button>
+        {/* Dịch Vụ */}
+        <button className={`btn ${navSelected.service && "btn-selected"}`}>
+          <div
+            className="menu-content"
+            onClick={() => onHandleSelectedNav("service", !navSelected.service)}
+          >
+            <FastfoodOutlinedIcon />
+            <p className="btn-title">Dịch vụ</p>
+          </div>
+          {navSelected.service && (
+            <div className="sub-menu-container">
+              <button
+                className={`btn-sub ${subNavSelected === "service" && "btn-sub-selected"
+                  }`}
+                onClick={() => onHandleSelectedSubNav("service")}
+              >
+                <ManageAccountsOutlinedIcon />
+                <p className="btn-sub-title">Quản lý dịch vụ</p>
               </button>
             </div>
           )}
