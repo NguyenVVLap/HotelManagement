@@ -15,19 +15,19 @@ import org.springframework.stereotype.Service;
 
 import com.example.hotelserver.entity.VaiTro;
 import com.example.hotelserver.entity.TaiKhoan;
-import com.example.hotelserver.repository.RoleRepo;
-import com.example.hotelserver.repository.UserRepo;
+import com.example.hotelserver.repository.VaiTroRepo;
+import com.example.hotelserver.repository.TaiKhoanRepo;
 
 
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
-	private final UserRepo userRepo;
-	private final RoleRepo roleRepo;
+	private final TaiKhoanRepo userRepo;
+	private final VaiTroRepo roleRepo;
 	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public UserServiceImpl(UserRepo userRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
+	public UserServiceImpl(TaiKhoanRepo userRepo, VaiTroRepo roleRepo, PasswordEncoder passwordEncoder) {
 		this.userRepo = userRepo;
 		this.roleRepo = roleRepo;
 		this.passwordEncoder = passwordEncoder;

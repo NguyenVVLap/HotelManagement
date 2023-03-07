@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FrmDatPhong from "../components/FrmDatPhong";
+import FrmTang from "../components/FrmTang";
 import Menu from "../components/Menu";
 import TitleBar from "../components/TitleBar";
 
@@ -13,7 +14,9 @@ function Main() {
     room: true,
     guest: false,
     staff: false,
-    booking: false,
+    bill: false,
+    equipment: false,
+    floor: false,
   });
   const [subNavSelected, setSubNavSelected] = useState("book");
 
@@ -38,6 +41,7 @@ function Main() {
         {/* <TitleBar /> */}
         <div className="wrapper">
           {subNavSelected === "book" && <FrmDatPhong />}
+          {navSelected.floor && <FrmTang />}
         </div>
       </div>
     </Container>

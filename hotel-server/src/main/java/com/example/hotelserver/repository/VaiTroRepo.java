@@ -6,6 +6,6 @@ import com.example.hotelserver.entity.VaiTro;
 
 
 
-public interface RoleRepo extends JpaRepository<VaiTro, Long> {
+public interface VaiTroRepo extends JpaRepository<VaiTro, Long> {
 	VaiTro findByTenVaiTro(String tenVaiTro);
 }

@@ -34,6 +34,8 @@ public class SecurityConfiguration {
 			.permitAll()
 			.requestMatchers(HttpMethod.GET, "/api/rooms/**")
 			.permitAll()
+			.requestMatchers("/api/tang/**")
+			.permitAll()
 			.anyRequest()
 			.authenticated()
 			.and()

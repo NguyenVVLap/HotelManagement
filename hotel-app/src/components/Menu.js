@@ -4,9 +4,12 @@ import { BsDoorOpen } from "react-icons/bs";
 
 import Logo from "../assets/logo.png";
 
-function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }) {
-
-
+function Menu({
+  navSelected,
+  setNavSelected,
+  subNavSelected,
+  setSubNavSelected,
+}) {
   const onHandleSelectedNav = (nav, value) => {
     setNavSelected({ ...navSelected, [nav]: value });
   };
@@ -34,40 +37,36 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
           {navSelected.room && (
             <div className="sub-menu-container">
               <button
-                className={`btn-sub ${subNavSelected === "book" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected === "book" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("book")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Đặt phòng</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected === "check-in" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected === "check-in" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("check-in")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Nhận phòng</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected === "cancel" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected === "cancel" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("cancel")}
               >
                 <BsDoorOpen />
-                <p className="btn-sub-title">Hủy phòng</p>
+                <p className="btn-sub-title">Hủy đặt phòng</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected === "damage" && "btn-sub-selected"
-                  }`}
-                onClick={() => onHandleSelectedSubNav("damage")}
-              >
-                <BsDoorOpen />
-                <p className="btn-sub-title">Hư hại</p>
-              </button>
-              <button
-                className={`btn-sub ${subNavSelected === "manage-room" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected === "manage-room" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("manage-room")}
               >
                 <BsDoorOpen />
@@ -76,10 +75,37 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
             </div>
           )}
         </button>
+        <button className={`btn ${navSelected.floor && "btn-selected"}`}>
+          <div
+            className="menu-content"
+            onClick={() => {
+              onHandleSelectedNav("floor", !navSelected.floor);
+              setSubNavSelected("");
+            }}
+          >
+            <BsDoorOpen />
+            <p className="btn-title">Tầng</p>
+          </div>
+        </button>
+        <button className={`btn ${navSelected.equipment && "btn-selected"}`}>
+          <div
+            className="menu-content"
+            onClick={() => {
+              onHandleSelectedNav("equipment", !navSelected.equipment);
+              setSubNavSelected("");
+            }}
+          >
+            <BsDoorOpen />
+            <p className="btn-title">Thiết bị</p>
+          </div>
+        </button>
         <button className={`btn ${navSelected.guest && "btn-selected"}`}>
           <div
             className="menu-content"
-            onClick={() => onHandleSelectedNav("guest", !navSelected.guest)}
+            onClick={() => {
+              onHandleSelectedNav("guest", !navSelected.guest);
+              setSubNavSelected("");
+            }}
           >
             <BsDoorOpen />
             <p className="btn-title">Khách hàng</p>
@@ -88,16 +114,19 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
         <button className={`btn ${navSelected.staff && "btn-selected"}`}>
           <div
             className="menu-content"
-            onClick={() => onHandleSelectedNav("staff", !navSelected.staff)}
+            onClick={() => {
+              onHandleSelectedNav("staff", !navSelected.staff);
+              setSubNavSelected("");
+            }}
           >
             <BsDoorOpen />
             <p className="btn-title">Nhân viên</p>
           </div>
         </button>
-        <button className={`btn ${navSelected.booking && "btn-selected"}`}>
+        <button className={`btn ${navSelected.bill && "btn-selected"}`}>
           <div
             className="menu-content"
-            onClick={() => onHandleSelectedNav("booking", !navSelected.booking)}
+            onClick={() => onHandleSelectedNav("bill", !navSelected.bill)}
           >
             <BsDoorOpen />
             <p className="btn-title">Hóa đơn</p>
@@ -105,16 +134,27 @@ function Menu({ navSelected, setNavSelected, subNavSelected, setSubNavSelected }
           {navSelected.booking && (
             <div className="sub-menu-container">
               <button
-                className={`btn-sub ${subNavSelected === "manage-booking" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected === "add-bill" && "btn-sub-selected"
+                }`}
+                onClick={() => onHandleSelectedSubNav("add-bill")}
+              >
+                <BsDoorOpen />
+                <p className="btn-sub-title">Lập hóa đơn</p>
+              </button>
+              <button
+                className={`btn-sub ${
+                  subNavSelected === "manage-booking" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("manage-booking")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Quản lý</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected === "record" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected === "record" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("record")}
               >
                 <BsDoorOpen />

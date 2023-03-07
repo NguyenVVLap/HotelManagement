@@ -11,34 +11,35 @@ import org.springframework.stereotype.Service;
 import com.example.hotelserver.config.JwtService;
 import com.example.hotelserver.dto.AuthenticationRequest;
 import com.example.hotelserver.dto.RegisterRequest;
+import com.example.hotelserver.entity.NhanVien;
 import com.example.hotelserver.entity.TaiKhoan;
 import com.example.hotelserver.entity.VaiTro;
-import com.example.hotelserver.repository.GuestRepo;
-import com.example.hotelserver.repository.RoleRepo;
-import com.example.hotelserver.repository.UserRepo;
+import com.example.hotelserver.repository.NhanVienRepo;
+import com.example.hotelserver.repository.TaiKhoanRepo;
+import com.example.hotelserver.repository.VaiTroRepo;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-	private final UserRepo repository;
-	private final RoleRepo roleRepo;
-	private final GuestRepo guestRepo;
+	private final TaiKhoanRepo repository;
+	private final VaiTroRepo vaiTroRepo;
+	private final NhanVienRepo nhanVienRepo;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtService jwtService;
 	private final AuthenticationManager authenticationManager;
 	
 	public String register(RegisterRequest request) {
-		if (checkUserExist(request.getUsername(), request.getIdentification())) {
-			VaiTro role = roleRepo.findByTenVaiTro("ROLE_USER");
+		if (checkNhanVienExist(request.getSoDienThoai(), request.getCccd())) {
+			VaiTro role = vaiTroRepo.findByTenVaiTro("ROLE_EMPLOYEE");
 			if (role == null) {
-				role = new VaiTro(0, "ROLE_USER");
-				roleRepo.save(role);
+				role = new VaiTro(0, "ROLE_EMPLOYEE");
+				vaiTroRepo.save(role);
 			}
 			var user = TaiKhoan.builder()
-					.tenTaiKhoan(request.getUsername())
-					.matKhau(passwordEncoder.encode(request.getPassword()))
+					.tenTaiKhoan(request.getSoDienThoai())
+					.matKhau(passwordEncoder.encode(request.getMatKhau()))
 					.vaiTro(role)
 					.build();
 			repository.save(user);
@@ -49,6 +50,10 @@ public class AuthenticationService {
 //						, request.getAddress(), request.getEmail());
 //				guestRepo.save(guest);
 //			}
+			TaiKhoan newUser = repository.findByTenTaiKhoan(request.getSoDienThoai()).get();
+			nhanVienRepo.save(new NhanVien(0, request.getHoTen(), request.getDiaChi()
+					, request.getEmail(), request.getSoDienThoai()
+					, request.getCccd(), null, 0, null, newUser));
 			String jwtToken = jwtService.generateToken(user);
 			return jwtToken;
 		} else {
@@ -65,10 +70,10 @@ public class AuthenticationService {
 			);
 			var user = repository.findByTenTaiKhoan(username)
 				.orElseThrow();
-			VaiTro role = roleRepo.findByTenVaiTro(roleName);
+			VaiTro role = vaiTroRepo.findByTenVaiTro(roleName);
 			if (role == null) {
 				role = new VaiTro(0, roleName);
-				roleRepo.save(role);
+				vaiTroRepo.save(role);
 			}
 			Map<String, Object> map = new HashMap<>();
 			map.put("role", roleName);
@@ -90,9 +95,9 @@ public class AuthenticationService {
 		return jwtToken;
 	}
 	
-	public boolean checkUserExist(String username, String identification) {
-		if (repository.findByTenTaiKhoan(username).isEmpty() && 
-				guestRepo.findByCccdKhachHang(identification) == null) {
+	public boolean checkNhanVienExist(String sdt, String cccd) {
+		if (repository.findByTenTaiKhoan(sdt).isEmpty() && 
+				nhanVienRepo.findByCccd(cccd) == null) {
 			return true;
 		}
 		return false;

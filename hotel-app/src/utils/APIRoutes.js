@@ -8,3 +8,8 @@ export const checkPhoneExistRoute = `${host}/api/auth/checkPhoneExist`;
 
 //Booking
 export const getRoomsRoute = `${host}/api/rooms`;
+
+//Floor
+export const getFloorsRoute = `${host}/api/tang`;
+export const addFloorsRoute = `${host}/api/tang`;
+export const findFloorRoute = `${host}/api/tang/timKiemTang`;

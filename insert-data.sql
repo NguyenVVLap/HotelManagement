@@ -11,7 +11,6 @@ delete from phong;
 delete from tang;
 delete from loai_phong;
 
-
 Insert into loai_phong(ma_loai_phong, suc_chua, so_giuong, mang_thu_cung, gia_loai_phong, ten_loai_phong, duoc_hut_thuoc) values
 (1, 1, 1, 1, 100000, 'Single Room', 1),
 (2, 2, 1, 1, 100000, 'Double Room', 1),

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.hotelserver.dto.AuthenticationRequest;
 import com.example.hotelserver.dto.RegisterRequest;
 import com.example.hotelserver.service.AuthenticationService;
-import com.example.hotelserver.service.GuestService;
+import com.example.hotelserver.service.NhanVienService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,12 +25,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 	private final AuthenticationService service;
-	private final GuestService guestService;
-	
+	private final NhanVienService nhanVienService;
 	
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-		System.out.println(request.getFullname());
+		System.out.println(request.getHoTen());
 		String token = service.register(request);
 		if (token == null) {
 			return ResponseEntity.ok("Username or Identification already exist");
@@ -56,7 +55,7 @@ public class UserController {
 	public ResponseEntity<Boolean> checkPhoneExist(@RequestBody Map<String, Object> request) {
 //				System.out.println(request);
 		boolean result = false;
-		if (guestService.findByGuestPhoneNumber(request.get("phone").toString()) == null) {
+		if (nhanVienService.findBySoDienThoai(request.get("phone").toString()) == null) {
 			result = true;
 		}
 //		System.out.println(request.get("phone").toString());
