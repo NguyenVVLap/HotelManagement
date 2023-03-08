@@ -4,39 +4,40 @@ import { useState } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styled from "styled-components";
 import {
-  addFloorsRoute,
-  checkFloorExistRoute,
-  findFloorRoute,
-  getFloorsRoute,
+  addEquipmentRoute,
+  findEquipmentRoute,
+  getEquipmentsRoute,
 } from "../../utils/APIRoutes";
 import Inputs from "./components/Inputs";
 import Search from "./components/Search";
 import TableData from "./components/TableData";
 
-function FrmTang() {
-  const [tangSelected, setTangSelected] = useState(undefined);
-  const [dsTang, setDsTang] = useState(undefined);
+function FrmThietBi() {
+  const [thietBiSelected, setThietBiSelected] = useState(undefined);
+  const [dsThietBi, setDsThietBi] = useState(undefined);
   const [search, setSearch] = useState({ keyword: "", theo: "Theo mã" });
-  const [tangMoi, setTangMoi] = useState({
-    maTang: 0,
-    tenTang: "",
+  const [thietBiMoi, setThietBiMoi] = useState({
+    maThietBi: 0,
+    tenThietBi: "",
+    giaThietBi: 0,
   });
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    if (tangSelected) {
-      setTangMoi(tangSelected);
+    if (thietBiSelected) {
+      setThietBiMoi(thietBiSelected);
     } else {
-      setTangMoi({
-        maTang: 0,
-        tenTang: "",
+      setThietBiMoi({
+        maThietBi: 0,
+        tenThietBi: "",
+        giaThietBi: 0,
       });
     }
-  }, [tangSelected]);
+  }, [thietBiSelected]);
 
   const onHandleAdd = async () => {
-    if (tangMoi.maTang === 0 && validate()) {
-      const { data } = await axios.post(addFloorsRoute, tangMoi, {
+    if (thietBiMoi.maThietBi === 0 && validate()) {
+      const { data } = await axios.post(addEquipmentRoute, thietBiMoi, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -44,14 +45,14 @@ function FrmTang() {
         },
       });
       if (data && data.length !== []) {
-        setDsTang(data);
-        setTangSelected(undefined);
+        setDsThietBi(data);
+        setThietBiSelected(undefined);
       }
     }
   };
   const onHandleUpdate = async () => {
-    if (tangMoi.maTang !== 0 && validate()) {
-      const { data } = await axios.post(addFloorsRoute, tangMoi, {
+    if (thietBiMoi.maThietBi !== 0 && validateUpdate()) {
+      const { data } = await axios.post(addEquipmentRoute, thietBiMoi, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -59,27 +60,40 @@ function FrmTang() {
         },
       });
       if (data && data.length !== []) {
-        setDsTang(data);
-        setTangSelected(undefined);
+        setDsThietBi(data);
+        setThietBiSelected(undefined);
       }
     }
   };
 
-  const validate = () => {
-    const { tenTang } = tangMoi;
-    if (tenTang === "") {
+  const validateUpdate = () => {
+    const { giaThietBi } = thietBiMoi;
+    if (giaThietBi < 0) {
       setToast({
-        header: "Tên tầng không được bỏ trống",
+        header: "Giá thiết bị không được < 0",
         content: "",
         bg: "danger",
         textColor: "#fff",
       });
       return false;
     }
-    for (var i = 0; i < dsTang.length; i++) {
-      if (tenTang === dsTang[i].tenTang) {
+    return true;
+  };
+  const validate = () => {
+    const { tenThietBi, giaThietBi } = thietBiMoi;
+    if (tenThietBi === "") {
+      setToast({
+        header: "Tên thiết bị không được bỏ trống",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+      return false;
+    }
+    for (var i = 0; i < dsThietBi.length; i++) {
+      if (tenThietBi === dsThietBi[i].tenThietBi) {
         setToast({
-          header: "Tên tầng không được trùng",
+          header: "Tên và giá thiết bị không được trùng",
           content: "",
           bg: "danger",
           textColor: "#fff",
@@ -87,10 +101,19 @@ function FrmTang() {
         return false;
       }
     }
+    if (giaThietBi < 0) {
+      setToast({
+        header: "Giá thiết bị không được < 0",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+      return false;
+    }
     return true;
   };
   const onHandleSearch = async () => {
-    const { data } = await axios.post(findFloorRoute, search, {
+    const { data } = await axios.post(findEquipmentRoute, search, {
       headers: {
         "Content-Type": "application/json;charset=UTF-8",
         "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -98,35 +121,35 @@ function FrmTang() {
       },
     });
     if (data) {
-      setDsTang(data);
-      setTangSelected(undefined);
+      setDsThietBi(data);
+      setThietBiSelected(undefined);
     }
   };
 
   const onHandleRefresh = () => {
-    loadTangFromDB();
+    loadThietFromDB();
   };
 
   useEffect(() => {
-    loadTangFromDB();
+    loadThietFromDB();
   }, []);
-  const loadTangFromDB = async () => {
+  const loadThietFromDB = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json;charset=UTF-8",
       },
     };
-    const { data } = await axios.get(`${getFloorsRoute}`, {}, config);
-    setDsTang(data);
+    const { data } = await axios.get(`${getEquipmentsRoute}`, {}, config);
+    setDsThietBi(data);
   };
 
   return (
     <StyleContainer>
-      <h1>Quản lý tầng</h1>
+      <h1>Quản lý thiết bị</h1>
       <div className="container">
         <Inputs
-          tangMoi={tangMoi}
-          setTangMoi={setTangMoi}
+          thietBiMoi={thietBiMoi}
+          setThietBiMoi={setThietBiMoi}
           onHandleAdd={onHandleAdd}
           onHandleUpdate={onHandleUpdate}
           onHandleRefresh={onHandleRefresh}
@@ -137,9 +160,9 @@ function FrmTang() {
           onHandleSearch={onHandleSearch}
         />
         <TableData
-          dsTang={dsTang}
-          tangSelected={tangSelected}
-          setTangSelected={setTangSelected}
+          dsThietBi={dsThietBi}
+          thietBiSelected={thietBiSelected}
+          setThietBiSelected={setThietBiSelected}
         />
       </div>
       {toast && (
@@ -187,4 +210,4 @@ const StyleContainer = styled.div`
   }
 `;
 
-export default FrmTang;
+export default FrmThietBi;

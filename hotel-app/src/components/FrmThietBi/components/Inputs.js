@@ -3,42 +3,64 @@ import styled from "styled-components";
 import { BiRefresh } from "react-icons/bi";
 
 function Inputs({
-  tangMoi,
-  setTangMoi,
+  thietBiMoi,
+  setThietBiMoi,
   onHandleAdd,
   onHandleUpdate,
   onHandleRefresh,
 }) {
   const handleOnChange = (e) => {
-    setTangMoi({ ...tangMoi, [e.target.name]: e.target.value });
+    setThietBiMoi({ ...thietBiMoi, [e.target.name]: e.target.value });
   };
   return (
     <StyledContainer>
       <div className="input-container">
         <FloatingLabel
           controlId="floatingInput"
-          label="Mã tầng"
+          label="Mã thiết bị"
           className="mb-3"
         >
           <Form.Control
             type="text"
-            placeholder="Mã tầng"
-            name="maTang"
+            placeholder="Mã thiết bị"
+            name="maThietBi"
             disabled={true}
-            value={tangMoi && tangMoi.maTang != 0 ? tangMoi.maTang : ""}
+            value={
+              thietBiMoi && thietBiMoi.maThietBi != 0
+                ? thietBiMoi.maThietBi
+                : ""
+            }
             onChange={(e) => handleOnChange(e)}
           />
         </FloatingLabel>
         <FloatingLabel
           controlId="floatingInput"
-          label="Tên tầng"
+          label="Tên thiết bị"
           className="mb-3"
         >
           <Form.Control
             type="text"
-            placeholder="Tên tầng"
-            name="tenTang"
-            value={tangMoi && tangMoi.tenTang ? tangMoi.tenTang : ""}
+            placeholder="Tên thiết bị"
+            name="tenThietBi"
+            value={
+              thietBiMoi && thietBiMoi.tenThietBi ? thietBiMoi.tenThietBi : ""
+            }
+            onChange={(e) => handleOnChange(e)}
+          />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="Giá thiết bị (VND)"
+          className="mb-3"
+        >
+          <Form.Control
+            type="number"
+            placeholder="Giá thiết bị (VND)"
+            name="giaThietBi"
+            value={
+              thietBiMoi && thietBiMoi.giaThietBi ? thietBiMoi.giaThietBi : 0
+            }
+            min={0}
             onChange={(e) => handleOnChange(e)}
           />
         </FloatingLabel>

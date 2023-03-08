@@ -12,7 +12,17 @@ function Menu({
   setSubNavSelected,
 }) {
   const onHandleSelectedNav = (nav, value) => {
-    setNavSelected({ ...navSelected, [nav]: value });
+    setNavSelected({
+      room: false,
+      guest: false,
+      staff: false,
+      bill: false,
+      equipment: false,
+      floor: false,
+      booking: false,
+      service: false,
+      [nav]: value,
+    });
   };
   const onHandleSelectedSubNav = (subnav, nav) => {
     setSubNavSelected({ subnav: subnav, nav: nav });
@@ -32,7 +42,7 @@ function Menu({
     <Container>
       <div className="header">
         <div className="img-container">
-          <img className="logo-img" src={Logo} />
+          <img className="logo-img" src={Logo} alt="logo" />
         </div>
         <p className="title">Khách Sạn Sama</p>
       </div>
@@ -59,7 +69,7 @@ function Menu({
               </button>
               <button
                 className={`btn-sub ${
-                  subNavSelected === "check-in" && "btn-sub-selected"
+                  subNavSelected.subnav === "check-in" && "btn-sub-selected"
                 }`}
                 onClick={() => onHandleSelectedSubNav("check-in", "room")}
               >
@@ -68,7 +78,7 @@ function Menu({
               </button>
               <button
                 className={`btn-sub ${
-                  subNavSelected === "cancel" && "btn-sub-selected"
+                  subNavSelected.subnav === "cancel" && "btn-sub-selected"
                 }`}
                 onClick={() => onHandleSelectedSubNav("cancel", "room")}
               >
@@ -77,7 +87,7 @@ function Menu({
               </button>
               <button
                 className={`btn-sub ${
-                  subNavSelected === "manage-room" && "btn-sub-selected"
+                  subNavSelected.subnav === "manage-room" && "btn-sub-selected"
                 }`}
                 onClick={() => onHandleSelectedSubNav("manage-room", "room")}
               >
@@ -92,7 +102,7 @@ function Menu({
             className="menu-content"
             onClick={() => {
               onHandleSelectedNav("floor", !navSelected.floor);
-              setSubNavSelected("");
+              setSubNavSelected({ nav: "", subnav: "" });
             }}
           >
             <BsDoorOpen />
@@ -104,7 +114,7 @@ function Menu({
             className="menu-content"
             onClick={() => {
               onHandleSelectedNav("equipment", !navSelected.equipment);
-              setSubNavSelected("");
+              setSubNavSelected({ nav: "", subnav: "" });
             }}
           >
             <BsDoorOpen />
@@ -116,7 +126,7 @@ function Menu({
             className="menu-content"
             onClick={() => {
               onHandleSelectedNav("guest", !navSelected.guest);
-              setSubNavSelected("");
+              setSubNavSelected({ nav: "", subnav: "" });
             }}
           >
             <BsDoorOpen />
@@ -147,7 +157,7 @@ function Menu({
             <div className="sub-menu-container">
               <button
                 className={`btn-sub ${
-                  subNavSelected === "add-bill" && "btn-sub-selected"
+                  subNavSelected.subnav === "add-bill" && "btn-sub-selected"
                 }`}
                 onClick={() => onHandleSelectedSubNav("add-bill", "bill")}
               >
@@ -156,7 +166,8 @@ function Menu({
               </button>
               <button
                 className={`btn-sub ${
-                  subNavSelected === "manage-booking" && "btn-sub-selected"
+                  subNavSelected.subnav === "manage-booking" &&
+                  "btn-sub-selected"
                 }`}
                 onClick={() => onHandleSelectedSubNav("manage-booking", "bill")}
               >
@@ -165,7 +176,7 @@ function Menu({
               </button>
               <button
                 className={`btn-sub ${
-                  subNavSelected === "record" && "btn-sub-selected"
+                  subNavSelected.subnav === "record" && "btn-sub-selected"
                 }`}
                 onClick={() => onHandleSelectedSubNav("record", "bill")}
               >
@@ -188,7 +199,7 @@ function Menu({
             <div className="sub-menu-container">
               <button
                 className={`btn-sub ${
-                  subNavSelected === "service" && "btn-sub-selected"
+                  subNavSelected.subnav === "service" && "btn-sub-selected"
                 }`}
                 onClick={() => onHandleSelectedSubNav("service", "service")}
               >

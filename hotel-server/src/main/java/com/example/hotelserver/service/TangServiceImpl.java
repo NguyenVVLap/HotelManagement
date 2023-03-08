@@ -41,7 +41,6 @@ public class TangServiceImpl implements TangService{
 
 	@Override
 	public List<Tang> timTangTheoTen(String tenTang) {
-		System.out.println(tangRepo.findByTenTangLike(tenTang));
 		return tangRepo.findByTenTangLike(tenTang);
 	}
 

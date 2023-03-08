@@ -40,6 +40,8 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers("/api/tang/**")
     			.permitAll()
+    			.requestMatchers("/api/thietbi/**")
+    			.permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
