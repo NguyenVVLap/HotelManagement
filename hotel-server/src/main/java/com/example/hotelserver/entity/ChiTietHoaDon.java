@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@IdClass(ChiTietHoaDon.class)
+@IdClass(ChiTietHoaDonPK.class)
 @Table(name = "chi_tiet_hoa_don")
 public class ChiTietHoaDon {
 	@Id
