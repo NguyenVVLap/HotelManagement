@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ServiceRepo extends JpaRepository<DichVu, Long> {
+public interface DichVuRepo extends JpaRepository<DichVu, Long> {
     @Query(nativeQuery = true, value = ("select * from dich_vu "))
     List<DichVu>layAllDanhSachDichVu();
     @Query(nativeQuery = true,value = "select * from dich_vu dv where dv.ten_dich_vu= :tenDichVu and dv.gia_dich_vu= :giaDichVu")

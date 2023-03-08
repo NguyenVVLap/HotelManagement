@@ -174,7 +174,7 @@ function FrmDichVu() {
     // console.log("Search combobox :", search);
     return (
         <StyledContainer>
-            <Box sx={{ background: 'linear-gradient(to bottom, #1fa2ff, #12d8fa, #a6ffcb)', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
                 <Typography variant='h3'>Quản lý dịch vụ</Typography>
             </Box>
             <Paper elevation={15} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '10px', flexDirection: 'column', minHeight: '30%' }}>

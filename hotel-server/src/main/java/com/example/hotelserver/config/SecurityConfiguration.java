@@ -34,6 +34,8 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers("/api/nhanvien/**")
                 .permitAll()
+                .requestMatchers("/api/khachhang/**")
+                .permitAll()
                 .requestMatchers("/api/dichvu/**")
                 .permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/rooms/**")

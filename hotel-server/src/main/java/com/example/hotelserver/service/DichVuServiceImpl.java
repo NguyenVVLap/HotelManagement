@@ -1,7 +1,7 @@
 package com.example.hotelserver.service;
 
 import com.example.hotelserver.entity.DichVu;
-import com.example.hotelserver.repository.ServiceRepo;
+import com.example.hotelserver.repository.DichVuRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,16 +10,16 @@ import java.util.List;
 @Service
 public class DichVuServiceImpl implements DichVuService {
     @Autowired
-    private ServiceRepo serviceRepo;
+    private DichVuRepo dichVuRepo;
     @Override
     public List<DichVu> layAllDanhSachDichVu() {
-        return serviceRepo.layAllDanhSachDichVu();
+        return dichVuRepo.layAllDanhSachDichVu();
     }
 
     @Override
     public boolean themDichVu(DichVu dv) {
        try{
-            serviceRepo.save(dv);
+            dichVuRepo.save(dv);
             return  true;
        }
        catch (Exception e){
@@ -30,7 +30,7 @@ public class DichVuServiceImpl implements DichVuService {
 
     @Override
     public boolean kiemtraDichVuTonTai(String tenDichVu, double giaDichVu) {
-        if(serviceRepo.findByTenAndGiaDichVu(tenDichVu,giaDichVu) !=null){
+        if(dichVuRepo.findByTenAndGiaDichVu(tenDichVu,giaDichVu) !=null){
             return true;
         }
         return false;
@@ -38,11 +38,11 @@ public class DichVuServiceImpl implements DichVuService {
 
     @Override
     public List<DichVu> timDichVuTheoTen(String tenDichVu) {
-        return serviceRepo.findByTenDichVuLike(tenDichVu);
+        return dichVuRepo.findByTenDichVuLike(tenDichVu);
     }
 
     @Override
     public DichVu timDichVuTheoMa(long maDichVu) {
-        return serviceRepo.findById(maDichVu).get();
+        return dichVuRepo.findById(maDichVu).get();
     }
 }
