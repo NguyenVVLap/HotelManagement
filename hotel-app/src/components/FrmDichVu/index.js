@@ -174,7 +174,7 @@ function FrmDichVu() {
     // console.log("Search combobox :", search);
     return (
         <StyledContainer>
-            <Box sx={{ backgroundColor: 'yellow', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ background: 'linear-gradient(to bottom, #1fa2ff, #12d8fa, #a6ffcb)', display: 'flex', justifyContent: 'center' }}>
                 <Typography variant='h3'>Quản lý dịch vụ</Typography>
             </Box>
             <Paper elevation={15} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '10px', flexDirection: 'column', minHeight: '30%' }}>
@@ -182,7 +182,7 @@ function FrmDichVu() {
                     <TextField id="ma_dich_vu" name='ma_dich_vu' label="Mã dịch vụ" variant="outlined" fullWidth disabled value={dichvuMoi && dichvuMoi.maDichVu != 0 ? dichvuMoi.maDichVu : ""} />
                     <TextField id="ten_dich_vu" name='tenDichVu' label="Tên dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.tenDichVu ? dichvuMoi.tenDichVu : ""} />
                     <TextField id="gia_dich_vu" name='giaDichVu' label="Giá dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.giaDichVu ? dichvuMoi.giaDichVu : ""} />
-                    <Box sx={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px', height: '50px' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
                         <Button type='submit' variant='contained' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm dịch vụ</Button>
                         <Button variant='contained' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateDichVu()}>Cập nhật dịch vụ</Button>
                         <Button variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshDichVu()}>Tải lại dữ liệu</Button>
@@ -285,7 +285,7 @@ const StyledContainer = styled.div`
   table {
     .row-selected {
       
-        background-color: #9fbce7d1 !important;
+        background: linear-gradient(to bottom, #ee0979, #ff6a00);
       
     }
   }

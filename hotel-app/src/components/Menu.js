@@ -211,7 +211,7 @@ const Container = styled.div`
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
-  background-image: linear-gradient(#4286f4, #373b44);
+  background: linear-gradient(to bottom, #4776e6, #8e54e9);
   height: 100vh;
   button {
     &:focus {
