@@ -21,7 +21,10 @@ function Main() {
     booking: false,
     service: false,
   });
-  const [subNavSelected, setSubNavSelected] = useState("book");
+  const [subNavSelected, setSubNavSelected] = useState({
+    nav: "room",
+    subnav: "book",
+  });
 
   useEffect(() => {
     checkLogin();
@@ -43,9 +46,9 @@ function Main() {
       <div className="big-container">
         {/* <TitleBar /> */}
         <div className="wrapper">
-          {subNavSelected === "book" && <FrmDatPhong />}
+          {subNavSelected.subnav === "book" && <FrmDatPhong />}
           {navSelected.floor && <FrmTang />}
-          {subNavSelected === "service" && <FrmDichVu />}
+          {subNavSelected.subnav === "service" && <FrmDichVu />}
         </div>
       </div>
     </Container>
@@ -54,7 +57,7 @@ function Main() {
 
 const Container = styled.div`
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   display: grid;
   grid-template-columns: 20% 80%;
   .big-container {

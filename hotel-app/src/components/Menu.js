@@ -14,8 +14,8 @@ function Menu({
   const onHandleSelectedNav = (nav, value) => {
     setNavSelected({ ...navSelected, [nav]: value });
   };
-  const onHandleSelectedSubNav = (nav) => {
-    setSubNavSelected(nav);
+  const onHandleSelectedSubNav = (subnav, nav) => {
+    setSubNavSelected({ subnav: subnav, nav: nav });
     setNavSelected({
       room: false,
       guest: false,
@@ -25,6 +25,7 @@ function Menu({
       floor: false,
       booking: false,
       service: false,
+      [nav]: true,
     });
   };
   return (
@@ -49,9 +50,9 @@ function Menu({
             <div className="sub-menu-container">
               <button
                 className={`btn-sub ${
-                  subNavSelected === "book" && "btn-sub-selected"
+                  subNavSelected.subnav === "book" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("book")}
+                onClick={() => onHandleSelectedSubNav("book", "room")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Đặt phòng</p>
@@ -60,7 +61,7 @@ function Menu({
                 className={`btn-sub ${
                   subNavSelected === "check-in" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("check-in")}
+                onClick={() => onHandleSelectedSubNav("check-in", "room")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Nhận phòng</p>
@@ -69,7 +70,7 @@ function Menu({
                 className={`btn-sub ${
                   subNavSelected === "cancel" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("cancel")}
+                onClick={() => onHandleSelectedSubNav("cancel", "room")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Hủy đặt phòng</p>
@@ -78,7 +79,7 @@ function Menu({
                 className={`btn-sub ${
                   subNavSelected === "manage-room" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("manage-room")}
+                onClick={() => onHandleSelectedSubNav("manage-room", "room")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Quản lý</p>
@@ -142,13 +143,13 @@ function Menu({
             <BsDoorOpen />
             <p className="btn-title">Hóa đơn</p>
           </div>
-          {navSelected.booking && (
+          {navSelected.bill && (
             <div className="sub-menu-container">
               <button
                 className={`btn-sub ${
                   subNavSelected === "add-bill" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("add-bill")}
+                onClick={() => onHandleSelectedSubNav("add-bill", "bill")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Lập hóa đơn</p>
@@ -157,7 +158,7 @@ function Menu({
                 className={`btn-sub ${
                   subNavSelected === "manage-booking" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("manage-booking")}
+                onClick={() => onHandleSelectedSubNav("manage-booking", "bill")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Quản lý</p>
@@ -166,7 +167,7 @@ function Menu({
                 className={`btn-sub ${
                   subNavSelected === "record" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("record")}
+                onClick={() => onHandleSelectedSubNav("record", "bill")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Thống kê</p>
@@ -189,7 +190,7 @@ function Menu({
                 className={`btn-sub ${
                   subNavSelected === "service" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("service")}
+                onClick={() => onHandleSelectedSubNav("service", "service")}
               >
                 <ManageAccountsOutlinedIcon />
                 <p className="btn-sub-title">Quản lý dịch vụ</p>
@@ -208,6 +209,7 @@ const Container = styled.div`
   /* justify-content: center; */
   align-items: center;
   background-image: linear-gradient(#4286f4, #373b44);
+  height: 100vh;
   button {
     &:focus {
       outline: none !important;
@@ -216,10 +218,13 @@ const Container = styled.div`
   }
   .header {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.8rem;
     margin-left: 0.5rem;
     display: flex;
-    gap: 1rem;
+    /* align-items: center;
+    justify-content: center; */
+    gap: 0.4rem;
+    height: 9%;
     .img-container {
       display: flex;
       align-items: center;
@@ -239,9 +244,21 @@ const Container = styled.div`
   .btn-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     width: 100%;
-    margin-top: 1rem;
+    height: 93%;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 0.2rem;
+      &-thumb {
+        background-image: linear-gradient(#373b44, #1095c1);
+        width: 0.1rem;
+        border-radius: 1rem;
+      }
+    }
+    button {
+    }
     .btn {
       /* background-color: red; */
       padding: 0;
