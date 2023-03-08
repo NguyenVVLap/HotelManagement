@@ -1,6 +1,5 @@
 package com.example.hotelserver.service;
 
-import com.example.hotelserver.dto.DichVuRequest;
 import com.example.hotelserver.entity.DichVu;
 import com.example.hotelserver.repository.ServiceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,32 @@ public class DichVuServiceImpl implements DichVuService {
     }
 
     @Override
-    public String addDichVu(DichVuRequest dichVuRequest) {
-        double a = Double.parseDouble(dichVuRequest.getGiaDichVu());
-       var dichvu = DichVu.builder()
-               .tenDichVu(dichVuRequest.getTenDichVu())
-               .giaDichVu(a).build();
-       serviceRepo.save(dichvu);
-       return "success";
+    public boolean themDichVu(DichVu dv) {
+       try{
+            serviceRepo.save(dv);
+            return  true;
+       }
+       catch (Exception e){
+           System.out.println("Error at Dich Vu : "+e);
+           return false;
+       }
+    }
+
+    @Override
+    public boolean kiemtraDichVuTonTai(String tenDichVu, double giaDichVu) {
+        if(serviceRepo.findByTenAndGiaDichVu(tenDichVu,giaDichVu) !=null){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<DichVu> timDichVuTheoTen(String tenDichVu) {
+        return serviceRepo.findByTenDichVuLike(tenDichVu);
+    }
+
+    @Override
+    public DichVu timDichVuTheoMa(long maDichVu) {
+        return serviceRepo.findById(maDichVu).get();
     }
 }

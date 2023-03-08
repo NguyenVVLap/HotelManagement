@@ -2,7 +2,7 @@ package com.example.hotelserver.service;
 
 import com.example.hotelserver.dto.NhanVienDto;
 import com.example.hotelserver.entity.NhanVien;
-import com.example.hotelserver.repository.EmployeeRepo;
+import com.example.hotelserver.repository.NhanVienRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
-    private EmployeeRepo employeeRepo;
+    private NhanVienRepo employeeRepo;
 
     @Override
     public List<Map<String, Object>> getAllInfoNhanVienWithAccount() {

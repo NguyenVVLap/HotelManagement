@@ -49,7 +49,7 @@ function Main() {
           {subNavSelected.subnav === "book" && <FrmDatPhong />}
           {navSelected.floor && <FrmTang />}
           {navSelected.equipment && <FrmThietBi />}
-          {subNavSelected.subnav === "service" && <FrmDichVu />}
+          {subNavSelected.subnav === "manager-service" && <FrmDichVu />}
         </div>
       </div>
     </Container>

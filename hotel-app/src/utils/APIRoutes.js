@@ -18,3 +18,9 @@ export const findFloorRoute = `${host}/api/tang/timKiemTang`;
 export const getEquipmentsRoute = `${host}/api/thietbi`;
 export const addEquipmentRoute = `${host}/api/thietbi`;
 export const findEquipmentRoute = `${host}/api/thietbi/timKiemThietBi`;
+
+//Service
+export const getAllServiceRoute = `${host}/api/dichvu`;
+export const addDichVu = `${host}/api/dichvu`;
+export const updateDichVu = `${host}/api/dichvu`;
+export const timKiemDichVu = `${host}/api/dichvu/timKiemDichVu`;
