@@ -18,5 +18,5 @@ public interface KhachHangRepo extends JpaRepository<KhachHang, Integer> {
 	@Query(nativeQuery = true, value = "select * from khach_hang kh where kh.cccd_khach_hang= :cccdKhachHang AND kh.so_dien_thoai_kh= :soDienThoaiKH")
 	KhachHang timKhachHangBangCCCDVaSoDienThoai(@Param("cccdKhachHang") String cccdKhachHang, @Param("soDienThoaiKH") String soDienThoaiKH);
 	@Query(nativeQuery = true, value = "select * from khach_hang kh where kh.ho_ten like %:ho_ten%")
-	List<DichVu> findByTenKhachHang(@Param("ho_ten") String ho_ten);
+	List<KhachHang> findByTenKhachHang(@Param("ho_ten") String ho_ten);
 }

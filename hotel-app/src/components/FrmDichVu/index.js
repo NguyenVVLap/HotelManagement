@@ -17,7 +17,7 @@ import axios from 'axios';
 function FrmDichVu() {
     const [toast, setToast] = useState(null);
     const [dichVuSelected, setDichVuSelected] = useState(undefined);
-    const [madichvu, setMaDichVu] = useState(undefined);
+
     const [dsDichVu, setDsDichVu] = useState(undefined);
     const [dichvuMoi, setDichVuMoi] = useState({
         maDichVu: 0,

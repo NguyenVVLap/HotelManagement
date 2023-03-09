@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { BsDoorOpen } from "react-icons/bs";
 import FastfoodOutlinedIcon from "@mui/icons-material/FastfoodOutlined";
+import PermContactCalendarOutlinedIcon from '@mui/icons-material/PermContactCalendarOutlined';
 import Logo from "../assets/logo.png";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
@@ -117,6 +118,7 @@ function Menu({
             <p className="btn-title">Thiết bị</p>
           </div>
         </button>
+        {/* Khách hàng */}
         <button className={`btn ${navSelected.guest && "btn-selected"}`}>
           <div
             className="menu-content"
@@ -125,10 +127,23 @@ function Menu({
               setSubNavSelected({ nav: "", subnav: "" });
             }}
           >
-            <BsDoorOpen />
+            <PermContactCalendarOutlinedIcon />
             <p className="btn-title">Khách hàng</p>
           </div>
+          {navSelected.guest && (
+            <div className="sub-menu-container">
+              <button
+                className={`btn-sub ${subNavSelected.subnav === "manager-guest" && "btn-sub-selected"
+                  }`}
+                onClick={() => onHandleSelectedSubNav("manager-guest", "guest")}
+              >
+                <ManageAccountsOutlinedIcon />
+                <p className="btn-sub-title">Quản lý Khách hàng</p>
+              </button>
+            </div>
+          )}
         </button>
+
         <button className={`btn ${navSelected.staff && "btn-selected"}`}>
           <div
             className="menu-content"

@@ -24,3 +24,9 @@ export const getAllServiceRoute = `${host}/api/dichvu`;
 export const addDichVu = `${host}/api/dichvu`;
 export const updateDichVu = `${host}/api/dichvu`;
 export const timKiemDichVu = `${host}/api/dichvu/timKiemDichVu`;
+
+//Customer
+export const getAllKhachHangRoute = `${host}/api/khachhang`;
+export const addKhachHang = `${host}/api/khachhang`;
+export const updateKhachHang = `${host}/api/khachhang`;
+export const timKiemKhachHang = `${host}/api/khachhang/timKiemKhachHang`;

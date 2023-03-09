@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
@@ -47,6 +48,20 @@ public class KhachHangController {
         return new ResponseEntity<List<KhachHang>>(khachHangService.layAllDanhSachKhachHang(), HttpStatus.OK);
 
 
+    }
+    @PostMapping("/timKiemKhachHang")
+    public ResponseEntity<List<KhachHang>> timKiemKhachHang(@RequestBody Map<String, Object> request) {
+        List<KhachHang> results = new ArrayList<>();
+        if (request.get("theo").toString().equals("Theo họ tên")) {
+            results = khachHangService.timKhachHangTheoTen(request.get("keyword").toString());
+        } else if (request.get("theo").toString().equals("Theo căn cước công dân")) {
+            try {
+                results.add(khachHangService.timKhachHangTheoCCCD(request.get("keyword").toString()));
+            } catch (Exception e) {
+                System.out.println("Error Khach Hang " + e);
+            }
+        }
+        return new ResponseEntity<List<KhachHang>>(results, HttpStatus.OK);
     }
 }
 

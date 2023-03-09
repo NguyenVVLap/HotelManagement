@@ -8,6 +8,7 @@ import FrmTang from "../components/FrmTang";
 import FrmDichVu from "../components/FrmDichVu";
 import Menu from "../components/Menu";
 import FrmThietBi from "../components/FrmThietBi";
+import FrmKhachHang from "../components/FrmKhachHang";
 
 function Main() {
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ function Main() {
           {navSelected.floor && <FrmTang />}
           {navSelected.equipment && <FrmThietBi />}
           {subNavSelected.subnav === "manager-service" && <FrmDichVu />}
+          {subNavSelected.subnav === "manager-guest" && <FrmKhachHang />}
         </div>
       </div>
     </Container>

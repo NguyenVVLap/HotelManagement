@@ -54,17 +54,14 @@ public class KhachHangServiceImpl implements KhachHangService {
 
 	@Override
 	public List<KhachHang> timKhachHangTheoTen(String tenKhachHang) {
-		return null;
+		return khachHangRepo.findByTenKhachHang(tenKhachHang);
 	}
 
 	@Override
 	public KhachHang timKhachHangTheoCCCD(String cccdKhachHang) {
-		return null;
+		return khachHangRepo.findByCccdKhachHang(cccdKhachHang);
 	}
 
-	@Override
-	public KhachHang timKhachHangTheoPhone(String phoneKhachHang) {
-		return null;
-	}
+
 
 }
