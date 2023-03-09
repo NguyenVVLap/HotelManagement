@@ -52,17 +52,11 @@ public class AuthenticationService {
 					.diaChi(request.getDiaChi())
 					.ngayVaoLam(currentDate).soDienThoai(request.getSoDienThoai()).taiKhoan(taikhoan).build();
 			nhanVienRepo.save(newNhanVien);
-//			TaiKhoan newUser = repository.findByTenTaiKhoan(request.getUsername()).get();
-//			if (newUser != null) {
-//				KhachHang guest = new KhachHang(0, request.getFullname()
-//						, request.getIdentification(), request.getPhoneNumber()
-//						, request.getAddress(), request.getEmail());
-//				guestRepo.save(guest);
-//			}
-			TaiKhoan newUser = repository.findByTenTaiKhoan(request.getSoDienThoai()).get();
-			nhanVienRepo.save(new NhanVien(0, request.getHoTen(), request.getDiaChi()
-					, request.getEmail(), request.getSoDienThoai()
-					, request.getCccd(), null, 0, null, newUser));
+
+//			TaiKhoan newUser = repository.findByTenTaiKhoan(request.getSoDienThoai()).get();
+//			nhanVienRepo.save(new NhanVien(0, request.getHoTen(), request.getDiaChi()
+//					, request.getEmail(), request.getSoDienThoai()
+//					, request.getCccd(), null, 0, null, newUser));
 			String jwtToken = jwtService.generateToken(taikhoan);
 			return jwtToken;
 		} else {

@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { BsDoorOpen } from "react-icons/bs";
 import FastfoodOutlinedIcon from "@mui/icons-material/FastfoodOutlined";
 import PermContactCalendarOutlinedIcon from '@mui/icons-material/PermContactCalendarOutlined';
+import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import Logo from "../assets/logo.png";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
@@ -143,7 +145,7 @@ function Menu({
             </div>
           )}
         </button>
-
+        {/* Nhân viên */}
         <button className={`btn ${navSelected.staff && "btn-selected"}`}>
           <div
             className="menu-content"
@@ -152,9 +154,21 @@ function Menu({
               setSubNavSelected("");
             }}
           >
-            <BsDoorOpen />
+            <BadgeOutlinedIcon />
             <p className="btn-title">Nhân viên</p>
           </div>
+          {navSelected.staff && (
+            <div className="sub-menu-container">
+              <button
+                className={`btn-sub ${subNavSelected.subnav === "manager-staff" && "btn-sub-selected"
+                  }`}
+                onClick={() => onHandleSelectedSubNav("manager-staff", "staff")}
+              >
+                <GroupAddOutlinedIcon />
+                <p className="btn-sub-title">Quản lý nhân viên</p>
+              </button>
+            </div>
+          )}
         </button>
         <button className={`btn ${navSelected.bill && "btn-selected"}`}>
           <div
