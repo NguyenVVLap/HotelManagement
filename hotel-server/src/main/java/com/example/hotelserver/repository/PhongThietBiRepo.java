@@ -7,6 +7,6 @@ import com.example.hotelserver.entity.PhongThietBi;
 import com.example.hotelserver.entity.PhongThietBiPK;
 
 @Repository
-public interface RoomEquipmentRepo extends JpaRepository<PhongThietBi, PhongThietBiPK>{
+public interface PhongThietBiRepo extends JpaRepository<PhongThietBi, PhongThietBiPK>{
 
 }

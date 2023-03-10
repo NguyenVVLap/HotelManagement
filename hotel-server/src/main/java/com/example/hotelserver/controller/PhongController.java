@@ -11,18 +11,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.hotelserver.service.RoomService;
+import com.example.hotelserver.service.PhongService;
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
-@RequestMapping("/api/rooms")
-public class RoomController {
+@RequestMapping("/api/phong")
+public class PhongController {
 	@Autowired
-	private RoomService roomService;
+	private PhongService phongService;
 
+	@GetMapping("/sapXepTrangThai")
+	public ResponseEntity<List<Map<String, Object>>> getAllPhongOrderByTrangThai() {
+		List<Map<String, Object>> dataFromQuery = phongService.layTatCaPhongSapXepTheoTrangThai();
+		if (dataFromQuery == null ||dataFromQuery.isEmpty()) {
+			return new ResponseEntity<>(null, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
+	}
+	
 	@GetMapping
-	public ResponseEntity<List<Map<String, Object>>> getAllRooms() {
-		List<Map<String, Object>> dataFromQuery = roomService.getRoomsOrderByState();
+	public ResponseEntity<List<Map<String, Object>>> getAllPhong() {
+		List<Map<String, Object>> dataFromQuery = phongService.layTatCaPhong();
 		if (dataFromQuery == null ||dataFromQuery.isEmpty()) {
 			return new ResponseEntity<>(null, HttpStatus.OK);
 		}

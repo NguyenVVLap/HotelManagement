@@ -1,0 +1,124 @@
+import { useEffect } from "react";
+import { useState } from "react";
+import { Form, Table } from "react-bootstrap";
+import { GrRadial, GrRadialSelected } from "react-icons/gr";
+import styled from "styled-components";
+
+function RoomEquipment({ tempThietBi, thietBiAll, thietBiMoi, setThietBiMoi }) {
+  // const [quantity, setQuantity] = useState([{maThietBi: 0, soLuong: 0}]);
+  useEffect(() => {
+    let thietBi = [];
+    if (tempThietBi.length === 0 || !tempThietBi) {
+      for (let i = 0; i < thietBiAll.length; i++) {
+        thietBi = [
+          ...thietBi,
+          {
+            maThietBi: thietBiAll[i].maThietBi,
+            tenThietBi: thietBiAll[i].tenThietBi,
+            soLuong: 0,
+          },
+        ];
+      }
+    } else {
+      for (let i = 0; i < thietBiAll.length; i++) {
+        for (let j = 0; j < tempThietBi.length; j++) {
+          if (thietBiAll[i].maThietBi === tempThietBi[j].thietBi.maThietBi) {
+            thietBi = [
+              ...thietBi,
+              {
+                maThietBi: thietBiAll[i].maThietBi,
+                tenThietBi: thietBiAll[i].tenThietBi,
+                soLuong: tempThietBi[j].soLuong,
+              },
+            ];
+            break;
+          }
+          if (
+            thietBiAll[i].maThietBi !== tempThietBi[j].thietBi.maThietBi &&
+            j === tempThietBi.length
+          ) {
+            thietBi = [
+              ...thietBi,
+              {
+                maThietBi: thietBiAll[i].maThietBi,
+                tenThietBi: thietBiAll[i].tenThietBi,
+                soLuong: 0,
+              },
+            ];
+          }
+        }
+      }
+    }
+    setThietBiMoi(thietBi);
+  }, [tempThietBi]);
+  const onHandleChangeQuantity = (e) => {
+    for (let i = 0; i < thietBiMoi.length; i++) {
+      if (thietBiMoi[i].maThietBi == e.target.name) {
+        thietBiMoi[i] = { ...thietBiMoi[i], soLuong: e.target.value };
+        setThietBiMoi([...thietBiMoi]);
+      }
+    }
+  };
+  return (
+    <StyledContainer>
+      <Table striped hover>
+        <thead>
+          <tr>
+            <th>Mã thiết bị</th>
+            <th>Tên thiết bị</th>
+            <th>Số lượng</th>
+          </tr>
+        </thead>
+        <tbody>
+          {thietBiMoi &&
+            thietBiMoi !== [] &&
+            thietBiMoi.map((thietBi, index) => {
+              return (
+                <tr key={index}>
+                  <td>{thietBi.maThietBi}</td>
+                  <td>{thietBi.tenThietBi}</td>
+                  <td>
+                    <Form.Control
+                      type="number"
+                      name={thietBi.maThietBi}
+                      min={0}
+                      value={thietBi.soLuong}
+                      onChange={(e) => onHandleChangeQuantity(e)}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </Table>
+    </StyledContainer>
+  );
+}
+
+const StyledContainer = styled.div`
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  height: 200px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 0.2rem;
+    &-thumb {
+      background-image: linear-gradient(#373b44, #1095c1);
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+  table {
+    height: 200px;
+    .row-selected {
+      td {
+        background-color: #9fbce7d1 !important;
+      }
+    }
+  }
+`;
+export default RoomEquipment;

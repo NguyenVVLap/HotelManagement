@@ -10,6 +10,7 @@ import Menu from "../components/Menu";
 import FrmThietBi from "../components/FrmThietBi";
 import FrmKhachHang from "../components/FrmKhachHang";
 import FrmNhanVien from "../components/FrmNhanVien";
+import FrmQuanLyPhong from "../components/FrmQuanLyPhong";
 
 function Main() {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ function Main() {
         {/* <TitleBar /> */}
         <div className="wrapper">
           {subNavSelected.subnav === "book" && <FrmDatPhong />}
+          {subNavSelected.subnav === "manage-room" && <FrmQuanLyPhong />}
           {navSelected.floor && <FrmTang />}
           {navSelected.equipment && <FrmThietBi />}
           {subNavSelected.subnav === "manager-service" && <FrmDichVu />}
