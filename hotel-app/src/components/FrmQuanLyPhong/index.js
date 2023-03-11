@@ -46,23 +46,62 @@ function FrmQuanLyPhong() {
   }, [phongSelected]);
 
   const onHandleAdd = async () => {
-    if (phongMoi.phong.maPhong === 0 && validate()) {
-      const { data } = await axios.post(addRoomRoute, phongMoi, {
+    if (!tempPhong.maPhong && validate()) {
+      for (let i = 0; i < tempThietBi.length; i++) {
+        if (tempThietBi[i].soLuong === 0) {
+          tempThietBi.splice(i, 1);
+        }
+      }
+      let phongMoiTemp = {
+        phong: {
+          maPhong: 0,
+          tenPhong: tempPhong.tenPhong,
+          moTaPhong: tempPhong.moTaPhong ? tempPhong.moTaPhong : "",
+          maLoaiPhong: tempPhong.maLoaiPhong || 1,
+          maTang: tempPhong.maTang || 1,
+          trangThaiPhong: true,
+          hinhAnhPhong: tempPhong.hinhAnhPhong || [],
+        },
+        thietBi: [...tempThietBi],
+      };
+      const res = await axios.post(addRoomRoute, phongMoiTemp, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "http://localhost:3000",
           "Access-Control-Allow-Credentials": "true",
         },
       });
-      if (data && data.length !== []) {
-        setDsPhong(data);
+      if (res.data && res.data.length !== []) {
+        setDsPhong(res.data);
         setPhongSelected(undefined);
       }
     }
   };
   const onHandleUpdate = async () => {
-    if (phongMoi.phong.maPhong !== 0 && validate()) {
-      const { data } = await axios.post(addRoomRoute, phongMoi, {
+    if (
+      tempPhong &&
+      tempPhong.maPhong &&
+      tempPhong.maPhong !== 0 &&
+      validateUpdate()
+    ) {
+      for (let i = 0; i < tempThietBi.length; i++) {
+        if (tempThietBi[i].soLuong === 0) {
+          tempThietBi.splice(i, 1);
+        }
+      }
+      let phongMoiTemp = {
+        phong: {
+          maPhong: tempPhong.maPhong,
+          tenPhong: tempPhong.tenPhong,
+          moTaPhong: tempPhong.moTaPhong ? tempPhong.moTaPhong : "",
+          maLoaiPhong: tempPhong.maLoaiPhong || 1,
+          maTang: tempPhong.maTang || 1,
+          trangThaiPhong: true,
+          hinhAnhPhong: tempPhong.hinhAnhPhong || [],
+        },
+        thietBi: [...tempThietBi],
+      };
+      const { data } = await axios.post(addRoomRoute, phongMoiTemp, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -77,8 +116,8 @@ function FrmQuanLyPhong() {
   };
 
   const validate = () => {
-    const { phong } = phongMoi;
-    if (phong.tenPhong === "") {
+    const { tenPhong } = tempPhong;
+    if (tenPhong === "") {
       setToast({
         header: "Tên phòng không được bỏ trống",
         content: "",
@@ -88,7 +127,7 @@ function FrmQuanLyPhong() {
       return false;
     }
     for (var i = 0; i < dsPhong.length; i++) {
-      if (phong.tenPhong === dsPhong[i].phong.tenPhong) {
+      if (tenPhong === dsPhong[i].phong.tenPhong) {
         setToast({
           header: "Tên phòng không được trùng",
           content: "",
@@ -97,6 +136,19 @@ function FrmQuanLyPhong() {
         });
         return false;
       }
+    }
+    return true;
+  };
+  const validateUpdate = () => {
+    const { tenPhong } = tempPhong;
+    if (tenPhong === "") {
+      setToast({
+        header: "Tên phòng không được bỏ trống",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+      return false;
     }
     return true;
   };
@@ -130,6 +182,22 @@ function FrmQuanLyPhong() {
     const { data } = await axios.get(`${getRoomsRoute}`, {}, config);
     setDsPhong(data);
   };
+  const onHandleChangeHinhAnhPhongFromTempPhong = (downloadURL) => {
+    if (
+      tempPhong &&
+      tempPhong.hinhAnhPhong &&
+      tempPhong.hinhAnhPhong.length > 0
+    ) {
+      setTempPhong({
+        ...tempPhong,
+        hinhAnhPhong: [...tempPhong.hinhAnhPhong, downloadURL],
+      });
+    } else {
+      setTempPhong({ ...tempPhong, hinhAnhPhong: [downloadURL] });
+    }
+  };
+  console.log(tempPhong);
+  console.log(tempThietBi);
   return (
     <StyleContainer>
       <h1>Quản lý phòng</h1>
@@ -192,6 +260,10 @@ function FrmQuanLyPhong() {
         <ImageSelect
           tempPhong={tempPhong}
           setShowImageSelect={setShowImageSelect}
+          setTempPhong={setTempPhong}
+          onHandleChangeHinhAnhPhongFromTempPhong={
+            onHandleChangeHinhAnhPhongFromTempPhong
+          }
         />
       )}
     </StyleContainer>

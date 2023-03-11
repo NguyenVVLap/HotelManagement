@@ -4,7 +4,13 @@ import { Form, Table } from "react-bootstrap";
 import { GrRadial, GrRadialSelected } from "react-icons/gr";
 import styled from "styled-components";
 
-function RoomEquipment({ tempThietBi, thietBiAll, thietBiMoi, setThietBiMoi }) {
+function RoomEquipment({
+  tempThietBi,
+  thietBiAll,
+  thietBiMoi,
+  setThietBiMoi,
+  setTempThietBi,
+}) {
   // const [quantity, setQuantity] = useState([{maThietBi: 0, soLuong: 0}]);
   useEffect(() => {
     let thietBi = [];
@@ -35,7 +41,7 @@ function RoomEquipment({ tempThietBi, thietBiAll, thietBiMoi, setThietBiMoi }) {
           }
           if (
             thietBiAll[i].maThietBi !== tempThietBi[j].thietBi.maThietBi &&
-            j === tempThietBi.length
+            j === tempThietBi.length - 1
           ) {
             thietBi = [
               ...thietBi,
@@ -50,12 +56,31 @@ function RoomEquipment({ tempThietBi, thietBiAll, thietBiMoi, setThietBiMoi }) {
       }
     }
     setThietBiMoi(thietBi);
+    if (!tempThietBi || tempThietBi.length === 0) {
+      for (let i = 0; i < thietBiAll.length; i++) {
+        tempThietBi = [
+          ...tempThietBi,
+          {
+            thietBi: {
+              maThietBi: thietBiAll[i].maThietBi,
+              tenThietBi: thietBiAll[i].tenThietBi,
+            },
+            soLuong: 0,
+          },
+        ];
+      }
+      setTempThietBi([...tempThietBi]);
+    }
   }, [tempThietBi]);
+  /* tempTheitBi = [{thietBi:{maThietBi: 0, tenThietBi:"", giaThietBi:""}}, soLuong: 0}, {}] */
   const onHandleChangeQuantity = (e) => {
-    for (let i = 0; i < thietBiMoi.length; i++) {
-      if (thietBiMoi[i].maThietBi == e.target.name) {
-        thietBiMoi[i] = { ...thietBiMoi[i], soLuong: e.target.value };
-        setThietBiMoi([...thietBiMoi]);
+    if (tempThietBi && tempThietBi.length && tempThietBi.length > 0) {
+      for (let i = 0; i < tempThietBi.length; i++) {
+        if (tempThietBi[i].thietBi.maThietBi == e.target.name) {
+          tempThietBi[i] = { ...tempThietBi[i], soLuong: e.target.value };
+
+          setTempThietBi([...tempThietBi]);
+        }
       }
     }
   };
@@ -99,7 +124,7 @@ const StyledContainer = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
   height: 200px;
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   position: relative;

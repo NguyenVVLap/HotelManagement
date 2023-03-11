@@ -5,23 +5,125 @@ import { Button, Card, Carousel, CloseButton, Table } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { GrAdd } from "react-icons/gr";
 import styled from "styled-components";
+import { storage } from "../../../utils/firebase-config";
+import { firebase } from "../../../utils/firebase-config";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  uploadBytes,
+} from "firebase/storage";
+import { v4 } from "uuid";
 
-function ImageSelect({ tempPhong, setShowImageSelect }) {
+function ImageSelect({
+  tempPhong,
+  setShowImageSelect,
+  onHandleChangeHinhAnhPhongFromTempPhong,
+  setTempPhong,
+}) {
   const [hinhAnhMoi, setHinhAnhMoi] = useState([]);
+  const [hinhAnhSelectedMoi, setHinhAnhSelectedMoi] = useState([]);
+  const [filesUpload, setFilesUpload] = useState([]);
+  const [previewHinhAnhSelectedMoi, setPreviewHinhAnhSelectedMoi] = useState(
+    []
+  );
   const inputFile = useRef(null);
   useEffect(() => {
-    setHinhAnhMoi(tempPhong.hinhAnhPhong);
+    if (
+      tempPhong &&
+      tempPhong.hinhAnhPhong &&
+      tempPhong.hinhAnhPhong.length > 0
+    ) {
+      let temp = [...tempPhong.hinhAnhPhong];
+      setHinhAnhMoi([...temp]);
+    }
   }, [tempPhong]);
-
   const onButtonClick = () => {
-    // `current` points to the mounted file input element
     inputFile.current.click();
   };
   const handleFileUpload = (e) => {
     const { files } = e.target;
-    if (files && files.length) {
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        let fileURL = URL.createObjectURL(files[i]);
+        if (checkImageUploadExist(fileURL)) {
+          setPreviewHinhAnhSelectedMoi((prev) => [...prev, fileURL]);
+          setFilesUpload((prev) => [...prev, files[i]]);
+        }
+        // console.log(pr);
+        // setHinhAnhSelectedMoi((prev) => [...prev, files[i]]);
+        // const imageRef = ref(storage, `image/${files[i].name + v4()}`);
+        // uploadBytes(imageRef, files[i]).then((res) => {
+        //   console.log(res);
+        // });
+      }
     }
   };
+  const checkImageUploadExist = (img) => {
+    for (let i = 0; i < previewHinhAnhSelectedMoi.length; i++) {
+      if (previewHinhAnhSelectedMoi[i] == img) {
+        return false;
+      }
+    }
+    return true;
+  };
+  const onHandleDeleteSelectHinh = (img) => {
+    for (let i = 0; i < previewHinhAnhSelectedMoi.length; i++) {
+      if (previewHinhAnhSelectedMoi[i] == img) {
+        previewHinhAnhSelectedMoi.splice(i, 1);
+        setPreviewHinhAnhSelectedMoi([...previewHinhAnhSelectedMoi]);
+        setFilesUpload([]);
+        setHinhAnhSelectedMoi([]);
+        return;
+      }
+    }
+  };
+  const onHandleDeleteSelectedHinh = (img) => {
+    for (let i = 0; i < hinhAnhMoi.length; i++) {
+      if (hinhAnhMoi[i] == img) {
+        hinhAnhMoi.splice(i, 1);
+        setTempPhong((prev) => {
+          return { ...prev, hinhAnhPhong: [...hinhAnhMoi] };
+        });
+        return;
+      }
+    }
+  };
+  const onHandleSaveImage = async () => {
+    if (filesUpload && filesUpload.length > 0) {
+      onHandleUploadFilesToFirebase();
+      setHinhAnhSelectedMoi([]);
+      setPreviewHinhAnhSelectedMoi([]);
+      setFilesUpload([]);
+    }
+    // let temp = [...hinhAnhMoi, ...hinhAnhSelectedMoi];
+    // tempPhong.hinhAnhPhong = [...temp];
+    // setHinhAnhMoi
+    // console.log("in function", [...hinhAnhMoi, ...hinhAnhSelectedMoi]);
+
+    // setHinhAnhSelectedMoi([]);
+    // setFilesUpload([]);
+    // setPreviewHinhAnhSelectedMoi([]);
+  };
+  // console.log("out function", [...hinhAnhMoi, ...hinhAnhSelectedMoi]);
+
+  const onHandleUploadFilesToFirebase = () => {
+    for (let i = 0; i < filesUpload.length; i++) {
+      const storageRef = ref(storage, `files/${filesUpload[i].name + v4()}`);
+      const uploadTask = uploadBytesResumable(storageRef, filesUpload[i]);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {},
+        async () => {
+          await getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            onHandleChangeHinhAnhPhongFromTempPhong(downloadURL);
+          });
+        }
+      );
+    }
+  };
+  // console.log(hinhAnhSelectedMoi);
   return (
     <StyledContainer>
       <div className="container-styled">
@@ -39,7 +141,21 @@ function ImageSelect({ tempPhong, setShowImageSelect }) {
                     <Carousel.Item>
                       <img
                         key={index}
-                        className="d-block w-100"
+                        className="d-block"
+                        src={img}
+                        alt={`Hình ${index}`}
+                      />
+                    </Carousel.Item>
+                  );
+                })}
+              {previewHinhAnhSelectedMoi &&
+                previewHinhAnhSelectedMoi.length > 0 &&
+                previewHinhAnhSelectedMoi.map((img, index) => {
+                  return (
+                    <Carousel.Item>
+                      <img
+                        key={index}
+                        className="d-block"
                         src={img}
                         alt={`Hình ${index}`}
                       />
@@ -50,16 +166,97 @@ function ImageSelect({ tempPhong, setShowImageSelect }) {
           </div>
           <div className="image-added">
             {!hinhAnhMoi || hinhAnhMoi.length === 0 ? (
-              <p>Chưa chọn phòng</p>
+              <div className="list-image-selected">
+                <Card>
+                  <Card.Header>Thêm hình</Card.Header>
+                  <Card.Body>
+                    <div className="list-image">
+                      {previewHinhAnhSelectedMoi &&
+                        previewHinhAnhSelectedMoi.length > 0 &&
+                        previewHinhAnhSelectedMoi.map((img, index) => {
+                          return (
+                            <div className="image-item" key={index}>
+                              <AiFillCloseCircle
+                                style={{
+                                  color: "red",
+                                  fontSize: "2rem",
+                                  cursor: "pointer",
+                                  position: "absolute",
+                                  top: 0,
+                                  right: 0,
+                                }}
+                                onClick={() => onHandleDeleteSelectHinh(img)}
+                              />
+                              <img
+                                key={index}
+                                className="d-block"
+                                src={img}
+                                alt={`Hình ${index}`}
+                              />
+                            </div>
+                          );
+                        })}
+                      <div className="add-image-btn">
+                        <input
+                          type="file"
+                          id="file"
+                          accept="image/png, image/jpeg"
+                          ref={inputFile}
+                          multiple={true}
+                          onChange={handleFileUpload}
+                          style={{ display: "none" }}
+                        />
+                        <button onClick={onButtonClick}>
+                          <GrAdd />
+                        </button>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
             ) : (
               <div className="list-image-selected">
                 <Card>
-                  <Card.Header>Danh sách phòng</Card.Header>
+                  <Card.Header>
+                    Danh sách hình ({hinhAnhMoi ? hinhAnhMoi.length : 0})
+                  </Card.Header>
                   <Card.Body>
                     <div className="list-image">
-                      {hinhAnhMoi.map((img, index) => {
+                      {hinhAnhMoi &&
+                        hinhAnhMoi.length > 0 &&
+                        hinhAnhMoi.map((img, index) => {
+                          return (
+                            <div className="image-item" key={index}>
+                              <AiFillCloseCircle
+                                style={{
+                                  color: "red",
+                                  fontSize: "2rem",
+                                  cursor: "pointer",
+                                  position: "absolute",
+                                  top: 0,
+                                  right: 0,
+                                }}
+                                onClick={() => onHandleDeleteSelectedHinh(img)}
+                              />
+                              <img
+                                key={index}
+                                className="d-block"
+                                src={img}
+                                alt={`Hình ${index}`}
+                              />
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </Card.Body>
+                </Card>
+                <Card>
+                  <Card.Header>Thêm hình</Card.Header>
+                  <Card.Body>
+                    <div className="list-image">
+                      {previewHinhAnhSelectedMoi.map((img, index) => {
                         return (
-                          <div className="image-item">
+                          <div className="image-item" key={index}>
                             <AiFillCloseCircle
                               style={{
                                 color: "red",
@@ -69,10 +266,11 @@ function ImageSelect({ tempPhong, setShowImageSelect }) {
                                 top: 0,
                                 right: 0,
                               }}
+                              onClick={() => onHandleDeleteSelectHinh(img)}
                             />
                             <img
                               key={index}
-                              className="d-block w-100"
+                              className="d-block"
                               src={img}
                               alt={`Hình ${index}`}
                             />
@@ -101,13 +299,19 @@ function ImageSelect({ tempPhong, setShowImageSelect }) {
           </div>
         </div>
         <div className="btn-container">
-          {hinhAnhMoi.length > 0 ? (
-            <Button variant="primary" type="submit" onClick={() => {}}>
-              Chọn {hinhAnhMoi.length}
+          {filesUpload && filesUpload.length > 0 ? (
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={() => {
+                onHandleSaveImage();
+              }}
+            >
+              Thêm
             </Button>
           ) : (
-            <Button variant="secondary" type="submit">
-              Chọn {hinhAnhMoi.length}
+            <Button variant="secondary" type="submit" disabled={true}>
+              Thêm
             </Button>
           )}
         </div>
@@ -170,7 +374,7 @@ const StyledContainer = styled.div`
         width: 100%;
         background-color: rgba(0, 0, 0, 0.3);
         img {
-          width: 100%;
+          width: 100px;
           height: 300px;
           max-height: 100%;
           min-width: 100%;
@@ -183,11 +387,12 @@ const StyledContainer = styled.div`
         .list-image-selected {
           .list-image {
             display: flex;
+            flex-wrap: wrap;
             gap: 0.5rem;
             .image-item {
               position: relative;
               img {
-                width: 30%;
+                width: 200px;
                 height: 100px;
                 max-height: 100%;
                 min-width: 100%;
@@ -197,7 +402,8 @@ const StyledContainer = styled.div`
             }
             .add-image-btn {
               display: flex;
-              width: 100px;
+              width: 200px;
+              height: 100px;
               align-items: center;
               justify-content: center;
               border-style: dashed;
