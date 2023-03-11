@@ -12,7 +12,7 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import SystemUpdateAltOutlinedIcon from '@mui/icons-material/SystemUpdateAltOutlined';
-import { addDichVu, addKhachHang, getAllKhachHangRoute, getAllServiceRoute, timKiemDichVu, timKiemKhachHang, updateDichVu, updateKhachHang } from '../../utils/APIRoutes';
+import { addKhachHang, getAllKhachHangRoute, timKiemKhachHang, updateKhachHang } from '../../utils/APIRoutes';
 import axios from 'axios';
 function FrmKhachHang() {
     const [toast, setToast] = useState(null);

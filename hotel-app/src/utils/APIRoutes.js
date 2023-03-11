@@ -30,3 +30,8 @@ export const getAllKhachHangRoute = `${host}/api/khachhang`;
 export const addKhachHang = `${host}/api/khachhang`;
 export const updateKhachHang = `${host}/api/khachhang`;
 export const timKiemKhachHang = `${host}/api/khachhang/timKiemKhachHang`;
+//Employee
+export const addNhanVien = `${host}/api/nhanvien`;
+export const getAllNhanVienRoute = `${host}/api/nhanvien`;
+export const updateNhanVien = `${host}/api/nhanvien`;
+export const timNhanVien = `${host}/api/nhanvien/timKiemNhanVien`;
