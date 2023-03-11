@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.example.hotelserver.entity.LoaiPhong;
 
 @Repository
-public interface RoomTypeRepo extends JpaRepository<LoaiPhong, Long>{
+public interface LoaiPhongRepo extends JpaRepository<LoaiPhong, Long>{
 }

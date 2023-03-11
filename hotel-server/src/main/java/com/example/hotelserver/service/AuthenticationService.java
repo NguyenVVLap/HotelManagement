@@ -62,9 +62,6 @@ public class AuthenticationService {
 		} else {
 			return null;
 		}
-		
-		
-		
 	}
 	
 	public String changeRole(String username, String password, String roleName) {
