@@ -1,5 +1,8 @@
 ﻿use khachsan
 
+delete from dich_vu
+delete from nhan_vien
+
 delete from tai_khoan
 delete from khach_hang
 delete from vai_tro
@@ -10,6 +13,8 @@ delete from thiet_bi;
 delete from phong;
 delete from tang;
 delete from loai_phong;
+
+select * from tai_khoan
 
 Insert into loai_phong(ma_loai_phong, suc_chua, so_giuong, mang_thu_cung, gia_loai_phong, ten_loai_phong, duoc_hut_thuoc) values
 (1, 1, 1, 1, 100000, 'Single Room', 1),
