@@ -148,7 +148,7 @@ function Register() {
         {
           hoTen,
           cccd,
-          soDienThoai,
+          soDienThoai: "+84" + soDienThoai,
           diaChi,
           email,
           matKhau,
@@ -224,7 +224,6 @@ function Register() {
 
     return true;
   };
-  console.log("OTP[]", otp);
   return (
     <>
       <Container>

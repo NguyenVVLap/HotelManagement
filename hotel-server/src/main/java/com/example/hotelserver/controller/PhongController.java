@@ -96,7 +96,7 @@ public class PhongController {
 	public ResponseEntity<List<Map<String, Object>>> timKiemPhong(@RequestBody Map<String, Object> request) {
 		List<Map<String, Object>> results = new ArrayList<>();
 		if (request.get("theo").toString().equals("Theo tên")) {
-			return  new ResponseEntity<List<Map<String, Object>>>( phongService.timPhongTheoTenLike(request.get("keyword").toString()), HttpStatus.OK);
+			results = phongService.timPhongTheoTenLike(request.get("keyword").toString());
 		} else if (request.get("theo").toString().equals("Theo mã")) {
 			try {
 				results = (phongService.timPhongTheoMa(Long.parseLong(request.get("keyword").toString())));		
