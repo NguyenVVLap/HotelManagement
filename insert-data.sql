@@ -142,7 +142,6 @@ Insert into thiet_bi(ma_thiet_bi, ten_thiet_bi, gia_thiet_bi) values
 (5, N'Remote Máy lạnh', 100000),
 (6, N'Bàn trang điểm', 5000000);
 
-
 Insert into phong_thiet_bi(ma_thiet_bi, so_luong, ma_phong) values
 (1, 1, 1), 
 (2, 1, 1),

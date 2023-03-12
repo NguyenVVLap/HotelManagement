@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.example.hotelserver.entity.PhongThietBi;
 import com.example.hotelserver.entity.PhongThietBiPK;
-import com.example.hotelserver.entity.Tang;
 
 @Repository
 public interface PhongThietBiRepo extends JpaRepository<PhongThietBi, PhongThietBiPK>{

@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-public class ApplicationConfig1 {
+public class ApplicationConfig {
 	
 	private final TaiKhoanRepo repository;
 	

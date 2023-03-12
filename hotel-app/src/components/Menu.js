@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { BsDoorOpen } from "react-icons/bs";
 import FastfoodOutlinedIcon from "@mui/icons-material/FastfoodOutlined";
-import PermContactCalendarOutlinedIcon from '@mui/icons-material/PermContactCalendarOutlined';
-import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
-import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
+import PermContactCalendarOutlinedIcon from "@mui/icons-material/PermContactCalendarOutlined";
+import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import Logo from "../assets/logo.png";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
@@ -62,32 +62,36 @@ function Menu({
           {navSelected.room && (
             <div className="sub-menu-container">
               <button
-                className={`btn-sub ${subNavSelected.subnav === "book" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected.subnav === "book" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("book", "room")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Đặt phòng</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected.subnav === "check-in" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected.subnav === "check-in" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("check-in", "room")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Nhận phòng</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected.subnav === "cancel" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected.subnav === "cancel" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("cancel", "room")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Hủy đặt phòng</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected.subnav === "manage-room" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected.subnav === "manage-room" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("manage-room", "room")}
               >
                 <BsDoorOpen />
@@ -135,8 +139,10 @@ function Menu({
           {navSelected.guest && (
             <div className="sub-menu-container">
               <button
-                className={`btn-sub ${subNavSelected.subnav === "manager-guest" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected.subnav === "manager-guest" &&
+                  "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("manager-guest", "guest")}
               >
                 <ManageAccountsOutlinedIcon />
@@ -160,8 +166,10 @@ function Menu({
           {navSelected.staff && (
             <div className="sub-menu-container">
               <button
-                className={`btn-sub ${subNavSelected.subnav === "manager-staff" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected.subnav === "manager-staff" &&
+                  "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("manager-staff", "staff")}
               >
                 <GroupAddOutlinedIcon />
@@ -181,25 +189,28 @@ function Menu({
           {navSelected.bill && (
             <div className="sub-menu-container">
               <button
-                className={`btn-sub ${subNavSelected.subnav === "add-bill" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected.subnav === "add-bill" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("add-bill", "bill")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Lập hóa đơn</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected.subnav === "manage-booking" &&
+                className={`btn-sub ${
+                  subNavSelected.subnav === "manage-booking" &&
                   "btn-sub-selected"
-                  }`}
+                }`}
                 onClick={() => onHandleSelectedSubNav("manage-booking", "bill")}
               >
                 <BsDoorOpen />
                 <p className="btn-sub-title">Quản lý</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected.subnav === "record" && "btn-sub-selected"
-                  }`}
+                className={`btn-sub ${
+                  subNavSelected.subnav === "record" && "btn-sub-selected"
+                }`}
                 onClick={() => onHandleSelectedSubNav("record", "bill")}
               >
                 <BsDoorOpen />
@@ -220,9 +231,13 @@ function Menu({
           {navSelected.service && (
             <div className="sub-menu-container">
               <button
-                className={`btn-sub ${subNavSelected.subnav === "manager-service" && "btn-sub-selected"
-                  }`}
-                onClick={() => onHandleSelectedSubNav("manager-service", "service")}
+                className={`btn-sub ${
+                  subNavSelected.subnav === "manager-service" &&
+                  "btn-sub-selected"
+                }`}
+                onClick={() =>
+                  onHandleSelectedSubNav("manager-service", "service")
+                }
               >
                 <ManageAccountsOutlinedIcon />
                 <p className="btn-sub-title">Quản lý dịch vụ</p>

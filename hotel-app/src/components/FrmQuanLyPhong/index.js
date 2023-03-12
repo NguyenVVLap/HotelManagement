@@ -71,8 +71,8 @@ function FrmQuanLyPhong() {
           "Access-Control-Allow-Credentials": "true",
         },
       });
-      if (res.data && res.data.length !== []) {
-        setDsPhong(res.data);
+      if (res.data) {
+        loadPhongFromDB();
         setPhongSelected(undefined);
       }
     }
@@ -108,8 +108,8 @@ function FrmQuanLyPhong() {
           "Access-Control-Allow-Credentials": "true",
         },
       });
-      if (data && data.length !== []) {
-        setDsPhong(data);
+      if (data) {
+        loadPhongFromDB();
         setPhongSelected(undefined);
       }
     }
@@ -196,8 +196,6 @@ function FrmQuanLyPhong() {
       setTempPhong({ ...tempPhong, hinhAnhPhong: [downloadURL] });
     }
   };
-  console.log(tempPhong);
-  console.log(tempThietBi);
   return (
     <StyleContainer>
       <h1>Quản lý phòng</h1>
@@ -223,6 +221,8 @@ function FrmQuanLyPhong() {
           search={search}
           setSearch={setSearch}
           onHandleSearch={onHandleSearch}
+          tempTang={tempTang}
+          tempLoaiPhong={tempLoaiPhong}
         />
         <TableData
           dsPhong={dsPhong}

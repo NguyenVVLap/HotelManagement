@@ -18,4 +18,10 @@ public interface PhongRepo extends JpaRepository<Phong, Long>{
 	List<Phong> findByTenPhongLike(@Param("tenPhong") String tenPhong);
 	
 	Phong findByTenPhong(String tenPhong);
+	
+	@Query(nativeQuery = true, value = "select * from phong p where p.ma_tang = :maTang")
+	List<Phong> findByMaTang(@Param("maTang") int maTang);
+	
+	@Query(nativeQuery = true, value = "select * from phong p where p.ma_loai_phong = :maLoaiPhong")
+	List<Phong> findByMaLoaiPhong(@Param("maLoaiPhong") long maLoaiPhong);
 }

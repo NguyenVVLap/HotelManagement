@@ -56,7 +56,7 @@ public class PhongServiceImpl implements PhongService{
 		for (Phong room : rooms) {
 			Map<String, Object> map = new HashMap<>();
 			List<PhongThietBi> dsThietBiPhong = phongThietBiRepo.findByMaPhong(room.getMaPhong());
-			List<PhongThietBi> dsThietBiPhongEdited = phongThietBiRepo.findByMaPhong(room.getMaPhong());
+			List<PhongThietBi> dsThietBiPhongEdited =  new ArrayList<>();
 			
 			for (PhongThietBi thietBiPhong : dsThietBiPhong) {
 				thietBiPhong.setPhong(null);
@@ -107,5 +107,122 @@ public class PhongServiceImpl implements PhongService{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<Map<String, Object>> timPhongTheoMaTang(int maTang) {
+		List<Phong> rooms = phongRepo.findByMaTang(maTang);
+		List<Map<String, Object>> result = new ArrayList<>();
+		for (Phong room : rooms) {
+			Map<String, Object> map = new HashMap<>();
+//			List<PhongThietBi> dsThietBiPhong = phongThietBiRepo.findByMaPhong(room.getMaPhong());
+			List<PhongThietBi> dsThietBiPhongEdited = phongThietBiRepo.findByMaPhong(room.getMaPhong());
+//			
+//			for (PhongThietBi thietBiPhong : dsThietBiPhong) {
+//				thietBiPhong.setPhong(null);
+//				dsThietBiPhongEdited.add(thietBiPhong);
+//			}
+			
+			PhongResponseDto phongResponseDto = new PhongResponseDto(room.getMaPhong()
+					, room.getTenPhong(), room.isTrangThaiPhong(), room.getHinhAnhPhong()
+					, room.getMoTaPhong()
+					, room.getTang().getMaTang(), room.getTang().getTenTang()
+					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
+					, room.getLoaiPhong().getGiaLoaiPhong(), room.getLoaiPhong().getSucChua()
+					, room.getLoaiPhong().isDuocHutThuoc(), room.getLoaiPhong().isMangThuCung()
+					, room.getLoaiPhong().getSoGiuong());
+			map.put("phong", phongResponseDto);
+			map.put("dsThietBiPhong", dsThietBiPhongEdited);
+			
+			result.add(map);
+		}
+		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> timPhongTheoMaLoaiPhong(long maLoaiPhong) {
+		List<Phong> rooms = phongRepo.findByMaLoaiPhong(maLoaiPhong);
+		List<Map<String, Object>> result = new ArrayList<>();
+		for (Phong room : rooms) {
+			Map<String, Object> map = new HashMap<>();
+			List<PhongThietBi> dsThietBiPhong = phongThietBiRepo.findByMaPhong(room.getMaPhong());
+			List<PhongThietBi> dsThietBiPhongEdited = new ArrayList<>();
+			
+			for (PhongThietBi thietBiPhong : dsThietBiPhong) {
+				thietBiPhong.setPhong(null);
+				dsThietBiPhongEdited.add(thietBiPhong);
+			}
+			
+			PhongResponseDto phongResponseDto = new PhongResponseDto(room.getMaPhong()
+					, room.getTenPhong(), room.isTrangThaiPhong(), room.getHinhAnhPhong()
+					, room.getMoTaPhong()
+					, room.getTang().getMaTang(), room.getTang().getTenTang()
+					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
+					, room.getLoaiPhong().getGiaLoaiPhong(), room.getLoaiPhong().getSucChua()
+					, room.getLoaiPhong().isDuocHutThuoc(), room.getLoaiPhong().isMangThuCung()
+					, room.getLoaiPhong().getSoGiuong());
+			map.put("phong", phongResponseDto);
+			map.put("dsThietBiPhong", dsThietBiPhongEdited);
+			result.add(map);
+		}
+		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> timPhongTheoTenLike(String tenPhong) {
+		List<Phong> rooms = phongRepo.findByTenPhongLike(tenPhong);
+		List<Map<String, Object>> result = new ArrayList<>();
+		for (Phong room : rooms) {
+			Map<String, Object> map = new HashMap<>();
+			List<PhongThietBi> dsThietBiPhong = phongThietBiRepo.findByMaPhong(room.getMaPhong());
+			List<PhongThietBi> dsThietBiPhongEdited = new ArrayList<>();
+			
+			for (PhongThietBi thietBiPhong : dsThietBiPhong) {
+				thietBiPhong.setPhong(null);
+				dsThietBiPhongEdited.add(thietBiPhong);
+			}
+			
+			PhongResponseDto phongResponseDto = new PhongResponseDto(room.getMaPhong()
+					, room.getTenPhong(), room.isTrangThaiPhong(), room.getHinhAnhPhong()
+					, room.getMoTaPhong()
+					, room.getTang().getMaTang(), room.getTang().getTenTang()
+					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
+					, room.getLoaiPhong().getGiaLoaiPhong(), room.getLoaiPhong().getSucChua()
+					, room.getLoaiPhong().isDuocHutThuoc(), room.getLoaiPhong().isMangThuCung()
+					, room.getLoaiPhong().getSoGiuong());
+			map.put("phong", phongResponseDto);
+			map.put("dsThietBiPhong", dsThietBiPhongEdited);
+			result.add(map);
+		}
+		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> timPhongTheoMa(long maPhong) {
+		Phong room = phongRepo.findById(maPhong).get();
+		List<Map<String, Object>> result = new ArrayList<>();
+		if (room != null) {
+			Map<String, Object> map = new HashMap<>();
+			List<PhongThietBi> dsThietBiPhong = phongThietBiRepo.findByMaPhong(room.getMaPhong());
+			List<PhongThietBi> dsThietBiPhongEdited = new ArrayList<>();
+			
+			for (PhongThietBi thietBiPhong : dsThietBiPhong) {
+				thietBiPhong.setPhong(null);
+				dsThietBiPhongEdited.add(thietBiPhong);
+			}
+			
+			PhongResponseDto phongResponseDto = new PhongResponseDto(room.getMaPhong()
+					, room.getTenPhong(), room.isTrangThaiPhong(), room.getHinhAnhPhong()
+					, room.getMoTaPhong()
+					, room.getTang().getMaTang(), room.getTang().getTenTang()
+					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
+					, room.getLoaiPhong().getGiaLoaiPhong(), room.getLoaiPhong().getSucChua()
+					, room.getLoaiPhong().isDuocHutThuoc(), room.getLoaiPhong().isMangThuCung()
+					, room.getLoaiPhong().getSoGiuong());
+			map.put("phong", phongResponseDto);
+			map.put("dsThietBiPhong", dsThietBiPhongEdited);
+			result.add(map);
+		}
+		return result;
 	}
 }

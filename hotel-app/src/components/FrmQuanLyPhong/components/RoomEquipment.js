@@ -74,12 +74,35 @@ function RoomEquipment({
   }, [tempThietBi]);
   /* tempTheitBi = [{thietBi:{maThietBi: 0, tenThietBi:"", giaThietBi:""}}, soLuong: 0}, {}] */
   const onHandleChangeQuantity = (e) => {
-    if (tempThietBi && tempThietBi.length && tempThietBi.length > 0) {
-      for (let i = 0; i < tempThietBi.length; i++) {
-        if (tempThietBi[i].thietBi.maThietBi == e.target.name) {
-          tempThietBi[i] = { ...tempThietBi[i], soLuong: e.target.value };
-
-          setTempThietBi([...tempThietBi]);
+    if (thietBiAll && thietBiAll.length && thietBiAll.length > 0) {
+      for (let i = 0; i < thietBiAll.length; i++) {
+        if (thietBiAll[i].maThietBi == e.target.name) {
+          let newTempThietBi = {
+            thietBi: {
+              maThietBi: thietBiAll[i].maThietBi,
+              tenThietBi: thietBiAll[i].tenThietBi,
+              giaThietBi: thietBiAll[i].giaThietBi,
+            },
+            soLuong: e.target.value,
+          };
+          if (tempThietBi && tempThietBi.length && tempThietBi.length > 0) {
+            for (let j = 0; j < tempThietBi.length; j++) {
+              if (
+                tempThietBi[j].thietBi.maThietBi ==
+                newTempThietBi.thietBi.maThietBi
+              ) {
+                tempThietBi[j] = {
+                  ...tempThietBi[j],
+                  soLuong: newTempThietBi.soLuong,
+                };
+                setTempThietBi([...tempThietBi]);
+              } else if (j === tempThietBi.length - 1) {
+                setTempThietBi([...tempThietBi, newTempThietBi]);
+              }
+            }
+          } else {
+            setTempThietBi([newTempThietBi]);
+          }
         }
       }
     }

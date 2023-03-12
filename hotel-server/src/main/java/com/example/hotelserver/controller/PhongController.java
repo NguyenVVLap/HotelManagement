@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.hotelserver.dto.PhongRequestDto;
 import com.example.hotelserver.entity.LoaiPhong;
 import com.example.hotelserver.entity.Phong;
 import com.example.hotelserver.entity.PhongThietBi;
@@ -49,7 +48,7 @@ public class PhongController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<List<Map<String, Object>>> getAllPhong(@RequestBody Map<String, Object> request) {
+	public ResponseEntity<Boolean> savePhong(@RequestBody Map<String, Object> request) {
 		try {
 			
 			Map<String, Object> phongRequestDto = (Map<String, Object>) request.get("phong");
@@ -80,17 +79,36 @@ public class PhongController {
 						 , dsPhongEdited);
 				
 				if (phongService.themPhong(phong, dsPhongEdited)) {
-					return new ResponseEntity<List<Map<String,Object>>>(phongService.layTatCaPhong(), HttpStatus.OK);
+					return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 				}
 				 
 			}
 				
 		} catch (Exception e) {
 			System.out.println("Error at PhongController " + e);
-			return new ResponseEntity<List<Map<String,Object>>>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<List<Map<String,Object>>>(new ArrayList<>(), HttpStatus.OK);
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 
+	}
+	
+	@PostMapping("/timKiemPhong")
+	public ResponseEntity<List<Map<String, Object>>> timKiemPhong(@RequestBody Map<String, Object> request) {
+		List<Map<String, Object>> results = new ArrayList<>();
+		if (request.get("theo").toString().equals("Theo tên")) {
+			return  new ResponseEntity<List<Map<String, Object>>>( phongService.timPhongTheoTenLike(request.get("keyword").toString()), HttpStatus.OK);
+		} else if (request.get("theo").toString().equals("Theo mã")) {
+			try {
+				results = (phongService.timPhongTheoMa(Long.parseLong(request.get("keyword").toString())));		
+			} catch (Exception e) {
+				System.out.println("Error when parse to long " + e);
+			}
+		} else if (request.get("theo").toString().equals("Theo tầng")) {
+			results = phongService.timPhongTheoMaTang(Integer.parseInt(request.get("keyword").toString()));
+		} else if (request.get("theo").toString().equals("Theo loại phòng")) {
+			results = phongService.timPhongTheoMaLoaiPhong(Long.parseLong(request.get("keyword").toString()));
+		}
+		return new ResponseEntity<List<Map<String, Object>>>(results, HttpStatus.OK);
 	}
 
 }
