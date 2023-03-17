@@ -14,7 +14,7 @@ import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import SystemUpdateAltOutlinedIcon from '@mui/icons-material/SystemUpdateAltOutlined';
 import { addDichVu, getAllServiceRoute, timKiemDichVu, updateDichVu } from '../../utils/APIRoutes';
 import axios from 'axios';
-function FrmDichVu() {
+function FrmTimKiemDichVu() {
     const [toast, setToast] = useState(null);
     const [dichVuSelected, setDichVuSelected] = useState(undefined);
 
@@ -55,17 +55,7 @@ function FrmDichVu() {
         // console.log("data dich vu load from database", data);
         setDsDichVu(data);
     }
-    const handleSelected = (dichVu) => {
-        if (dichVuSelected && dichVu.maDichVu === dichVuSelected.maDichVu) {
-            setDichVuSelected(undefined);
-        }
-        else {
-            setDichVuSelected(dichVu)
-        }
-    }
-    const handleOnChange = (e) => {
-        setDichVuMoi({ ...dichvuMoi, [e.target.name]: e.target.value });
-    }
+
     const handleOnchangeSelectedCombobox = (e, value) => {
         // console.log("Selected combobox: ", value);
         setSearch({ ...search, theo: value })
@@ -75,86 +65,7 @@ function FrmDichVu() {
         setSearch({ ...search, keyword: e.target.value })
     }
 
-    const validate = () => {
-        const { tenDichVu, giaDichVu } = dichvuMoi;
-        if (tenDichVu === "") {
-            setToast({
-                header: "Tên dịch vụ không được bỏ trống",
-                content: "",
-                bg: "danger",
-                textColor: "#fff",
-            });
-            return false;
-        }
-        for (var i = 0; i < dsDichVu.length; i++) {
-            if (tenDichVu == dsDichVu[i].tenDichVu || giaDichVu === dsDichVu[i].giaDichVu) {
-                setToast({
-                    header: "Tên và giá dịch vụ không được trùng",
-                    content: "",
-                    bg: "danger",
-                    textColor: "#fff",
-                });
-                return false;
-            }
-        }
-        if (giaDichVu <= 0) {
-            setToast({
-                header: "Giá dịch vụ phải lớn hơn 0",
-                content: "",
-                bg: "danger",
-                textColor: "#fff",
-            });
-            return false;
-        }
-        return true;
-    };
-    const handleAddDichVu = async (e) => {
-        e.preventDefault();
-        if (dichvuMoi.maDichVu === 0 && validate()) {
-            const { data } = await axios.post(addDichVu, dichvuMoi, {}, {
-                headers: {
-                    "Content-Type": "application/json;charset=UTF-8",
-                    "Access-Control-Allow-Origin": "http://localhost:3000",
-                    "Access-Control-Allow-Credentials": "true",
-                },
-            })
-            if (data && data.length !== []) {
-                setDsDichVu(data);
-                setDichVuMoi({
-                    ...dichvuMoi, maDichVu: 0,
-                    tenDichVu: "",
-                    giaDichVu: ""
-                })
-                setToast({
-                    header: "Thêm dịch vụ mới thành công",
-                    content: "",
-                    bg: "success",
-                    textColor: "#fff",
-                });
-            }
-        }
-    }
-    const handleUpdateDichVu = async () => {
-        if (dichvuMoi.maDichVu !== 0 && validate()) {
-            const { data } = await axios.post(updateDichVu, dichvuMoi, {
-                headers: {
-                    "Content-Type": "application/json;charset=UTF-8",
-                    "Access-Control-Allow-Origin": "http://localhost:3000",
-                    "Access-Control-Allow-Credentials": "true",
-                },
-            })
-            setToast({
-                header: "Cập nhật dịch vụ thành công",
-                content: "",
-                bg: "success",
-                textColor: "#fff",
-            });
-            if (data && data.length !== []) {
-                setDsDichVu(data);
-                setDichVuSelected(undefined);
-            }
-        }
-    }
+
     const handleSearchDichVu = async () => {
         const { data } = await axios.post(timKiemDichVu, search, {
             headers: {
@@ -175,26 +86,36 @@ function FrmDichVu() {
     return (
         <StyledContainer>
             <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
-                <Typography variant='h3'>Quản lý dịch vụ</Typography>
+                <Typography variant='h3'>Tìm dịch vụ</Typography>
             </Box>
-            <Paper elevation={15} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '10px', flexDirection: 'column', minHeight: '30%' }}>
-                <Box component='form' onSubmit={(e) => handleAddDichVu(e)} sx={{ width: '50%' }}>
-                    <TextField id="ma_dich_vu" name='ma_dich_vu' label="Mã dịch vụ" variant="outlined" fullWidth disabled value={dichvuMoi && dichvuMoi.maDichVu != 0 ? dichvuMoi.maDichVu : ""} />
-                    <TextField id="ten_dich_vu" name='tenDichVu' label="Tên dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.tenDichVu ? dichvuMoi.tenDichVu : ""} />
-                    <TextField id="gia_dich_vu" name='giaDichVu' label="Giá dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.giaDichVu ? dichvuMoi.giaDichVu : ""} />
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
-                        <Button type='submit' variant='contained' size='medium' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm dịch vụ</Button>
-                        <Button variant='contained' size='medium' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateDichVu()}>Cập nhật dịch vụ</Button>
-                        <Button variant='contained' size='medium' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshDichVu()}>Tải lại dữ liệu</Button>
-                    </Box>
+
+            {/* Thanh Search */}
+            <Box sx={{ display: 'flex', height: '100px', mt: '10px' }}>
+                <Box sx={{ width: '30%', alignItems: 'center', display: 'flex' }}>
+                    <TextField id="outlined-search" label="Nhập để tìm kiếm" type="search" fullWidth onChange={(e) => { handleChangeTextFieldSearch(e) }} />
+                </Box>
+                <Box sx={{ width: '30%', alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
+                    <Autocomplete
+                        onChange={(e, value) => { handleOnchangeSelectedCombobox(e, value) }}
+                        disablePortal
+                        id="combo-box-demo"
+                        options={['Theo mã dịch vụ', 'Theo tên dịch vụ']}
+                        sx={{ width: '100%' }}
+                        renderInput={(params) => <TextField  {...params} label="Tìm theo" disabled />}
+                    />
+                </Box>
+                <Box sx={{ alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
+                    <Button variant='contained' size='medium' endIcon={<SearchOutlinedIcon />} onClick={() => { handleSearchDichVu() }} >Tìm kiếm</Button>
+                </Box>
+                <Box sx={{ alignItems: 'center', display: 'flex', marginLeft: '5px' }}>
+                    <Button size='medium' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshDichVu() }}>Tải lại dữ liệu</Button>
                 </Box>
 
-            </Paper>
-
+            </Box>
 
 
             {/* Danh sách Dịch Vụ */}
-            <Paper elevation={24} sx={{ maxHeight: '60%', mt: '11px', overflow: 'auto' }}>
+            <Paper elevation={24} sx={{ maxHeight: '70%', mt: '11px', overflow: 'auto' }}>
                 <TableContainer component={Paper} elevation={15}>
                     <Table aria-label="user table">
                         <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
@@ -206,9 +127,7 @@ function FrmDichVu() {
                         </TableHead>
                         <TableBody>
                             {dsDichVu && dsDichVu.length > 0 ? dsDichVu.map((data) => (
-                                <TableRow key={data.maDichVu} onClick={() => handleSelected(data)} className={dichVuSelected && dichVuSelected.maDichVu === data.maDichVu
-                                    ? "row-selected"
-                                    : ""}>
+                                <TableRow key={data.maDichVu} >
                                     <TableCell component="th" scope="row">
                                         {data.maDichVu}
                                     </TableCell>
@@ -257,18 +176,12 @@ function FrmDichVu() {
     )
 }
 
-export default FrmDichVu
+export default FrmTimKiemDichVu
 const StyledContainer = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
   /* background-color: red; */
   padding: 20px;
-  table {
-    .row-selected {
-      
-        background: linear-gradient(to bottom, #ee0979, #ff6a00);
-      
-    }
-  }
+ 
 `;

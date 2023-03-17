@@ -11,6 +11,9 @@ import FrmThietBi from "../components/FrmThietBi";
 import FrmKhachHang from "../components/FrmKhachHang";
 import FrmNhanVien from "../components/FrmNhanVien";
 import FrmQuanLyPhong from "../components/FrmQuanLyPhong";
+import FrmTimKiemDichVu from "../components/FrmDichVu/TimKiemDichVu";
+import FrmTimKiemKhachHang from "../components/FrmKhachHang/TimKiemKhachHang";
+import FrmTimKiemNhanVien from "../components/FrmNhanVien/TimKiemNhanVien";
 
 function Main() {
   const navigate = useNavigate();
@@ -54,8 +57,11 @@ function Main() {
           {navSelected.floor && <FrmTang />}
           {navSelected.equipment && <FrmThietBi />}
           {subNavSelected.subnav === "manager-service" && <FrmDichVu />}
+          {subNavSelected.subnav === "search-service" && <FrmTimKiemDichVu />}
           {subNavSelected.subnav === "manager-guest" && <FrmKhachHang />}
+          {subNavSelected.subnav === "search-guest" && <FrmTimKiemKhachHang />}
           {subNavSelected.subnav === "manager-staff" && <FrmNhanVien />}
+          {subNavSelected.subnav === "search-staff" && <FrmTimKiemNhanVien />}
         </div>
       </div>
     </Container>

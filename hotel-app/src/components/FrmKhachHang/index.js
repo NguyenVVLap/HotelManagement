@@ -296,25 +296,7 @@ function FrmKhachHang() {
                 </Box>
 
             </Paper>
-            {/* Thanh Search */}
-            <Box sx={{ display: 'flex', height: '100px', mt: '10px' }}>
-                <Box sx={{ width: '50%', alignItems: 'center', display: 'flex' }}>
-                    <TextField id="outlined-search" label="Nhập để tìm kiếm" type="search" fullWidth onChange={(e) => { handleChangeTextFieldSearch(e) }} />
-                </Box>
-                <Box sx={{ width: '30%', alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
-                    <Autocomplete
-                        onChange={(e, value) => { handleOnchangeSelectedCombobox(e, value) }}
-                        disablePortal
-                        id="combo-box-demo"
-                        options={['Theo căn cước công dân', 'Theo họ tên']}
-                        sx={{ width: '100%' }}
-                        renderInput={(params) => <TextField  {...params} label="Tìm theo" disabled />}
-                    />
-                </Box>
-                <Box sx={{ width: '20%', alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
-                    <Button variant='contained' endIcon={<SearchOutlinedIcon />} size={'large'} onClick={() => { handleSearchKhachHang() }} >Tìm kiếm</Button>
-                </Box>
-            </Box>
+
 
 
             {/* Danh sách Dịch Vụ */}
