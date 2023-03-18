@@ -7,7 +7,7 @@ import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import Logo from "../assets/logo.png";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
-
+import SearchIcon from "@mui/icons-material/Search";
 function Menu({
   navSelected,
   setNavSelected,
@@ -147,6 +147,16 @@ function Menu({
                 <ManageAccountsOutlinedIcon />
                 <p className="btn-sub-title">Cập nhật</p>
               </button>
+              {/* Tìm kiếm khách hàng */}
+              <button
+                className={`btn-sub ${
+                  subNavSelected.subnav === "search-guest" && "btn-sub-selected"
+                }`}
+                onClick={() => onHandleSelectedSubNav("search-guest", "guest")}
+              >
+                <SearchIcon />
+                <p className="btn-sub-title">Tìm kiếm</p>
+              </button>
             </div>
           )}
         </button>
@@ -172,6 +182,15 @@ function Menu({
               >
                 <GroupAddOutlinedIcon />
                 <p className="btn-sub-title">Cập nhật</p>
+              </button>
+              <button
+                className={`btn-sub ${
+                  subNavSelected.subnav === "search-staff" && "btn-sub-selected"
+                }`}
+                onClick={() => onHandleSelectedSubNav("search-staff", "staff")}
+              >
+                <SearchIcon />
+                <p className="btn-sub-title">Tìm kiếm</p>
               </button>
             </div>
           )}
@@ -239,6 +258,19 @@ function Menu({
               >
                 <ManageAccountsOutlinedIcon />
                 <p className="btn-sub-title">Cập nhật</p>
+              </button>
+              {/* Search Dich Vu */}
+              <button
+                className={`btn-sub ${
+                  subNavSelected.subnav === "search-service" &&
+                  "btn-sub-selected"
+                }`}
+                onClick={() =>
+                  onHandleSelectedSubNav("search-service", "service")
+                }
+              >
+                <SearchIcon />
+                <p className="btn-sub-title">Tìm kiếm</p>
               </button>
             </div>
           )}

@@ -19,53 +19,69 @@ import { useEffect } from 'react';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import moment from 'moment/moment';
 import { parse } from 'date-fns';
-function FrmNhanVien() {
-    let currentDate = new Date();
-    let ngayHienTai = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
-    // console.log("Current date: ", `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`);
+function FrmTimKiemNhanVien() {
     // const [dateNgaySinh, setDateNgaySinh] = useState(dayjs('2001-04-30'))
-    // console.log("Dayjs:", dayjs(ngayHienTai));
     const [toast, setToast] = useState(null);
     const [dsNhanVien, setDsNhanVien] = useState(undefined);
     const [checkBoxKichHoat, setCheckBoxKichHoat] = useState("true");
     const [nhanVienSelected, setNhanVienSelected] = useState(undefined);
     const [nhanVienMoi, setNhanVienMoi] = useState({
         maNhanVien: 0,
-        hoTen: "s",
-        diaChi: "s",
+        hoTen: "",
+        diaChi: "",
         email: "",
         soDienThoai: "",
         cccd: "",
-        ngaySinh: dayjs(ngayHienTai),
+        ngaySinh: "",
         luongCoBan: 0,
-        ngayVaoLam: dayjs(ngayHienTai),
+        ngayVaoLam: "",
         matKhau: "",
         daKichHoat: true
     })
+    const [search, setSearch] = useState({
+        keyword: "",
+        theo: "Theo họ tên"
+    });
+    const handleChangeTextFieldSearch = (e) => {
 
+        setSearch({ ...search, keyword: e.target.value })
+    }
+    const handleChangePhoneSearch = (e) => {
 
-
-
-
-
+        setSearch({ ...search, keyword: "+84" + e.target.value })
+    }
+    const handleOnchangeSelectedCombobox = (e, value) => {
+        // console.log("Selected combobox: ", value);
+        setSearch({ ...search, theo: value })
+    }
     const handleRefeshNhanVien = () => {
         loadNhanVienFromDB();
-
     }
-
+    const handleSearchNhanVien = async () => {
+        // console.log("Search tìm kiếm :", search);
+        const { data } = await axios.post(timNhanVien, search, {
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8",
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+                "Access-Control-Allow-Credentials": "true",
+            },
+        });
+        if (data) {
+            setDsNhanVien(data);
+            setNhanVienSelected(undefined);
+        }
+    }
     useEffect(() => {
         // setNhanVienMoi({ ...nhanVienMoi, daKichHoat: checkBoxKichHoat })
         setNhanVienMoi({ ...nhanVienMoi, daKichHoat: checkBoxKichHoat === "false" ? false : true })
     }, [checkBoxKichHoat])
-
     const handleOnChange = (e) => {
         setNhanVienMoi({ ...nhanVienMoi, [e.target.name]: e.target.value });
     }
     const handlOnChangeNgayVaoLam = (date) => {
-        console.log("Ngày vào làm onchange :", date);
-        // console.log("Dayjs:", dayjs('2001-04-30'));
+        console.log("Ngày vào làm :", date);
+        console.log("Dayjs:", dayjs('2001-04-30'));
         setNhanVienMoi({ ...nhanVienMoi, ngayVaoLam: date })
-        // setNhanVienMoi({ ...nhanVienMoi, ngayVaoLam: dayjs(ngayHienTai) })
     }
     const handlOnChangeNgaySinh = (date) => {
 
@@ -147,13 +163,11 @@ function FrmNhanVien() {
         return true;
     };
     const handleAddNhanVienMoi = async () => {
-        const { maNhanVien, hoTen, diaChi, email, soDienThoai, cccd, ngaySinh, luongCoBan, ngayVaoLam, matKhau, daKichHoat } = nhanVienMoi
-
+        const { maNhanVien, hoTen, diaChi, email, soDienThoai, cccd, ngaySinh, luongCoBan, ngayVaoLam, matKhau, daKichHoat } = nhanVienMoi;
         const objectDataADD = {
             maNhanVien, hoTen, diaChi, email, soDienThoai: "+84" + soDienThoai, cccd, ngaySinh, luongCoBan, ngayVaoLam, matKhau, daKichHoat
         }
-        console.log("Nhan Vien Mới  :", objectDataADD);
-
+        console.log("Nhan Vien Moi dc add :", objectDataADD);
         if (nhanVienMoi.maNhanVien === 0 && validateAddNhanVien()) {
             const { data } = await axios.post(addNhanVien, objectDataADD, {}, {
                 headers: {
@@ -183,9 +197,9 @@ function FrmNhanVien() {
                         email: "",
                         soDienThoai: "",
                         cccd: "",
-                        ngaySinh: dayjs(ngayHienTai),
+                        ngaySinh: "",
                         luongCoBan: 0,
-                        ngayVaoLam: dayjs(ngayHienTai),
+                        ngayVaoLam: "",
                         matKhau: "",
                         daKichHoat: true
                     }
@@ -248,9 +262,9 @@ function FrmNhanVien() {
                 email: "",
                 soDienThoai: "",
                 cccd: "",
-                ngaySinh: dayjs(ngayHienTai),
+                ngaySinh: "",
                 luongCoBan: 0,
-                ngayVaoLam: dayjs(ngayHienTai),
+                ngayVaoLam: "",
                 matKhau: "",
                 daKichHoat: true
             })
@@ -376,136 +390,39 @@ function FrmNhanVien() {
     // console.log(" Date load từ database :", dsNhanVien && dsNhanVien[0].nhanvien.ngayVaoLam);
     // console.log("Kiểu dữ liệu Date load từ database :", dsNhanVien && typeof dsNhanVien[0].nhanvien.ngayVaoLam);
     // console.log("Nhan vien moi  :", nhanVienMoi);
-    // console.log("ngay vao lam :", nhanVienMoi.ngayVaoLam);
+
     return (
         <StyledContainer>
             <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
-                <Typography variant='h3'>Quản lý nhân viên</Typography>
+                <Typography variant='h3'>Tìm nhân viên</Typography>
             </Box>
-            {/* Input Nhân Viên */}
-            <Paper elevation={15} sx={{ marginTop: '10px', flexDirection: 'column', maxHeight: '40%', overflow: 'auto', padding: '15px' }}>
-                <Grid container spacing={2}>
-                    <Grid item md={6}>
-                        <TextField id="maNhanVien" name='maNhanVien' label="Mã nhân viên" variant="outlined" fullWidth disabled value={nhanVienMoi && nhanVienMoi.maNhanVien != 0 ? nhanVienMoi.maNhanVien : ""} />
-                    </Grid>
+            <Box sx={{ display: 'flex', height: '100px', mt: '10px' }}>
+                {search.theo === "Theo số điện thoại" ?
+                    <Box sx={{ width: '50%', alignItems: 'center', display: 'flex' }}>
+                        <Chip color="info" label="+84" sx={{ height: '50px', width: '71px', borderRadius: '100px' }} />
+                        <TextField id="outlined-search" label="Nhập số điện thoại" type="search" fullWidth onChange={(e) => { handleChangePhoneSearch(e) }} />
+                    </Box>
+                    : <Box sx={{ width: '50%', alignItems: 'center', display: 'flex' }}>
+                        <TextField id="outlined-search" label="Nhập họ tên" type="search" fullWidth onChange={(e) => { handleChangeTextFieldSearch(e) }} />
+                    </Box>}
 
-                    <Grid item md={6}>
-                        <TextField id="hoTen" name='hoTen' label="Họ tên" variant="outlined" fullWidth onChange={(e) => handleOnChange(e)} value={nhanVienMoi && nhanVienMoi.hoTen ? nhanVienMoi.hoTen : ""} />
-                    </Grid>
-
-                    <Grid item md={6}>
-                        <TextField id="diaChi" name='diaChi' label="Địa chỉ" variant="outlined" fullWidth onChange={(e) => handleOnChange(e)} value={nhanVienMoi && nhanVienMoi.diaChi ? nhanVienMoi.diaChi : ""} />
-                    </Grid>
-
-                    <Grid item md={6}>
-                        <TextField id="email" name='email' label="Email" variant="outlined" fullWidth onChange={(e) => handleOnChange(e)} value={nhanVienMoi && nhanVienMoi.email ? nhanVienMoi.email : ""} />
-                    </Grid>
-
-                    <Grid item md={6}>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Chip color="info" label="+84" sx={{ height: '50px', width: '71px', borderRadius: '100px' }} />
-                            <TextField id="soDienThoai" name='soDienThoai' label="Số điện thoại" variant="outlined" fullWidth onChange={(e) => handleOnChange(e)} value={nhanVienMoi && nhanVienMoi.soDienThoai ? nhanVienMoi.soDienThoai : ""} disabled={nhanVienSelected && nhanVienSelected.nhanvien.maNhanVien != 0} />
-                        </Box>
-                    </Grid>
-
-                    <Grid item md={6}>
-                        <TextField id="cccd" name='cccd' label="Căn cước công dân" variant="outlined" fullWidth onChange={(e) => handleOnChange(e)} value={nhanVienMoi && nhanVienMoi.cccd ? nhanVienMoi.cccd : ""} />
-                    </Grid>
-
-                    <Grid item md={6}>
-                        <TextField id="luongCoBan" name='luongCoBan' label="Lương cơ bản" variant="outlined" fullWidth onChange={(e) => handleOnChange(e)} value={nhanVienMoi && nhanVienMoi.luongCoBan ? nhanVienMoi.luongCoBan : ""} />
-                    </Grid>
-
-                    <Grid item md={6}>
-                        <TextField id="matKhau" name='matKhau' type='password' label="Mật khẩu" variant="outlined" fullWidth onChange={(e) => handleOnChange(e)} value={nhanVienMoi && nhanVienMoi.matKhau ? nhanVienMoi.matKhau : ""} disabled={nhanVienSelected && nhanVienSelected.nhanvien.maNhanVien != 0} />
-                    </Grid>
-
-                    <Grid item md={6}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs} >
-                            <DemoContainer components={['DatePicker']} >
-                                <DatePicker
-
-                                    sx={{ width: '100%' }}
-                                    label="Ngày vào làm"
-                                    value={nhanVienMoi && nhanVienMoi.ngayVaoLam ? nhanVienMoi.ngayVaoLam : dayjs(ngayHienTai)}
-                                    // onChange={(date) => setDateNgaySinh(date)}
-                                    onChange={(date) => { handlOnChangeNgayVaoLam(date) }}
-                                />
-                            </DemoContainer>
-                        </LocalizationProvider>
-                    </Grid>
-
-                    <Grid item md={6}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs} >
-                            <DemoContainer components={['DatePicker']} >
-                                <DatePicker
-
-                                    sx={{ width: '100%' }}
-                                    label="Ngày sinh"
-                                    value={nhanVienMoi && nhanVienMoi.ngaySinh ? nhanVienMoi.ngaySinh : dayjs(ngayHienTai)}
-                                    // onChange={(date) => setDateNgaySinh(date)}
-                                    onChange={(date) => { handlOnChangeNgaySinh(date) }}
-                                />
-                            </DemoContainer>
-                        </LocalizationProvider>
-                    </Grid>
-                    <Grid item md={12} >
-
-                        <Paper sx={{}} component='fieldset' elevation={21}>
-                            <Box component='legend'>
-                                Trạng thái tài khoản:
-                            </Box>
-                            {/* Radio button tình trạng kích hoạt tài khoản */}
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-
-                                <Box sx={{ display: 'flex', width: '50%', alignItems: 'center', justifyContent: 'center' }}>
-                                    <Typography>Kích hoạt</Typography>
-                                    <Radio
-                                        // checked={checkBoxKichHoat === 'kichHoat'}
-                                        checked={nhanVienMoi.daKichHoat === true}
-                                        onChange={(e) => { handlOnChangeDaKichHoat(e) }}
-                                        // value="kichHoat"
-                                        value={true}
-                                        name="daKichHoat"
-                                        inputProps={{ 'aria-label': 'A' }}
-                                        disabled={nhanVienSelected && nhanVienSelected.nhanvien.daKichHoat === false}
-                                    />
-                                </Box>
-
-                                <Box sx={{ display: 'flex', width: '50%', alignItems: 'center', justifyContent: 'center' }}>
-                                    <Typography>Khóa</Typography>
-                                    <Radio
-                                        // checked={checkBoxKichHoat === 'khongKichHoat'}
-                                        checked={nhanVienMoi.daKichHoat === false}
-                                        onChange={(e) => { handlOnChangeDaKichHoat(e) }}
-                                        // value="khongKichHoat"
-                                        value={false}
-                                        name="daKichHoat"
-                                        inputProps={{ 'aria-label': 'B' }}
-                                        disabled={nhanVienSelected && nhanVienSelected.nhanvien.daKichHoat === true}
-                                    />
-                                </Box>
-
-                            </Box>
-                        </Paper>
-                    </Grid>
-
-                    <Stack sx={{ width: '100%', flexDirection: 'row', justifyContent: 'space-evenly', mt: '10px' }}>
-                        <Grid item md={3}>
-                            <Button type='submit' variant='contained' size='large' startIcon={<AddCircleOutlineOutlinedIcon />} onClick={() => { handleAddNhanVienMoi() }}>Thêm Nhân Viên</Button>
-                        </Grid>
-                        <Grid item md={3}>
-                            <Button size='large' variant='contained' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => { handleUpdateNhanVien() }}>Cập nhật nhân viên</Button>
-                        </Grid>
-                        <Grid item md={3}>
-                            <Button size='large' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshNhanVien() }}>Tải lại dữ liệu</Button>
-                        </Grid>
-                    </Stack>
-                </Grid>
-
-            </Paper>
+                <Box sx={{ width: '30%', alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
+                    <Autocomplete
+                        onChange={(e, value) => { handleOnchangeSelectedCombobox(e, value) }}
+                        disablePortal
+                        id="combo-box-demo"
+                        options={['Theo số điện thoại', 'Theo họ tên']}
+                        sx={{ width: '100%' }}
+                        renderInput={(params) => <TextField  {...params} label="Tìm theo" disabled />}
+                    />
+                </Box>
+                <Box sx={{ width: '30%', alignItems: 'center', display: 'flex', marginLeft: '20px', justifyContent: 'space-between' }}>
+                    <Button variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleSearchNhanVien() }} >Tìm kiếm</Button>
+                    <Button size='medium' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshNhanVien() }}>Tải lại dữ liệu</Button>
+                </Box>
+            </Box>
             {/* Danh sách Nhân Viên */}
-            <Paper elevation={10} sx={{ maxHeight: '50%', mt: '11px', overflow: 'auto' }}>
+            <Paper elevation={10} sx={{ maxHeight: '100%', mt: '11px', overflow: 'auto' }}>
                 <TableContainer component={Paper} elevation={15}>
                     <Table aria-label="user table">
                         <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
@@ -588,7 +505,7 @@ function FrmNhanVien() {
     )
 }
 
-export default FrmNhanVien
+export default FrmTimKiemNhanVien
 const StyledContainer = styled.div`
   width: 100%;
   height: 100%;
