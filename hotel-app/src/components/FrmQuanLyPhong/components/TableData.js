@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 function TableData({ dsPhong, phongSelected, setPhongSelected }) {
   const onHandleSelect = (phong) => {
-    if (phongSelected && phong.phong.maPhong === phongSelected.phong.maPhong) {
+    if (phongSelected && phong.maPhong === phongSelected.maPhong) {
       setPhongSelected(undefined);
     } else {
       setPhongSelected(phong);
@@ -16,10 +16,12 @@ function TableData({ dsPhong, phongSelected, setPhongSelected }) {
           <tr>
             <th>Mã phòng</th>
             <th>Tên phòng</th>
-            <th>Mô tả phòng</th>
             <th>Loại phòng</th>
             <th>Tầng</th>
             <th>Giá (1 đêm)</th>
+            <th>Được hút thuốc</th>
+            <th>Mang thú cưng</th>
+            <th>Mô tả phòng</th>
           </tr>
         </thead>
         <tbody>
@@ -32,19 +34,21 @@ function TableData({ dsPhong, phongSelected, setPhongSelected }) {
                   key={index}
                   className={`${
                     phongSelected &&
-                    phongSelected.phong &&
-                    phongSelected.phong.maPhong === phongDto.phong.maPhong
+                    phongSelected &&
+                    phongSelected.maPhong === phongDto.maPhong
                       ? "row-selected"
                       : ""
                   }`}
                   onClick={() => onHandleSelect(phongDto)}
                 >
-                  <td>{phongDto.phong.maPhong}</td>
-                  <td>{phongDto.phong.tenPhong}</td>
-                  <td>{phongDto.phong.moTaPhong}</td>
-                  <td>{phongDto.phong.tenLoaiPhong}</td>
-                  <td>{phongDto.phong.tenTang}</td>
-                  <td>{phongDto.phong.giaLoaiPhong.toLocaleString()}</td>
+                  <td>{phongDto.maPhong}</td>
+                  <td>{phongDto.tenPhong}</td>
+                  <td>{phongDto.tenLoaiPhong}</td>
+                  <td>{phongDto.tenTang}</td>
+                  <td>{phongDto.giaPhong.toLocaleString()}</td>
+                  <td>{phongDto.duocHutThuoc ? "Có" : "Không"}</td>
+                  <td>{phongDto.mangThuCung ? "Có" : "Không"}</td>
+                  <td>{phongDto.moTaPhong}</td>
                 </tr>
               );
             })}
@@ -56,7 +60,7 @@ function TableData({ dsPhong, phongSelected, setPhongSelected }) {
 const StyledContainer = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
-  height: 40%;
+  height: 50%;
   display: flex;
   flex-direction: column;
   position: relative;

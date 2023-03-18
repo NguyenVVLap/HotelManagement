@@ -1,5 +1,8 @@
 ﻿use khachsan
 
+delete from chi_tiet_phieu_dat_phong;
+delete from phieu_dat_phong;
+
 delete from dich_vu
 delete from nhan_vien
 
@@ -8,20 +11,18 @@ delete from khach_hang
 delete from vai_tro
 
 delete from hinh_anh_phong;
-delete from phong_thiet_bi;
-delete from thiet_bi;
 delete from phong;
 delete from tang;
 delete from loai_phong;
 
-select * from tai_khoan
 
-Insert into loai_phong(ma_loai_phong, suc_chua, so_giuong, mang_thu_cung, gia_loai_phong, ten_loai_phong, duoc_hut_thuoc) values
-(1, 1, 1, 1, 100000, 'Single Room', 1),
-(2, 2, 1, 1, 100000, 'Double Room', 1),
-(3, 3, 3, 1, 100000, 'Triple Room', 1),
-(4, 4, 2, 1, 100000, 'Quad Room', 1),
-(5, 2, 2, 1, 100000, 'Twin Room', 1);
+
+Insert into loai_phong(ma_loai_phong, suc_chua, so_giuong, ten_loai_phong) values
+(1, 1, 1, N'Single Room'),
+(2, 2, 1, N'Double Room'),
+(3, 3, 3, N'Triple Room'),
+(4, 4, 2, N'Quad Room'),
+(5, 2, 2, N'Twin Room');
 
 Insert into tang(ma_tang, ten_tang) values
 (1, N'Tầng 1'),
@@ -30,41 +31,41 @@ Insert into tang(ma_tang, ten_tang) values
 (4, N'Tầng 4'),
 (5, N'Tầng 5');
 
-Insert into phong(ma_phong, mo_ta_phong, ten_phong, trang_thai_phong, ma_tang, ma_loai_phong) values
-(1, N'Không có mô tả', N'Phòng 101', 1, 1, 1),
-(2, N'Không có mô tả', N'Phòng 102', 1, 1, 2),
-(3, N'Không có mô tả', N'Phòng 103', 0, 1, 3),
-(4, N'Không có mô tả', N'Phòng 104', 0, 1, 4),
-(5, N'Không có mô tả', N'Phòng 105', 1, 1, 5),
-(6, N'Không có mô tả', N'Phòng 106', 1, 1, 1),
+Insert into phong(ma_phong, mo_ta_phong, ten_phong, trang_thai_phong, mang_thu_cung, gia_phong, duoc_hut_thuoc, ma_tang, ma_loai_phong) values
+(1, N'Không có mô tả', N'Phòng 101', 1, 1, 100000, 1, 1, 1),
+(2, N'Không có mô tả', N'Phòng 102', 1, 1, 200000, 0, 1, 2),
+(3, N'Không có mô tả', N'Phòng 103', 0, 0, 300000, 0, 1, 3),
+(4, N'Không có mô tả', N'Phòng 104', 0, 1, 500000, 1, 1, 4),
+(5, N'Không có mô tả', N'Phòng 105', 1, 1, 200000, 0, 1, 5),
+(6, N'Không có mô tả', N'Phòng 106', 1, 0, 100000, 1, 1, 1),
 
-(7, N'Không có mô tả', N'Phòng 201', 1, 2, 1),
-(8, N'Không có mô tả', N'Phòng 202', 1, 2, 2),
-(9, N'Không có mô tả', N'Phòng 203', 0, 2, 3),
-(10, N'Không có mô tả', N'Phòng 204', 0, 2, 4),
-(11, N'Không có mô tả', N'Phòng 205', 0, 2, 5),
-(12, N'Không có mô tả', N'Phòng 206', 0, 2, 1),
+(7, N'Không có mô tả', N'Phòng 201', 1, 0, 50000, 0, 2, 1),
+(8, N'Không có mô tả', N'Phòng 202', 1, 1, 100000, 1, 2, 2),
+(9, N'Không có mô tả', N'Phòng 203', 0, 0, 150000, 0, 2, 3),
+(10, N'Không có mô tả', N'Phòng 204', 0, 1, 200000, 1, 2, 4),
+(11, N'Không có mô tả', N'Phòng 205', 0, 0, 300000, 1, 2, 5),
+(12, N'Không có mô tả', N'Phòng 206', 0, 1, 200000, 0, 2, 1),
 
-(13, N'Không có mô tả', N'Phòng 301', 0, 3, 1),
-(14, N'Không có mô tả', N'Phòng 302', 1, 3, 2),
-(15, N'Không có mô tả', N'Phòng 303', 0, 3, 3),
-(16, N'Không có mô tả', N'Phòng 304', 1, 3, 4),
-(17, N'Không có mô tả', N'Phòng 305', 0, 3, 5),
-(18, N'Không có mô tả', N'Phòng 306', 1, 3, 1),
+(13, N'Không có mô tả', N'Phòng 301', 0, 1, 120000, 1, 3, 1),
+(14, N'Không có mô tả', N'Phòng 302', 1, 1, 400000, 1, 3, 2),
+(15, N'Không có mô tả', N'Phòng 303', 0, 1, 120000, 1, 3, 3),
+(16, N'Không có mô tả', N'Phòng 304', 1, 1, 500000, 1, 3, 4),
+(17, N'Không có mô tả', N'Phòng 305', 0, 1, 350000, 1, 3, 5),
+(18, N'Không có mô tả', N'Phòng 306', 1, 0, 100000, 0, 3, 1),
 
-(19, N'Không có mô tả', N'Phòng 401', 0, 4, 1),
-(20, N'Không có mô tả', N'Phòng 402', 0, 4, 2),
-(21, N'Không có mô tả', N'Phòng 403', 0, 4, 3),
-(22, N'Không có mô tả', N'Phòng 404', 0, 4, 4),
-(23, N'Không có mô tả', N'Phòng 405', 0, 4, 5),
-(24, N'Không có mô tả', N'Phòng 406', 1, 4, 1),
+(19, N'Không có mô tả', N'Phòng 401', 0, 1, 100000, 1, 4, 1),
+(20, N'Không có mô tả', N'Phòng 402', 0, 1, 200000, 0, 4, 2),
+(21, N'Không có mô tả', N'Phòng 403', 0, 0, 300000, 1, 4, 3),
+(22, N'Không có mô tả', N'Phòng 404', 0, 1, 50000, 1, 4, 4),
+(23, N'Không có mô tả', N'Phòng 405', 0, 1, 120000, 0, 4, 5),
+(24, N'Không có mô tả', N'Phòng 406', 1, 1, 130000, 1, 4, 1),
 
-(25, N'Không có mô tả', N'Phòng 501', 0, 5, 1),
-(26, N'Không có mô tả', N'Phòng 502', 1, 5, 2),
-(27, N'Không có mô tả', N'Phòng 503', 1, 5, 3),
-(28, N'Không có mô tả', N'Phòng 504', 1, 5, 4),
-(29, N'Không có mô tả', N'Phòng 505', 1, 5, 5),
-(30, N'Không có mô tả', N'Phòng 506', 0, 5, 1);
+(25, N'Không có mô tả', N'Phòng 501', 0, 1, 300000, 1, 5, 1),
+(26, N'Không có mô tả', N'Phòng 502', 1, 0, 100000, 1, 5, 2),
+(27, N'Không có mô tả', N'Phòng 503', 1, 0, 40000, 1, 5, 3),
+(28, N'Không có mô tả', N'Phòng 504', 1, 1, 80000, 1, 5, 4),
+(29, N'Không có mô tả', N'Phòng 505', 1, 1, 90000, 0, 5, 5),
+(30, N'Không có mô tả', N'Phòng 506', 0, 1, 550000, 0, 5, 1);
 
 
 Insert into hinh_anh_phong(ma_phong, hinh_anh_phong) values
@@ -139,18 +140,20 @@ Insert into hinh_anh_phong(ma_phong, hinh_anh_phong) values
 (30, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-gSljIcniHWOYEqZhcxCebSX5iN80B7Hl7g&usqp=CAU');
 
 
-Insert into thiet_bi(ma_thiet_bi, ten_thiet_bi, gia_thiet_bi) values
-(1, N'Tivi', 10000000),
-(2, N'Remote TV', 50000),
-(3, N'Tủ lạnh', 25000000),
-(4, N'Máy lạnh', 20000000),
-(5, N'Remote Máy lạnh', 100000),
-(6, N'Bàn trang điểm', 5000000);
+Insert into khach_hang(ma_khach_hang, cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_thoai_kh) values 
+(1, '123456789000', N'12 Lê Lợi', 'test@gmail.com', N'Trần Quang Linh', '0123456789');
 
-Insert into phong_thiet_bi(ma_thiet_bi, so_luong, ma_phong) values
-(1, 1, 1), 
-(2, 1, 1),
-(3, 1, 1),
-(4, 1, 1),
-(5, 1, 1),
-(6, 1, 1);
+Insert into phieu_dat_phong(ma_phieu_dat_phong, ghi_chu_dat_phong, giam_gia, ngay_dat_phong, ngay_nhan_phong, ngay_tra_phong, trang_thai_dat_phong, ma_khach_hang) values
+(1, N'không có', 0, '2022-12-17', '2023-01-19', '2023-01-21', 'HOAN_TAT', 1);
+
+Insert into chi_tiet_phieu_dat_phong(ma_phieu_dat_phong, ma_phong) values 
+(1, 1),
+(1, 2),
+(1, 3);
+
+select * from phong p inner join chi_tiet_phieu_dat_phong ctpdp 
+on p.ma_phong = ctpdp.ma_phong 
+where ctpdp.ma_phieu_dat_phong = 1 
+
+select * from chi_tiet_phieu_dat_phong
+select p.ma_phong, mo_ta_phong, ten_phong, trang_thai_phong, mang_thu_cung, gia_phong, duoc_hut_thuoc, ma_tang, ma_loai_phong from phong p inner join chi_tiet_phieu_dat_phong ctpdp on p.ma_phong = ctpdp.ma_phong where ctpdp.ma_phieu_dat_phong = 2

@@ -3,31 +3,39 @@ import styled from "styled-components";
 import { BiRefresh } from "react-icons/bi";
 
 function Inputs({
-  thietBiMoi,
-  setThietBiMoi,
+  loaiPhongMoi,
+  setLoaiPhongMoi,
   onHandleAdd,
   onHandleUpdate,
   onHandleRefresh,
 }) {
   const handleOnChange = (e) => {
-    setThietBiMoi({ ...thietBiMoi, [e.target.name]: e.target.value });
+    setLoaiPhongMoi({ ...loaiPhongMoi, [e.target.name]: e.target.value });
+  };
+  const onHandleClear = () => {
+    setLoaiPhongMoi({
+      maLoaiPhong: 0,
+      tenLoaiPhong: "",
+      sucChua: 0,
+      soGiuong: 0,
+    });
   };
   return (
     <StyledContainer>
       <div className="input-container">
         <FloatingLabel
           controlId="floatingInput"
-          label="Mã thiết bị"
+          label="Mã loại phòng"
           className="mb-3"
         >
           <Form.Control
             type="text"
-            placeholder="Mã thiết bị"
-            name="maThietBi"
+            placeholder="Mã loại phòng"
+            name="maLoaiPhong"
             disabled={true}
             value={
-              thietBiMoi && thietBiMoi.maThietBi != 0
-                ? thietBiMoi.maThietBi
+              loaiPhongMoi && loaiPhongMoi.maLoaiPhong != 0
+                ? loaiPhongMoi.maLoaiPhong
                 : ""
             }
             onChange={(e) => handleOnChange(e)}
@@ -35,30 +43,48 @@ function Inputs({
         </FloatingLabel>
         <FloatingLabel
           controlId="floatingInput"
-          label="Tên thiết bị"
+          label="Tên loại phòng"
           className="mb-3"
         >
           <Form.Control
             type="text"
-            placeholder="Tên thiết bị"
-            name="tenThietBi"
+            placeholder="Tên loại phòng"
+            name="tenLoaiPhong"
             value={
-              thietBiMoi && thietBiMoi.tenThietBi ? thietBiMoi.tenThietBi : ""
+              loaiPhongMoi && loaiPhongMoi.tenLoaiPhong
+                ? loaiPhongMoi.tenLoaiPhong
+                : ""
             }
             onChange={(e) => handleOnChange(e)}
           />
         </FloatingLabel>
         <FloatingLabel
           controlId="floatingInput"
-          label="Giá thiết bị (VND)"
+          label="Số giường"
           className="mb-3"
         >
           <Form.Control
             type="number"
-            placeholder="Giá thiết bị (VND)"
-            name="giaThietBi"
+            placeholder="Số giường"
+            name="soGiuong"
             value={
-              thietBiMoi && thietBiMoi.giaThietBi ? thietBiMoi.giaThietBi : 0
+              loaiPhongMoi && loaiPhongMoi.soGiuong ? loaiPhongMoi.soGiuong : 0
+            }
+            min={0}
+            onChange={(e) => handleOnChange(e)}
+          />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="Sức chứa"
+          className="mb-3"
+        >
+          <Form.Control
+            type="number"
+            placeholder="Sức chứa"
+            name="sucChua"
+            value={
+              loaiPhongMoi && loaiPhongMoi.sucChua ? loaiPhongMoi.sucChua : 0
             }
             min={0}
             onChange={(e) => handleOnChange(e)}
@@ -71,6 +97,9 @@ function Inputs({
         </Button>
         <Button variant="primary" onClick={() => onHandleUpdate()}>
           Cập nhật
+        </Button>
+        <Button variant="danger" onClick={() => onHandleClear()}>
+          Xóa rỗng
         </Button>
         <Button variant="warning" onClick={() => onHandleRefresh()}>
           <BiRefresh />

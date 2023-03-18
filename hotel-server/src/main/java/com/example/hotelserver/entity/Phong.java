@@ -16,7 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -58,10 +57,14 @@ public class Phong {
 	@JoinColumn(name = "ma_loai_phong")
 	private LoaiPhong loaiPhong;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy = "phong")
-	@JsonIgnore
-	private List<PhongThietBi> phongThietBi;
+	@Column(name = "gia_phong")
+	private double giaPhong;
 	
+	@Column(name = "duoc_hut_thuoc")
+	private boolean duocHutThuoc;
+	
+	@Column(name = "mang_thu_cung")
+	private boolean mangThuCung;
 	@Override
 	public String toString() {
 		return "Phong [maPhong=" + maPhong + ", tenPhong=" + tenPhong + ", trangThaiPhong=" + trangThaiPhong

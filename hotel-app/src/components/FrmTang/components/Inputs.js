@@ -12,6 +12,12 @@ function Inputs({
   const handleOnChange = (e) => {
     setTangMoi({ ...tangMoi, [e.target.name]: e.target.value });
   };
+  const onHandleClear = () => {
+    setTangMoi({
+      maTang: 0,
+      tenTang: "",
+    });
+  };
   return (
     <StyledContainer>
       <div className="input-container">
@@ -49,6 +55,9 @@ function Inputs({
         </Button>
         <Button variant="primary" onClick={() => onHandleUpdate()}>
           Cập nhật
+        </Button>
+        <Button variant="danger" onClick={() => onHandleClear()}>
+          Xóa rỗng
         </Button>
         <Button variant="warning" onClick={() => onHandleRefresh()}>
           <BiRefresh />

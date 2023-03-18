@@ -2,7 +2,6 @@ package com.example.hotelserver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -44,7 +43,7 @@ public class SecurityConfiguration {
     			.permitAll()
     			.requestMatchers("/api/loaiPhong/**")
     			.permitAll()
-    			.requestMatchers("/api/thietbi/**")
+    			.requestMatchers("/api/phieuDatPhong/**")
     			.permitAll()
                 .anyRequest()
                 .authenticated()

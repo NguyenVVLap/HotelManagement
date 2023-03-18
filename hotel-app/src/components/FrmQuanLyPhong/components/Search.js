@@ -72,9 +72,9 @@ function Search({
       )}
       <Form.Select onChange={(e) => onHandleChangeSelect(e)}>
         <option value="Theo mã">Theo mã</option>
-        {/* <option value="Theo tên">Theo tên</option>
+        <option value="Theo tên">Theo tên</option>
         <option value="Theo tầng">Theo tầng</option>
-        <option value="Theo loại phòng">Theo loại phòng</option> */}
+        <option value="Theo loại phòng">Theo loại phòng</option>
       </Form.Select>
       <Button variant="primary" onClick={() => onHandleSearch()}>
         Tìm

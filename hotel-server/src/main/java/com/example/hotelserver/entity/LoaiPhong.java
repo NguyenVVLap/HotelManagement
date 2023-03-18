@@ -25,26 +25,17 @@ public class LoaiPhong{
 	@Column(name = "ten_loai_phong", columnDefinition = "nvarchar(255)")
 	private String tenLoaiPhong;
 	
-	@Column(name = "gia_loai_phong")
-	private double giaLoaiPhong;
-	
 	@Column(name = "suc_chua")
 	private int sucChua;
-	
-	@Column(name = "duoc_hut_thuoc")
-	private boolean duocHutThuoc;
-	
-	@Column(name = "mang_thu_cung")
-	private boolean mangThuCung;
 	
 	@Column(name = "so_giuong")
 	private int soGiuong;
 
 	@Override
 	public String toString() {
-		return "LoaiPhong [maLoaiPhong=" + maLoaiPhong + ", tenLoaiPhong=" + tenLoaiPhong + ", giaLoaiPhong="
-				+ giaLoaiPhong + ", sucChua=" + sucChua + ", duocHutThuoc=" + duocHutThuoc + ", mangThuCung="
-				+ mangThuCung + ", soGiuong=" + soGiuong + "]";
+		return "LoaiPhong [maLoaiPhong=" + maLoaiPhong + ", tenLoaiPhong=" + tenLoaiPhong 
+				 + ", sucChua=" + sucChua 
+				 + ", soGiuong=" + soGiuong + "]";
 	}
 
 	

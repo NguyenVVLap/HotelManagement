@@ -1,9 +1,8 @@
 package com.example.hotelserver.service;
 
-import com.example.hotelserver.entity.DichVu;
-import com.example.hotelserver.entity.ThietBi;
-
 import java.util.List;
+
+import com.example.hotelserver.entity.DichVu;
 
 public interface DichVuService {
     List<DichVu> layAllDanhSachDichVu();

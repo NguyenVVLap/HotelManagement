@@ -72,7 +72,7 @@ public class HoaDon {
 		}
 		
 		for (ChiTietHoaDon chiTietHoaDon : dsChiTietHoaDon) {
-			result += chiTietHoaDon.getPhong().getLoaiPhong().getGiaLoaiPhong();
+			result += chiTietHoaDon.getPhong().getGiaPhong();
 		}
 		
 		return result;

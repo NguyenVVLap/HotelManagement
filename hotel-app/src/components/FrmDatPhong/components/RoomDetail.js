@@ -8,14 +8,13 @@ function RoomDetail({ room, setShowDetail }) {
       <div className="header-detail">
         <SlArrowLeft onClick={() => setShowDetail(undefined)} />
         <h2>
-          {room.room.roomName} - {room.room.roomTypeName} -{" "}
-          {room.room.floorName}
+          {room.tenPhong} - {room.tenLoaiPhong} - {room.tenTang}
         </h2>
       </div>
       <div className="content">
         <div className="images">
           <Carousel slide={true}>
-            {room.room.roomImageUrl.map((img, index) => {
+            {room.hinhAnhPhong.map((img, index) => {
               return (
                 <Carousel.Item>
                   <img
@@ -29,7 +28,7 @@ function RoomDetail({ room, setShowDetail }) {
             })}
           </Carousel>
         </div>
-        <div className="cost">{room.room.roomTypeCost.toLocaleString()}VND</div>
+        <div className="cost">{room.giaPhong.toLocaleString()} VND / Đêm</div>
         <div className="detail-info">
           <div className="common-info">
             <Card>
@@ -39,123 +38,122 @@ function RoomDetail({ room, setShowDetail }) {
                   <tbody>
                     <tr>
                       <td>Số người tối đa</td>
-                      <td>{room.room.capacity}</td>
+                      <td>{room.sucChua}</td>
                     </tr>
                     <tr>
                       <td>Số giường</td>
-                      <td>{room.room.numberOfBeds}</td>
+                      <td>{room.soGiuong}</td>
                     </tr>
                     <tr>
                       <td>Được hút thuốc</td>
-                      <td>{room.room.smokeFriendly ? "Có" : "Không"}</td>
+                      <td>{room.duocHutThuoc ? "Có" : "Không"}</td>
                     </tr>
                     <tr>
                       <td>Được mang thú cưng</td>
-                      <td>{room.room.petFriendly ? "Có" : "Không"}</td>
+                      <td>{room.mangThuCung ? "Có" : "Không"}</td>
                     </tr>
                   </tbody>
                 </Table>
               </Card.Body>
-              <p>
-                - Trang thiết bị:{" "}
-                {room.roomEquipment.length > 0
-                  ? room.roomEquipment.map((equipment, index) =>
-                      index === room.roomEquipment.length - 1
-                        ? equipment.equipment.equipmentName + "."
-                        : equipment.equipment.equipmentName + ", "
-                    )
-                  : "Không có dữ liệu"}
-              </p>
-              <p>
-                - Hư hại hiện có:{" "}
-                {room.damages.length > 0
-                  ? room.damages.map((damage, index) =>
-                      index === room.damages.length - 1
-                        ? damage.damageName + "."
-                        : damage.damageName + ", "
-                    )
-                  : "Không có dữ liệu"}
-              </p>
             </Card>
           </div>
           <div className="decription">
             <p className="title">Mô tả</p>
             <p className="content">
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
-              {room.room.roomDescription}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
+              {room.moTaPhong}
             </p>
           </div>
         </div>
@@ -223,15 +221,6 @@ const StyledContainer = styled.div`
       .common-info {
         height: 250px;
         width: 35%;
-        overflow-y: scroll;
-        &::-webkit-scrollbar {
-          width: 0.2rem;
-          &-thumb {
-            background-image: linear-gradient(#373b44, #1095c1);
-            width: 0.1rem;
-            border-radius: 1rem;
-          }
-        }
       }
       .decription {
         width: 65%;

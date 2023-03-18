@@ -1,14 +1,12 @@
 package com.example.hotelserver.repository;
 
-import com.example.hotelserver.entity.DichVu;
-import com.example.hotelserver.entity.ThietBi;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-import com.example.hotelserver.entity.KhachHang;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import com.example.hotelserver.entity.KhachHang;
 
 public interface KhachHangRepo extends JpaRepository<KhachHang, Integer> {
 	KhachHang findByCccdKhachHang(String cccdKhachHang);

@@ -7,10 +7,10 @@ import FrmDatPhong from "../components/FrmDatPhong";
 import FrmTang from "../components/FrmTang";
 import FrmDichVu from "../components/FrmDichVu";
 import Menu from "../components/Menu";
-import FrmThietBi from "../components/FrmThietBi";
 import FrmKhachHang from "../components/FrmKhachHang";
 import FrmNhanVien from "../components/FrmNhanVien";
 import FrmQuanLyPhong from "../components/FrmQuanLyPhong";
+import FrmLoaiPhong from "../components/FrmThietBi";
 
 function Main() {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function Main() {
     guest: false,
     staff: false,
     bill: false,
-    equipment: false,
+    roomType: false,
     floor: false,
     booking: false,
     service: false,
@@ -50,12 +50,12 @@ function Main() {
         {/* <TitleBar /> */}
         <div className="wrapper">
           {subNavSelected.subnav === "book" && <FrmDatPhong />}
-          {subNavSelected.subnav === "manage-room" && <FrmQuanLyPhong />}
+          {subNavSelected.subnav === "update-room" && <FrmQuanLyPhong />}
           {navSelected.floor && <FrmTang />}
-          {navSelected.equipment && <FrmThietBi />}
-          {subNavSelected.subnav === "manager-service" && <FrmDichVu />}
-          {subNavSelected.subnav === "manager-guest" && <FrmKhachHang />}
-          {subNavSelected.subnav === "manager-staff" && <FrmNhanVien />}
+          {navSelected.roomType && <FrmLoaiPhong />}
+          {subNavSelected.subnav === "update-service" && <FrmDichVu />}
+          {subNavSelected.subnav === "update-guest" && <FrmKhachHang />}
+          {subNavSelected.subnav === "update-staff" && <FrmNhanVien />}
         </div>
       </div>
     </Container>

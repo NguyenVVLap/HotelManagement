@@ -17,6 +17,38 @@ public class LoaiPhongServiceImpl implements LoaiPhongService {
 	public List<LoaiPhong> layTatCaLoaiPhong() {
 		return loaiPhongRepo.findAll();
 	}
+
+	@Override
+	public boolean themLoaiPhong(LoaiPhong loaiPhong) {
+		try {
+			loaiPhongRepo.save(loaiPhong);
+			return true;
+		} catch (Exception e) {
+			System.out.println("Error at themLoaiPhong: " + e);
+			return false;
+		}
+	}
+
+	@Override
+	public boolean kiemTraLoaiPhongTonTaiTheoTen(String tenLoaiPhong) {
+		List<LoaiPhong> result = loaiPhongRepo.findByTenLoaiPhongLike(tenLoaiPhong);
+		if (result != null && !result.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public List<LoaiPhong> timLoaiPhongTheoTen(String tenLoaiPhong) {
+		return loaiPhongRepo.findByTenLoaiPhongLike(tenLoaiPhong);
+
+	}
+
+	@Override
+	public LoaiPhong timLoaiPhongTheoMa(long maLoaiPhong) {
+		return loaiPhongRepo.findById(maLoaiPhong).get();
+
+	}
 	
 	
 }

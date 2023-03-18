@@ -1,18 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button, CloseButton, Container, Table } from "react-bootstrap";
+import { Button, CloseButton, Table } from "react-bootstrap";
 import styled from "styled-components";
 import { GrRadial, GrRadialSelected } from "react-icons/gr";
-import { getRoomsRoute } from "../../../utils/APIRoutes";
+import { getRoomsOrderRoute } from "../../../utils/APIRoutes";
 import RoomDetail from "./RoomDetail";
 
 function Rooms({
-  showRooms,
   setRoomChoosen,
   roomChoosen,
   setShowRooms,
   showDetail,
   setShowDetail,
+  bookingInfo,
 }) {
   const [rooms, setRooms] = useState([]);
   const [roomsSelected, setRoomsSelected] = useState([]);
@@ -29,14 +29,21 @@ function Rooms({
         "Content-Type": "application/json;charset=UTF-8",
       },
     };
-    const { data } = await axios.get(`${getRoomsRoute}`, {}, config);
+    const { data } = await axios.post(
+      `${getRoomsOrderRoute}`,
+      {
+        ngayNhanPhong: bookingInfo.ngayNhanPhong || new Date(),
+        ngayTraPhong: bookingInfo.ngayTraPhong || new Date(),
+      },
+      config
+    );
     // console.log(data);
     setRooms(data);
   };
   const isSelected = (room) => {
     let result = false;
     roomsSelected.map((selected) => {
-      if (selected.room.roomId === room.room.roomId) {
+      if (selected.maPhong === room.maPhong) {
         result = true;
         return true;
       }
@@ -47,7 +54,7 @@ function Rooms({
     const temp = [...roomsSelected];
 
     for (var i = 0; i < temp.length; i++) {
-      if (temp[i].room.roomId === room.room.roomId) {
+      if (temp[i].maPhong === room.maPhong) {
         temp.splice(i, 1);
         setRoomsSelected(temp);
         return;
@@ -72,7 +79,7 @@ function Rooms({
               <tr>
                 <th></th>
                 <th>Phòng</th>
-                <th>Trạng thái</th>
+                {/* <th>Trạng thái</th> */}
                 <th>Loại phòng</th>
                 <th>Số giường</th>
                 <th>Sức chứa</th>
@@ -96,19 +103,19 @@ function Rooms({
                       <td>
                         {isSelected(room) ? <GrRadialSelected /> : <GrRadial />}
                       </td>
-                      <td>{room.room.roomName}</td>
-                      <td
+                      <td>{room.tenPhong}</td>
+                      {/* <td
                         className={`${
-                          room.room.roomState ? "text-green" : "text-red"
+                          room.trangThaiPhong ? "text-green" : "text-red"
                         }`}
                       >
-                        {room.room.roomState ? "Còn trống" : "Đang thuê"}
-                      </td>
-                      <td>{room.room.roomTypeName}</td>
-                      <td>{room.room.numberOfBeds}</td>
-                      <td>{room.room.capacity}</td>
-                      <td>{room.room.floorName}</td>
-                      <td>{room.room.roomTypeCost.toLocaleString()}</td>
+                        {room.trangThaiPhong ? "Sẵn sàng" : "Không sẵn sàng"}
+                      </td> */}
+                      <td>{room.tenLoaiPhong}</td>
+                      <td>{room.soGiuong}</td>
+                      <td>{room.sucChua}</td>
+                      <td>{room.tenTang}</td>
+                      <td>{room.giaPhong.toLocaleString()}</td>
                       <td
                         style={{ cursor: "pointer", position: "relative" }}
                         onClick={() => setShowDetail(room)}
@@ -155,7 +162,7 @@ const StyledContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  /* z-index: 1; */
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -178,12 +185,14 @@ const StyledContainer = styled.div`
     position: relative;
     .header {
       display: flex;
+      height: 7%;
       justify-content: space-between;
       .header-title {
       }
     }
     .table-container {
       width: 100%;
+      height: 86%;
       overflow: scroll;
       &::-webkit-scrollbar {
         width: 1px;
@@ -203,6 +212,7 @@ const StyledContainer = styled.div`
     }
     .btn-container {
       display: flex;
+      height: 7%;
       justify-content: flex-end;
     }
   }

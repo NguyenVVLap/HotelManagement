@@ -4,40 +4,43 @@ import { useState } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styled from "styled-components";
 import {
-  addEquipmentRoute,
-  findEquipmentRoute,
-  getEquipmentsRoute,
+  addRoomTypeRoute,
+  findRoomTypeRoute,
+  getRoomTypesRoute,
 } from "../../utils/APIRoutes";
 import Inputs from "./components/Inputs";
 import Search from "./components/Search";
 import TableData from "./components/TableData";
 
-function FrmThietBi() {
-  const [thietBiSelected, setThietBiSelected] = useState(undefined);
-  const [dsThietBi, setDsThietBi] = useState(undefined);
+function FrmLoaiPhong() {
+  const [loaiPhongSelected, setLoaiPhongSelected] = useState(undefined);
+  const [dsLoaiPhong, setDsLoaiPhong] = useState(undefined);
   const [search, setSearch] = useState({ keyword: "", theo: "Theo mã" });
-  const [thietBiMoi, setThietBiMoi] = useState({
-    maThietBi: 0,
-    tenThietBi: "",
-    giaThietBi: 0,
+  const [loaiPhongMoi, setLoaiPhongMoi] = useState({
+    maLoaiPhong: 0,
+    tenLoaiPhong: "",
+    sucChua: 0,
+    soGiuong: 0,
   });
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    if (thietBiSelected) {
-      setThietBiMoi(thietBiSelected);
+    if (loaiPhongSelected) {
+      setLoaiPhongMoi(loaiPhongSelected);
     } else {
-      setThietBiMoi({
-        maThietBi: 0,
-        tenThietBi: "",
-        giaThietBi: 0,
+      setLoaiPhongMoi({
+        maLoaiPhong: 0,
+        tenLoaiPhong: "",
+        sucChua: 0,
+        soGiuong: 0,
       });
     }
-  }, [thietBiSelected]);
+  }, [loaiPhongSelected]);
 
   const onHandleAdd = async () => {
-    if (thietBiMoi.maThietBi === 0 && validate()) {
-      const { data } = await axios.post(addEquipmentRoute, thietBiMoi, {
+    if (loaiPhongMoi.maLoaiPhong === 0 && validate()) {
+      console.log(loaiPhongMoi);
+      const { data } = await axios.post(addRoomTypeRoute, loaiPhongMoi, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -45,14 +48,14 @@ function FrmThietBi() {
         },
       });
       if (data && data.length !== []) {
-        setDsThietBi(data);
-        setThietBiSelected(undefined);
+        setDsLoaiPhong(data);
+        setLoaiPhongSelected(undefined);
       }
     }
   };
   const onHandleUpdate = async () => {
-    if (thietBiMoi.maThietBi !== 0 && validateUpdate()) {
-      const { data } = await axios.post(addEquipmentRoute, thietBiMoi, {
+    if (loaiPhongMoi.maLoaiPhong !== 0 && validateUpdate()) {
+      const { data } = await axios.post(addRoomTypeRoute, loaiPhongMoi, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
           "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -60,40 +63,39 @@ function FrmThietBi() {
         },
       });
       if (data && data.length !== []) {
-        setDsThietBi(data);
-        setThietBiSelected(undefined);
+        setDsLoaiPhong(data);
+        setLoaiPhongSelected(undefined);
       }
     }
   };
 
   const validateUpdate = () => {
-    const { giaThietBi } = thietBiMoi;
-    if (giaThietBi < 0) {
+    const { tenLoaiPhong, soGiuong, sucChua, maLoaiPhong } = loaiPhongMoi;
+    if (soGiuong < 0) {
       setToast({
-        header: "Giá thiết bị không được < 0",
+        header: "Số giường không được < 0",
         content: "",
         bg: "danger",
         textColor: "#fff",
       });
       return false;
     }
-    return true;
-  };
-  const validate = () => {
-    const { tenThietBi, giaThietBi } = thietBiMoi;
-    if (tenThietBi === "") {
+    if (sucChua < 0) {
       setToast({
-        header: "Tên thiết bị không được bỏ trống",
+        header: "Sức chứa không được < 0",
         content: "",
         bg: "danger",
         textColor: "#fff",
       });
       return false;
     }
-    for (var i = 0; i < dsThietBi.length; i++) {
-      if (tenThietBi === dsThietBi[i].tenThietBi) {
+    for (var i = 0; i < dsLoaiPhong.length; i++) {
+      if (
+        tenLoaiPhong === dsLoaiPhong[i].tenLoaiPhong &&
+        maLoaiPhong === dsLoaiPhong[i].maLoaiPhong
+      ) {
         setToast({
-          header: "Tên và giá thiết bị không được trùng",
+          header: "Tên loại phòng đã tồn tại",
           content: "",
           bg: "danger",
           textColor: "#fff",
@@ -101,19 +103,43 @@ function FrmThietBi() {
         return false;
       }
     }
-    if (giaThietBi < 0) {
+    return true;
+  };
+  const validate = () => {
+    const { tenLoaiPhong, soGiuong, sucChua } = loaiPhongMoi;
+    if (soGiuong < 0) {
       setToast({
-        header: "Giá thiết bị không được < 0",
+        header: "Số giường không được < 0",
         content: "",
         bg: "danger",
         textColor: "#fff",
       });
       return false;
     }
+    if (sucChua < 0) {
+      setToast({
+        header: "Sức chứa không được < 0",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+      return false;
+    }
+    for (var i = 0; i < dsLoaiPhong.length; i++) {
+      if (tenLoaiPhong === dsLoaiPhong[i].tenLoaiPhong) {
+        setToast({
+          header: "Tên loại phòng đã tồn tại",
+          content: "",
+          bg: "danger",
+          textColor: "#fff",
+        });
+        return false;
+      }
+    }
     return true;
   };
   const onHandleSearch = async () => {
-    const { data } = await axios.post(findEquipmentRoute, search, {
+    const { data } = await axios.post(findRoomTypeRoute, search, {
       headers: {
         "Content-Type": "application/json;charset=UTF-8",
         "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -121,35 +147,35 @@ function FrmThietBi() {
       },
     });
     if (data) {
-      setDsThietBi(data);
-      setThietBiSelected(undefined);
+      setDsLoaiPhong(data);
+      setLoaiPhongSelected(undefined);
     }
   };
 
   const onHandleRefresh = () => {
-    loadThietFromDB();
+    loadLoaiPhongFromDB();
   };
 
   useEffect(() => {
-    loadThietFromDB();
+    loadLoaiPhongFromDB();
   }, []);
-  const loadThietFromDB = async () => {
+  const loadLoaiPhongFromDB = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json;charset=UTF-8",
       },
     };
-    const { data } = await axios.get(`${getEquipmentsRoute}`, {}, config);
-    setDsThietBi(data);
+    const { data } = await axios.get(`${getRoomTypesRoute}`, {}, config);
+    setDsLoaiPhong(data);
   };
 
   return (
     <StyleContainer>
-      <h1>Quản lý thiết bị</h1>
+      <h1>Cập nhật loại phòng</h1>
       <div className="container">
         <Inputs
-          thietBiMoi={thietBiMoi}
-          setThietBiMoi={setThietBiMoi}
+          loaiPhongMoi={loaiPhongMoi}
+          setLoaiPhongMoi={setLoaiPhongMoi}
           onHandleAdd={onHandleAdd}
           onHandleUpdate={onHandleUpdate}
           onHandleRefresh={onHandleRefresh}
@@ -160,9 +186,9 @@ function FrmThietBi() {
           onHandleSearch={onHandleSearch}
         />
         <TableData
-          dsThietBi={dsThietBi}
-          thietBiSelected={thietBiSelected}
-          setThietBiSelected={setThietBiSelected}
+          loaiPhongSelected={loaiPhongSelected}
+          setLoaiPhongSelected={setLoaiPhongSelected}
+          dsLoaiPhong={dsLoaiPhong}
         />
       </div>
       {toast && (
@@ -210,4 +236,4 @@ const StyleContainer = styled.div`
   }
 `;
 
-export default FrmThietBi;
+export default FrmLoaiPhong;

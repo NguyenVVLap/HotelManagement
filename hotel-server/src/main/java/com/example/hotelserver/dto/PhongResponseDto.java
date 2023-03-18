@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter @Getter
+@ToString
 @AllArgsConstructor @NoArgsConstructor
 public class PhongResponseDto {
 	private long maPhong;
@@ -19,7 +21,7 @@ public class PhongResponseDto {
 	private String tenTang;
 	private long maLoaiPhong;
 	private String tenLoaiPhong;
-	private double giaLoaiPhong;
+	private double giaPhong;
 	private int sucChua;
 	private boolean duocHutThuoc;
 	private boolean mangThuCung;

@@ -42,7 +42,6 @@ public class TangController {
 	@PostMapping("/timKiemTang")
 	public ResponseEntity<List<Tang>> timKiemTang(@RequestBody Map<String, Object> request) {
 		List<Tang> results = new ArrayList<>();
-		System.out.println(request);
 		if (request.get("theo").toString().equals("Theo tên")) {
 			results = tangService.timTangTheoTen(request.get("keyword").toString());
 		} else if (request.get("theo").toString().equals("Theo mã")) {

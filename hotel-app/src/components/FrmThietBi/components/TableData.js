@@ -1,12 +1,15 @@
 import { Table } from "react-bootstrap";
 import styled from "styled-components";
 
-function TableData({ dsThietBi, thietBiSelected, setThietBiSelected }) {
-  const onHandleSelect = (thietBi) => {
-    if (thietBiSelected && thietBi.maThietBi === thietBiSelected.maThietBi) {
-      setThietBiSelected(undefined);
+function TableData({ loaiPhongSelected, setLoaiPhongSelected, dsLoaiPhong }) {
+  const onHandleSelect = (loaiPhong) => {
+    if (
+      loaiPhongSelected &&
+      loaiPhong.maLoaiPhong === loaiPhongSelected.maLoaiPhong
+    ) {
+      setLoaiPhongSelected(undefined);
     } else {
-      setThietBiSelected(thietBi);
+      setLoaiPhongSelected(loaiPhong);
     }
   };
   return (
@@ -14,29 +17,31 @@ function TableData({ dsThietBi, thietBiSelected, setThietBiSelected }) {
       <Table striped hover>
         <thead>
           <tr>
-            <th>Mã thiết bị</th>
-            <th>Tên thiết bị</th>
-            <th>Giá (VND)</th>
+            <th>Mã loại phòng</th>
+            <th>Tên loại phòng</th>
+            <th>Số giường</th>
+            <th>Sức chứa</th>
           </tr>
         </thead>
         <tbody>
-          {dsThietBi &&
-            dsThietBi !== [] &&
-            dsThietBi.map((thietBi, index) => {
+          {dsLoaiPhong &&
+            dsLoaiPhong !== [] &&
+            dsLoaiPhong.map((loaiPhong, index) => {
               return (
                 <tr
                   key={index}
                   className={`${
-                    thietBiSelected &&
-                    thietBiSelected.maThietBi === thietBi.maThietBi
+                    loaiPhongSelected &&
+                    loaiPhongSelected.maLoaiPhong === loaiPhong.maLoaiPhong
                       ? "row-selected"
                       : ""
                   }`}
-                  onClick={() => onHandleSelect(thietBi)}
+                  onClick={() => onHandleSelect(loaiPhong)}
                 >
-                  <td>{thietBi.maThietBi}</td>
-                  <td>{thietBi.tenThietBi}</td>
-                  <td>{thietBi.giaThietBi.toLocaleString()}</td>
+                  <td>{loaiPhong.maLoaiPhong}</td>
+                  <td>{loaiPhong.tenLoaiPhong}</td>
+                  <td>{loaiPhong.soGiuong}</td>
+                  <td>{loaiPhong.sucChua}</td>
                 </tr>
               );
             })}

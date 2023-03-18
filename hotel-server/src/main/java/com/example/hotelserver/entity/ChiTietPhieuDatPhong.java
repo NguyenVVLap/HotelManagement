@@ -1,6 +1,7 @@
 package com.example.hotelserver.entity;
 
-import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -15,21 +16,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@IdClass(PhongThietBiPK.class)
-@Table(name="phong_thiet_bi")
-public class PhongThietBi {
-
+@IdClass(ChiTietPhieuDatPhongPK.class)
+@Table(name = "chi_tiet_phieu_dat_phong")
+public class ChiTietPhieuDatPhong {
 	@Id
 	@ManyToOne
-	@JoinColumn(name="ma_thiet_bi")
-	private ThietBi thietBi;
+	@JoinColumn(name="ma_phieu_dat_phong")
+	private PhieuDatPhong phieuDatPhong;
 	
 	@Id
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	@JoinColumn(name="ma_phong")
 	private Phong phong;
-	
-	@Column(name = "so_luong")
-	private int soLuong;
-	
 }

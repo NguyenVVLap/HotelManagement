@@ -20,7 +20,7 @@ function Menu({
       guest: false,
       staff: false,
       bill: false,
-      equipment: false,
+      roomType: false,
       floor: false,
       booking: false,
       service: false,
@@ -34,7 +34,7 @@ function Menu({
       guest: false,
       staff: false,
       bill: false,
-      equipment: false,
+      roomType: false,
       floor: false,
       booking: false,
       service: false,
@@ -90,12 +90,12 @@ function Menu({
               </button>
               <button
                 className={`btn-sub ${
-                  subNavSelected.subnav === "manage-room" && "btn-sub-selected"
+                  subNavSelected.subnav === "update-room" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("manage-room", "room")}
+                onClick={() => onHandleSelectedSubNav("update-room", "room")}
               >
                 <BsDoorOpen />
-                <p className="btn-sub-title">Quản lý</p>
+                <p className="btn-sub-title">Cập nhật</p>
               </button>
             </div>
           )}
@@ -112,16 +112,16 @@ function Menu({
             <p className="btn-title">Tầng</p>
           </div>
         </button>
-        <button className={`btn ${navSelected.equipment && "btn-selected"}`}>
+        <button className={`btn ${navSelected.roomType && "btn-selected"}`}>
           <div
             className="menu-content"
             onClick={() => {
-              onHandleSelectedNav("equipment", !navSelected.equipment);
+              onHandleSelectedNav("roomType", !navSelected.roomType);
               setSubNavSelected({ nav: "", subnav: "" });
             }}
           >
             <BsDoorOpen />
-            <p className="btn-title">Thiết bị</p>
+            <p className="btn-title">Loại phòng</p>
           </div>
         </button>
         {/* Khách hàng */}
@@ -140,13 +140,12 @@ function Menu({
             <div className="sub-menu-container">
               <button
                 className={`btn-sub ${
-                  subNavSelected.subnav === "manager-guest" &&
-                  "btn-sub-selected"
+                  subNavSelected.subnav === "update-guest" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("manager-guest", "guest")}
+                onClick={() => onHandleSelectedSubNav("update-guest", "guest")}
               >
                 <ManageAccountsOutlinedIcon />
-                <p className="btn-sub-title">Quản lý Khách hàng</p>
+                <p className="btn-sub-title">Cập nhật</p>
               </button>
             </div>
           )}
@@ -167,13 +166,12 @@ function Menu({
             <div className="sub-menu-container">
               <button
                 className={`btn-sub ${
-                  subNavSelected.subnav === "manager-staff" &&
-                  "btn-sub-selected"
+                  subNavSelected.subnav === "update-staff" && "btn-sub-selected"
                 }`}
-                onClick={() => onHandleSelectedSubNav("manager-staff", "staff")}
+                onClick={() => onHandleSelectedSubNav("update-staff", "staff")}
               >
                 <GroupAddOutlinedIcon />
-                <p className="btn-sub-title">Quản lý nhân viên</p>
+                <p className="btn-sub-title">Cập nhật</p>
               </button>
             </div>
           )}
@@ -205,7 +203,7 @@ function Menu({
                 onClick={() => onHandleSelectedSubNav("manage-booking", "bill")}
               >
                 <BsDoorOpen />
-                <p className="btn-sub-title">Quản lý</p>
+                <p className="btn-sub-title">Cập nhật</p>
               </button>
               <button
                 className={`btn-sub ${
@@ -232,15 +230,15 @@ function Menu({
             <div className="sub-menu-container">
               <button
                 className={`btn-sub ${
-                  subNavSelected.subnav === "manager-service" &&
+                  subNavSelected.subnav === "update-service" &&
                   "btn-sub-selected"
                 }`}
                 onClick={() =>
-                  onHandleSelectedSubNav("manager-service", "service")
+                  onHandleSelectedSubNav("update-service", "service")
                 }
               >
                 <ManageAccountsOutlinedIcon />
-                <p className="btn-sub-title">Quản lý dịch vụ</p>
+                <p className="btn-sub-title">Cập nhật</p>
               </button>
             </div>
           )}

@@ -1,18 +1,18 @@
 package com.example.hotelserver.service;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
+import com.example.hotelserver.dto.PhongResponseDto;
 import com.example.hotelserver.entity.Phong;
-import com.example.hotelserver.entity.PhongThietBi;
 
 public interface PhongService {
-	List<Map<String, Object>> layTatCaPhongSapXepTheoTrangThai();
-	List<Map<String, Object>> layTatCaPhong();
+	List<PhongResponseDto> layTatCaPhongSapXepTheoTrangThai(Date ngayNhanPhong, Date ngayTraPhong);
+	List<PhongResponseDto> layTatCaPhong();
 	boolean kiemTraPhongTonTaiTheoTen(String tenPhong);
-	List<Map<String, Object>> timPhongTheoTenLike(String tenPhong);
-	List<Map<String, Object>> timPhongTheoMa(long maPhong);
-	boolean themPhong(Phong phong, List<PhongThietBi> dsPhongThietBi);
-	List<Map<String, Object>> timPhongTheoMaTang(int maTang);
-	List<Map<String, Object>> timPhongTheoMaLoaiPhong(long maLoaiPhong);
+	List<PhongResponseDto> timPhongTheoTenLike(String tenPhong);
+	List<PhongResponseDto> timPhongTheoMa(long maPhong);
+	boolean themPhong(Phong phong);
+	List<PhongResponseDto> timPhongTheoMaTang(int maTang);
+	List<PhongResponseDto> timPhongTheoMaLoaiPhong(long maLoaiPhong);
 }

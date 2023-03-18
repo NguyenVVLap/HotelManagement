@@ -18,51 +18,39 @@ function FrmQuanLyPhong() {
   const [showImageSelect, setShowImageSelect] = useState(undefined);
   const [dsPhong, setDsPhong] = useState(undefined);
   const [search, setSearch] = useState({ keyword: "", theo: "Theo mã" });
-  const [phongMoi, setPhongMoi] = useState({
-    phong: {},
-    dsThietBiPhong: [],
-  });
+  const [phongMoi, setPhongMoi] = useState({});
   const [tempPhong, setTempPhong] = useState({});
-  const [tempThietBi, setTempThietBi] = useState([]);
-  const [thietBiMoi, setThietBiMoi] = useState([]);
   const [tempTang, setTempTang] = useState([]);
   const [tempLoaiPhong, setTempLoaiPhong] = useState([]);
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    setTempPhong(phongMoi.phong);
-    setTempThietBi(phongMoi.dsThietBiPhong);
+    setTempPhong(phongMoi);
   }, [phongMoi]);
 
   useEffect(() => {
     if (phongSelected) {
       setPhongMoi(phongSelected);
     } else {
-      setPhongMoi({
-        phong: {},
-        dsThietBiPhong: [],
-      });
+      setPhongMoi({});
     }
   }, [phongSelected]);
 
   const onHandleAdd = async () => {
     if (!tempPhong.maPhong && validate()) {
-      for (let i = 0; i < tempThietBi.length; i++) {
-        if (tempThietBi[i].soLuong === 0) {
-          tempThietBi.splice(i, 1);
-        }
-      }
       let phongMoiTemp = {
         phong: {
-          maPhong: 0,
+          maPhong: tempPhong.maPhong || 0,
           tenPhong: tempPhong.tenPhong,
           moTaPhong: tempPhong.moTaPhong ? tempPhong.moTaPhong : "",
           maLoaiPhong: tempPhong.maLoaiPhong || 1,
           maTang: tempPhong.maTang || 1,
+          giaPhong: tempPhong.giaPhong || 0,
+          duocHutThuoc: tempPhong.duocHutThuoc ? true : false,
+          mangThuCung: tempPhong.mangThuCung ? true : false,
           trangThaiPhong: true,
           hinhAnhPhong: tempPhong.hinhAnhPhong || [],
         },
-        thietBi: [...tempThietBi],
       };
       const res = await axios.post(addRoomRoute, phongMoiTemp, {
         headers: {
@@ -84,11 +72,6 @@ function FrmQuanLyPhong() {
       tempPhong.maPhong !== 0 &&
       validateUpdate()
     ) {
-      for (let i = 0; i < tempThietBi.length; i++) {
-        if (tempThietBi[i].soLuong === 0) {
-          tempThietBi.splice(i, 1);
-        }
-      }
       let phongMoiTemp = {
         phong: {
           maPhong: tempPhong.maPhong,
@@ -96,10 +79,12 @@ function FrmQuanLyPhong() {
           moTaPhong: tempPhong.moTaPhong ? tempPhong.moTaPhong : "",
           maLoaiPhong: tempPhong.maLoaiPhong || 1,
           maTang: tempPhong.maTang || 1,
+          giaPhong: tempPhong.giaPhong || 0,
+          duocHutThuoc: tempPhong.duocHutThuoc ? true : false,
+          mangThuCung: tempPhong.mangThuCung ? true : false,
           trangThaiPhong: true,
           hinhAnhPhong: tempPhong.hinhAnhPhong || [],
         },
-        thietBi: [...tempThietBi],
       };
       const { data } = await axios.post(addRoomRoute, phongMoiTemp, {
         headers: {
@@ -116,7 +101,7 @@ function FrmQuanLyPhong() {
   };
 
   const validate = () => {
-    const { tenPhong } = tempPhong;
+    const { tenPhong, giaPhong } = tempPhong;
     if (tenPhong === "") {
       setToast({
         header: "Tên phòng không được bỏ trống",
@@ -127,7 +112,7 @@ function FrmQuanLyPhong() {
       return false;
     }
     for (var i = 0; i < dsPhong.length; i++) {
-      if (tenPhong === dsPhong[i].phong.tenPhong) {
+      if (tenPhong === dsPhong[i].tenPhong) {
         setToast({
           header: "Tên phòng không được trùng",
           content: "",
@@ -137,10 +122,19 @@ function FrmQuanLyPhong() {
         return false;
       }
     }
+    if (giaPhong <= 0) {
+      setToast({
+        header: "Giá phòng phải >= 0",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+      return false;
+    }
     return true;
   };
   const validateUpdate = () => {
-    const { tenPhong } = tempPhong;
+    const { tenPhong, maPhong } = tempPhong;
     if (tenPhong === "") {
       setToast({
         header: "Tên phòng không được bỏ trống",
@@ -149,6 +143,17 @@ function FrmQuanLyPhong() {
         textColor: "#fff",
       });
       return false;
+    }
+    for (var i = 0; i < dsPhong.length; i++) {
+      if (tenPhong === dsPhong[i].tenPhong && maPhong !== dsPhong[i].maPhong) {
+        setToast({
+          header: "Tên phòng không được trùng",
+          content: "",
+          bg: "danger",
+          textColor: "#fff",
+        });
+        return false;
+      }
     }
     return true;
   };
@@ -202,16 +207,12 @@ function FrmQuanLyPhong() {
       <div className="container">
         <Inputs
           tempPhong={tempPhong}
-          tempThietBi={tempThietBi}
           tempTang={tempTang}
           tempLoaiPhong={tempLoaiPhong}
           setTempPhong={setTempPhong}
           setShowImageSelect={setShowImageSelect}
-          setTempThietBi={setTempThietBi}
           setTempTang={setTempTang}
           setTempLoaiPhong={setTempLoaiPhong}
-          thietBiMoi={thietBiMoi}
-          setThietBiMoi={setThietBiMoi}
           setPhongMoi={setPhongMoi}
           onHandleAdd={onHandleAdd}
           onHandleUpdate={onHandleUpdate}

@@ -11,7 +11,7 @@ import com.example.hotelserver.entity.Phong;
 
 @Repository
 public interface PhongRepo extends JpaRepository<Phong, Long>{
-	@Query(nativeQuery = true, value = ("select * from phong order by trang_thai_phong desc;"))
+	@Query(nativeQuery = true, value = ("select * from phong where trang_thai_phong = 1"))
 	List<Phong> getRoomsOrderByState();
 	
 	@Query(nativeQuery = true, value = "select * from phong p where p.ten_phong like %:tenPhong%")

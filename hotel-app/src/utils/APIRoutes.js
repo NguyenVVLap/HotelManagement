@@ -8,6 +8,8 @@ export const checkPhoneExistRoute = `${host}/api/auth/checkPhoneExist`;
 
 //Booking
 export const getRoomsOrderRoute = `${host}/api/phong/sapXepTrangThai`;
+export const getBookingsRoute = `${host}/api/phieuDatPhong`;
+export const addBookingsRoute = `${host}/api/phieuDatPhong/themPhieu`;
 
 //Floor
 export const getFloorsRoute = `${host}/api/tang`;
@@ -19,13 +21,10 @@ export const getRoomsRoute = `${host}/api/phong`;
 export const addRoomRoute = `${host}/api/phong`;
 export const findRoomRoute = `${host}/api/phong/timKiemPhong`;
 
-//Room
+//RoomType
 export const getRoomTypesRoute = `${host}/api/loaiPhong`;
-
-//Equipment
-export const getEquipmentsRoute = `${host}/api/thietbi`;
-export const addEquipmentRoute = `${host}/api/thietbi`;
-export const findEquipmentRoute = `${host}/api/thietbi/timKiemThietBi`;
+export const addRoomTypeRoute = `${host}/api/loaiPhong`;
+export const findRoomTypeRoute = `${host}/api/loaiPhong/timKiemLoaiPhong`;
 
 //Service
 export const getAllServiceRoute = `${host}/api/dichvu`;
@@ -44,4 +43,3 @@ export const addNhanVien = `${host}/api/nhanvien`;
 export const getAllNhanVienRoute = `${host}/api/nhanvien`;
 export const updateNhanVien = `${host}/api/nhanvien`;
 export const timNhanVien = `${host}/api/nhanvien/timKiemNhanVien`;
-

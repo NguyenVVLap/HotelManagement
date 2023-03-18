@@ -7,7 +7,7 @@ function RoomSelected({ roomChoosen, setShowDetail, setRoomChoosen }) {
     const temp = [...roomChoosen];
 
     for (var i = 0; i < temp.length; i++) {
-      if (temp[i].room.roomId === room.room.roomId) {
+      if (temp[i].maPhong === room.maPhong) {
         temp.splice(i, 1);
         setRoomChoosen(temp);
         return;
@@ -45,10 +45,10 @@ function RoomSelected({ roomChoosen, setShowDetail, setRoomChoosen }) {
                       style={{ color: "red", fontSize: "2rem" }}
                     />
                   </td>
-                  <td>{room.room.roomName}</td>
-                  <td>{room.room.roomTypeName}</td>
-                  <td>{room.room.floorName}</td>
-                  <td>{room.room.roomTypeCost.toLocaleString()}</td>
+                  <td>{room.tenPhong}</td>
+                  <td>{room.tenLoaiPhong}</td>
+                  <td>{room.tenTang}</td>
+                  <td>{room.giaPhong.toLocaleString()}</td>
                   <td
                     style={{
                       cursor: "pointer",
@@ -63,7 +63,9 @@ function RoomSelected({ roomChoosen, setShowDetail, setRoomChoosen }) {
             })
           ) : (
             <tr>
-              <td colSpan={6}>Không có dữ liệu</td>
+              <td colSpan={6} style={{ textAlign: "center" }}>
+                Không có dữ liệu
+              </td>
             </tr>
           )}
         </tbody>
@@ -72,7 +74,7 @@ function RoomSelected({ roomChoosen, setShowDetail, setRoomChoosen }) {
   );
 }
 const StyledContainer = styled.div`
-  height: 300px;
+  height: 500px;
   overflow-y: scroll;
   width: 100%;
   &::-webkit-scrollbar {
