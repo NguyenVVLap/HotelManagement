@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
+import { Grid, Stack } from '@mui/material';
 import styled from "styled-components";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -16,6 +17,7 @@ import {
   timKiemKhachHang,
 } from "../../utils/APIRoutes";
 import axios from "axios";
+
 
 function FrmDatPhong() {
   const [showRooms, setShowRooms] = useState(false);
@@ -244,46 +246,55 @@ function FrmDatPhong() {
         <div className="content">
           <div className="select-container">
             <div className="room-select-container">
-              <div className="btn-function">
-                <Button
-                  variant="primary"
-                  onClick={() => onHandeOpenSelectRoom()}
-                >
-                  Chọn phòng
-                </Button>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["DatePicker"]}>
-                    <DatePicker
-                      sx={{ width: "100%" }}
-                      label="Ngày nhận phòng"
-                      value={
-                        bookingInfo.ngayNhanPhong
-                          ? bookingInfo.ngayNhanPhong
-                          : dayjs(new Date())
-                      }
-                      onChange={(date) => {
-                        onHandleChangeDateBooking(date, "ngayNhanPhong");
-                      }}
-                    />
-                  </DemoContainer>
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["DatePicker"]}>
-                    <DatePicker
-                      sx={{ width: "100%" }}
-                      label="Ngày trả phòng"
-                      value={
-                        bookingInfo.ngayTraPhong
-                          ? bookingInfo.ngayTraPhong
-                          : dayjs(new Date())
-                      }
-                      onChange={(date) => {
-                        onHandleChangeDateBooking(date, "ngayTraPhong");
-                      }}
-                    />
-                  </DemoContainer>
-                </LocalizationProvider>
-              </div>
+              <Grid container   >
+                <Stack flexDirection='row' alignItems='center' justifyContent='space-around'>
+                  <Grid item md={3}>
+                    <Button
+                      variant="primary"
+                      onClick={() => onHandeOpenSelectRoom()}
+                    >
+                      Chọn phòng
+                    </Button>
+                  </Grid >
+                  <Grid item md={4}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={["DatePicker"]}>
+                        <DatePicker
+                          sx={{ width: "100%" }}
+                          label="Ngày nhận phòng"
+                          value={
+                            bookingInfo.ngayNhanPhong
+                              ? bookingInfo.ngayNhanPhong
+                              : dayjs(new Date())
+                          }
+                          onChange={(date) => {
+                            onHandleChangeDateBooking(date, "ngayNhanPhong");
+                          }}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                  </Grid>
+
+                  <Grid item md={4}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={["DatePicker"]}>
+                        <DatePicker
+                          sx={{ width: "100%" }}
+                          label="Ngày trả phòng"
+                          value={
+                            bookingInfo.ngayTraPhong
+                              ? bookingInfo.ngayTraPhong
+                              : dayjs(new Date())
+                          }
+                          onChange={(date) => {
+                            onHandleChangeDateBooking(date, "ngayTraPhong");
+                          }}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                  </Grid>
+                </Stack >
+              </Grid>
               <div className="table-container">
                 <RoomSelected
                   roomChoosen={roomChoosen}

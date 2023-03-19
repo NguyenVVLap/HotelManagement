@@ -50,7 +50,9 @@ public class AuthenticationService {
 					.cccd(request.getCccd())
 					.email(request.getEmail())
 					.diaChi(request.getDiaChi())
-					.ngayVaoLam(currentDate).soDienThoai(request.getSoDienThoai()).taiKhoan(taikhoan).build();
+					.ngayVaoLam(currentDate).soDienThoai(request.getSoDienThoai()).taiKhoan(taikhoan)
+					.ngaySinh(currentDate)
+					.build();
 			nhanVienRepo.save(newNhanVien);
 
 //			TaiKhoan newUser = repository.findByTenTaiKhoan(request.getSoDienThoai()).get();
