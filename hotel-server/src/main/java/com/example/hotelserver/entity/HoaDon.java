@@ -51,11 +51,11 @@ public class HoaDon {
 	@JoinColumn(name = "ma_phieu_dat_phong")
 	private PhieuDatPhong phieuDatPhong;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ma_khach_hang")
 	private KhachHang khachHang;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ma_nhan_vien")
 	private NhanVien nhanVien;
 	

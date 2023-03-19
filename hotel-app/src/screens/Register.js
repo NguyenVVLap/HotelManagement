@@ -160,8 +160,9 @@ function Register() {
         }
       );
 
-      if (data !== "Username or Identification already exist") {
-        localStorage.setItem("token", JSON.stringify(data));
+      if (data && data.token && data.nhanVien) {
+        localStorage.setItem("token", JSON.stringify(data.token));
+        localStorage.setItem("nhanVien", JSON.stringify(data.nhanVien));
         navigate("/");
       }
     }

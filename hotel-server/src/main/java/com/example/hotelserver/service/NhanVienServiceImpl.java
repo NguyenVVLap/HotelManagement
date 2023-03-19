@@ -171,5 +171,10 @@ public class NhanVienServiceImpl implements NhanVienService {
         return "update success";
     }
 
+	@Override
+	public NhanVien findByCCCD(String cccd) {
+		return employeeRepo.findByCccd(cccd);
+	}
+
 
 }

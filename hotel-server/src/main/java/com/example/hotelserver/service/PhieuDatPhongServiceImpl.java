@@ -10,9 +10,11 @@ import com.example.hotelserver.dto.PhieuDatPhongDto;
 import com.example.hotelserver.dto.PhongResponseDto;
 import com.example.hotelserver.dto.ThemPhieuDto;
 import com.example.hotelserver.entity.ChiTietPhieuDatPhong;
+import com.example.hotelserver.entity.KhachHang;
 import com.example.hotelserver.entity.PhieuDatPhong;
 import com.example.hotelserver.entity.Phong;
 import com.example.hotelserver.repository.ChiTietPhieuDatPhongRepo;
+import com.example.hotelserver.repository.KhachHangRepo;
 import com.example.hotelserver.repository.PhieuDatPhongRepo;
 import com.example.hotelserver.repository.PhongRepo;
 
@@ -27,6 +29,9 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 	@Autowired
 	private PhongRepo phongRepo;
 
+	@Autowired
+	private KhachHangRepo khachHangRepo;
+	
 	@Override
 	public boolean themPhieuDatPhong(ThemPhieuDto phieuDatPhongDto) {
 		List<ChiTietPhieuDatPhong> chiTietPhieuDatPhongs = new ArrayList<>();
@@ -36,6 +41,9 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 			for (Long ma : dsMaPhong) {
 				ChiTietPhieuDatPhong ct = new ChiTietPhieuDatPhong(null, new Phong(ma
 						, null, false, null, null, null, null, 0, false, false));
+				if (phieuDatPhongDto.getMaPhieuDatPhong() != 0) {
+					ct.setPhieuDatPhong(new PhieuDatPhong(phieuDatPhongDto.getMaPhieuDatPhong(), null, 0, null, null, null, null, chiTietPhieuDatPhongs, null));
+				}
 				chiTietPhieuDatPhongs.add(ct);
 			}
 		}
@@ -48,7 +56,7 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 				, phieuDatPhongDto.getNgayTraPhong()
 				, phieuDatPhongDto.getTrangThaiDatPhong()
 				, chiTietPhieuDatPhongs
-				, phieuDatPhongDto.getKhachHang());
+				, new KhachHang(phieuDatPhongDto.getKhachHang().getMaKhachHang(), null, null, null, null, null));
 		PhieuDatPhong newPhieuDatPhong = phieuDatPhongRepo.save(phieuDatPhong);
 		if (newPhieuDatPhong != null) {
 			List<ChiTietPhieuDatPhong> dsChiTiet = newPhieuDatPhong.getDsChiTietPhieuDatPhong();
@@ -73,7 +81,6 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 
 	@Override
 	public List<PhieuDatPhongDto> layPhieuDatPhong() {
-		// TODO Auto-generated method stub
 		List<PhieuDatPhongDto> dsPhieuDatPhongDto = new ArrayList<>();
 		try {
 			List<PhieuDatPhong> dsPhieuDatPhong = phieuDatPhongRepo.findAll();
@@ -121,5 +128,87 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 				, phong.isDuocHutThuoc(), phong.isMangThuCung()
 				, phong.getLoaiPhong().getSoGiuong());
 		return phongResponseDto;
+	}
+
+	@Override
+	public List<PhieuDatPhongDto> layPhieuDatPhongTheoNgay() {
+		List<PhieuDatPhongDto> dsPhieuDatPhongDto = new ArrayList<>();
+		try {
+			List<PhieuDatPhong> dsPhieuDatPhong = phieuDatPhongRepo.layPhieuSapXepTheoNgayTrangThaiMoiDat();
+			for (PhieuDatPhong phieuDatPhong : dsPhieuDatPhong) {
+				PhieuDatPhongDto phieuDatPhongDto = PhieuDatPhongDto.builder()
+						.maPhieuDatPhong(phieuDatPhong.getMaPhieuDatPhong())
+						.ngayDatPhong(phieuDatPhong.getNgayDatPhong())
+						.giamGia(phieuDatPhong.getGiamGia())
+						.ghiChuDatPhong(phieuDatPhong.getGhiChuDatPhong())
+						.ngayNhanPhong(phieuDatPhong.getNgayNhanPhong())
+						.ngayTraPhong(phieuDatPhong.getNgayTraPhong())
+						.trangThaiDatPhong(phieuDatPhong.getTrangThaiDatPhong())
+						.khachHang(phieuDatPhong.getKhachHang())
+						.build();
+				List<Phong> dsPhong = new ArrayList<>();
+				List<Long> dsMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(phieuDatPhong.getMaPhieuDatPhong());
+				if (!dsMaPhong.isEmpty()) {
+					for (long maPhong : dsMaPhong) {
+						Phong phong = phongRepo.findById(maPhong).get();
+						dsPhong.add(phong);
+					}
+				}
+				List<PhongResponseDto> phongResponseDtos = new ArrayList<>();
+				if (!dsPhong.isEmpty()) {
+					for (Phong phong : dsPhong) {
+						phongResponseDtos.add(convertPhongToPhongDto(phong));
+					}
+				}
+				phieuDatPhongDto.setDsPhong(phongResponseDtos);
+				dsPhieuDatPhongDto.add(phieuDatPhongDto);
+			}
+		} catch (Exception e) {
+			System.out.println("Error at layPhieuDatPhong: " + e);
+		}
+		return dsPhieuDatPhongDto;
+	}
+
+	@Override
+	public List<PhieuDatPhongDto> layPhieuDatPhongTheoNgayCCCD(String cccd) {
+		List<PhieuDatPhongDto> dsPhieuDatPhongDto = new ArrayList<>();
+		try {
+			KhachHang khachHang = khachHangRepo.timKhachHangBangCCCD(cccd);
+			if (khachHang != null) {
+				List<PhieuDatPhong> dsPhieuDatPhong = phieuDatPhongRepo.layPhieuSapXepTheoNgayTrangThaiMoiDatTheoMaKH(khachHang.getMaKhachHang());
+				for (PhieuDatPhong phieuDatPhong : dsPhieuDatPhong) {
+					PhieuDatPhongDto phieuDatPhongDto = PhieuDatPhongDto.builder()
+							.maPhieuDatPhong(phieuDatPhong.getMaPhieuDatPhong())
+							.ngayDatPhong(phieuDatPhong.getNgayDatPhong())
+							.giamGia(phieuDatPhong.getGiamGia())
+							.ghiChuDatPhong(phieuDatPhong.getGhiChuDatPhong())
+							.ngayNhanPhong(phieuDatPhong.getNgayNhanPhong())
+							.ngayTraPhong(phieuDatPhong.getNgayTraPhong())
+							.trangThaiDatPhong(phieuDatPhong.getTrangThaiDatPhong())
+							.khachHang(phieuDatPhong.getKhachHang())
+							.build();
+					List<Phong> dsPhong = new ArrayList<>();
+					List<Long> dsMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(phieuDatPhong.getMaPhieuDatPhong());
+					if (!dsMaPhong.isEmpty()) {
+						for (long maPhong : dsMaPhong) {
+							Phong phong = phongRepo.findById(maPhong).get();
+							dsPhong.add(phong);
+						}
+					}
+					List<PhongResponseDto> phongResponseDtos = new ArrayList<>();
+					if (!dsPhong.isEmpty()) {
+						for (Phong phong : dsPhong) {
+							phongResponseDtos.add(convertPhongToPhongDto(phong));
+						}
+					}
+					phieuDatPhongDto.setDsPhong(phongResponseDtos);
+					dsPhieuDatPhongDto.add(phieuDatPhongDto);
+				}
+				
+			}
+		} catch (Exception e) {
+			System.out.println("Error at layPhieuDatPhongTheoNgayCCCD: " + e);
+		}
+		return dsPhieuDatPhongDto;
 	}
 }

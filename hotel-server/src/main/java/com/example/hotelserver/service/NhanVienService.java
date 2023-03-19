@@ -11,6 +11,7 @@ public interface NhanVienService {
     List<Map<String,Object>> getAllInfoNhanVienWithAccountByHoTen(String tenNhanVien);
     List<Map<String,Object>> getAllInfoNhanVienWithAccountByPhone(String phone);
     NhanVien findBySoDienThoai (String phone);
+    NhanVien findByCCCD (String cccd);
     public String themMoiNhanVien(NhanVienDto request);
     public boolean checkNhanVienExist(String sdt, String cccd);
     public String capnhatNhanVien(NhanVienDto request);

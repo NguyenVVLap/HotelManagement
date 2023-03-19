@@ -9,7 +9,14 @@ export const checkPhoneExistRoute = `${host}/api/auth/checkPhoneExist`;
 //Booking
 export const getRoomsOrderRoute = `${host}/api/phong/sapXepTrangThai`;
 export const getBookingsRoute = `${host}/api/phieuDatPhong`;
+export const getBookingsOrderDateRoute = `${host}/api/phieuDatPhong/orderDate`;
+export const getBookingsByCCCD = `${host}/api/phieuDatPhong/searchByCCCD`;
 export const addBookingsRoute = `${host}/api/phieuDatPhong/themPhieu`;
+
+//Bill
+export const addBillsRoute = `${host}/api/hoaDon`;
+export const getBillsOrderDateRoute = `${host}/api/hoaDon/orderDate`;
+export const getBillsByCCCD = `${host}/api/hoaDon/searchByCCCD`;
 
 //Floor
 export const getFloorsRoute = `${host}/api/tang`;

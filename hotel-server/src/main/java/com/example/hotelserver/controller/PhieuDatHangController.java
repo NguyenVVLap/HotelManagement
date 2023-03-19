@@ -1,6 +1,7 @@
 package com.example.hotelserver.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,10 +34,23 @@ public class PhieuDatHangController {
 		return new ResponseEntity<List<PhieuDatPhongDto>>(phieuDatPhongService.layPhieuDatPhong(), HttpStatus.OK);
 	}
 	
+	@GetMapping("/orderDate")
+	public ResponseEntity<List<PhieuDatPhongDto>> layPhieuDatPhongTheoNgay() {
+//		List<PhieuDatPhongDto> results = phieuDatPhongService.layPhieuDatPhongTheoNgay();
+		return new ResponseEntity<List<PhieuDatPhongDto>>(phieuDatPhongService.layPhieuDatPhongTheoNgay(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/searchByCCCD")
+	public ResponseEntity<List<PhieuDatPhongDto>> layPhieuDatPhongTheoCCCD(@RequestBody Map<String, Object> request) {
+//		List<PhieuDatPhongDto> results = phieuDatPhongService.layPhieuDatPhongTheoNgay();
+		return new ResponseEntity<List<PhieuDatPhongDto>>(phieuDatPhongService.layPhieuDatPhongTheoNgayCCCD(request.get("cccd").toString()), HttpStatus.OK);
+	}
+	
 	@PostMapping("/themPhieu")
 	public ResponseEntity<Boolean> themPhieu(@RequestBody ThemPhieuDto request) {
 		try {
 			KhachHang khachHang = khachHangService.timKhachHangTheoCCCD(request.getKhachHang().getCccdKhachHang());
+			System.out.println(khachHang);
 			if (khachHang == null) {
 				if (khachHangService.themKhachHang(request.getKhachHang())) {
 					khachHang = khachHangService.timKhachHangTheoCCCD(request.getKhachHang().getCccdKhachHang());

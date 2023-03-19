@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.hotelserver.dto.AuthenticationRequest;
 import com.example.hotelserver.dto.RegisterRequest;
+import com.example.hotelserver.entity.NhanVien;
 import com.example.hotelserver.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,13 +29,16 @@ public class UserController {
 	private final NhanVienService nhanVienService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-		System.out.println(request.getHoTen());
+	public ResponseEntity<Map<String, Object>> register(@RequestBody RegisterRequest request) {
 		String token = service.register(request);
 		if (token == null) {
-			return ResponseEntity.ok("Username or Identification already exist");
+			return ResponseEntity.ok(new HashMap<>());
 		}
-		return ResponseEntity.ok(token);
+		NhanVien nhanVien = nhanVienService.findByCCCD(request.getCccd());
+		Map<String, Object> results = new HashMap<>();
+		results.put("token", token);
+		results.put("nhanVien", nhanVien);
+		return ResponseEntity.ok(results);
 	}
 	
 	@PutMapping("/changeRole")
@@ -46,9 +50,17 @@ public class UserController {
 	}
 	
 	@PostMapping("/authenticate")
-	public ResponseEntity<String> authenticate(@RequestBody AuthenticationRequest request) {
+	public ResponseEntity<Map<String, Object>> authenticate(@RequestBody AuthenticationRequest request) {
 //		System.out.println(Role.USER.name() + " " + Role.USER.getAuthority());
-		return ResponseEntity.ok(service.authenticate(request));
+		String token = service.authenticate(request);
+		if (token == null) {
+			return ResponseEntity.ok(new HashMap<>());
+		}
+		NhanVien nhanVien = nhanVienService.findBySoDienThoai(request.getUsername());
+		Map<String, Object> results = new HashMap<>();
+		results.put("token", token);
+		results.put("nhanVien", nhanVien);
+		return ResponseEntity.ok(results);
 	}
 	
 	@PostMapping("/checkPhoneExist")

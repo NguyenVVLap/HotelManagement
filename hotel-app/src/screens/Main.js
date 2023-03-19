@@ -14,6 +14,11 @@ import FrmLoaiPhong from "../components/FrmThietBi";
 import FrmTimKiemDichVu from "../components/FrmDichVu/TimKiemDichVu";
 import FrmTimKiemKhachHang from "../components/FrmKhachHang/TimKiemKhachHang";
 import FrmTimKiemNhanVien from "../components/FrmNhanVien/TimKiemNhanVien";
+import FrmNhanPhong from "../components/FrmNhanPhong";
+import FrmLapHoaDon from "../components/FrmLapHoaDon";
+import FrmTimKiemLoaiPhong from "../components/FrmTimKiemLoaiPhong";
+import FrmTimKiemTang from "../components/FrmTimKiemTang";
+import FrmTimKiemPhong from "../components/FrmTimKiemPhong";
 
 function Main() {
   const navigate = useNavigate();
@@ -54,8 +59,15 @@ function Main() {
         <div className="wrapper">
           {subNavSelected.subnav === "book" && <FrmDatPhong />}
           {subNavSelected.subnav === "update-room" && <FrmQuanLyPhong />}
-          {navSelected.floor && <FrmTang />}
-          {navSelected.roomType && <FrmLoaiPhong />}
+          {subNavSelected.subnav === "search-room" && <FrmTimKiemPhong />}
+          {subNavSelected.subnav === "check-in" && <FrmNhanPhong />}
+          {subNavSelected.subnav === "add-bill" && <FrmLapHoaDon />}
+          {subNavSelected.subnav === "update-floor" && <FrmTang />}
+          {subNavSelected.subnav === "search-floor" && <FrmTimKiemTang />}
+          {subNavSelected.subnav === "update-room-type" && <FrmLoaiPhong />}
+          {subNavSelected.subnav === "search-room-type" && (
+            <FrmTimKiemLoaiPhong />
+          )}
           {subNavSelected.subnav === "update-service" && <FrmDichVu />}
           {subNavSelected.subnav === "update-guest" && <FrmKhachHang />}
           {subNavSelected.subnav === "update-staff" && <FrmNhanVien />}

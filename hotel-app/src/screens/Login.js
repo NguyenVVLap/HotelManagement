@@ -58,7 +58,8 @@ function Login() {
           }
         )
         .then((res) => {
-          localStorage.setItem("token", JSON.stringify(res.data));
+          localStorage.setItem("token", JSON.stringify(res.data.token));
+          localStorage.setItem("nhanVien", JSON.stringify(res.data.nhanVien));
           navigate("/");
         })
         .catch((e) => {

@@ -3,8 +3,10 @@ package com.example.hotelserver.dto;
 import java.util.Date;
 import java.util.List;
 
+import com.example.hotelserver.entity.ChiTietDichVu;
 import com.example.hotelserver.entity.KhachHang;
-import com.example.hotelserver.entity.TrangThaiDatPhong;
+import com.example.hotelserver.entity.NhanVien;
+import com.example.hotelserver.entity.PhieuDatPhong;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
@@ -20,15 +22,16 @@ import lombok.ToString;
 @ToString
 @Builder
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
-public class PhieuDatPhongDto{
-	private long maPhieuDatPhong;
-	private Date ngayDatPhong;
-	private double giamGia;
-	private String ghiChuDatPhong;
+public class HoaDonDto{
+	private long maHoaDon;
+	private Date ngayLap;
 	private Date ngayNhanPhong;
 	private Date ngayTraPhong;
-	private TrangThaiDatPhong trangThaiDatPhong;
+	private double tienNhan;
+	private PhieuDatPhong phieuDatPhong;
 	private KhachHang khachHang;
+	private NhanVien nhanVien;
+	private List<ChiTietDichVu> dsChiTietDichVu;
 	private List<PhongResponseDto> dsPhong;
 
 }

@@ -1,7 +1,8 @@
 import { Button, Form } from "react-bootstrap";
+import { BiRefresh } from "react-icons/bi";
 import styled from "styled-components";
 
-function Search({ search, setSearch, onHandleSearch }) {
+function Search({ search, setSearch, onHandleSearch, onHandleRefresh }) {
   const onHandleChangeSelect = (e) => {
     setSearch({ ...search, theo: e.target.value });
   };
@@ -22,6 +23,11 @@ function Search({ search, setSearch, onHandleSearch }) {
       <Button variant="primary" onClick={() => onHandleSearch()}>
         Tìm
       </Button>
+      {onHandleRefresh && (
+        <Button variant="warning" onClick={() => onHandleRefresh()}>
+          <BiRefresh />
+        </Button>
+      )}
     </StyledContainer>
   );
 }
@@ -30,6 +36,8 @@ const StyledContainer = styled.div`
   margin: 1rem 0;
   display: flex;
   width: 60%;
+
+  gap: 0.5rem;
   input {
     width: 50%;
   }
