@@ -122,6 +122,8 @@ function FrmTimKiemDichVu() {
                             <TableRow>
                                 <TableCell><Typography>Mã dịch vụ</Typography></TableCell>
                                 <TableCell align="center"><Typography>Tên dịch vụ</Typography></TableCell>
+                                <TableCell align="center"><Typography>Mô tả dịch vụ</Typography></TableCell>
+                                <TableCell align="center"><Typography>Đơn vị tính</Typography></TableCell>
                                 <TableCell align="right"><Typography>Giá dịch vụ</Typography></TableCell>
                             </TableRow>
                         </TableHead>
@@ -132,6 +134,8 @@ function FrmTimKiemDichVu() {
                                         {data.maDichVu}
                                     </TableCell>
                                     <TableCell align="center">{data.tenDichVu}</TableCell>
+                                    <TableCell align="center">{data.motaDichVu}</TableCell>
+                                    <TableCell align="center">{data.donviTinh}</TableCell>
                                     <TableCell align="right">{data.giaDichVu}</TableCell>
                                 </TableRow>
                             )) :
