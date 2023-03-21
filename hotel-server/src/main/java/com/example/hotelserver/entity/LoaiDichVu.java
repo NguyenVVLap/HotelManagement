@@ -13,18 +13,18 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor @NoArgsConstructor
-@Entity
+//@Entity
 @Builder
-@Table(name = "loai_dich_vu")
+//@Table(name = "loai_dich_vu")
 public class LoaiDichVu {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ma_loai_dich_vu")
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@Column(name = "ma_loai_dich_vu")
 	private int maLoaiDichVu;
 	
-	@Column(name = "ten_loai_dich_vu")	
+//	@Column(name = "ten_loai_dich_vu")	
 	private String tenLoaiDichVu;
 	
-	@Column(name = "don_vi_loai_dich_vu")
+//	@Column(name = "don_vi_loai_dich_vu")
 	private String donViLoaiDichVu;
 }
