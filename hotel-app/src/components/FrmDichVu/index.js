@@ -22,6 +22,8 @@ function FrmDichVu() {
     const [dichvuMoi, setDichVuMoi] = useState({
         maDichVu: 0,
         tenDichVu: "",
+        motaDichVu: "",
+        donviTinh: "",
         giaDichVu: ""
     });
     const [search, setSearch] = useState({
@@ -41,6 +43,8 @@ function FrmDichVu() {
             setDichVuMoi({
                 maDichVu: 0,
                 tenDichVu: "",
+                motaDichVu: "",
+                donviTinh: "",
                 giaDichVu: ""
             })
         }
@@ -76,10 +80,19 @@ function FrmDichVu() {
     }
 
     const validate = () => {
-        const { tenDichVu, giaDichVu } = dichvuMoi;
+        const { tenDichVu, giaDichVu, donviTinh } = dichvuMoi;
         if (tenDichVu === "") {
             setToast({
                 header: "Tên dịch vụ không được bỏ trống",
+                content: "",
+                bg: "danger",
+                textColor: "#fff",
+            });
+            return false;
+        }
+        if (donviTinh === "") {
+            setToast({
+                header: "Đơn vị tính không được bỏ trống",
                 content: "",
                 bg: "danger",
                 textColor: "#fff",
@@ -123,7 +136,9 @@ function FrmDichVu() {
                 setDichVuMoi({
                     ...dichvuMoi, maDichVu: 0,
                     tenDichVu: "",
-                    giaDichVu: ""
+                    giaDichVu: "",
+                    motaDichVu: "",
+                    donviTinh: ""
                 })
                 setToast({
                     header: "Thêm dịch vụ mới thành công",
@@ -181,6 +196,8 @@ function FrmDichVu() {
                 <Box component='form' onSubmit={(e) => handleAddDichVu(e)} sx={{ width: '50%' }}>
                     <TextField id="ma_dich_vu" name='ma_dich_vu' label="Mã dịch vụ" variant="outlined" fullWidth disabled value={dichvuMoi && dichvuMoi.maDichVu != 0 ? dichvuMoi.maDichVu : ""} />
                     <TextField id="ten_dich_vu" name='tenDichVu' label="Tên dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.tenDichVu ? dichvuMoi.tenDichVu : ""} />
+                    <TextField id="mo_ta_dich_vu" name='motaDichVu' label="Mô tả dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.motaDichVu ? dichvuMoi.motaDichVu : ""} />
+                    <TextField id="don_vi_tinh" name='donviTinh' label="Đơn vị tính" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.donviTinh ? dichvuMoi.donviTinh : ""} />
                     <TextField id="gia_dich_vu" name='giaDichVu' label="Giá dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.giaDichVu ? dichvuMoi.giaDichVu : ""} />
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
                         <Button type='submit' variant='contained' size='medium' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm dịch vụ</Button>
@@ -201,6 +218,8 @@ function FrmDichVu() {
                             <TableRow>
                                 <TableCell><Typography>Mã dịch vụ</Typography></TableCell>
                                 <TableCell align="center"><Typography>Tên dịch vụ</Typography></TableCell>
+                                <TableCell align="center"><Typography>Mô tả dịch vụ</Typography></TableCell>
+                                <TableCell align="center"><Typography>Đơn vị tính</Typography></TableCell>
                                 <TableCell align="right"><Typography>Giá dịch vụ</Typography></TableCell>
                             </TableRow>
                         </TableHead>
@@ -213,6 +232,8 @@ function FrmDichVu() {
                                         {data.maDichVu}
                                     </TableCell>
                                     <TableCell align="center">{data.tenDichVu}</TableCell>
+                                    <TableCell align="center">{data.motaDichVu}</TableCell>
+                                    <TableCell align="center">{data.donviTinh}</TableCell>
                                     <TableCell align="right">{data.giaDichVu}</TableCell>
                                 </TableRow>
                             )) :

@@ -30,7 +30,10 @@ public class DichVu {
 	
 	@Column(name = "ten_dich_vu", columnDefinition = "nvarchar(255)")
 	private String tenDichVu;
-	
+	@Column(name = "mo_ta_dich_vu", columnDefinition = "nvarchar(255)")
+	private String motaDichVu;
+	@Column(name = "don_vi_tinh", columnDefinition = "nvarchar(255)")
+	private String donviTinh;
 	@Column(name = "giaDichVu")
 	private double giaDichVu;
 	
