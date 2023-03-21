@@ -3,8 +3,6 @@ package com.example.hotelserver.dto;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +26,7 @@ public class TaoHoaDonRequestDto {
 //	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	private Date ngayTraPhong;
 	private double tienNhan;
-	private List<Long> dsMaPhong;
+	private List<String> dsMaPhong;
 	private long maPhieuDatPhong;
 	private int maKhachHang;
 	private long maNhanVien;

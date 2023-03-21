@@ -16,5 +16,5 @@ public class ChiTietHoaDonPK implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private long hoaDon;
-	private long phong;
+	private String phong;
 }

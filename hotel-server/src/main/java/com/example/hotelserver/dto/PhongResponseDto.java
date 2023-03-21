@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor @NoArgsConstructor
 public class PhongResponseDto {
-	private long maPhong;
+	private String maPhong;
 	private String tenPhong;
 	private boolean trangThaiPhong;
 	private List<String> hinhAnhPhong;

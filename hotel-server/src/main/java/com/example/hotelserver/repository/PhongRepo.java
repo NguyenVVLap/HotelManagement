@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.example.hotelserver.entity.Phong;
 
 @Repository
-public interface PhongRepo extends JpaRepository<Phong, Long>{
+public interface PhongRepo extends JpaRepository<Phong, String>, CustomRepo{
 	@Query(nativeQuery = true, value = ("select * from phong where trang_thai_phong = 1"))
 	List<Phong> getRoomsOrderByState();
 	
@@ -24,4 +24,7 @@ public interface PhongRepo extends JpaRepository<Phong, Long>{
 	
 	@Query(nativeQuery = true, value = "select * from phong p where p.ma_loai_phong = :maLoaiPhong")
 	List<Phong> findByMaLoaiPhong(@Param("maLoaiPhong") long maLoaiPhong);
+	
+	@Query(nativeQuery = true, value = ":query")
+	String test(@Param("query") String query);
 }

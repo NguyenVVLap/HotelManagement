@@ -36,11 +36,11 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 	public boolean themPhieuDatPhong(ThemPhieuDto phieuDatPhongDto) {
 		List<ChiTietPhieuDatPhong> chiTietPhieuDatPhongs = new ArrayList<>();
 		
-		List<Long> dsMaPhong = phieuDatPhongDto.getDsMaPhong();
+		List<String> dsMaPhong = phieuDatPhongDto.getDsMaPhong();
 		if (!dsMaPhong.isEmpty()) {
-			for (Long ma : dsMaPhong) {
+			for (String ma : dsMaPhong) {
 				ChiTietPhieuDatPhong ct = new ChiTietPhieuDatPhong(null, new Phong(ma
-						, null, false, null, null, null, null, 0, false, false));
+						, null, false, null, null, null, null, 0, false, false, 0, 0));
 				if (phieuDatPhongDto.getMaPhieuDatPhong() != 0) {
 					ct.setPhieuDatPhong(new PhieuDatPhong(phieuDatPhongDto.getMaPhieuDatPhong(), null, 0, null, null, null, null, chiTietPhieuDatPhongs, null));
 				}
@@ -96,9 +96,9 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 						.khachHang(phieuDatPhong.getKhachHang())
 						.build();
 				List<Phong> dsPhong = new ArrayList<>();
-				List<Long> dsMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(phieuDatPhong.getMaPhieuDatPhong());
+				List<String> dsMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(phieuDatPhong.getMaPhieuDatPhong());
 				if (!dsMaPhong.isEmpty()) {
-					for (long maPhong : dsMaPhong) {
+					for (String maPhong : dsMaPhong) {
 						Phong phong = phongRepo.findById(maPhong).get();
 						dsPhong.add(phong);
 					}
@@ -124,9 +124,9 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 				, phong.getMoTaPhong()
 				, phong.getTang().getMaTang(), phong.getTang().getTenTang()
 				, phong.getLoaiPhong().getMaLoaiPhong(), phong.getLoaiPhong().getTenLoaiPhong()
-				, phong.getGiaPhong(), phong.getLoaiPhong().getSucChua()
+				, phong.getGiaPhong(), phong.getSucChua()
 				, phong.isDuocHutThuoc(), phong.isMangThuCung()
-				, phong.getLoaiPhong().getSoGiuong());
+				, phong.getSoGiuong());
 		return phongResponseDto;
 	}
 
@@ -147,9 +147,9 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 						.khachHang(phieuDatPhong.getKhachHang())
 						.build();
 				List<Phong> dsPhong = new ArrayList<>();
-				List<Long> dsMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(phieuDatPhong.getMaPhieuDatPhong());
+				List<String> dsMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(phieuDatPhong.getMaPhieuDatPhong());
 				if (!dsMaPhong.isEmpty()) {
-					for (long maPhong : dsMaPhong) {
+					for (String maPhong : dsMaPhong) {
 						Phong phong = phongRepo.findById(maPhong).get();
 						dsPhong.add(phong);
 					}
@@ -188,9 +188,9 @@ public class PhieuDatPhongServiceImpl implements PhieuDatPhongService {
 							.khachHang(phieuDatPhong.getKhachHang())
 							.build();
 					List<Phong> dsPhong = new ArrayList<>();
-					List<Long> dsMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(phieuDatPhong.getMaPhieuDatPhong());
+					List<String> dsMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(phieuDatPhong.getMaPhieuDatPhong());
 					if (!dsMaPhong.isEmpty()) {
-						for (long maPhong : dsMaPhong) {
+						for (String maPhong : dsMaPhong) {
 							Phong phong = phongRepo.findById(maPhong).get();
 							dsPhong.add(phong);
 						}

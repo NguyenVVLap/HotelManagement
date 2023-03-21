@@ -26,6 +26,7 @@ export const findFloorRoute = `${host}/api/tang/timKiemTang`;
 //Room
 export const getRoomsRoute = `${host}/api/phong`;
 export const addRoomRoute = `${host}/api/phong`;
+export const deleteRoomRoute = `${host}/api/phong/xoaPhong`;
 export const findRoomRoute = `${host}/api/phong/timKiemPhong`;
 
 //RoomType

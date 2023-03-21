@@ -58,38 +58,6 @@ function Inputs({
             onChange={(e) => handleOnChange(e)}
           />
         </FloatingLabel>
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Số giường"
-          className="mb-3"
-        >
-          <Form.Control
-            type="number"
-            placeholder="Số giường"
-            name="soGiuong"
-            value={
-              loaiPhongMoi && loaiPhongMoi.soGiuong ? loaiPhongMoi.soGiuong : 0
-            }
-            min={0}
-            onChange={(e) => handleOnChange(e)}
-          />
-        </FloatingLabel>
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Sức chứa"
-          className="mb-3"
-        >
-          <Form.Control
-            type="number"
-            placeholder="Sức chứa"
-            name="sucChua"
-            value={
-              loaiPhongMoi && loaiPhongMoi.sucChua ? loaiPhongMoi.sucChua : 0
-            }
-            min={0}
-            onChange={(e) => handleOnChange(e)}
-          />
-        </FloatingLabel>
       </div>
       <div className="btn-container">
         <Button variant="success" onClick={() => onHandleAdd()}>

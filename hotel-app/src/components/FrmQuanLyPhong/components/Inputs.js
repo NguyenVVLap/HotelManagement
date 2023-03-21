@@ -1,4 +1,11 @@
-import { Button, Carousel, FloatingLabel, Form } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  FloatingLabel,
+  Form,
+  Row,
+  Col,
+} from "react-bootstrap";
 import styled from "styled-components";
 import { BiRefresh } from "react-icons/bi";
 import { useEffect, useState } from "react";
@@ -6,10 +13,10 @@ import { getFloorsRoute, getRoomTypesRoute } from "../../../utils/APIRoutes";
 import axios from "axios";
 
 function Inputs({
-  tempPhong,
+  phongMoi,
   tempTang,
   tempLoaiPhong,
-  setTempPhong,
+  setPhongMoi,
   setTempTang,
   setTempLoaiPhong,
   setShowImageSelect,
@@ -19,7 +26,7 @@ function Inputs({
 }) {
   useEffect(() => {
     loadRelateData();
-  }, [setTempPhong]);
+  }, [setPhongMoi]);
   const loadRelateData = async () => {
     const config = {
       headers: {
@@ -33,170 +40,295 @@ function Inputs({
   };
 
   const handleOnChangePhong = (e) => {
-    setTempPhong({ ...tempPhong, [e.target.name]: e.target.value });
+    let tenField = e.target.name;
+    if (tenField === "tenPhong") {
+      let tenTang = "";
+      for (let i = 0; i < tempTang.length; i++) {
+        if (Number(phongMoi.maTang) === tempTang[i].maTang) {
+          tenTang = tempTang[i].tenTang;
+          break;
+        }
+      }
+      let soTang = Number(!tenTang || tenTang === "" ? 1 : tenTang.slice(5));
+
+      if (soTang < 10) {
+        soTang = "0" + soTang;
+      }
+      let soPhong = Number(e.target.value.slice(6));
+      if (!isNaN(soPhong))
+        setPhongMoi({
+          ...phongMoi,
+          [tenField]: e.target.value,
+          maPhong: `T${soTang}P${soPhong}`,
+        });
+    } else {
+      setPhongMoi({
+        ...phongMoi,
+        [tenField]: e.target.value,
+      });
+    }
   };
 
   const handleOnSelect = (name, e) => {
-    setTempPhong({ ...tempPhong, [name]: e.target.value });
+    if (name === "maTang") {
+      let tenTang = "";
+      for (let i = 0; i < tempTang.length; i++) {
+        if (Number(e.target.value) === tempTang[i].maTang) {
+          tenTang = tempTang[i].tenTang;
+          break;
+        }
+      }
+      let soTang = Number(tenTang.slice(5));
+      if (soTang < 10) {
+        soTang = "0" + soTang;
+      }
+      let soPhong = phongMoi.tenPhong ? phongMoi.tenPhong.slice(6) : "000";
+      setPhongMoi({
+        ...phongMoi,
+        [name]: e.target.value,
+        maPhong: `T${soTang}P${soPhong}`,
+      });
+    } else {
+      setPhongMoi({
+        ...phongMoi,
+        [name]: e.target.value,
+      });
+    }
+  };
+
+  const handleOnSelectBoolean = (name, e) => {
+    setPhongMoi({ ...phongMoi, [name]: e.target.value === "true" });
   };
 
   const onHandleClear = () => {
-    setTempPhong({});
+    setPhongMoi({});
   };
   return (
     <StyledContainer>
       <div className="field-container">
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Mã phòng"
-          className="mb-3"
-        >
-          <Form.Control
-            type="text"
-            placeholder="Mã phòng"
-            name="maPhong"
-            disabled={true}
-            value={
-              tempPhong && tempPhong.maPhong && tempPhong.maPhong != 0
-                ? tempPhong.maPhong
-                : ""
-            }
-            onChange={(e) => handleOnChangePhong(e)}
-          />
-        </FloatingLabel>
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Tên phòng"
-          className="mb-3"
-        >
-          <Form.Control
-            type="text"
-            placeholder="Tên phòng"
-            name="tenPhong"
-            value={tempPhong && tempPhong.tenPhong ? tempPhong.tenPhong : ""}
-            onChange={(e) => handleOnChangePhong(e)}
-          />
-        </FloatingLabel>
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Mô tả phòng"
-          className="mb-3"
-        >
-          <Form.Control
-            type="text"
-            placeholder="Mô tả phòng"
-            name="moTaPhong"
-            value={tempPhong && tempPhong.moTaPhong ? tempPhong.moTaPhong : ""}
-            onChange={(e) => handleOnChangePhong(e)}
-          />
-        </FloatingLabel>
-
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Giá phòng (1 đêm)"
-          className="mb-3"
-        >
-          <Form.Control
-            type="number"
-            placeholder="Giá phòng (1 đêm)"
-            name="giaPhong"
-            min={0}
-            value={tempPhong && tempPhong.giaPhong ? tempPhong.giaPhong : ""}
-            onChange={(e) => handleOnChangePhong(e)}
-          />
-        </FloatingLabel>
-
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Được hút thuốc"
-          className="mb-3"
-        >
-          <Form.Select
-            aria-label="Default select example"
-            onChange={(e) => handleOnSelect("duocHutThuoc", e)}
-          >
-            <option value={true} selected={tempPhong.duocHutThuoc}>
-              Có
-            </option>
-            <option value={false} selected={!tempPhong.duocHutThuoc}>
-              Không
-            </option>
-          </Form.Select>
-        </FloatingLabel>
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Mang thú cưng"
-          className="mb-3"
-        >
-          <Form.Select
-            aria-label="Default select example"
-            onChange={(e) => handleOnSelect("mangThuCung", e)}
-          >
-            <option value={true} selected={tempPhong.mangThuCung}>
-              Có
-            </option>
-            <option value={false} selected={!tempPhong.mangThuCung}>
-              Không
-            </option>
-          </Form.Select>
-        </FloatingLabel>
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Loại phòng"
-          className="mb-3"
-        >
-          <Form.Select
-            aria-label="Default select example"
-            onChange={(e) => handleOnSelect("maLoaiPhong", e)}
-          >
-            {tempLoaiPhong &&
-              tempLoaiPhong.length !== 0 &&
-              tempLoaiPhong.map((loaiPhong, index) => {
-                return (
-                  <option
-                    value={`${loaiPhong.maLoaiPhong}`}
-                    key={index}
-                    selected={
-                      tempPhong.maLoaiPhong &&
-                      tempPhong.maLoaiPhong == loaiPhong.maLoaiPhong
-                    }
-                  >
-                    {loaiPhong.tenLoaiPhong}
+        <Container fluid>
+          <Row>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Mã phòng"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="Mã phòng"
+                  name="maPhong"
+                  disabled={true}
+                  value={
+                    phongMoi && phongMoi.maPhong && phongMoi.maPhong != 0
+                      ? phongMoi.maPhong
+                      : ""
+                  }
+                  onChange={(e) => handleOnChangePhong(e)}
+                />
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Tên phòng"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="Tên phòng"
+                  name="tenPhong"
+                  value={
+                    phongMoi &&
+                    phongMoi.tenPhong &&
+                    phongMoi.tenPhong.slice(0, 6) === "Phòng "
+                      ? phongMoi.tenPhong
+                      : "Phòng "
+                  }
+                  onChange={(e) => handleOnChangePhong(e)}
+                />
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Mô tả phòng"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="Mô tả phòng"
+                  name="moTaPhong"
+                  value={
+                    phongMoi && phongMoi.moTaPhong ? phongMoi.moTaPhong : ""
+                  }
+                  onChange={(e) => handleOnChangePhong(e)}
+                />
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Giá phòng"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="number"
+                  placeholder="Giá phòng"
+                  name="giaPhong"
+                  min={0}
+                  value={phongMoi && phongMoi.giaPhong ? phongMoi.giaPhong : 0}
+                  onChange={(e) => handleOnChangePhong(e)}
+                />
+              </FloatingLabel>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Được hút thuốc"
+                className="mb-3"
+              >
+                <Form.Select
+                  aria-label="Default select example"
+                  onChange={(e) => handleOnSelectBoolean("duocHutThuoc", e)}
+                >
+                  <option value={true} selected={phongMoi.duocHutThuoc}>
+                    Có
                   </option>
-                );
-              })}
-          </Form.Select>
-        </FloatingLabel>
-
-        <FloatingLabel controlId="floatingInput" label="Tầng" className="mb-3">
-          <Form.Select
-            aria-label="Default select example"
-            onChange={(e) => handleOnSelect("maTang", e)}
-          >
-            {tempTang &&
-              tempTang.length !== 0 &&
-              tempTang.map((tang, index) => {
-                return (
-                  <option
-                    value={`${tang.maTang}`}
-                    key={index}
-                    selected={
-                      tempPhong.maTang && tempPhong.maTang == tang.maTang
-                    }
-                  >
-                    {tang.tenTang}
+                  <option value={false} selected={!phongMoi.duocHutThuoc}>
+                    Không
                   </option>
-                );
-              })}
-          </Form.Select>
-        </FloatingLabel>
-        <Button variant="success" onClick={() => setShowImageSelect(true)}>
-          Xem hình (
-          {tempPhong.hinhAnhPhong && tempPhong.hinhAnhPhong.length
-            ? tempPhong.hinhAnhPhong.length
-            : 0}
-          )
-        </Button>
+                </Form.Select>
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Mang thú cưng"
+                className="mb-3"
+              >
+                <Form.Select
+                  aria-label="Default select example"
+                  onChange={(e) => handleOnSelectBoolean("mangThuCung", e)}
+                >
+                  <option value={true} selected={phongMoi.mangThuCung}>
+                    Có
+                  </option>
+                  <option value={false} selected={!phongMoi.mangThuCung}>
+                    Không
+                  </option>
+                </Form.Select>
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Tầng"
+                className="mb-3"
+              >
+                <Form.Select
+                  aria-label="Default select example"
+                  onChange={(e) => handleOnSelect("maTang", e)}
+                >
+                  {tempTang &&
+                    tempTang.length !== 0 &&
+                    tempTang.map((tang, index) => {
+                      return (
+                        <option
+                          value={`${tang.maTang}`}
+                          key={index}
+                          selected={
+                            phongMoi.maTang && phongMoi.maTang == tang.maTang
+                          }
+                        >
+                          {tang.tenTang}
+                        </option>
+                      );
+                    })}
+                </Form.Select>
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Loại phòng"
+                className="mb-3"
+              >
+                <Form.Select
+                  aria-label="Default select example"
+                  onChange={(e) => handleOnSelect("maLoaiPhong", e)}
+                >
+                  {tempLoaiPhong &&
+                    tempLoaiPhong.length !== 0 &&
+                    tempLoaiPhong.map((loaiPhong, index) => {
+                      return (
+                        <option
+                          value={`${loaiPhong.maLoaiPhong}`}
+                          key={index}
+                          selected={
+                            phongMoi.maLoaiPhong &&
+                            phongMoi.maLoaiPhong == loaiPhong.maLoaiPhong
+                          }
+                        >
+                          {loaiPhong.tenLoaiPhong}
+                        </option>
+                      );
+                    })}
+                </Form.Select>
+              </FloatingLabel>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Số giường"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="number"
+                  placeholder="Số giường"
+                  name="soGiuong"
+                  min={1}
+                  value={phongMoi && phongMoi.soGiuong ? phongMoi.soGiuong : 1}
+                  onChange={(e) => handleOnChangePhong(e)}
+                />
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Sức chứa"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="number"
+                  placeholder="Sức chứa"
+                  name="sucChua"
+                  min={1}
+                  value={phongMoi && phongMoi.sucChua ? phongMoi.sucChua : 1}
+                  onChange={(e) => handleOnChangePhong(e)}
+                />
+              </FloatingLabel>
+            </Col>
+
+            <Col>
+              <Button
+                variant="success"
+                onClick={() => setShowImageSelect(true)}
+              >
+                Xem hình (
+                {phongMoi.hinhAnhPhong && phongMoi.hinhAnhPhong.length
+                  ? phongMoi.hinhAnhPhong.length
+                  : 0}
+                )
+              </Button>
+            </Col>
+            <Col></Col>
+          </Row>
+        </Container>
       </div>
       <div className="btn-container">
         <Button variant="success" onClick={() => onHandleAdd()}>
@@ -219,7 +351,7 @@ function Inputs({
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 37%;
+  height: 46%;
   overflow-y: auto;
   justify-content: space-between;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
@@ -253,7 +385,6 @@ const StyledContainer = styled.div`
   .btn-container {
     display: flex;
     gap: 1.5rem;
-    margin-top: 20px;
     button {
       padding: 0.5rem 1.5rem;
       svg {

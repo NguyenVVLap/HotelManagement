@@ -1,6 +1,7 @@
 package com.example.hotelserver.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -52,24 +53,24 @@ public class PhongController {
 	public ResponseEntity<Boolean> savePhong(@RequestBody Map<String, Object> request) {
 		try {
 			Map<String, Object> phongRequestDto = (Map<String, Object>) request.get("phong");
-
-			if (!phongService.kiemTraPhongTonTaiTheoTen(phongRequestDto.get("tenPhong").toString()) 
-					|| Long.parseLong(phongRequestDto.get("maPhong").toString()) != 0) {
-				Phong phong = new Phong(Long.parseLong(phongRequestDto.get("maPhong").toString())
-						, phongRequestDto.get("tenPhong").toString()
-						, phongRequestDto.get("trangThaiPhong").toString().equals("true")
-						, (List<String>) phongRequestDto.get("hinhAnhPhong")
-						, phongRequestDto.get("moTaPhong").toString()
-						, new Tang(Integer.parseInt(phongRequestDto.get("maTang").toString()), ""), 
-						new LoaiPhong(Long.parseLong(phongRequestDto.get("maLoaiPhong").toString()), "", 0, 0)
-						, Double.parseDouble(phongRequestDto.get("giaPhong").toString())
-						, phongRequestDto.get("duocHutThuoc").toString().equals("true")
-						, phongRequestDto.get("mangThuCung").toString().equals("true")
-						);
-				if (phongService.themPhong(phong)) {
-					return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-				}
+			System.out.println(phongRequestDto);
+			Phong phong = new Phong(phongRequestDto.get("maPhong").toString()
+					, phongRequestDto.get("tenPhong").toString()
+					, phongRequestDto.get("trangThaiPhong").toString().equals("true")
+					, (List<String>) phongRequestDto.get("hinhAnhPhong")
+					, phongRequestDto.get("moTaPhong").toString()
+					, new Tang(Integer.parseInt(phongRequestDto.get("maTang").toString()), ""), 
+					new LoaiPhong(Long.parseLong(phongRequestDto.get("maLoaiPhong").toString()), "")
+					, Double.parseDouble(phongRequestDto.get("giaPhong").toString())
+					, phongRequestDto.get("duocHutThuoc").toString().equals("true")
+					, phongRequestDto.get("mangThuCung").toString().equals("true")
+					, Integer.parseInt(phongRequestDto.get("soGiuong").toString())
+					, Integer.parseInt(phongRequestDto.get("sucChua").toString())
+					);
+			if (phongService.themPhong(phong)) {
+				return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 			}
+
 		} catch (Exception e) {
 			System.out.println("Error at savePhong " + e);
 			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
@@ -77,24 +78,124 @@ public class PhongController {
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 
 	}
-
-	@PostMapping("/timKiemPhong")
-	public ResponseEntity<List<PhongResponseDto>> timKiemPhong(@RequestBody Map<String, Object> request) {
-		List<PhongResponseDto> results = new ArrayList<>();
-		if (request.get("theo").toString().equals("Theo tên")) {
-			results = phongService.timPhongTheoTenLike(request.get("keyword").toString());
-		} else if (request.get("theo").toString().equals("Theo mã")) {
-			try {
-				results = (phongService.timPhongTheoMa(Long.parseLong(request.get("keyword").toString())));		
-			} catch (Exception e) {
-				System.out.println("Error when parse to long " + e);
-			}
-		} else if (request.get("theo").toString().equals("Theo tầng")) {
-			results = phongService.timPhongTheoMaTang(Integer.parseInt(request.get("keyword").toString()));
-		} else if (request.get("theo").toString().equals("Theo loại phòng")) {
-			results = phongService.timPhongTheoMaLoaiPhong(Long.parseLong(request.get("keyword").toString()));
+	@PostMapping("/xoaPhong")
+	public ResponseEntity<Boolean> deletePhong(@RequestBody Map<String, Object> request) {
+		if (phongService.xoaPhong(request.get("maPhongCu").toString())) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+
+	}
+//	@PostMapping("/timKiemPhong")
+//	public ResponseEntity<List<PhongResponseDto>> timKiemPhong(@RequestBody List<Map<String, Object>> request) {
+//		List<PhongResponseDto> results = new ArrayList<>();
+//		if (!request.isEmpty()) {
+//			results = phongService.layTatCaPhong();
+//			if (results.isEmpty()) {
+//				return new ResponseEntity<List<PhongResponseDto>>(new ArrayList<>(), HttpStatus.OK);
+//			}
+//			for (Map<String, Object> map : request) {
+//				if (map.get("theo").toString().equals("Theo tên") && !map.get("keyword").toString().trim().equals("")) {
+//					List<PhongResponseDto> dsPhong = phongService.timPhongTheoTenLike(map.get("keyword").toString());
+//					if (!dsPhong.isEmpty()) {
+//						if (!results.isEmpty()) {
+//							for (int j = 0; j < results.size(); j++) {
+//								for (int i = 0; i < dsPhong.size(); i++) {
+//									if (dsPhong.get(i).getMaPhong().equals(results.get(j).getMaPhong())) {
+//										break;
+//									}
+//									if (i == dsPhong.size() - 1) {
+//										results.remove(results.get(j));
+//									}
+//								}
+//							}
+//						}
+//					}
+//				} else if (map.get("theo").toString().equals("Theo mã") && !map.get("keyword").toString().trim().equals("")) {
+//					List<PhongResponseDto> dsPhong = phongService.timPhongTheoMa(map.get("keyword").toString());
+//					if (!dsPhong.isEmpty()) {
+//						if (!results.isEmpty()) {
+//							for (int j = 0; j < results.size(); j++) {
+//								for (int i = 0; i < dsPhong.size(); i++) {
+//									if (dsPhong.get(i).getMaPhong().equals(results.get(j).getMaPhong())) {
+//										break;
+//									}
+//									if (i == dsPhong.size() - 1) {
+//										results.remove(results.get(j));
+//									}
+//								}
+//							}
+//						}
+//					}	
+//				} else if (map.get("theo").toString().equals("Theo tầng") && !map.get("keyword").toString().trim().equals("")) {
+//					List<PhongResponseDto> dsPhong = phongService.timPhongTheoMaTang(Integer.parseInt(map.get("keyword").toString()));
+//					if (!dsPhong.isEmpty()) {
+//						if (!results.isEmpty()) {
+//							for (int j = 0; j < results.size(); j++) {
+//								for (int i = 0; i < dsPhong.size(); i++) {
+//									if (dsPhong.get(i).getMaPhong().equals(results.get(j).getMaPhong())) {
+//										break;
+//									}
+//									if (i == dsPhong.size() - 1) {
+//										results.remove(results.get(j));
+//									}
+//								}
+//							}
+//						}
+//					}
+//				} else if (map.get("theo").toString().equals("Theo loại phòng") && !map.get("keyword").toString().trim().equals("")) {
+//					List<PhongResponseDto> dsPhong = phongService.timPhongTheoMaLoaiPhong(Long.parseLong(map.get("keyword").toString()));
+//					if (!dsPhong.isEmpty()) {
+//						if (!results.isEmpty()) {
+//							for (int j = 0; j < results.size(); j++) {
+//								for (int i = 0; i < dsPhong.size(); i++) {
+//									if (dsPhong.get(i).getMaPhong().equals(results.get(j).getMaPhong())) {
+//										break;
+//									}
+//									if (i == dsPhong.size() - 1) {
+//										results.remove(results.get(j));
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//		System.out.println(results);
+//		return new ResponseEntity<List<PhongResponseDto>>(results, HttpStatus.OK);
+//	}
+
+	
+	@PostMapping("/timKiemPhong")
+	public ResponseEntity<List<PhongResponseDto>> timKiemPhong(@RequestBody List<Map<String, Object>> request) {
+		List<PhongResponseDto> results = new ArrayList<>();
+		String query = "select ma_phong from phong"; 
+		List<String> conditions = new ArrayList<>();
+		if (!request.isEmpty()) {
+			for (Map<String, Object> map : request) {
+				if (map.get("theo").toString().equals("Theo tên") && !map.get("keyword").toString().trim().equals("")) {
+					conditions.add("ten_phong like '%" + map.get("keyword").toString()+ "%'");
+				} else if (map.get("theo").toString().equals("Theo mã") && !map.get("keyword").toString().trim().equals("")) {
+					conditions.add("ma_phong = '" + map.get("keyword").toString() + "'");
+				} else if (map.get("theo").toString().equals("Theo tầng") && !map.get("keyword").toString().trim().equals("")) {
+					conditions.add("ma_tang = " + map.get("keyword").toString());
+				} else if (map.get("theo").toString().equals("Theo loại phòng") && !map.get("keyword").toString().trim().equals("")) {
+					conditions.add("ma_loai_phong = " + map.get("keyword").toString());
+				}
+			}
+			if (!conditions.isEmpty()) {
+				query += " where ";
+				for (int i = 0; i < conditions.size(); i++) {
+					query += conditions.get(i);
+					if (i != conditions.size() - 1) {
+						query += " and ";
+					}
+					
+				}
+			}
+			results = phongService.timPhongCustomQuery(query);
+ 		}
 		return new ResponseEntity<List<PhongResponseDto>>(results, HttpStatus.OK);
 	}
-
 }

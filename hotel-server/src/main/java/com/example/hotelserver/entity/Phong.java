@@ -9,8 +9,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -28,9 +26,8 @@ import lombok.Setter;
 @Table(name = "phong")
 public class Phong {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ma_phong")
-	private long maPhong;
+	private String maPhong;
 	
 	@Column(name = "ten_phong", columnDefinition = "nvarchar(255)")
 	private String tenPhong;
@@ -65,11 +62,22 @@ public class Phong {
 	
 	@Column(name = "mang_thu_cung")
 	private boolean mangThuCung;
+	
+	@Column(name = "suc_chua")
+	private int sucChua;
+	
+	@Column(name = "so_giuong")
+	private int soGiuong;
+
 	@Override
 	public String toString() {
 		return "Phong [maPhong=" + maPhong + ", tenPhong=" + tenPhong + ", trangThaiPhong=" + trangThaiPhong
-				+ ", hinhAnhPhong=" + hinhAnhPhong + ", moTaPhong=" + moTaPhong + "]";
+				+ ", hinhAnhPhong=" + hinhAnhPhong + ", moTaPhong=" + moTaPhong + ", tang=" + tang + ", loaiPhong="
+				+ loaiPhong + ", giaPhong=" + giaPhong + ", duocHutThuoc=" + duocHutThuoc + ", mangThuCung="
+				+ mangThuCung + ", sucChua=" + sucChua + ", soGiuong=" + soGiuong + "]";
 	}
+	
+	
 	
 	
 }

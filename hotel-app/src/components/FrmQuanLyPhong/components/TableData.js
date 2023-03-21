@@ -18,7 +18,9 @@ function TableData({ dsPhong, phongSelected, setPhongSelected }) {
             <th>Tên phòng</th>
             <th>Loại phòng</th>
             <th>Tầng</th>
-            <th>Giá (1 đêm)</th>
+            <th>Giá</th>
+            <th>Số giường</th>
+            <th>Sức chứa</th>
             <th>Được hút thuốc</th>
             <th>Mang thú cưng</th>
             <th>Mô tả phòng</th>
@@ -46,6 +48,8 @@ function TableData({ dsPhong, phongSelected, setPhongSelected }) {
                   <td>{phongDto.tenLoaiPhong}</td>
                   <td>{phongDto.tenTang}</td>
                   <td>{phongDto.giaPhong.toLocaleString()}</td>
+                  <td>{phongDto.soGiuong}</td>
+                  <td>{phongDto.sucChua}</td>
                   <td>{phongDto.duocHutThuoc ? "Có" : "Không"}</td>
                   <td>{phongDto.mangThuCung ? "Có" : "Không"}</td>
                   <td>{phongDto.moTaPhong}</td>
@@ -60,7 +64,7 @@ function TableData({ dsPhong, phongSelected, setPhongSelected }) {
 const StyledContainer = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
-  height: 50%;
+  height: 41%;
   display: flex;
   flex-direction: column;
   position: relative;

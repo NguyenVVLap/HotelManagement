@@ -8,6 +8,7 @@ import {
   findRoomTypeRoute,
   getRoomTypesRoute,
 } from "../../utils/APIRoutes";
+import { SlArrowLeft } from "react-icons/sl";
 import Inputs from "./components/Inputs";
 import Search from "./components/Search";
 import TableData from "./components/TableData";
@@ -19,8 +20,6 @@ function FrmLoaiPhong() {
   const [loaiPhongMoi, setLoaiPhongMoi] = useState({
     maLoaiPhong: 0,
     tenLoaiPhong: "",
-    sucChua: 0,
-    soGiuong: 0,
   });
   const [toast, setToast] = useState(null);
 
@@ -31,15 +30,12 @@ function FrmLoaiPhong() {
       setLoaiPhongMoi({
         maLoaiPhong: 0,
         tenLoaiPhong: "",
-        sucChua: 0,
-        soGiuong: 0,
       });
     }
   }, [loaiPhongSelected]);
 
   const onHandleAdd = async () => {
     if (loaiPhongMoi.maLoaiPhong === 0 && validate()) {
-      console.log(loaiPhongMoi);
       const { data } = await axios.post(addRoomTypeRoute, loaiPhongMoi, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -70,25 +66,7 @@ function FrmLoaiPhong() {
   };
 
   const validateUpdate = () => {
-    const { tenLoaiPhong, soGiuong, sucChua, maLoaiPhong } = loaiPhongMoi;
-    if (soGiuong < 0) {
-      setToast({
-        header: "Số giường không được < 0",
-        content: "",
-        bg: "danger",
-        textColor: "#fff",
-      });
-      return false;
-    }
-    if (sucChua < 0) {
-      setToast({
-        header: "Sức chứa không được < 0",
-        content: "",
-        bg: "danger",
-        textColor: "#fff",
-      });
-      return false;
-    }
+    const { tenLoaiPhong, maLoaiPhong } = loaiPhongMoi;
     for (var i = 0; i < dsLoaiPhong.length; i++) {
       if (
         tenLoaiPhong === dsLoaiPhong[i].tenLoaiPhong &&
@@ -106,25 +84,7 @@ function FrmLoaiPhong() {
     return true;
   };
   const validate = () => {
-    const { tenLoaiPhong, soGiuong, sucChua } = loaiPhongMoi;
-    if (soGiuong < 0) {
-      setToast({
-        header: "Số giường không được < 0",
-        content: "",
-        bg: "danger",
-        textColor: "#fff",
-      });
-      return false;
-    }
-    if (sucChua < 0) {
-      setToast({
-        header: "Sức chứa không được < 0",
-        content: "",
-        bg: "danger",
-        textColor: "#fff",
-      });
-      return false;
-    }
+    const { tenLoaiPhong } = loaiPhongMoi;
     for (var i = 0; i < dsLoaiPhong.length; i++) {
       if (tenLoaiPhong === dsLoaiPhong[i].tenLoaiPhong) {
         setToast({
@@ -171,7 +131,12 @@ function FrmLoaiPhong() {
 
   return (
     <StyleContainer>
-      <h1>Cập nhật loại phòng</h1>
+      <h1>
+        <div className="btn-back">
+          <SlArrowLeft />
+        </div>{" "}
+        Cập nhật loại phòng
+      </h1>
       <div className="container">
         <Inputs
           loaiPhongMoi={loaiPhongMoi}
@@ -224,9 +189,16 @@ function FrmLoaiPhong() {
 const StyleContainer = styled.div`
   height: 100%;
   h1 {
+    display: flex;
+    gap: 1rem;
     height: 8%;
     margin: 0;
-    text-align: center;
+    text-align: left;
+    padding-left: 1rem;
+    svg {
+      font-size: 2rem;
+      cursor: pointer;
+    }
   }
   .container {
     height: 92%;

@@ -11,8 +11,10 @@ public interface PhongService {
 	List<PhongResponseDto> layTatCaPhong();
 	boolean kiemTraPhongTonTaiTheoTen(String tenPhong);
 	List<PhongResponseDto> timPhongTheoTenLike(String tenPhong);
-	List<PhongResponseDto> timPhongTheoMa(long maPhong);
+	List<PhongResponseDto> timPhongTheoMa(String maPhong);
 	boolean themPhong(Phong phong);
+	boolean xoaPhong(String maPhong);
 	List<PhongResponseDto> timPhongTheoMaTang(int maTang);
 	List<PhongResponseDto> timPhongTheoMaLoaiPhong(long maLoaiPhong);
+	List<PhongResponseDto> timPhongCustomQuery(String query);
 }

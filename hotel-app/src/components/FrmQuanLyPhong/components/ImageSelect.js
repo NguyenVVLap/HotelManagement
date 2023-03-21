@@ -16,10 +16,10 @@ import {
 import { v4 } from "uuid";
 
 function ImageSelect({
-  tempPhong,
+  phongMoi,
   setShowImageSelect,
   onHandleChangeHinhAnhPhongFromTempPhong,
-  setTempPhong,
+  setPhongMoi,
 }) {
   const [hinhAnhMoi, setHinhAnhMoi] = useState([]);
   const [hinhAnhSelectedMoi, setHinhAnhSelectedMoi] = useState([]);
@@ -29,15 +29,11 @@ function ImageSelect({
   );
   const inputFile = useRef(null);
   useEffect(() => {
-    if (
-      tempPhong &&
-      tempPhong.hinhAnhPhong &&
-      tempPhong.hinhAnhPhong.length > 0
-    ) {
-      let temp = [...tempPhong.hinhAnhPhong];
+    if (phongMoi && phongMoi.hinhAnhPhong && phongMoi.hinhAnhPhong.length > 0) {
+      let temp = [...phongMoi.hinhAnhPhong];
       setHinhAnhMoi([...temp]);
     }
-  }, [tempPhong]);
+  }, [phongMoi]);
   const onButtonClick = () => {
     inputFile.current.click();
   };
@@ -82,7 +78,7 @@ function ImageSelect({
     for (let i = 0; i < hinhAnhMoi.length; i++) {
       if (hinhAnhMoi[i] == img) {
         hinhAnhMoi.splice(i, 1);
-        setTempPhong((prev) => {
+        setPhongMoi((prev) => {
           return { ...prev, hinhAnhPhong: [...hinhAnhMoi] };
         });
         return;
@@ -128,7 +124,7 @@ function ImageSelect({
     <StyledContainer>
       <div className="container-styled">
         <div className="header">
-          <h2 className="header-title">Chọn hình {tempPhong.tenPhong}</h2>
+          <h2 className="header-title">Chọn hình {phongMoi.tenPhong}</h2>
           <CloseButton onClick={() => setShowImageSelect(undefined)} />
         </div>
         <div className="content-container">

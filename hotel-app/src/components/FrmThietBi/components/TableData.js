@@ -19,8 +19,6 @@ function TableData({ loaiPhongSelected, setLoaiPhongSelected, dsLoaiPhong }) {
           <tr>
             <th>Mã loại phòng</th>
             <th>Tên loại phòng</th>
-            <th>Số giường</th>
-            <th>Sức chứa</th>
           </tr>
         </thead>
         <tbody>
@@ -40,8 +38,6 @@ function TableData({ loaiPhongSelected, setLoaiPhongSelected, dsLoaiPhong }) {
                 >
                   <td>{loaiPhong.maLoaiPhong}</td>
                   <td>{loaiPhong.tenLoaiPhong}</td>
-                  <td>{loaiPhong.soGiuong}</td>
-                  <td>{loaiPhong.sucChua}</td>
                 </tr>
               );
             })}

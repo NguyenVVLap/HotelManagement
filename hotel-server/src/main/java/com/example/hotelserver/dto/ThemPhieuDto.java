@@ -31,6 +31,6 @@ public class ThemPhieuDto {
 	private Date ngayTraPhong;
 	
 	private TrangThaiDatPhong trangThaiDatPhong;
-	private List<Long> dsMaPhong;
+	private List<String> dsMaPhong;
 	private KhachHang khachHang;
 }

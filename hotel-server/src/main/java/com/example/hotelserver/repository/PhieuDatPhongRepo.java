@@ -22,7 +22,7 @@ public interface PhieuDatPhongRepo extends JpaRepository<PhieuDatPhong, Long> {
 			+ "from phong p inner join chi_tiet_phieu_dat_phong ctpdp "
 			+ "on p.ma_phong = ctpdp.ma_phong "
 			+ "where ctpdp.ma_phieu_dat_phong = :maPhieuDatPhong")
-	List<Long> layMaPhongTuMaPhieu(@Param("maPhieuDatPhong") long maPhieuDatPhong);
+	List<String> layMaPhongTuMaPhieu(@Param("maPhieuDatPhong") long maPhieuDatPhong);
 	
 	@Query(nativeQuery = true, value = "select * from phieu_dat_phong "
 			+ "where trang_thai_dat_phong = 'MOI_DAT' "

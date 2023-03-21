@@ -41,11 +41,11 @@ public class HoaDonServiceImpl implements HoaDonService{
 	@Override
 	public boolean themHoaDon(TaoHoaDonRequestDto hoaDonDto) {
 		List<ChiTietHoaDon> dsChiTietHoaDon = new ArrayList<>();
-		List<Long> dsMaPhong = hoaDonDto.getDsMaPhong();
+		List<String> dsMaPhong = hoaDonDto.getDsMaPhong();
 		if (!dsMaPhong.isEmpty()) {
-			for (Long ma : dsMaPhong) {
+			for (String ma : dsMaPhong) {
 				ChiTietHoaDon ct = new ChiTietHoaDon(null, new Phong(ma
-						, null, false, null, null, null, null, 0, false, false));
+						, null, false, null, null, null, null, 0, false, false, 0, 0));
 				if (hoaDonDto.getMaHoaDon() != 0) {
 					ct.setHoaDon(new HoaDon(hoaDonDto.getMaHoaDon(), null, null, null, 0, null, null, null, null, null));
 				}
@@ -94,9 +94,9 @@ public class HoaDonServiceImpl implements HoaDonService{
 						.nhanVien(hoaDon.getNhanVien())
 						.build();
 				List<Phong> dsPhong = new ArrayList<>();
-				List<Long> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
+				List<String> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
 				if (!dsMaPhong.isEmpty()) {
-					for (long maPhong : dsMaPhong) {
+					for (String maPhong : dsMaPhong) {
 						Phong phong = phongRepo.findById(maPhong).get();
 						dsPhong.add(phong);
 					}
@@ -109,7 +109,6 @@ public class HoaDonServiceImpl implements HoaDonService{
 				}
 				hoaDonDto.setDsPhong(phongResponseDtos);
 				hoaDonDto.setKhachHang(khachHang);
-				System.out.println(khachHang);
 				dsHoaDonDto.add(hoaDonDto);
 			}
 		} catch (Exception e) {
@@ -137,9 +136,9 @@ public class HoaDonServiceImpl implements HoaDonService{
 							.khachHang(hoaDon.getKhachHang())
 							.build();
 					List<Phong> dsPhong = new ArrayList<>();
-					List<Long> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
+					List<String> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
 					if (!dsMaPhong.isEmpty()) {
-						for (long maPhong : dsMaPhong) {
+						for (String maPhong : dsMaPhong) {
 							Phong phong = phongRepo.findById(maPhong).get();
 							dsPhong.add(phong);
 						}
@@ -166,9 +165,9 @@ public class HoaDonServiceImpl implements HoaDonService{
 				, phong.getMoTaPhong()
 				, phong.getTang().getMaTang(), phong.getTang().getTenTang()
 				, phong.getLoaiPhong().getMaLoaiPhong(), phong.getLoaiPhong().getTenLoaiPhong()
-				, phong.getGiaPhong(), phong.getLoaiPhong().getSucChua()
+				, phong.getGiaPhong(), phong.getSucChua()
 				, phong.isDuocHutThuoc(), phong.isMangThuCung()
-				, phong.getLoaiPhong().getSoGiuong());
+				, phong.getSoGiuong());
 		return phongResponseDto;
 	}
 }

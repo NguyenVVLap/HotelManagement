@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
-import { Grid, Stack } from '@mui/material';
+import { Grid, Stack } from "@mui/material";
 import styled from "styled-components";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -11,13 +11,8 @@ import { Toast, ToastContainer } from "react-bootstrap";
 
 import RoomSelected from "./components/RoomSelected";
 import Rooms from "./components/Rooms";
-import {
-  addBookingsRoute,
-  getBookingsRoute,
-  timKiemKhachHang,
-} from "../../utils/APIRoutes";
+import { addBookingsRoute, timKiemKhachHang } from "../../utils/APIRoutes";
 import axios from "axios";
-
 
 function FrmDatPhong() {
   const [showRooms, setShowRooms] = useState(false);
@@ -246,8 +241,12 @@ function FrmDatPhong() {
         <div className="content">
           <div className="select-container">
             <div className="room-select-container">
-              <Grid container   >
-                <Stack flexDirection='row' alignItems='center' justifyContent='space-around'>
+              <Grid container>
+                <Stack
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent="space-around"
+                >
                   <Grid item md={3}>
                     <Button
                       variant="primary"
@@ -255,7 +254,7 @@ function FrmDatPhong() {
                     >
                       Chọn phòng
                     </Button>
-                  </Grid >
+                  </Grid>
                   <Grid item md={4}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={["DatePicker"]}>
@@ -293,7 +292,7 @@ function FrmDatPhong() {
                       </DemoContainer>
                     </LocalizationProvider>
                   </Grid>
-                </Stack >
+                </Stack>
               </Grid>
               <div className="table-container">
                 <RoomSelected

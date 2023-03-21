@@ -15,7 +15,7 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, Long>{
 			+ "from phong p inner join chi_tiet_hoa_don cthd "
 			+ "on p.ma_phong = cthd.ma_phong "
 			+ "where cthd.ma_hoa_don = :maHoaDon")
-	List<Long> layMaPhongTuMaHoaDon(@Param("maHoaDon") long maHoaDon);
+	List<String> layMaPhongTuMaHoaDon(@Param("maHoaDon") long maHoaDon);
 	
 	@Query(nativeQuery = true, value = "select * from hoa_don "
 			+ "where tien_nhan = 0 "

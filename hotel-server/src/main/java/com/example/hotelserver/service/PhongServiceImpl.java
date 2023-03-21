@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.hotelserver.dto.PhongResponseDto;
-import com.example.hotelserver.entity.ChiTietPhieuDatPhong;
 import com.example.hotelserver.entity.Phong;
-import com.example.hotelserver.repository.ChiTietPhieuDatPhongRepo;
 import com.example.hotelserver.repository.PhieuDatPhongRepo;
 import com.example.hotelserver.repository.PhongRepo;
 
@@ -22,9 +20,6 @@ public class PhongServiceImpl implements PhongService{
 	@Autowired
 	private PhieuDatPhongRepo phieuDatPhongRepo;
 	
-	@Autowired
-	private ChiTietPhieuDatPhongRepo chiTietPhieuDatPhongRepo;
-	
 	@Override
 	public List<PhongResponseDto> layTatCaPhongSapXepTheoTrangThai(Date ngayNhanPhong, Date ngayTraPhong) {
 		List<Phong> rooms = phongRepo.getRoomsOrderByState();
@@ -35,20 +30,20 @@ public class PhongServiceImpl implements PhongService{
 					, room.getMoTaPhong()
 					, room.getTang().getMaTang(), room.getTang().getTenTang()
 					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
-					, room.getGiaPhong(), room.getLoaiPhong().getSucChua()
+					, room.getGiaPhong(), room.getSucChua()
 					, room.isDuocHutThuoc(), room.isMangThuCung()
-					, room.getLoaiPhong().getSoGiuong());
+					, room.getSoGiuong());
 			phongDtos.add(phongResponseDto);
 		}
 		if (phongDtos != null && !phongDtos.isEmpty()) {
 			List<Long> maPhieuDatPhongs = phieuDatPhongRepo.layMaPhieuTheoNgayNhanNgayTra(ngayNhanPhong, ngayTraPhong);
 			if (maPhieuDatPhongs != null && !maPhieuDatPhongs.isEmpty()) {
 				for (Long maPhieuDatPhong : maPhieuDatPhongs) {
-					List<Long> exMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(maPhieuDatPhong);
+					List<String> exMaPhong = phieuDatPhongRepo.layMaPhongTuMaPhieu(maPhieuDatPhong);
 					if (!exMaPhong.isEmpty()) {
-						for (Long maPhong : exMaPhong) {
+						for (String maPhong : exMaPhong) {
 							for (int i = 0; i < phongDtos.size(); i++) {
-								if (phongDtos.get(i).getMaPhong() == maPhong) {
+								if (phongDtos.get(i).getMaPhong().equals(maPhong)) {
 									phongDtos.remove(i);
 									break;
 								}
@@ -73,9 +68,9 @@ public class PhongServiceImpl implements PhongService{
 					, room.getMoTaPhong()
 					, room.getTang().getMaTang(), room.getTang().getTenTang()
 					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
-					, room.getGiaPhong(), room.getLoaiPhong().getSucChua()
+					, room.getGiaPhong(), room.getSucChua()
 					, room.isDuocHutThuoc(), room.isMangThuCung()
-					, room.getLoaiPhong().getSoGiuong());
+					, room.getSoGiuong());
 			result.add(phongResponseDto);
 		}
 		return result;
@@ -111,9 +106,9 @@ public class PhongServiceImpl implements PhongService{
 					, room.getMoTaPhong()
 					, room.getTang().getMaTang(), room.getTang().getTenTang()
 					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
-					, room.getGiaPhong(), room.getLoaiPhong().getSucChua()
+					, room.getGiaPhong(), room.getSucChua()
 					, room.isDuocHutThuoc(), room.isMangThuCung()
-					, room.getLoaiPhong().getSoGiuong());
+					, room.getSoGiuong());
 			result.add(phongResponseDto);
 		}
 		return result;
@@ -129,9 +124,9 @@ public class PhongServiceImpl implements PhongService{
 					, room.getMoTaPhong()
 					, room.getTang().getMaTang(), room.getTang().getTenTang()
 					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
-					, room.getGiaPhong(), room.getLoaiPhong().getSucChua()
+					, room.getGiaPhong(), room.getSucChua()
 					, room.isDuocHutThuoc(), room.isMangThuCung()
-					, room.getLoaiPhong().getSoGiuong());
+					, room.getSoGiuong());
 			result.add(phongResponseDto);
 		}
 		return result;
@@ -147,16 +142,16 @@ public class PhongServiceImpl implements PhongService{
 					, room.getMoTaPhong()
 					, room.getTang().getMaTang(), room.getTang().getTenTang()
 					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
-					, room.getGiaPhong(), room.getLoaiPhong().getSucChua()
+					, room.getGiaPhong(), room.getSucChua()
 					, room.isDuocHutThuoc(), room.isMangThuCung()
-					, room.getLoaiPhong().getSoGiuong());
+					, room.getSoGiuong());
 			result.add(phongResponseDto);
 		}
 		return result;
 	}
 
 	@Override
-	public List<PhongResponseDto> timPhongTheoMa(long maPhong) {
+	public List<PhongResponseDto> timPhongTheoMa(String maPhong) {
 		Phong room = phongRepo.findById(maPhong).get();
 		List<PhongResponseDto> result = new ArrayList<>();
 		if (room != null) {
@@ -165,10 +160,44 @@ public class PhongServiceImpl implements PhongService{
 					, room.getMoTaPhong()
 					, room.getTang().getMaTang(), room.getTang().getTenTang()
 					, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
-					, room.getGiaPhong(), room.getLoaiPhong().getSucChua()
+					, room.getGiaPhong(), room.getSucChua()
 					, room.isDuocHutThuoc(), room.isMangThuCung()
-					, room.getLoaiPhong().getSoGiuong());
+					, room.getSoGiuong());
 			result.add(phongResponseDto);
+		}
+		return result;
+	}
+
+	@Override
+	public boolean xoaPhong(String maPhong) {
+		try {
+			phongRepo.deleteById(maPhong);
+			return true;
+		} catch (Exception e) {
+			System.out.println("Error at xoaPhong: " + e);
+		}
+		return false;
+	}
+
+	@Override
+	public List<PhongResponseDto> timPhongCustomQuery(String query) {
+		List<PhongResponseDto> result = new ArrayList<>();
+		List<String> maPhongs = phongRepo.findMaPhongByCustomField(query);
+		if (!maPhongs.isEmpty()) {
+			for (String maPhong : maPhongs) {
+				Phong room = phongRepo.findById(maPhong).get();
+				if (room != null) {
+					PhongResponseDto phongResponseDto = new PhongResponseDto(room.getMaPhong()
+							, room.getTenPhong(), room.isTrangThaiPhong(), room.getHinhAnhPhong()
+							, room.getMoTaPhong()
+							, room.getTang().getMaTang(), room.getTang().getTenTang()
+							, room.getLoaiPhong().getMaLoaiPhong(), room.getLoaiPhong().getTenLoaiPhong()
+							, room.getGiaPhong(), room.getSucChua()
+							, room.isDuocHutThuoc(), room.isMangThuCung()
+							, room.getSoGiuong());
+					result.add(phongResponseDto);
+				}
+			}
 		}
 		return result;
 	}
