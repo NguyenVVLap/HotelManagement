@@ -13,7 +13,7 @@ import Inputs from "./components/Inputs";
 import Search from "./components/Search";
 import TableData from "./components/TableData";
 
-function FrmLoaiPhong() {
+function FrmLoaiPhong({ setShowFrmLoaiPhong, setTempLoaiPhong }) {
   const [loaiPhongSelected, setLoaiPhongSelected] = useState(undefined);
   const [dsLoaiPhong, setDsLoaiPhong] = useState(undefined);
   const [search, setSearch] = useState({ keyword: "", theo: "Theo mã" });
@@ -45,6 +45,7 @@ function FrmLoaiPhong() {
       });
       if (data && data.length !== []) {
         setDsLoaiPhong(data);
+        setTempLoaiPhong(data);
         setLoaiPhongSelected(undefined);
       }
     }
@@ -60,6 +61,7 @@ function FrmLoaiPhong() {
       });
       if (data && data.length !== []) {
         setDsLoaiPhong(data);
+        setTempLoaiPhong(data);
         setLoaiPhongSelected(undefined);
       }
     }
@@ -127,13 +129,14 @@ function FrmLoaiPhong() {
     };
     const { data } = await axios.get(`${getRoomTypesRoute}`, {}, config);
     setDsLoaiPhong(data);
+    setTempLoaiPhong(data);
   };
 
   return (
     <StyleContainer>
       <h1>
         <div className="btn-back">
-          <SlArrowLeft />
+          <SlArrowLeft onClick={() => setShowFrmLoaiPhong(undefined)} />
         </div>{" "}
         Cập nhật loại phòng
       </h1>
@@ -187,7 +190,14 @@ function FrmLoaiPhong() {
 }
 
 const StyleContainer = styled.div`
-  height: 100%;
+  width: 75%;
+  padding: 0.5rem;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  background-color: #fff;
+  position: relative;
   h1 {
     display: flex;
     gap: 1rem;
@@ -196,7 +206,7 @@ const StyleContainer = styled.div`
     text-align: left;
     padding-left: 1rem;
     svg {
-      font-size: 2rem;
+      font-size: 1.8rem;
       cursor: pointer;
     }
   }

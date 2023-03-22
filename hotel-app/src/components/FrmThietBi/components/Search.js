@@ -32,7 +32,7 @@ function Search({ search, setSearch, onHandleSearch, onHandleRefresh }) {
   );
 }
 const StyledContainer = styled.div`
-  height: 5%;
+  height: 6%;
   margin: 1rem 0;
   display: flex;
   width: 60%;

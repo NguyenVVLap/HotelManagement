@@ -9,6 +9,7 @@ import {
   findRoomRoute,
   getRoomsRoute,
 } from "../../utils/APIRoutes";
+import FrmLoaiPhong from "../FrmThietBi";
 import ImageSelect from "./components/ImageSelect";
 import Inputs from "./components/Inputs";
 import Search from "./components/Search";
@@ -17,6 +18,7 @@ import TableData from "./components/TableData";
 function FrmQuanLyPhong() {
   const [phongSelected, setPhongSelected] = useState(undefined);
   const [showImageSelect, setShowImageSelect] = useState(undefined);
+  const [showFrmLoaiPhong, setShowFrmLoaiPhong] = useState(undefined);
   const [dsPhong, setDsPhong] = useState(undefined);
   const [maPhongCu, setMaPhongCu] = useState(undefined);
   const [search, setSearch] = useState({ keyword: "", theo: "Theo mã" });
@@ -254,6 +256,7 @@ function FrmQuanLyPhong() {
           phongMoi={phongMoi}
           tempTang={tempTang}
           tempLoaiPhong={tempLoaiPhong}
+          setShowFrmLoaiPhong={setShowFrmLoaiPhong}
           setPhongMoi={setPhongMoi}
           setShowImageSelect={setShowImageSelect}
           setTempTang={setTempTang}
@@ -311,6 +314,14 @@ function FrmQuanLyPhong() {
           }
         />
       )}
+      {showFrmLoaiPhong && (
+        <div className="frmLoaiPhong-container">
+          <FrmLoaiPhong
+            setShowFrmLoaiPhong={setShowFrmLoaiPhong}
+            setTempLoaiPhong={setTempLoaiPhong}
+          />
+        </div>
+      )}
     </StyleContainer>
   );
 }
@@ -327,6 +338,19 @@ const StyleContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: stretch;
+  }
+  .frmLoaiPhong-container {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: scroll;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 

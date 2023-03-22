@@ -31,8 +31,8 @@ public class LoaiPhongServiceImpl implements LoaiPhongService {
 
 	@Override
 	public boolean kiemTraLoaiPhongTonTaiTheoTen(String tenLoaiPhong) {
-		List<LoaiPhong> result = loaiPhongRepo.findByTenLoaiPhongLike(tenLoaiPhong);
-		if (result != null && !result.isEmpty()) {
+		LoaiPhong result = loaiPhongRepo.findByTenLoaiPhong(tenLoaiPhong);
+		if (result != null) {
 			return true;
 		}
 		return false;

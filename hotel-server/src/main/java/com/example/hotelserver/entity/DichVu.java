@@ -40,10 +40,10 @@ public class DichVu {
 	@Column(name = "soLuong")
 	private int soLuong;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-	@JsonIgnore
-	@JoinColumn(name = "ma_loai_dich_vu")
-	private LoaiDichVu loaiDichVu;
+//	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+//	@JsonIgnore
+//	@JoinColumn(name = "ma_loai_dich_vu")
+//	private LoaiDichVu loaiDichVu;
 	
 //	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 //	@Nullable

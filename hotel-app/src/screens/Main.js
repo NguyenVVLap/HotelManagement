@@ -64,7 +64,7 @@ function Main() {
           {subNavSelected.subnav === "add-bill" && <FrmLapHoaDon />}
           {subNavSelected.subnav === "update-floor" && <FrmTang />}
           {subNavSelected.subnav === "search-floor" && <FrmTimKiemTang />}
-          {subNavSelected.subnav === "update-room-type" && <FrmLoaiPhong />}
+          {/* {subNavSelected.subnav === "update-room-type" && <FrmLoaiPhong />} */}
           {subNavSelected.subnav === "search-room-type" && (
             <FrmTimKiemLoaiPhong />
           )}

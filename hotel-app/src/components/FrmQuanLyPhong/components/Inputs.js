@@ -11,11 +11,13 @@ import { BiRefresh } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { getFloorsRoute, getRoomTypesRoute } from "../../../utils/APIRoutes";
 import axios from "axios";
+import { AiOutlinePlus } from "react-icons/ai";
 
 function Inputs({
   phongMoi,
   tempTang,
   tempLoaiPhong,
+  setShowFrmLoaiPhong,
   setPhongMoi,
   setTempTang,
   setTempLoaiPhong,
@@ -251,33 +253,41 @@ function Inputs({
               </FloatingLabel>
             </Col>
             <Col>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Loại phòng"
-                className="mb-3"
-              >
-                <Form.Select
-                  aria-label="Default select example"
-                  onChange={(e) => handleOnSelect("maLoaiPhong", e)}
+              <div className="input-LoaiPhong-container">
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Loại phòng"
+                  className="mb-3"
                 >
-                  {tempLoaiPhong &&
-                    tempLoaiPhong.length !== 0 &&
-                    tempLoaiPhong.map((loaiPhong, index) => {
-                      return (
-                        <option
-                          value={`${loaiPhong.maLoaiPhong}`}
-                          key={index}
-                          selected={
-                            phongMoi.maLoaiPhong &&
-                            phongMoi.maLoaiPhong == loaiPhong.maLoaiPhong
-                          }
-                        >
-                          {loaiPhong.tenLoaiPhong}
-                        </option>
-                      );
-                    })}
-                </Form.Select>
-              </FloatingLabel>
+                  <Form.Select
+                    aria-label="Default select example"
+                    onChange={(e) => handleOnSelect("maLoaiPhong", e)}
+                  >
+                    {tempLoaiPhong &&
+                      tempLoaiPhong.length !== 0 &&
+                      tempLoaiPhong.map((loaiPhong, index) => {
+                        return (
+                          <option
+                            value={`${loaiPhong.maLoaiPhong}`}
+                            key={index}
+                            selected={
+                              phongMoi.maLoaiPhong &&
+                              phongMoi.maLoaiPhong == loaiPhong.maLoaiPhong
+                            }
+                          >
+                            {loaiPhong.tenLoaiPhong}
+                          </option>
+                        );
+                      })}
+                  </Form.Select>
+                </FloatingLabel>
+                <Button
+                  variant="success"
+                  onClick={() => setShowFrmLoaiPhong(true)}
+                >
+                  <AiOutlinePlus />
+                </Button>
+              </div>
             </Col>
           </Row>
           <Row>
@@ -380,6 +390,17 @@ const StyledContainer = styled.div`
     }
     select {
       min-width: 150px;
+    }
+    .input-LoaiPhong-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      select {
+        width: 190px;
+      }
+      button {
+        width: 40px;
+      }
     }
   }
   .btn-container {

@@ -135,47 +135,7 @@ function Menu({
             </div>
           )}
         </button>
-        <button className={`btn ${navSelected.roomType && "btn-selected"}`}>
-          <div
-            className="menu-content"
-            onClick={() => {
-              onHandleSelectedNav("roomType", !navSelected.roomType);
-              setSubNavSelected({ nav: "", subnav: "" });
-            }}
-          >
-            <BsDoorOpen />
-            <p className="btn-title">Loại phòng</p>
-          </div>
-          {navSelected.roomType && (
-            <div className="sub-menu-container">
-              <button
-                className={`btn-sub ${
-                  subNavSelected.subnav === "update-room-type" &&
-                  "btn-sub-selected"
-                }`}
-                onClick={() =>
-                  onHandleSelectedSubNav("update-room-type", "roomType")
-                }
-              >
-                <ManageAccountsOutlinedIcon />
-                <p className="btn-sub-title">Cập nhật</p>
-              </button>
-              {/* Tìm kiếm khách hàng */}
-              <button
-                className={`btn-sub ${
-                  subNavSelected.subnav === "search-room-type" &&
-                  "btn-sub-selected"
-                }`}
-                onClick={() =>
-                  onHandleSelectedSubNav("search-room-type", "roomType")
-                }
-              >
-                <SearchIcon />
-                <p className="btn-sub-title">Tìm kiếm</p>
-              </button>
-            </div>
-          )}
-        </button>
+
         {/* Khách hàng */}
         <button className={`btn ${navSelected.guest && "btn-selected"}`}>
           <div
