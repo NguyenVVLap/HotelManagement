@@ -21,19 +21,24 @@ function FrmNhanPhong() {
   const [phieuDatPhongSelected, setPhieuDatPhongSelected] = useState({});
   const [searchInput, setSearchInput] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const diff_hours = (dt2, dt1) => {
+    var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    diff /= 60 * 60;
+    return Math.abs(Math.round(diff));
+  };
   useEffect(() => {
     let price = 0;
-    let ngayNhan = new Date(phieuDatPhongSelected.ngayNhanPhong).getTime();
-    let ngayTra = new Date(phieuDatPhongSelected.ngayTraPhong).getTime();
-    let difference = ngayTra - ngayNhan;
-    let totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+    let ngayNhan = new Date(phieuDatPhongSelected.ngayNhanPhong);
+    let ngayTra = new Date(phieuDatPhongSelected.ngayTraPhong);
+    let totalHours = diff_hours(ngayNhan, ngayTra);
     if (
       phieuDatPhongSelected &&
       phieuDatPhongSelected.dsPhong &&
       phieuDatPhongSelected.dsPhong.length > 0
     )
       for (let i = 0; i < phieuDatPhongSelected.dsPhong.length; i++) {
-        price += phieuDatPhongSelected.dsPhong[i].giaPhong * totalDays;
+        price += phieuDatPhongSelected.dsPhong[i].giaPhong * totalHours;
       }
     setTotalPrice(price);
   }, [phieuDatPhongSelected]);
@@ -224,7 +229,7 @@ function FrmNhanPhong() {
                           Ngày đặt phòng:{" "}
                           <p>
                             {moment(phieuDatPhong.ngayDatPhong).format(
-                              "DD/MM/YYYY"
+                              "DD/MM/YYYY HH:MM"
                             )}
                           </p>
                         </div>
@@ -232,7 +237,7 @@ function FrmNhanPhong() {
                           Ngày nhận phòng:{" "}
                           <p>
                             {moment(phieuDatPhong.ngayNhanPhong).format(
-                              "DD/MM/YYYY"
+                              "DD/MM/YYYY HH:MM"
                             )}
                           </p>
                         </div>
@@ -331,23 +336,20 @@ function FrmNhanPhong() {
                     {phieuDatPhongSelected &&
                       phieuDatPhongSelected.ngayDatPhong &&
                       moment(phieuDatPhongSelected.ngayDatPhong).format(
-                        "DD/MM/YYYY"
+                        "DD/MM/YYYY HH:MM"
                       )}
                     <br></br>- Ngày nhận phòng:{" "}
                     {phieuDatPhongSelected &&
                       phieuDatPhongSelected.ngayNhanPhong &&
                       moment(phieuDatPhongSelected.ngayNhanPhong).format(
-                        "DD/MM/YYYY"
+                        "DD/MM/YYYY HH:MM"
                       )}
                     <br></br>- Ngày trả phòng:{" "}
                     {phieuDatPhongSelected &&
                       phieuDatPhongSelected.ngayTraPhong &&
                       moment(phieuDatPhongSelected.ngayTraPhong).format(
-                        "DD/MM/YYYY"
+                        "DD/MM/YYYY HH:MM"
                       )}
-                    <br></br>- Ghi chú:{" "}
-                    {phieuDatPhongSelected &&
-                      phieuDatPhongSelected.ghiChuDatPhong}
                   </div>
                   <div className="btn-function">
                     {phieuDatPhongSelected &&

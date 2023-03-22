@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
-import { Button, FloatingLabel, Form } from "react-bootstrap";
-import { Grid, Stack } from "@mui/material";
+import {
+  Button,
+  Col,
+  Container,
+  FloatingLabel,
+  Form,
+  Row,
+} from "react-bootstrap";
 import styled from "styled-components";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -23,39 +29,43 @@ function FrmDatPhong() {
   const [toast, setToast] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const diff_hours = (dt2, dt1) => {
+    var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    diff /= 60 * 60;
+    return Math.abs(Math.round(diff));
+  };
+
   useEffect(() => {
     let price = 0;
-    let ngayNhan = new Date().getTime();
-    let ngayTra = new Date().getTime();
+    let ngayNhan = new Date();
+    let ngayTra = new Date();
     if (bookingInfo.ngayNhanPhong) {
-      ngayNhan = bookingInfo.ngayNhanPhong.toDate().getTime();
+      ngayNhan = bookingInfo.ngayNhanPhong.toDate();
     }
     if (bookingInfo.ngayTraPhong) {
-      ngayTra = bookingInfo.ngayTraPhong.toDate().getTime();
+      ngayTra = bookingInfo.ngayTraPhong.toDate();
     }
-    let difference = ngayTra - ngayNhan;
-    let totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+    let totalHours = diff_hours(ngayNhan, ngayTra);
     for (let i = 0; i < roomChoosen.length; i++) {
-      price += roomChoosen[i].giaPhong * totalDays;
+      price += roomChoosen[i].giaPhong * totalHours;
     }
     setTotalPrice(price);
   }, [roomChoosen]);
 
   useEffect(() => {
     let price = 0;
-    let ngayNhan = new Date().getTime();
-    let ngayTra = new Date().getTime();
+    let ngayNhan = new Date();
+    let ngayTra = new Date();
     if (bookingInfo.ngayNhanPhong) {
-      ngayNhan = bookingInfo.ngayNhanPhong.toDate().getTime();
+      ngayNhan = bookingInfo.ngayNhanPhong.toDate();
     }
     if (bookingInfo.ngayTraPhong) {
-      ngayTra = bookingInfo.ngayTraPhong.toDate().getTime();
+      ngayTra = bookingInfo.ngayTraPhong.toDate();
     }
-    let difference = ngayTra - ngayNhan;
-    let totalDays = Math.ceil(difference / (1000 * 3600 * 24));
-    console.log(totalDays);
+    let totalHours = diff_hours(ngayNhan, ngayTra);
+
     for (let i = 0; i < roomChoosen.length; i++) {
-      price += roomChoosen[i].giaPhong * totalDays;
+      price += roomChoosen[i].giaPhong * totalHours;
     }
     setTotalPrice(price);
   }, [bookingInfo]);
@@ -241,24 +251,20 @@ function FrmDatPhong() {
         <div className="content">
           <div className="select-container">
             <div className="room-select-container">
-              <Grid container>
-                <Stack
-                  flexDirection="row"
-                  alignItems="center"
-                  justifyContent="space-around"
-                >
-                  <Grid item md={3}>
+              <Container fluid>
+                <Row>
+                  <Col md={3}>
                     <Button
                       variant="primary"
                       onClick={() => onHandeOpenSelectRoom()}
                     >
                       Chọn phòng
                     </Button>
-                  </Grid>
-                  <Grid item md={4}>
+                  </Col>
+                  <Col md={4}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={["DatePicker"]}>
-                        <DatePicker
+                        <DateTimePicker
                           sx={{ width: "100%" }}
                           label="Ngày nhận phòng"
                           value={
@@ -272,12 +278,12 @@ function FrmDatPhong() {
                         />
                       </DemoContainer>
                     </LocalizationProvider>
-                  </Grid>
+                  </Col>
 
-                  <Grid item md={4}>
+                  <Col md={4}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={["DatePicker"]}>
-                        <DatePicker
+                        <DateTimePicker
                           sx={{ width: "100%" }}
                           label="Ngày trả phòng"
                           value={
@@ -291,9 +297,9 @@ function FrmDatPhong() {
                         />
                       </DemoContainer>
                     </LocalizationProvider>
-                  </Grid>
-                </Stack>
-              </Grid>
+                  </Col>
+                </Row>
+              </Container>
               <div className="table-container">
                 <RoomSelected
                   roomChoosen={roomChoosen}
@@ -409,28 +415,6 @@ function FrmDatPhong() {
                 </div>
               </div>
             </div>
-            <div className="booking-info">
-              <h2>Thông tin đặt phòng</h2>
-
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Ghi chú"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Ghi chú"
-                  name="ghiChuDatPhong"
-                  min={0}
-                  value={
-                    bookingInfo && bookingInfo.ghiChuDatPhong
-                      ? bookingInfo.ghiChuDatPhong
-                      : ""
-                  }
-                  onChange={(e) => onHandleChangeBooking(e)}
-                />
-              </FloatingLabel>
-            </div>
             <div className="footer-info">
               <p>{totalPrice.toLocaleString()} VND</p>
               <div className="btn-function-footer">
@@ -504,7 +488,7 @@ const StyledContainer = styled.div`
       width: 100%;
       height: 100%;
       display: grid;
-      grid-template-columns: 55% 45%;
+      grid-template-columns: 65% 35%;
       padding-bottom: 0.5rem;
       .select-container {
         display: flex;
@@ -552,6 +536,7 @@ const StyledContainer = styled.div`
               align-items: center;
               margin-bottom: 1rem;
               input {
+                width: 245px;
               }
               .form-floating {
                 margin: 0 !important;
@@ -569,7 +554,7 @@ const StyledContainer = styled.div`
               flex-wrap: wrap;
               gap: 0.5rem;
               input {
-                width: 210px;
+                width: 350px;
               }
             }
           }
