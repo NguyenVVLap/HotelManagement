@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.example.hotelserver.dto.DichVuResponseDto;
+import com.example.hotelserver.dto.PhongResponseDto;
+import com.example.hotelserver.entity.LoaiDichVu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,15 +34,24 @@ public class DichVuController {
         return dichvuService.layAllDanhSachDichVu();
     }
     @PostMapping
-  public ResponseEntity<List<DichVu>> themDichVu(@RequestBody DichVu dichVu){
-        System.out.println("Request Dich vu nhan :"+dichVu);
+  public ResponseEntity<List<DichVuResponseDto>> themDichVu(@RequestBody DichVuResponseDto dichVu){
+        System.out.println("Request Loai Dich Vu nhan :"+dichVu.getMaLoaiDichVu());
+        System.out.println("Request Dich vu Dto nhan :"+dichVu);
         //Nếu dịch vụ đó chưa tồn tại
         if(!dichvuService.kiemtraDichVuTonTai(dichVu.getTenDichVu(),dichVu.getGiaDichVu())){
-            if(dichvuService.themDichVu(dichVu)){
-                return new ResponseEntity<List<DichVu>>(dichvuService.layAllDanhSachDichVu(), HttpStatus.OK);
+            LoaiDichVu ldv = new LoaiDichVu(dichVu.getMaLoaiDichVu(),"","");
+            var dv = DichVu.builder().
+                    maDichVu(dichVu.getMaDichVu())
+                    .tenDichVu(dichVu.getTenDichVu())
+                    .giaDichVu(dichVu.getGiaDichVu())
+                    .soLuong(dichVu.getSoLuong())
+                    .loaiDichVu(ldv)
+                    .build();
+            if(dichvuService.themDichVu(dv)){
+                return new ResponseEntity<List<DichVuResponseDto>>(dichvuService.layTatCaDichVuAndLoaiDichVu(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<List<DichVu>>(dichvuService.layAllDanhSachDichVu(), HttpStatus.OK);
+        return new ResponseEntity<List<DichVuResponseDto>>(dichvuService.layTatCaDichVuAndLoaiDichVu(), HttpStatus.OK);
     }
     @PostMapping("/timKiemDichVu")
     public ResponseEntity<List<DichVu>> timKiemDichVu(@RequestBody Map<String, Object> request) {
@@ -54,5 +66,13 @@ public class DichVuController {
             }
         }
         return new ResponseEntity<List<DichVu>>(results, HttpStatus.OK);
+    }
+    @GetMapping("/layAllDichVuAndLoaiDichVu")
+    public ResponseEntity<List<DichVuResponseDto>> getAllDichVuAndLoaiDichVu() {
+        List<DichVuResponseDto> dataFromQuery = dichvuService.layTatCaDichVuAndLoaiDichVu();
+        if (dataFromQuery == null ||dataFromQuery.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
     }
 }

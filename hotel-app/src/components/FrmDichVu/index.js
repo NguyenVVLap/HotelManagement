@@ -1,31 +1,30 @@
-import { Autocomplete, Box, Button, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Grid, IconButton, Paper, Stack, TextField, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Toast, ToastContainer } from "react-bootstrap";
+import { FloatingLabel, Form, Toast, ToastContainer } from "react-bootstrap";
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import LoupeOutlinedIcon from '@mui/icons-material/LoupeOutlined';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import SystemUpdateAltOutlinedIcon from '@mui/icons-material/SystemUpdateAltOutlined';
-import { addDichVu, getAllServiceRoute, timKiemDichVu, updateDichVu } from '../../utils/APIRoutes';
+import { addDichVu, getAllLoaiDichVuRoute, getAllServiceRoute, timKiemDichVu, updateDichVu } from '../../utils/APIRoutes';
 import axios from 'axios';
+import PopupLoaiDichVu from '../FrmLoaiDichVu/PopupLoaiDichVu';
 function FrmDichVu() {
     const [toast, setToast] = useState(null);
     const [dichVuSelected, setDichVuSelected] = useState(undefined);
-
+    const [maDichVuCu, setMaDichVuCu] = useState(undefined);
+    const [temoLoaiDichVu, setTempLoaiDichVu] = useState([]);
     const [dsDichVu, setDsDichVu] = useState(undefined);
     const [dichvuMoi, setDichVuMoi] = useState({
-        maDichVu: 0,
-        tenDichVu: "",
-        motaDichVu: "",
-        donviTinh: "",
-        giaDichVu: ""
+
     });
+    const [openPopup, setOpenPopup] = useState(false);
     const [search, setSearch] = useState({
         keyword: "",
         theo: "Theo mã dịch vụ"
@@ -34,6 +33,9 @@ function FrmDichVu() {
     useEffect(() => {
         loadDichVuFromDB();
     }, [])
+    useEffect(() => {
+        loadDichVuFromDB();
+    }, [openPopup])
     // useEffect để hiển thị selected data mỗi khi dichvuSelected bị thay đổi
     useEffect(() => {
         if (dichVuSelected) {
@@ -43,9 +45,8 @@ function FrmDichVu() {
             setDichVuMoi({
                 maDichVu: 0,
                 tenDichVu: "",
-                motaDichVu: "",
-                donviTinh: "",
-                giaDichVu: ""
+                giaDichVu: "",
+                soLuong: ""
             })
         }
     }, [dichVuSelected])
@@ -58,6 +59,8 @@ function FrmDichVu() {
         const { data } = await axios.get(`${getAllServiceRoute}`, {}, config);
         // console.log("data dich vu load from database", data);
         setDsDichVu(data);
+        const dataLoaiDichVu = await axios.get(`${getAllLoaiDichVuRoute}`, {}, config);
+        setTempLoaiDichVu(dataLoaiDichVu.data);
     }
     const handleSelected = (dichVu) => {
         if (dichVuSelected && dichVu.maDichVu === dichVuSelected.maDichVu) {
@@ -80,7 +83,7 @@ function FrmDichVu() {
     }
 
     const validate = () => {
-        const { tenDichVu, giaDichVu, donviTinh } = dichvuMoi;
+        const { tenDichVu, giaDichVu, soLuong } = dichvuMoi;
         if (tenDichVu === "") {
             setToast({
                 header: "Tên dịch vụ không được bỏ trống",
@@ -90,9 +93,18 @@ function FrmDichVu() {
             });
             return false;
         }
-        if (donviTinh === "") {
+        if (soLuong === "") {
             setToast({
-                header: "Đơn vị tính không được bỏ trống",
+                header: "Số lượng không được bỏ trống",
+                content: "",
+                bg: "danger",
+                textColor: "#fff",
+            });
+            return false;
+        }
+        if (giaDichVu === "") {
+            setToast({
+                header: "Giá dịch vụ không được bỏ trống",
                 content: "",
                 bg: "danger",
                 textColor: "#fff",
@@ -110,21 +122,21 @@ function FrmDichVu() {
                 return false;
             }
         }
-        if (giaDichVu <= 0) {
-            setToast({
-                header: "Giá dịch vụ phải lớn hơn 0",
-                content: "",
-                bg: "danger",
-                textColor: "#fff",
-            });
-            return false;
-        }
+
         return true;
     };
     const handleAddDichVu = async (e) => {
         e.preventDefault();
+        console.log("Dich Vu moi : ", dichvuMoi);
+        const dichVuTemp = {
+            ...dichvuMoi,
+            maDichVu: 0,
+            maLoaiDichVu: dichvuMoi.maLoaiDichVu || 4,
+
+        }
+        console.log("Dich vu temp: ", dichVuTemp);
         if (dichvuMoi.maDichVu === 0 && validate()) {
-            const { data } = await axios.post(addDichVu, dichvuMoi, {}, {
+            const { data } = await axios.post(addDichVu, dichVuTemp, {}, {
                 headers: {
                     "Content-Type": "application/json;charset=UTF-8",
                     "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -132,13 +144,12 @@ function FrmDichVu() {
                 },
             })
             if (data && data.length !== []) {
-                setDsDichVu(data);
+                loadDichVuFromDB();
                 setDichVuMoi({
                     ...dichvuMoi, maDichVu: 0,
                     tenDichVu: "",
                     giaDichVu: "",
-                    motaDichVu: "",
-                    donviTinh: ""
+                    soLuong: ""
                 })
                 setToast({
                     header: "Thêm dịch vụ mới thành công",
@@ -165,28 +176,26 @@ function FrmDichVu() {
                 textColor: "#fff",
             });
             if (data && data.length !== []) {
-                setDsDichVu(data);
+                loadDichVuFromDB();
                 setDichVuSelected(undefined);
             }
         }
     }
-    const handleSearchDichVu = async () => {
-        const { data } = await axios.post(timKiemDichVu, search, {
-            headers: {
-                "Content-Type": "application/json;charset=UTF-8",
-                "Access-Control-Allow-Origin": "http://localhost:3000",
-                "Access-Control-Allow-Credentials": "true",
-            },
-        });
-        if (data) {
-            setDsDichVu(data);
-            setDichVuSelected(undefined);
-        }
-    }
+
     const handleRefeshDichVu = () => {
         loadDichVuFromDB();
     }
+    const handleOnSelect = (name, e) => {
+        // console.log("select loaiDichVu ID :", e.target.value);
+        setDichVuMoi({
+            ...dichvuMoi,
+            [name]: e.target.value,
+        });
+
+    };
     // console.log("Search combobox :", search);
+    // console.log("Temp loai DichVu :", temoLoaiDichVu);
+    // console.log("Dich vu moi :", dichvuMoi);
     return (
         <StyledContainer>
             <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
@@ -194,11 +203,47 @@ function FrmDichVu() {
             </Box>
             <Paper elevation={15} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '10px', flexDirection: 'column', minHeight: '30%' }}>
                 <Box component='form' onSubmit={(e) => handleAddDichVu(e)} sx={{ width: '50%' }}>
-                    <TextField id="ma_dich_vu" name='ma_dich_vu' label="Mã dịch vụ" variant="outlined" fullWidth disabled value={dichvuMoi && dichvuMoi.maDichVu != 0 ? dichvuMoi.maDichVu : ""} />
+                    <TextField id="ma_dich_vu" name='ma_dich_vu' label="" variant="outlined" fullWidth disabled value={dichvuMoi && dichvuMoi.maDichVu && dichvuMoi.maDichVu !== 0 ? dichvuMoi.maDichVu : "Mã dịch vụ"} />
                     <TextField id="ten_dich_vu" name='tenDichVu' label="Tên dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.tenDichVu ? dichvuMoi.tenDichVu : ""} />
-                    <TextField id="mo_ta_dich_vu" name='motaDichVu' label="Mô tả dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.motaDichVu ? dichvuMoi.motaDichVu : ""} />
-                    <TextField id="don_vi_tinh" name='donviTinh' label="Đơn vị tính" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.donviTinh ? dichvuMoi.donviTinh : ""} />
-                    <TextField id="gia_dich_vu" name='giaDichVu' label="Giá dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.giaDichVu ? dichvuMoi.giaDichVu : ""} />
+                    {/* Loai dich Vu */}
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Loại dịch vụ"
+                            className="mb-3"
+                            style={{ marginTop: '15px', flexGrow: '2' }}
+                        >
+                            <Form.Select
+                                aria-label="Default select example"
+                                onChange={(e) => handleOnSelect("maLoaiDichVu", e)}
+                            >
+                                {temoLoaiDichVu &&
+                                    temoLoaiDichVu.length !== 0 &&
+                                    temoLoaiDichVu.map((loaiDichVu, index) => {
+                                        return (
+                                            <option
+                                                value={`${loaiDichVu.maLoaiDichVu}`}
+                                                key={index}
+                                                selected={
+                                                    dichvuMoi.maLoaiDichVu &&
+                                                    dichvuMoi.maLoaiDichVu == loaiDichVu.maLoaiDichVu
+                                                }
+                                            >
+                                                {loaiDichVu.tenLoaiDichVu}
+                                            </option>
+                                        );
+                                    })}
+
+                            </Form.Select>
+                        </FloatingLabel>
+                        <IconButton color="success" aria-label="add to shopping cart" onClick={() => setOpenPopup(true)}>
+                            <LoupeOutlinedIcon />
+                        </IconButton>
+                    </Box>
+
+                    <TextField id="gia_dich_vu" name='giaDichVu' label="Giá dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '5px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.giaDichVu ? dichvuMoi.giaDichVu : ""} />
+                    <TextField type='number' id="soLuong" name='soLuong' label="Số lượng" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.soLuong ? dichvuMoi.soLuong : ""} />
+
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
                         <Button type='submit' variant='contained' size='medium' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm dịch vụ</Button>
                         <Button variant='contained' size='medium' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateDichVu()}>Cập nhật dịch vụ</Button>
@@ -211,16 +256,17 @@ function FrmDichVu() {
 
 
             {/* Danh sách Dịch Vụ */}
-            <Paper elevation={24} sx={{ maxHeight: '60%', mt: '11px', overflow: 'auto' }}>
+            <Paper elevation={24} sx={{ maxHeight: '30%', mt: '11px', overflow: 'auto' }}>
                 <TableContainer component={Paper} elevation={15}>
                     <Table aria-label="user table">
                         <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
                             <TableRow>
                                 <TableCell><Typography>Mã dịch vụ</Typography></TableCell>
                                 <TableCell align="center"><Typography>Tên dịch vụ</Typography></TableCell>
-                                <TableCell align="center"><Typography>Mô tả dịch vụ</Typography></TableCell>
+                                <TableCell align="center"><Typography>Tên loại dịch vụ</Typography></TableCell>
                                 <TableCell align="center"><Typography>Đơn vị tính</Typography></TableCell>
-                                <TableCell align="right"><Typography>Giá dịch vụ</Typography></TableCell>
+                                <TableCell align="center"><Typography>Giá dịch vụ</Typography></TableCell>
+                                <TableCell align="right"><Typography>Số lượng</Typography></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -232,9 +278,10 @@ function FrmDichVu() {
                                         {data.maDichVu}
                                     </TableCell>
                                     <TableCell align="center">{data.tenDichVu}</TableCell>
-                                    <TableCell align="center">{data.motaDichVu}</TableCell>
-                                    <TableCell align="center">{data.donviTinh}</TableCell>
-                                    <TableCell align="right">{data.giaDichVu}</TableCell>
+                                    <TableCell align="center">{data.tenLoaiDichVu}</TableCell>
+                                    <TableCell align="center">{data.donViLoaiDichVu}</TableCell>
+                                    <TableCell align="center">{data.giaDichVu}</TableCell>
+                                    <TableCell align="right">{data.soLuong}</TableCell>
                                 </TableRow>
                             )) :
 
@@ -274,6 +321,7 @@ function FrmDichVu() {
                     </Toast>
                 </ToastContainer>
             )}
+            <PopupLoaiDichVu openPopup={openPopup} setOpenPopup={setOpenPopup} />
         </StyledContainer>
     )
 }

@@ -30,20 +30,20 @@ public class DichVu {
 	
 	@Column(name = "ten_dich_vu", columnDefinition = "nvarchar(255)")
 	private String tenDichVu;
-	@Column(name = "mo_ta_dich_vu", columnDefinition = "nvarchar(255)")
-	private String motaDichVu;
-	@Column(name = "don_vi_tinh", columnDefinition = "nvarchar(255)")
-	private String donviTinh;
+//	@Column(name = "mo_ta_dich_vu", columnDefinition = "nvarchar(255)")
+//	private String motaDichVu;
+//	@Column(name = "don_vi_tinh", columnDefinition = "nvarchar(255)")
+//	private String donviTinh;
 	@Column(name = "giaDichVu")
 	private double giaDichVu;
 	
 	@Column(name = "soLuong")
 	private int soLuong;
 	
-//	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-//	@JsonIgnore
-//	@JoinColumn(name = "ma_loai_dich_vu")
-//	private LoaiDichVu loaiDichVu;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	@JsonIgnore
+	@JoinColumn(name = "ma_loai_dich_vu")
+	private LoaiDichVu loaiDichVu;
 	
 //	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 //	@Nullable

@@ -35,11 +35,16 @@ export const addRoomTypeRoute = `${host}/api/loaiPhong`;
 export const findRoomTypeRoute = `${host}/api/loaiPhong/timKiemLoaiPhong`;
 
 //Service
-export const getAllServiceRoute = `${host}/api/dichvu`;
+export const getAllServiceRoute = `${host}/api/dichvu/layAllDichVuAndLoaiDichVu`;
 export const addDichVu = `${host}/api/dichvu`;
 export const updateDichVu = `${host}/api/dichvu`;
 export const timKiemDichVu = `${host}/api/dichvu/timKiemDichVu`;
-
+// Type Service 
+//Service
+export const getAllLoaiDichVuRoute = `${host}/api/loaiDichVu`;
+export const addLoaiDichVu = `${host}/api/loaiDichVu`;
+export const updateLoaiDichVu = `${host}/api/loaiDichVu`;
+export const timKiemLoaiDichVu = `${host}/api/loaiDichVu/timKiemLoaiDichVu`;
 //Customer
 export const getAllKhachHangRoute = `${host}/api/khachhang`;
 export const addKhachHang = `${host}/api/khachhang`;

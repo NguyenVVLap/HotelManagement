@@ -1,10 +1,12 @@
 package com.example.hotelserver.service;
 
+import com.example.hotelserver.dto.DichVuResponseDto;
 import com.example.hotelserver.entity.DichVu;
 import com.example.hotelserver.repository.DichVuRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,5 +46,24 @@ public class DichVuServiceImpl implements DichVuService {
     @Override
     public DichVu timDichVuTheoMa(long maDichVu) {
         return dichVuRepo.findById(maDichVu).get();
+    }
+
+    @Override
+    public List<DichVuResponseDto> layTatCaDichVuAndLoaiDichVu() {
+        List<DichVu> dichVuList = dichVuRepo.layAllDanhSachDichVu();
+        List<DichVuResponseDto> result = new ArrayList<>();
+        for(DichVu dv : dichVuList){
+         var dvDto = DichVuResponseDto.builder()
+                 .maDichVu(dv.getMaDichVu())
+                 .tenDichVu(dv.getTenDichVu())
+                 .giaDichVu(dv.getGiaDichVu())
+                 .soLuong(dv.getSoLuong())
+                 .maLoaiDichVu(dv.getLoaiDichVu().getMaLoaiDichVu())
+                 .tenLoaiDichVu(dv.getLoaiDichVu().getTenLoaiDichVu())
+                 .donViLoaiDichVu(dv.getLoaiDichVu().getDonViLoaiDichVu())
+                 .build();
+         result.add(dvDto);
+        }
+        return result;
     }
 }

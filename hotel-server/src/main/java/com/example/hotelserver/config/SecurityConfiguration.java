@@ -37,6 +37,8 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers("/api/dichvu/**")
                 .permitAll()
+                .requestMatchers("/api/loaiDichVu/**")
+                .permitAll()
                 .requestMatchers("/api/phong/**")
                 .permitAll()
                 .requestMatchers("/api/tang/**")

@@ -20,6 +20,7 @@ import FrmTimKiemLoaiPhong from "../components/FrmTimKiemLoaiPhong";
 import FrmTimKiemTang from "../components/FrmTimKiemTang";
 import FrmTimKiemPhong from "../components/FrmTimKiemPhong";
 
+
 function Main() {
   const navigate = useNavigate();
   const [navSelected, setNavSelected] = useState({
@@ -72,6 +73,7 @@ function Main() {
           {subNavSelected.subnav === "update-guest" && <FrmKhachHang />}
           {subNavSelected.subnav === "update-staff" && <FrmNhanVien />}
           {subNavSelected.subnav === "search-service" && <FrmTimKiemDichVu />}
+
           {subNavSelected.subnav === "search-guest" && <FrmTimKiemKhachHang />}
           {subNavSelected.subnav === "search-staff" && <FrmTimKiemNhanVien />}
         </div>
