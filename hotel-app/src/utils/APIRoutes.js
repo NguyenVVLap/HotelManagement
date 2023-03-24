@@ -17,6 +17,7 @@ export const addBookingsRoute = `${host}/api/phieuDatPhong/themPhieu`;
 export const addBillsRoute = `${host}/api/hoaDon`;
 export const getBillsOrderDateRoute = `${host}/api/hoaDon/orderDate`;
 export const getBillsByCCCD = `${host}/api/hoaDon/searchByCCCD`;
+export const bookingServices = `${host}/api/hoaDon/datDichVu`;
 
 //Floor
 export const getFloorsRoute = `${host}/api/tang`;
@@ -39,7 +40,7 @@ export const getAllServiceRoute = `${host}/api/dichvu/layAllDichVuAndLoaiDichVu`
 export const addDichVu = `${host}/api/dichvu`;
 export const updateDichVu = `${host}/api/dichvu`;
 export const timKiemDichVu = `${host}/api/dichvu/timKiemDichVu`;
-// Type Service 
+// Type Service
 //Service
 export const getAllLoaiDichVuRoute = `${host}/api/loaiDichVu`;
 export const addLoaiDichVu = `${host}/api/loaiDichVu`;

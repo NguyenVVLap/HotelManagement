@@ -3,7 +3,6 @@ package com.example.hotelserver.dto;
 import java.util.Date;
 import java.util.List;
 
-import com.example.hotelserver.entity.ChiTietDichVu;
 import com.example.hotelserver.entity.KhachHang;
 import com.example.hotelserver.entity.NhanVien;
 import com.example.hotelserver.entity.PhieuDatPhong;
@@ -31,7 +30,7 @@ public class HoaDonDto{
 	private PhieuDatPhong phieuDatPhong;
 	private KhachHang khachHang;
 	private NhanVien nhanVien;
-	private List<ChiTietDichVu> dsChiTietDichVu;
+	private List<ChiTietDichVuDto> dsChiTietDichVuDto;
 	private List<PhongResponseDto> dsPhong;
 
 }

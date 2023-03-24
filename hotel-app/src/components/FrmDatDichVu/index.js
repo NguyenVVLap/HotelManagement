@@ -3,38 +3,35 @@ import moment from "moment";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Form, Table, Toast, ToastContainer } from "react-bootstrap";
-import { AiFillCloseCircle, AiOutlineSearch } from "react-icons/ai";
+import {
+  AiFillCloseCircle,
+  AiOutlinePlusCircle,
+  AiOutlineSearch,
+} from "react-icons/ai";
 import { BiRefresh } from "react-icons/bi";
 import styled from "styled-components";
 import dayjs from "dayjs";
 
 import {
   addBillsRoute,
+  bookingServices,
   getBillsByCCCD,
   getBillsOrderDateRoute,
 } from "../../utils/APIRoutes";
+import ListDichVu from "./components/ListDichVu";
 
-function FrmLapHoaDon() {
+function FrmDatDichVu() {
   const [toast, setToast] = useState(null);
   const [dsHoaDon, setDsHoaDon] = useState([]);
   const [hoaDonSelected, setHoaDonSelected] = useState({});
   const [searchInput, setSearchInput] = useState("");
+  const [hoaDonPrice, setHoaDonPrice] = useState(0);
+  const [selectPrice, setSelectPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [dichVuNew, setDichVuNew] = useState([]);
+  const [showDichVu, setShowDichVu] = useState(undefined);
   useEffect(() => {
     let price = 0;
-    let ngayNhan = new Date(hoaDonSelected.ngayLap).getTime();
-    let ngayTra = new Date().getTime();
-    let difference = ngayTra - ngayNhan;
-    let totalDays = Math.ceil(difference / (1000 * 3600 * 24));
-    if (
-      hoaDonSelected &&
-      hoaDonSelected.dsPhong &&
-      hoaDonSelected.dsPhong.length > 0
-    )
-      for (let i = 0; i < hoaDonSelected.dsPhong.length; i++) {
-        price += hoaDonSelected.dsPhong[i].giaPhong * totalDays;
-      }
-
     if (
       hoaDonSelected &&
       hoaDonSelected.dsChiTietDichVuDto &&
@@ -42,11 +39,19 @@ function FrmLapHoaDon() {
     )
       for (let i = 0; i < hoaDonSelected.dsChiTietDichVuDto.length; i++) {
         price +=
-          hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
-          hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+          hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu *
+          hoaDonSelected.dsChiTietDichVuDto[i].soLuong;
       }
-    setTotalPrice(price);
+    setHoaDonPrice(price);
   }, [hoaDonSelected]);
+  useEffect(() => {
+    let price = 0;
+    if (dichVuNew && dichVuNew.length > 0)
+      for (let i = 0; i < dichVuNew.length; i++) {
+        price += dichVuNew[i].giaDichVu * dichVuNew[i].soLuongChon;
+      }
+    setSelectPrice(price);
+  }, [dichVuNew]);
   useEffect(() => {
     loadHoaDon();
   }, []);
@@ -81,9 +86,9 @@ function FrmLapHoaDon() {
         },
       }
     );
-    setDsHoaDon(data);
-    // if (data && data.length > 0) {
-    // }
+    if (data && data.length > 0) {
+      setDsHoaDon(data);
+    }
   };
 
   const onHandleCheckIn = async () => {
@@ -152,10 +157,94 @@ function FrmLapHoaDon() {
       setHoaDonSelected({ ...hoaDonSelected, [e.target.name]: e.target.value });
     }
   };
+  const onHandleXoaDichVuSelected = (maDichVu) => {
+    let temp = [...dichVuNew];
+    for (let i = 0; i < dichVuNew.length; i++) {
+      if (dichVuNew[i].maDichVu == maDichVu) {
+        temp.splice(i, 1);
+        setDichVuNew([...temp]);
+        return;
+      }
+    }
+  };
+  const onHandleSaveDicHVu = async () => {
+    let newDichVuUpdate = [];
+    for (let i = 0; i < dichVuNew.length; i++) {
+      if (
+        hoaDonSelected.dsChiTietDichVuDto &&
+        hoaDonSelected.dsChiTietDichVuDto.length > 0
+      ) {
+        for (let j = 0; j < hoaDonSelected.dsChiTietDichVuDto.length; j++) {
+          if (
+            dichVuNew[i].maDichVu ==
+            hoaDonSelected.dsChiTietDichVuDto[j].maDichVu
+          ) {
+            newDichVuUpdate = [
+              ...newDichVuUpdate,
+              {
+                maDichVu: dichVuNew[i].maDichVu,
+                soLuongTong:
+                  dichVuNew[i].soLuongChon +
+                  hoaDonSelected.dsChiTietDichVuDto[j].soLuong,
+                soLuongMoi: dichVuNew[i].soLuongChon,
+              },
+            ];
+            break;
+          }
+          if (j === hoaDonSelected.dsChiTietDichVuDto.length - 1) {
+            newDichVuUpdate = [
+              ...newDichVuUpdate,
+              {
+                maDichVu: dichVuNew[i].maDichVu,
+                soLuongTong:
+                  dichVuNew[i].soLuongChon +
+                  hoaDonSelected.dsChiTietDichVuDto[j].soLuong,
+                soLuongMoi: dichVuNew[i].soLuongChon,
+              },
+            ];
+          }
+        }
+      } else {
+        newDichVuUpdate = [
+          ...newDichVuUpdate,
+          {
+            maDichVu: dichVuNew[i].maDichVu,
+            soLuongTong: dichVuNew[i].soLuongChon,
+            soLuongMoi: dichVuNew[i].soLuongChon,
+          },
+        ];
+      }
+    }
+    const { data } = await axios.post(
+      `${bookingServices}`,
+      {
+        maHoaDon: hoaDonSelected.maHoaDon,
+        dsDichVu: newDichVuUpdate,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      }
+    );
+    if (data && data.maHoaDon) {
+      setHoaDonSelected(data);
+      setDichVuNew([]);
+      setToast({
+        header: "Đặt dịch vụ thành công",
+        content: "",
+        bg: "success",
+        textColor: "#fff",
+      });
+    }
+  };
+  // console.log(dichVuNew);
   return (
     <StyledContainer>
       <div className="container">
-        <h1>Lập hóa đơn</h1>
+        <h1>Đặt dịch vụ</h1>
         <div className="content">
           <div className="booking-container">
             <h4>Danh sách hóa đơn</h4>
@@ -193,16 +282,24 @@ function FrmLapHoaDon() {
                         {hoaDon.khachHang.cccdKhachHang}
                       </div>
                       <div className="item-body">
-                        <div className="booking-date">
-                          Ngày đặt phòng:{" "}
-                          <p>
-                            {moment(hoaDon.ngayDatPhong).format("DD/MM/YYYY")}
-                          </p>
-                        </div>
                         <div className="check-in-date">
                           Ngày nhận phòng:{" "}
                           <p>
                             {moment(hoaDon.ngayNhanPhong).format("DD/MM/YYYY")}
+                          </p>
+                        </div>
+                        <div className="booking-date">
+                          Phòng:{" "}
+                          <p>
+                            {hoaDon.dsPhong &&
+                              hoaDon.dsPhong.length > 0 &&
+                              hoaDon.dsPhong.map((phong, index) => {
+                                return `${
+                                  index === hoaDon.dsPhong.length - 1
+                                    ? phong.tenPhong + "."
+                                    : phong.tenPhong + ","
+                                } `;
+                              })}
                           </p>
                         </div>
                       </div>
@@ -215,7 +312,7 @@ function FrmLapHoaDon() {
             <h3>Hóa đơn</h3>
             <div className="content-detail">
               <div className="guest-info">
-                <h4>Thông tin khách hàng</h4>
+                <h4>Thông tin chung</h4>
                 <div className="info-content">
                   - Họ tên:{" "}
                   {hoaDonSelected &&
@@ -225,64 +322,30 @@ function FrmLapHoaDon() {
                   {hoaDonSelected &&
                     hoaDonSelected.khachHang &&
                     hoaDonSelected.khachHang.cccdKhachHang}
-                  <br></br>- Số điện thoại:{" "}
+                  <br></br>- Phòng:{" "}
+                  {hoaDonSelected.dsPhong &&
+                    hoaDonSelected.dsPhong.length > 0 &&
+                    hoaDonSelected.dsPhong.map((phong, index) => {
+                      return `${
+                        index === hoaDonSelected.dsPhong.length - 1
+                          ? phong.tenPhong + "."
+                          : phong.tenPhong + ","
+                      } `;
+                    })}
+                  <br></br>- Ngày nhận phòng:{" "}
                   {hoaDonSelected &&
-                    hoaDonSelected.khachHang &&
-                    hoaDonSelected.khachHang.soDienThoaiKH}
-                  <br></br>- Email:{" "}
-                  {hoaDonSelected &&
-                    hoaDonSelected.khachHang &&
-                    hoaDonSelected.khachHang.emailKH}
-                  <br></br>- Địa chỉ:{" "}
-                  {hoaDonSelected &&
-                    hoaDonSelected.khachHang &&
-                    hoaDonSelected.khachHang.diaChiKH}
-                  <br></br>
+                    hoaDonSelected.ngayLap &&
+                    moment(hoaDonSelected.ngayLap).format("DD/MM/YYYY")}
                 </div>
               </div>
               <div className="room-info">
+                <h4>Chi tiết dich vụ</h4>
                 <div className="info-content">
-                  <h4>Chi tiết hóa đơn</h4>
                   <div className="phong-container">
                     <Table striped>
                       <thead>
                         <tr>
-                          <th>Phòng</th>
-                          <th>Tầng</th>
-                          <th>Loại phòng</th>
-                          <th>Giá (1 đêm)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {hoaDonSelected &&
-                        hoaDonSelected.dsPhong &&
-                        hoaDonSelected.dsPhong.length > 0 ? (
-                          hoaDonSelected.dsPhong.map((room, index) => {
-                            // console.log(isSelected(room));
-                            return (
-                              <tr key={index}>
-                                <td>{room.tenPhong}</td>
-                                <td>{room.tenLoaiPhong}</td>
-                                <td>{room.tenTang}</td>
-                                <td>{room.giaPhong.toLocaleString()}</td>
-                              </tr>
-                            );
-                          })
-                        ) : (
-                          <tr>
-                            <td colSpan={6} style={{ textAlign: "center" }}>
-                              Không có dữ liệu
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </Table>
-                  </div>
-                  <h4>Chi tiết dịch vụ</h4>
-                  <div className="phong-container">
-                    <Table striped>
-                      <thead>
-                        <tr>
+                          <th></th>
                           <th>Tên</th>
                           <th>Giá</th>
                           <th>Số lượng</th>
@@ -298,6 +361,7 @@ function FrmLapHoaDon() {
                               // console.log(isSelected(room));
                               return (
                                 <tr key={index}>
+                                  <td></td>
                                   <td>{dichVu.tenDichVu}</td>
                                   <td>{dichVu.giaDichVu.toLocaleString()}</td>
                                   <td>{dichVu.soLuong}</td>
@@ -307,52 +371,58 @@ function FrmLapHoaDon() {
                             }
                           )
                         ) : (
-                          <tr>
-                            <td colSpan={6} style={{ textAlign: "center" }}>
-                              Không có dữ liệu
-                            </td>
-                          </tr>
+                          <></>
                         )}
+                        {dichVuNew &&
+                          dichVuNew.length > 0 &&
+                          dichVuNew.map((dichVuSelected, index) => {
+                            return (
+                              <tr key={index}>
+                                <td>
+                                  <AiFillCloseCircle
+                                    style={{
+                                      color: "red",
+                                      fontSize: "2rem",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() =>
+                                      onHandleXoaDichVuSelected(
+                                        dichVuSelected.maDichVu
+                                      )
+                                    }
+                                  />
+                                </td>
+                                <td>{dichVuSelected.tenDichVu}</td>
+                                <td>
+                                  {dichVuSelected.giaDichVu.toLocaleString()}
+                                </td>
+                                <td>{dichVuSelected.soLuongChon}</td>
+                                <td></td>
+                              </tr>
+                            );
+                          })}
+                        <tr
+                          onClick={() => {
+                            if (hoaDonSelected && hoaDonSelected.maHoaDon) {
+                              setShowDichVu(true);
+                            }
+                          }}
+                        >
+                          <th
+                            colSpan={5}
+                            style={{ textAlign: "center", cursor: "pointer" }}
+                          >
+                            <AiOutlinePlusCircle />
+                          </th>
+                        </tr>
                       </tbody>
                     </Table>
                   </div>
 
-                  <div className="date-info">
-                    - Ngày nhận phòng:{" "}
-                    {hoaDonSelected &&
-                      hoaDonSelected.ngayLap &&
-                      moment(hoaDonSelected.ngayLap).format("DD/MM/YYYY")}
-                  </div>
                   <div className="price-container">
-                    <p>Tổng tiền</p>
+                    <p>Tổng tiền dịch vụ</p>
                     <div className="total-price">
-                      {totalPrice.toLocaleString()} VND
-                    </div>
-                  </div>
-                  <div className="price-container">
-                    <p>Tiền nhận</p>
-                    <div className="total-price">
-                      <Form.Control
-                        type="number"
-                        name={"tienNhan"}
-                        placeholder="nhập cccd"
-                        value={
-                          hoaDonSelected.tienNhan ? hoaDonSelected.tienNhan : 0
-                        }
-                        onChange={(e) => onHandleChange(e)}
-                      />
-                    </div>
-                  </div>
-                  <div className="price-container">
-                    <p>Tiền thừa</p>
-                    <div className="total-price">
-                      {(hoaDonSelected.tienNhan - totalPrice).toLocaleString()}
-                      {/* {hoaDonSelected.tienNhan - totalPrice < 0
-                        ? 0
-                        : (
-                            hoaDonSelected.tienNhan - totalPrice
-                          ).toLocaleString()}{" "} */}{" "}
-                      VND
+                      {(selectPrice + hoaDonPrice).toLocaleString()} VND
                     </div>
                   </div>
                 </div>
@@ -361,24 +431,32 @@ function FrmLapHoaDon() {
             <div className="btn-function">
               {hoaDonSelected &&
               hoaDonSelected.maHoaDon &&
-              hoaDonSelected.tienNhan &&
-              hoaDonSelected.tienNhan > 0 ? (
+              dichVuNew &&
+              dichVuNew.length > 0 ? (
                 <Button
                   variant="success"
                   type="submit"
-                  onClick={() => onHandleCheckIn()}
+                  onClick={() => onHandleSaveDicHVu()}
                 >
-                  Lập hóa đơn
+                  Lưu
                 </Button>
               ) : (
                 <Button variant="secondary" type="submit">
-                  Lập hóa đơn
+                  Lưu
                 </Button>
               )}
             </div>
           </div>
         </div>
       </div>
+      {showDichVu && (
+        <ListDichVu
+          setDichVuNew={setDichVuNew}
+          dichVuNew={dichVuNew}
+          showDichVu={showDichVu}
+          setShowDichVu={setShowDichVu}
+        />
+      )}
       {toast && (
         <ToastContainer
           position="bottom-end"
@@ -513,7 +591,6 @@ const StyledContainer = styled.div`
         }
         .content-detail {
           height: 500px;
-          padding-right: 0.5rem;
           overflow-y: auto;
           &::-webkit-scrollbar {
             width: 0.2rem;
@@ -528,7 +605,7 @@ const StyledContainer = styled.div`
           .room-info {
             .info-content {
               .phong-container {
-                height: 140px;
+                height: 250px;
                 overflow-y: auto;
                 &::-webkit-scrollbar {
                   width: 0.2rem;
@@ -537,6 +614,9 @@ const StyledContainer = styled.div`
                     width: 0.1rem;
                     border-radius: 1rem;
                   }
+                }
+                svg {
+                  font-size: 1.6rem;
                 }
               }
               .price-container {
@@ -568,4 +648,4 @@ const StyledContainer = styled.div`
   }
 `;
 
-export default FrmLapHoaDon;
+export default FrmDatDichVu;

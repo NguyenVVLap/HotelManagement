@@ -25,6 +25,4 @@ public interface PhongRepo extends JpaRepository<Phong, String>, CustomRepo{
 	@Query(nativeQuery = true, value = "select * from phong p where p.ma_loai_phong = :maLoaiPhong")
 	List<Phong> findByMaLoaiPhong(@Param("maLoaiPhong") long maLoaiPhong);
 	
-	@Query(nativeQuery = true, value = ":query")
-	String test(@Param("query") String query);
 }

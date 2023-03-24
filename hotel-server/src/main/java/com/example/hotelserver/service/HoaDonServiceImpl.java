@@ -2,20 +2,27 @@ package com.example.hotelserver.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.hotelserver.dto.ChiTietDichVuDto;
+import com.example.hotelserver.dto.DatDichVuDto;
 import com.example.hotelserver.dto.HoaDonDto;
 import com.example.hotelserver.dto.PhongResponseDto;
 import com.example.hotelserver.dto.TaoHoaDonRequestDto;
+import com.example.hotelserver.entity.ChiTietDichVu;
 import com.example.hotelserver.entity.ChiTietHoaDon;
+import com.example.hotelserver.entity.DichVu;
 import com.example.hotelserver.entity.HoaDon;
 import com.example.hotelserver.entity.KhachHang;
 import com.example.hotelserver.entity.NhanVien;
 import com.example.hotelserver.entity.PhieuDatPhong;
 import com.example.hotelserver.entity.Phong;
+import com.example.hotelserver.repository.ChiTietDichVuRepo;
 import com.example.hotelserver.repository.ChiTietHoaDonRepo;
+import com.example.hotelserver.repository.DichVuRepo;
 import com.example.hotelserver.repository.HoaDonRepo;
 import com.example.hotelserver.repository.KhachHangRepo;
 import com.example.hotelserver.repository.NhanVienRepo;
@@ -28,16 +35,22 @@ public class HoaDonServiceImpl implements HoaDonService{
 
 	@Autowired
 	private ChiTietHoaDonRepo chiTietHoaDonRepo;
-	
+
+	@Autowired
+	private ChiTietDichVuRepo chiTietDichVuRepo;
+
 	@Autowired
 	private NhanVienRepo nhanVienRepo;
-	
+
 	@Autowired
 	private PhongRepo phongRepo;
-	
+
 	@Autowired
 	private KhachHangRepo khachHangRepo;
-	
+
+	@Autowired
+	private DichVuRepo dichVuRepo;
+
 	@Override
 	public boolean themHoaDon(TaoHoaDonRequestDto hoaDonDto) {
 		List<ChiTietHoaDon> dsChiTietHoaDon = new ArrayList<>();
@@ -83,7 +96,6 @@ public class HoaDonServiceImpl implements HoaDonService{
 			List<HoaDon> dsHoaDon = hoaDonRepo.layHoaDonChuaThanhToanSapXepTheoNgay();
 			for (HoaDon hoaDon : dsHoaDon) {
 				KhachHang khachHang = khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get();
-				System.out.println(khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get());
 				HoaDonDto hoaDonDto = HoaDonDto.builder()
 						.maHoaDon(hoaDon.getMaHoaDon())
 						.ngayLap(hoaDon.getNgayLap())
@@ -107,7 +119,18 @@ public class HoaDonServiceImpl implements HoaDonService{
 						phongResponseDtos.add(convertPhongToPhongDto(phong));
 					}
 				}
+				List<Map<String, Object>> listObject = hoaDonRepo.layChiTietDichVuTuMaHoaDon(hoaDon.getMaHoaDon());
+				List<ChiTietDichVuDto> dsChiTietDichVuDto = new ArrayList<>();
+				if (!listObject.isEmpty()) {
+					for (Map<String, Object> obj : listObject) {
+						ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
+								, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
+								, Integer.parseInt(obj.get("soLuong").toString()));
+						dsChiTietDichVuDto.add(chiTietDichVuDto);
+					}
+				}
 				hoaDonDto.setDsPhong(phongResponseDtos);
+				hoaDonDto.setDsChiTietDichVuDto(dsChiTietDichVuDto);
 				hoaDonDto.setKhachHang(khachHang);
 				dsHoaDonDto.add(hoaDonDto);
 			}
@@ -169,5 +192,115 @@ public class HoaDonServiceImpl implements HoaDonService{
 				, phong.isDuocHutThuoc(), phong.isMangThuCung()
 				, phong.getSoGiuong());
 		return phongResponseDto;
+	}
+
+	@Override
+	public HoaDonDto datDichVu(long maHoaDon, List<DatDichVuDto> datDichVuDtos) {
+		HoaDon hoaDon = hoaDonRepo.findById(maHoaDon).get();
+		HoaDonDto result = new HoaDonDto();
+		if (!datDichVuDtos.isEmpty()) {
+			List<Map<String, Object>> listObject = hoaDonRepo.layChiTietDichVuTuMaHoaDon(maHoaDon);
+			List<ChiTietDichVuDto> dsChiTietDichVuDto = new ArrayList<>();
+			if (!listObject.isEmpty()) {
+				for (Map<String, Object> obj : listObject) {
+					ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
+							, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
+							, Integer.parseInt(obj.get("soLuong").toString()));
+					dsChiTietDichVuDto.add(chiTietDichVuDto);
+				}
+			}
+			if (dsChiTietDichVuDto.isEmpty()) {
+				for (DatDichVuDto datDichVuDto : datDichVuDtos) {
+					ChiTietDichVu ct = new ChiTietDichVu(hoaDon
+							, new DichVu(datDichVuDto.getMaDichVu(), null, 0, 0, null)
+							, datDichVuDto.getSoLuongTong());
+					chiTietDichVuRepo.save(ct);
+					DichVu dichVu = dichVuRepo.findById(datDichVuDto.getMaDichVu()).get();
+//					dichVuRepo.updateSoLuongTonDichVu(datDichVuDto.getMaDichVu(), dichVu.getSoLuong() - datDichVuDto.getSoLuongMoi());
+					dichVu.setSoLuong(dichVu.getSoLuong() - datDichVuDto.getSoLuongMoi());	
+					dichVuRepo.save(dichVu);
+				}
+			} else {
+				for(int i = 0; i < datDichVuDtos.size(); i++) {
+					for (int j = 0; j < dsChiTietDichVuDto.size(); j++) {
+						if (datDichVuDtos.get(i).getMaDichVu() == dsChiTietDichVuDto.get(j).getMaDichVu()) {	
+							chiTietDichVuRepo.save(new ChiTietDichVu(new HoaDon(maHoaDon
+									, null, null, null
+									, 0, null, null
+									, null, null, null),
+									new DichVu(datDichVuDtos.get(i).getMaDichVu()
+											, null, 0, 0, null), datDichVuDtos.get(i).getSoLuongTong()));
+							break;
+						}
+						if (j == dsChiTietDichVuDto.size() - 1) {
+							ChiTietDichVu ct = new ChiTietDichVu(hoaDon
+									, new DichVu(datDichVuDtos.get(i).getMaDichVu(), null, 0, 0, null)
+									, datDichVuDtos.get(i).getSoLuongTong());
+							chiTietDichVuRepo.save(ct);
+						}
+					}
+					DichVu dichVu = dichVuRepo.findById(datDichVuDtos.get(i).getMaDichVu()).get();
+					dichVuRepo.updateSoLuongTonDichVu(datDichVuDtos.get(i).getMaDichVu()
+							, dichVu.getSoLuong() - datDichVuDtos.get(i).getSoLuongMoi());
+
+				}
+			}
+			try {
+				KhachHang khachHang = khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get();
+				HoaDonDto hoaDonDto = HoaDonDto.builder()
+						.maHoaDon(hoaDon.getMaHoaDon())
+						.ngayLap(hoaDon.getNgayLap())
+						.ngayNhanPhong(hoaDon.getNgayNhanPhong())
+						.ngayTraPhong(hoaDon.getNgayTraPhong())
+						.tienNhan(hoaDon.getTienNhan())
+						.phieuDatPhong(hoaDon.getPhieuDatPhong())
+						.nhanVien(hoaDon.getNhanVien())
+						.build();
+				List<Phong> dsPhong = new ArrayList<>();
+				List<String> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
+				if (!dsMaPhong.isEmpty()) {
+					for (String maPhong : dsMaPhong) {
+						Phong phong = phongRepo.findById(maPhong).get();
+						dsPhong.add(phong);
+					}
+				}
+				List<PhongResponseDto> phongResponseDtos = new ArrayList<>();
+				if (!dsPhong.isEmpty()) {
+					for (Phong phong : dsPhong) {
+						phongResponseDtos.add(convertPhongToPhongDto(phong));
+					}
+				}
+				List<Map<String, Object>> listObject2 = hoaDonRepo.layChiTietDichVuTuMaHoaDon(maHoaDon);
+				List<ChiTietDichVuDto> dsChiTietDichVuDto2 = new ArrayList<>();
+				if (!listObject2.isEmpty()) {
+					for (Map<String, Object> obj : listObject2) {
+						ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
+								, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
+								, Integer.parseInt(obj.get("soLuong").toString()));
+						dsChiTietDichVuDto2.add(chiTietDichVuDto);
+					}
+				}
+				hoaDonDto.setDsPhong(phongResponseDtos);
+				hoaDonDto.setDsChiTietDichVuDto(dsChiTietDichVuDto2);
+				hoaDonDto.setKhachHang(khachHang);
+				result = hoaDonDto;
+			} catch (Exception e) {
+				System.out.println("Error at layPhieuDatPhong: " + e);
+			}
+			return result;
+		}
+
+		return result;
+	}
+
+	@Override
+	public List<HoaDonDto> layHoaDonTheoTenPhong(String tenPhong) {
+		List<Phong> dsPhong = phongRepo.findByTenPhongLike(tenPhong);
+		List<HoaDonDto> results = new ArrayList<>();
+		if (!dsPhong.isEmpty()) {
+			
+		}
+		
+		return null;
 	}
 }

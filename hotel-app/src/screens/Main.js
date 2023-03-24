@@ -19,7 +19,7 @@ import FrmLapHoaDon from "../components/FrmLapHoaDon";
 import FrmTimKiemLoaiPhong from "../components/FrmTimKiemLoaiPhong";
 import FrmTimKiemTang from "../components/FrmTimKiemTang";
 import FrmTimKiemPhong from "../components/FrmTimKiemPhong";
-
+import FrmDatDichVu from "../components/FrmDatDichVu";
 
 function Main() {
   const navigate = useNavigate();
@@ -70,6 +70,7 @@ function Main() {
             <FrmTimKiemLoaiPhong />
           )}
           {subNavSelected.subnav === "update-service" && <FrmDichVu />}
+          {subNavSelected.subnav === "booking-service" && <FrmDatDichVu />}
           {subNavSelected.subnav === "update-guest" && <FrmKhachHang />}
           {subNavSelected.subnav === "update-staff" && <FrmNhanVien />}
           {subNavSelected.subnav === "search-service" && <FrmTimKiemDichVu />}

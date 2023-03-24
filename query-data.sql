@@ -1,6 +1,8 @@
 use khachsan
 
 select * from phong
+select * from dich_vu
+select * from loai_dich_vu
 
 select * from tai_khoan
 select * from nhan_vien
@@ -12,6 +14,7 @@ select * from chi_tiet_phieu_dat_phong
 
 select * from hoa_don
 select * from chi_tiet_hoa_don 
+select * from chi_tiet_dich_vu
 
 select ma_phieu_dat_phong from phieu_dat_phong pdp where 
 pdp.ngay_nhan_phong between '2023-03-19' and '2023-03-20'
@@ -28,3 +31,13 @@ select p.ma_phong, mo_ta_phong, ten_phong, trang_thai_phong, mang_thu_cung, gia_
 from phong p inner join chi_tiet_phieu_dat_phong ctpdp on p.ma_phong = ctpdp.ma_phong 
 where ctpdp.ma_phieu_dat_phong = 102 or ctpdp.ma_phieu_dat_phong = 103;
 
+
+select ctdv.ma_dich_vu as maDichVu, ten_dich_vu as tenDichVu, gia_dich_vu as giaDichVu, ctdv.so_luong as soLuong 
+from chi_tiet_dich_vu ctdv inner join dich_vu dv 
+on ctdv.ma_dich_vu = dv.ma_dich_vu where ctdv.ma_hoa_don=1
+
+select ctdv.ma_dich_vu as maDichVu, dv.ten_dich_vu as tenDichVu
+, dv.gia_dich_vu as giaDichVu, ctdv.so_luong as soLuong 
+from chi_tiet_dich_vu ctdv 
+inner join dich_vu dv on ctdv.ma_dich_vu = dv.ma_dich_vu
+where ctdv.ma_hoa_don=1

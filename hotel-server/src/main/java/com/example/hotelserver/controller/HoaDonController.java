@@ -1,5 +1,6 @@
 package com.example.hotelserver.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.hotelserver.dto.DatDichVuDto;
+import com.example.hotelserver.dto.DatDichVuRequestDto;
 import com.example.hotelserver.dto.HoaDonDto;
 import com.example.hotelserver.dto.TaoHoaDonRequestDto;
 import com.example.hotelserver.service.HoaDonService;
@@ -41,6 +44,27 @@ public class HoaDonController {
 	@PostMapping("/searchByCCCD")
 	public ResponseEntity<List<HoaDonDto>> layHoaDonTheoCCCD(@RequestBody Map<String, Object> request) {
 //		List<PhieuDatPhongDto> results = phieuDatPhongService.layPhieuDatPhongTheoNgay();
+		return new ResponseEntity<List<HoaDonDto>>(hoaDonService.layHoaDonTheoNgayCCCD(request.get("cccd").toString()), HttpStatus.OK);
+	}
+	
+	@PostMapping("/datDichVu")
+	public ResponseEntity<HoaDonDto> datDichVu(@RequestBody DatDichVuRequestDto request) {
+		System.out.println(request.getMaHoaDon());
+		System.out.println(request.getDsDichVu());
+		HoaDonDto hoaDonDto = hoaDonService.datDichVu(request.getMaHoaDon()
+				, request.getDsDichVu());
+		if (hoaDonDto != null) {
+			return new ResponseEntity<HoaDonDto>(hoaDonDto, HttpStatus.OK);
+		}
+		return new ResponseEntity<HoaDonDto>(new HoaDonDto(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/searchHoaDonForDichVu")
+	public ResponseEntity<List<HoaDonDto>> layHoaDonTheoCCCDVaTenPhong(@RequestBody Map<String, Object> request) {
+		List<HoaDonDto> hoaDonDto = hoaDonService.layHoaDonTheoNgayCCCD(request.get("keyword").toString());
+		
+		
+		
 		return new ResponseEntity<List<HoaDonDto>>(hoaDonService.layHoaDonTheoNgayCCCD(request.get("cccd").toString()), HttpStatus.OK);
 	}
 }

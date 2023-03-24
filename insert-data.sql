@@ -1,5 +1,6 @@
 ﻿use khachsan
 
+delete from chi_tiet_dich_vu;
 delete from chi_tiet_hoa_don;
 delete from hoa_don;
 
@@ -141,6 +142,22 @@ Insert into hinh_anh_phong(ma_phong, hinh_anh_phong) values
 ('T05P504', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCtOk7iOLyRGqPVjqvEgYOzhFQOuc2LwQzqA&usqp=CAU'),
 ('T05P505', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjHyr1qEVwjci-odxRRSKeluS7oGKLd4rikw&usqp=CAU'),
 ('T05P506', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-gSljIcniHWOYEqZhcxCebSX5iN80B7Hl7g&usqp=CAU');
+
+
+insert into loai_dich_vu (ma_loai_dich_vu, don_vi_loai_dich_vu, ten_loai_dich_vu) values 
+(1, N'thùng', N'nước');
+
+insert into dich_vu (ma_dich_vu, gia_dich_vu, so_luong, ten_dich_vu, don_vi_tinh, mo_ta_dich_vu, ma_loai_dich_vu) values
+(1, 20000, 100, N'Nước suối', N'chai', N'không có', 1),
+(2, 100000, 100, N'Bia', N'thùng', N'không có', 1),
+(3, 50000, 100, N'Bữa sáng', N'suất', N'không có',1),
+(4, 50000, 100, N'Bữa trưa', N'suất', N'không có', 1),
+(5, 50000, 100, N'Bữa tối', N'suất', N'không có',1);
+
+
+insert into nhan_vien(ma_nhan_vien, ho_ten, cccd, luong_co_ban, dia_chi, email, ngay_vao_lam, so_dien_thoai) values 
+(2, 'Lap', '012345678900', 0, '12 Trần Hưng Đạo', 'lap@gmail.com', '2023-03-19T10:00:56.117+00:00', '+84392589774');
+
 
 /*
 Insert into khach_hang(ma_khach_hang, cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_thoai_kh) values 
