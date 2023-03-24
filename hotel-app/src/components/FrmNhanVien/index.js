@@ -6,6 +6,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import dayjs from 'dayjs';
 
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
@@ -19,9 +20,11 @@ import { useEffect } from 'react';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import moment from 'moment/moment';
 import { parse } from 'date-fns';
+import { DateTimePicker } from '@mui/x-date-pickers';
 function FrmNhanVien() {
-    let currentDate = new Date();
-    let ngayHienTai = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
+    let ngayHienTai = new Date();
+    // let ngayHienTai = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
+    // let ngayHienTai = dayjs(currentDate);
     // console.log("Current date: ", `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`);
     // const [dateNgaySinh, setDateNgaySinh] = useState(dayjs('2001-04-30'))
     // console.log("Dayjs:", dayjs(ngayHienTai));
@@ -232,7 +235,7 @@ function FrmNhanVien() {
             // console.log("Nhan vien selected ngay vao lam : ", nhanVienSelected.nhanvien.ngayVaoLam);
             // dayjs('2001-04-30')
             const tempNgayVaoLam = moment(nhanVienSelected.nhanvien.ngayVaoLam).format("YYYY-MM-DD");
-            const tempNgaySinh = moment(nhanVienSelected.nhanvien.ngayVaoLam).format("YYYY-MM-DD");
+            const tempNgaySinh = moment(nhanVienSelected.nhanvien.ngaySinh).format("YYYY-MM-DD");
             const dateObjetNgayVaoLam = dayjs(tempNgayVaoLam);
             const dateObjetNgaySinh = dayjs(tempNgaySinh);
             // console.log("convert date to Object :", dateObjet);
@@ -422,8 +425,8 @@ function FrmNhanVien() {
 
                     <Grid item md={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs} >
-                            <DemoContainer components={['DatePicker']} >
-                                <DatePicker
+                            <DemoContainer components={['MobileDateTimePicker']} >
+                                <MobileDateTimePicker
 
                                     sx={{ width: '100%' }}
                                     label="Ngày vào làm"
@@ -437,8 +440,8 @@ function FrmNhanVien() {
 
                     <Grid item md={6}>
                         <LocalizationProvider dateAdapter={AdapterDayjs} >
-                            <DemoContainer components={['DatePicker']} >
-                                <DatePicker
+                            <DemoContainer components={['MobileDateTimePicker']} >
+                                <MobileDateTimePicker
 
                                     sx={{ width: '100%' }}
                                     label="Ngày sinh"

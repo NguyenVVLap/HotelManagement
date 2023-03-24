@@ -48,6 +48,8 @@ public class SecurityConfiguration {
     			.requestMatchers("/api/phieuDatPhong/**")
     			.permitAll()
     			.requestMatchers("/api/hoaDon/**")
+                .permitAll()
+                .requestMatchers("/api/thongke/**")
     			.permitAll()
                 .anyRequest()
                 .authenticated()

@@ -19,6 +19,7 @@ public class NhanVienDto {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date ngaySinh;
     private double luongCoBan;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date ngayVaoLam;
     private long maTaiKhoan;
     private String tenTaiKhoan;

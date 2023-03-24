@@ -2,16 +2,9 @@ package com.example.hotelserver.entity;
 
 import java.util.Date;
 
+import com.example.hotelserver.dto.NhanVienTestDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +15,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @Table(name = "nhan_vien")
+@NamedNativeQuery(
+		name = "findAllNhanVienWithTaiKhoan",
+		query = "select nv.ma_nhan_vien as maNhanVien,nv.ho_ten as tenNhanVien,tk.ten_tai_khoan as tenTaiKhoan from nhan_vien nv join tai_khoan tk on nv.ma_tai_khoan=tk.ma_tai_khoan where tk.ten_tai_khoan like  :param ",
+		resultSetMapping = "nhan_vien_test_dto"
+)
+@SqlResultSetMapping(
+		name = "nhan_vien_test_dto",
+		classes = @ConstructorResult(
+				targetClass = NhanVienTestDTO.class,
+				columns = {
+						@ColumnResult(name = "maNhanVien",type = Long.class),
+						@ColumnResult(name = "tenNhanVien",type = String.class),
+						@ColumnResult(name = "tenTaiKhoan",type = String.class)
+				}
+		)
+)
 public class NhanVien {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

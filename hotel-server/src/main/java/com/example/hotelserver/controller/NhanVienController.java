@@ -1,9 +1,23 @@
 package com.example.hotelserver.controller;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.example.hotelserver.dto.ThongKeSoLanDatPhongDto;
+import com.example.hotelserver.entity.NhanVien;
+import com.example.hotelserver.entity.TaiKhoan;
+import com.example.hotelserver.entity.VaiTro;
+import com.example.hotelserver.repository.ChiTietPhieuDatPhongRepo;
+import com.example.hotelserver.repository.NhanVienRepo;
+import com.example.hotelserver.repository.TaiKhoanRepo;
+import com.example.hotelserver.repository.VaiTroRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +41,14 @@ import lombok.RequiredArgsConstructor;
 public class NhanVienController {
     @Autowired
     private NhanVienService employeeService;
+    @Autowired
+    private ChiTietPhieuDatPhongRepo chiTietPhieuDatPhongRepo;
+    @Autowired
+    private VaiTroRepo vaiTroRepo;
+    @Autowired
+    private TaiKhoanRepo taiKhoanRepo;
+    @Autowired
+    private NhanVienRepo employeeRepo;
     @GetMapping
     public ResponseEntity<List<Map<String, Object>>> getALLInfoNhanVien() {
         List<Map<String, Object>> dataFromQuery = employeeService.getAllInfoNhanVienWithAccount();
@@ -49,6 +71,7 @@ public class NhanVienController {
             }
         }
         return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
+
 
 
 
@@ -83,5 +106,9 @@ public class NhanVienController {
 
 
     }
+
+
+
+
 
 }

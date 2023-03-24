@@ -57,3 +57,6 @@ export const addNhanVien = `${host}/api/nhanvien`;
 export const getAllNhanVienRoute = `${host}/api/nhanvien`;
 export const updateNhanVien = `${host}/api/nhanvien`;
 export const timNhanVien = `${host}/api/nhanvien/timKiemNhanVien`;
+
+//Thống Kê
+export const thongKeSoLanDatPhong = `${host}/api/thongke/thongKeSoLanDatPhong`;
