@@ -1,11 +1,11 @@
 package com.example.hotelserver.controller;
 
+import com.example.hotelserver.dto.HoaDonDto;
 import com.example.hotelserver.dto.NhanVienDto;
 import com.example.hotelserver.dto.ThongKeSoLanDatPhongDto;
-import com.example.hotelserver.repository.ChiTietPhieuDatPhongRepo;
-import com.example.hotelserver.repository.NhanVienRepo;
-import com.example.hotelserver.repository.TaiKhoanRepo;
-import com.example.hotelserver.repository.VaiTroRepo;
+import com.example.hotelserver.entity.HoaDon;
+import com.example.hotelserver.repository.*;
+import com.example.hotelserver.service.HoaDonService;
 import com.example.hotelserver.service.NhanVienService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,10 @@ import java.util.Map;
 public class ThongKeController {
     @Autowired
     private ChiTietPhieuDatPhongRepo chiTietPhieuDatPhongRepo;
-
+    @Autowired
+    private HoaDonService hoaDonService;
+    @Autowired
+    private HoaDonRepo hoaDonRepo;
     @PostMapping("/thongKeSoLanDatPhong")
     public ResponseEntity<List<ThongKeSoLanDatPhongDto>> thongKeSoLanDatPhong(@RequestBody Map<String, Object> request) {
         System.out.println("Request Nhận Thống Kế Số lần dặt phòng : "+request);
@@ -42,7 +45,18 @@ public class ThongKeController {
         }
         return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
     }
+    @PostMapping("/thongKeDoanhThuTheoPhong")
+    public ResponseEntity<List<HoaDonDto>> layThongKeHoaDonTheoNgay(@RequestBody Map<String, Object> request) {
+        List<HoaDonDto> hoaDonDtoList = new ArrayList<>();
+        hoaDonDtoList=hoaDonService.layDanhSachHoaDonDeThongKeTheoPhong(request);
+        for(HoaDonDto hoaDonDto : hoaDonDtoList){
+            System.out.println("Ket Qua Thong Ke  Mã" + hoaDonDto.getMaHoaDon());
+            System.out.println("Ket Qua Thong Ke Ngay" + hoaDonDto.getNgayLap());
+        }
 
+        return new ResponseEntity<List<HoaDonDto>>(hoaDonDtoList, HttpStatus.OK);
 
+    }
 
 }
+

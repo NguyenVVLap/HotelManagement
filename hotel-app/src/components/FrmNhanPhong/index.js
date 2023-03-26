@@ -183,6 +183,7 @@ function FrmNhanPhong() {
       }
     }
   };
+  console.log("Ngày nhận phòng : ", phieuDatPhongSelected.ngayNhanPhong);
   return (
     <StyledContainer>
       <div className="container">
@@ -210,13 +211,12 @@ function FrmNhanPhong() {
                 dsPhieuDatPhong.map((phieuDatPhong, index) => {
                   return (
                     <div
-                      className={`booking-item ${
-                        phieuDatPhongSelected.maPhieuDatPhong &&
+                      className={`booking-item ${phieuDatPhongSelected.maPhieuDatPhong &&
                         phieuDatPhong.maPhieuDatPhong ===
-                          phieuDatPhongSelected.maPhieuDatPhong
-                          ? "selected"
-                          : ""
-                      }`}
+                        phieuDatPhongSelected.maPhieuDatPhong
+                        ? "selected"
+                        : ""
+                        }`}
                       onClick={() => setPhieuDatPhongSelected(phieuDatPhong)}
                       key={index}
                     >
@@ -292,8 +292,8 @@ function FrmNhanPhong() {
                       </thead>
                       <tbody>
                         {phieuDatPhongSelected &&
-                        phieuDatPhongSelected.dsPhong &&
-                        phieuDatPhongSelected.dsPhong.length > 0 ? (
+                          phieuDatPhongSelected.dsPhong &&
+                          phieuDatPhongSelected.dsPhong.length > 0 ? (
                           phieuDatPhongSelected.dsPhong.map((room, index) => {
                             // console.log(isSelected(room));
                             return (
@@ -353,7 +353,7 @@ function FrmNhanPhong() {
                   </div>
                   <div className="btn-function">
                     {phieuDatPhongSelected &&
-                    phieuDatPhongSelected.maPhieuDatPhong ? (
+                      phieuDatPhongSelected.maPhieuDatPhong ? (
                       <Button
                         variant="success"
                         type="submit"

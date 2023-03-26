@@ -1,5 +1,6 @@
 package com.example.hotelserver.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,9 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, Long>{
 			+ "where tien_nhan = 0 "
 			+ "order by ngay_tra_phong DESC")
 	List<HoaDon> layHoaDonChuaThanhToanSapXepTheoNgay();
-	
+	@Query(nativeQuery = true,value = "select * from hoa_don hd where hd.tien_nhan >0 and hd.ngay_lap BETWEEN :start AND :end ")
+	List<HoaDon> layHoaDonDaThanhToanTheoNgayCuThe(@Param("start") Date start
+			, @Param("end") Date end);
 	@Query(nativeQuery = true, value = "select * from hoa_don "
 			+ "where ma_khach_hang = :maKhachHang and tien_nhan = 0"
 			+ "order by ngay_tra_phong DESC")

@@ -57,7 +57,7 @@ function FrmDichVu() {
             },
         };
         const { data } = await axios.get(`${getAllServiceRoute}`, {}, config);
-        // console.log("data dich vu load from database", data);
+        console.log("data dich vu load from database", data);
         setDsDichVu(data);
         const dataLoaiDichVu = await axios.get(`${getAllLoaiDichVuRoute}`, {}, config);
         setTempLoaiDichVu(dataLoaiDichVu.data);
@@ -131,7 +131,7 @@ function FrmDichVu() {
         const dichVuTemp = {
             ...dichvuMoi,
             maDichVu: 0,
-            maLoaiDichVu: dichvuMoi.maLoaiDichVu || 4,
+            maLoaiDichVu: dichvuMoi.maLoaiDichVu || 1,
 
         }
         console.log("Dich vu temp: ", dichVuTemp);

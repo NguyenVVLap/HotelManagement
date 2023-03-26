@@ -23,6 +23,7 @@ import FrmTimKiemPhong from "../components/FrmTimKiemPhong";
 import FrmDatDichVu from "../components/FrmDatDichVu";
 
 import FrmThongKePhong from "../components/FrmThongKe/FrmThongKePhong";
+import FrmThongKeDoanhThu from "../components/FrmThongKe/FrmThongKeDoanhThu";
 
 
 
@@ -83,6 +84,7 @@ function Main() {
           {subNavSelected.subnav === "search-guest" && <FrmTimKiemKhachHang />}
           {subNavSelected.subnav === "search-staff" && <FrmTimKiemNhanVien />}
           {subNavSelected.subnav === "room-report" && <FrmThongKePhong />}
+          {subNavSelected.subnav === "doanhthu-report" && <FrmThongKeDoanhThu />}
         </div>
       </div>
     </Container>

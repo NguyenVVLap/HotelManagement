@@ -11,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import DiningOutlinedIcon from '@mui/icons-material/DiningOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 
 function Menu({
   navSelected,
@@ -325,18 +326,19 @@ function Menu({
                 <MeetingRoomOutlinedIcon />
                 <p className="btn-sub-title">Phòng</p>
               </button>
-
-              {/* <button
-                className={`btn-sub ${subNavSelected.subnav === "search-service" &&
+              <button
+                className={`btn-sub ${subNavSelected.subnav === "doanhthu-report" &&
                   "btn-sub-selected"
                   }`}
                 onClick={() =>
-                  onHandleSelectedSubNav("search-service", "service")
+                  onHandleSelectedSubNav("doanhthu-report", "report")
                 }
               >
-                <SearchIcon />
-                <p className="btn-sub-title">Tìm kiếm</p>
-              </button> */}
+                <MonetizationOnOutlinedIcon />
+                <p className="btn-sub-title">Doanh thu</p>
+              </button>
+
+
             </div>
           )}
         </button>

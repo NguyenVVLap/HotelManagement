@@ -1,6 +1,8 @@
 package com.example.hotelserver.service;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +90,66 @@ public class HoaDonServiceImpl implements HoaDonService{
 		}
 		return false;
 	}
+	@Override
+	public List<HoaDonDto> layDanhSachHoaDonDeThongKeTheoPhong(Map<String, Object> request) {
+		List<HoaDonDto> dsHoaDonDto = new ArrayList<>();
+		System.out.println("Request Nhận Thống Kế Doanh Thu Theo Phòng : " + request);
+		if (request.get("theo").toString().equals("Theo phòng")) {
+			Instant tuNgay = Instant.parse(request.get("tuNgay").toString());
+			Instant denNgay = Instant.parse(request.get("denNgay").toString());
+			Date start = Date.from(tuNgay);
+			Date end = Date.from(denNgay);
+			try {
+				List<HoaDon> dsHoaDon = hoaDonRepo.layHoaDonDaThanhToanTheoNgayCuThe(start,end);
+				for (HoaDon hoaDon : dsHoaDon) {
+					KhachHang khachHang = khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get();
+					HoaDonDto hoaDonDto = HoaDonDto.builder()
+							.maHoaDon(hoaDon.getMaHoaDon())
+							.ngayLap(hoaDon.getNgayLap())
+							.ngayNhanPhong(hoaDon.getNgayNhanPhong())
+							.ngayTraPhong(hoaDon.getNgayTraPhong())
+							.tienNhan(hoaDon.getTienNhan())
+							.phieuDatPhong(hoaDon.getPhieuDatPhong())
+							.nhanVien(hoaDon.getNhanVien())
+							.build();
+					List<Phong> dsPhong = new ArrayList<>();
+					List<String> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
+					if (!dsMaPhong.isEmpty()) {
+						for (String maPhong : dsMaPhong) {
+							Phong phong = phongRepo.findById(maPhong).get();
+							dsPhong.add(phong);
+						}
+					}
+					List<PhongResponseDto> phongResponseDtos = new ArrayList<>();
+					if (!dsPhong.isEmpty()) {
+						for (Phong phong : dsPhong) {
+							phongResponseDtos.add(convertPhongToPhongDto(phong));
+						}
+					}
+					List<Map<String, Object>> listObject = hoaDonRepo.layChiTietDichVuTuMaHoaDon(hoaDon.getMaHoaDon());
+					List<ChiTietDichVuDto> dsChiTietDichVuDto = new ArrayList<>();
+					if (!listObject.isEmpty()) {
+						for (Map<String, Object> obj : listObject) {
+							ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
+									, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
+									, Integer.parseInt(obj.get("soLuong").toString()));
+							dsChiTietDichVuDto.add(chiTietDichVuDto);
+						}
+					}
+					hoaDonDto.setDsPhong(phongResponseDtos);
+					hoaDonDto.setDsChiTietDichVuDto(dsChiTietDichVuDto);
+					hoaDonDto.setKhachHang(khachHang);
+					dsHoaDonDto.add(hoaDonDto);
+				}
+			}catch (Exception e) {
+				System.out.println("Error at layHoaDonDeThongKePhong: " + e);
+			}
 
+
+		}
+
+		return dsHoaDonDto;
+	}
 	@Override
 	public List<HoaDonDto> layHoaDonTheoNgay() {
 		List<HoaDonDto> dsHoaDonDto = new ArrayList<>();
@@ -139,6 +200,8 @@ public class HoaDonServiceImpl implements HoaDonService{
 		}
 		return dsHoaDonDto;
 	}
+
+
 
 	@Override
 	public List<HoaDonDto> layHoaDonTheoNgayCCCD(String cccd) {
@@ -298,9 +361,9 @@ public class HoaDonServiceImpl implements HoaDonService{
 		List<Phong> dsPhong = phongRepo.findByTenPhongLike(tenPhong);
 		List<HoaDonDto> results = new ArrayList<>();
 		if (!dsPhong.isEmpty()) {
-			
+
 		}
-		
+
 		return null;
 	}
 }
