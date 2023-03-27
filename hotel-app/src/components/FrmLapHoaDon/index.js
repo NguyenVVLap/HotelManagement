@@ -20,19 +20,29 @@ function FrmLapHoaDon() {
   const [hoaDonSelected, setHoaDonSelected] = useState({});
   const [searchInput, setSearchInput] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
+  const diff_hours = (dt2, dt1) => {
+    var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    diff /= 60 * 60;
+    return Math.abs(Math.round(diff));
+  };
   useEffect(() => {
     let price = 0;
-    let ngayNhan = new Date(hoaDonSelected.ngayLap).getTime();
-    let ngayTra = new Date().getTime();
-    let difference = ngayTra - ngayNhan;
-    let totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+    let ngayNhan = new Date();
+    let ngayTra = new Date();
+    if (hoaDonSelected.ngayNhanPhong) {
+      ngayNhan = new Date(hoaDonSelected.ngayNhanPhong);
+    }
+    if (hoaDonSelected.ngayTraPhong) {
+      ngayTra = new Date(hoaDonSelected.ngayTraPhong);
+    }
+    let totalHours = diff_hours(ngayNhan, ngayTra);
     if (
       hoaDonSelected &&
       hoaDonSelected.dsPhong &&
       hoaDonSelected.dsPhong.length > 0
     )
       for (let i = 0; i < hoaDonSelected.dsPhong.length; i++) {
-        price += hoaDonSelected.dsPhong[i].giaPhong * totalDays;
+        price += hoaDonSelected.dsPhong[i].giaPhong * totalHours;
       }
 
     if (
@@ -179,12 +189,11 @@ function FrmLapHoaDon() {
                 dsHoaDon.map((hoaDon, index) => {
                   return (
                     <div
-                      className={`booking-item ${
-                        hoaDonSelected.maHoaDon &&
+                      className={`booking-item ${hoaDonSelected.maHoaDon &&
                         hoaDon.maHoaDon === hoaDonSelected.maHoaDon
-                          ? "selected"
-                          : ""
-                      }`}
+                        ? "selected"
+                        : ""
+                        }`}
                       onClick={() => setHoaDonSelected(hoaDon)}
                       key={index}
                     >
@@ -250,13 +259,13 @@ function FrmLapHoaDon() {
                           <th>Phòng</th>
                           <th>Tầng</th>
                           <th>Loại phòng</th>
-                          <th>Giá (1 đêm)</th>
+                          <th>Giá (1 giờ)</th>
                         </tr>
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                        hoaDonSelected.dsPhong &&
-                        hoaDonSelected.dsPhong.length > 0 ? (
+                          hoaDonSelected.dsPhong &&
+                          hoaDonSelected.dsPhong.length > 0 ? (
                           hoaDonSelected.dsPhong.map((room, index) => {
                             // console.log(isSelected(room));
                             return (
@@ -291,8 +300,8 @@ function FrmLapHoaDon() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                        hoaDonSelected.dsChiTietDichVuDto &&
-                        hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                          hoaDonSelected.dsChiTietDichVuDto &&
+                          hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
                           hoaDonSelected.dsChiTietDichVuDto.map(
                             (dichVu, index) => {
                               // console.log(isSelected(room));
@@ -318,10 +327,22 @@ function FrmLapHoaDon() {
                   </div>
 
                   <div className="date-info">
+                    - Ngày đặt phòng:{" "}
+                    {hoaDonSelected &&
+                      hoaDonSelected.ngayLap &&
+                      moment(hoaDonSelected.ngayNhanPhong).format("DD/MM/YYYY HH:MM")}
+                  </div>
+                  <div className="date-info">
                     - Ngày nhận phòng:{" "}
                     {hoaDonSelected &&
                       hoaDonSelected.ngayLap &&
-                      moment(hoaDonSelected.ngayLap).format("DD/MM/YYYY")}
+                      moment(hoaDonSelected.ngayNhanPhong).format("DD/MM/YYYY HH:MM")}
+                  </div>
+                  <div className="date-info">
+                    - Ngày trả phòng:{" "}
+                    {hoaDonSelected &&
+                      hoaDonSelected.ngayLap &&
+                      moment(hoaDonSelected.ngayTraPhong).format("DD/MM/YYYY HH:MM")}
                   </div>
                   <div className="price-container">
                     <p>Tổng tiền</p>
@@ -360,9 +381,9 @@ function FrmLapHoaDon() {
             </div>
             <div className="btn-function">
               {hoaDonSelected &&
-              hoaDonSelected.maHoaDon &&
-              hoaDonSelected.tienNhan &&
-              hoaDonSelected.tienNhan > 0 ? (
+                hoaDonSelected.maHoaDon &&
+                hoaDonSelected.tienNhan &&
+                hoaDonSelected.tienNhan > 0 ? (
                 <Button
                   variant="success"
                   type="submit"

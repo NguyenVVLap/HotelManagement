@@ -23,12 +23,17 @@ function FrmThongKeDoanhThu() {
 
     const [toast, setToast] = useState(null);
     const [dsHoaDonDaThanhToanDeThongKe, setDSHoaDonDaThanhToanDeThongKe] = useState(undefined);
-
+    const [dsTongTien, setDSTongTien] = useState([]);
+    const [currentTongTien, setCurrentTongTien] = useState(0);
     const dsTongTienTemp = [];
 
 
-    // console.log("Arrray Tong Tien Temp :", arrayTongTienTemp);
-    const tinhTongTien = (data, dsTongTienTemp) => {
+
+
+    const tinhTongTien = (data) => {
+
+
+
         let prices = 0;
         data.dsPhong.map((phong, index) => {
             let giaPhong = phong.giaPhong;
@@ -43,12 +48,19 @@ function FrmThongKeDoanhThu() {
         }
         )
 
+        dsTongTienTemp.push(prices)
 
 
-        dsTongTienTemp.push(Number(prices))
         return prices;
-
     }
+    useEffect(() => {
+        if (tinhTongTien) {
+            if (dsTongTienTemp.length > 0) {
+                console.log("Tong Tien Reduce:", dsTongTienTemp.reduce((preValue, currentValue) => preValue + currentValue));
+                setCurrentTongTien(dsTongTienTemp.reduce((preValue, currentValue) => preValue + currentValue))
+            }
+        }
+    }, [dsHoaDonDaThanhToanDeThongKe])
 
     const [search, setSearch] = useState({
         tuNgay: undefined,
@@ -88,7 +100,8 @@ function FrmThongKeDoanhThu() {
 
         }
     }
-    console.log("DSTongTien Temp : ", dsTongTienTemp);
+    console.log("State Tong Tien  : ", currentTongTien);
+
     return (
         <StyledContainer>
             <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
@@ -209,7 +222,8 @@ function FrmThongKeDoanhThu() {
 
                                             {
 
-                                                tinhTongTien(data, dsTongTienTemp)
+                                                // tinhTongTien(data)
+                                                tinhTongTien(data)
 
                                             }
                                         </TableCell>

@@ -9,7 +9,7 @@ import {
 } from "react-bootstrap";
 import styled from "styled-components";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DateTimePicker, LocalizationProvider, MobileDateTimePicker } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -263,8 +263,8 @@ function FrmDatPhong() {
                   </Col>
                   <Col md={4}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={["DatePicker"]}>
-                        <DateTimePicker
+                      <DemoContainer components={["MobileDatePicker"]}>
+                        <MobileDateTimePicker
                           sx={{ width: "100%" }}
                           label="Ngày nhận phòng"
                           value={
@@ -282,8 +282,8 @@ function FrmDatPhong() {
 
                   <Col md={4}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={["DatePicker"]}>
-                        <DateTimePicker
+                      <DemoContainer components={["MobileDatePicker"]}>
+                        <MobileDateTimePicker
                           sx={{ width: "100%" }}
                           label="Ngày trả phòng"
                           value={
