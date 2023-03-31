@@ -11,65 +11,49 @@ import dayjs from 'dayjs';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import axios from 'axios';
-import { addNhanVien, getAllNhanVienRoute, thongKeDoanhThuTheoPhong, thongKeSoLanDatPhong, timNhanVien, updateNhanVien } from '../../utils/APIRoutes';
+import { thongKeSoLanDatDichVu } from '../../utils/APIRoutes';
 import { useEffect } from 'react';
 import { Toast, ToastContainer } from 'react-bootstrap';
-import moment from 'moment/moment';
-import { DatePicker, MobileDateTimePicker } from '@mui/x-date-pickers';
 
-function FrmThongKeDoanhThu() {
+import { DatePicker } from '@mui/x-date-pickers';
+
+function FrmThongKeDichVu() {
     let ngayHienTai = new Date();
-
-
     const [toast, setToast] = useState(null);
-    const [dsHoaDonDaThanhToanDeThongKe, setDSHoaDonDaThanhToanDeThongKe] = useState(undefined);
-    const [dsTongTien, setDSTongTien] = useState([]);
-    const [currentTongTien, setCurrentTongTien] = useState(0);
-    const dsTongTienTemp = [];
-
-
-
-
-    const tinhTongTien = (data) => {
-        let prices = 0;
-        data.dsPhong.map((phong, index) => {
-            let giaPhong = phong.giaPhong;
-            let ngayNhan = new Date(data.ngayNhanPhong)
-            let ngayTra = new Date(data.ngayTraPhong);
-            let totalHour = diff_hours(ngayNhan, ngayTra)
-
-            let tongTien = giaPhong * totalHour;
-
-            prices = Number(prices) + Number(tongTien)
-
-        }
-        )
-
-        dsTongTienTemp.push(prices)
-
-
-        return prices;
-    }
-    useEffect(() => {
-        if (tinhTongTien) {
-            if (dsTongTienTemp.length > 0) {
-                console.log("Tong Tien Reduce:", dsTongTienTemp.reduce((preValue, currentValue) => preValue + currentValue));
-                setCurrentTongTien(dsTongTienTemp.reduce((preValue, currentValue) => preValue + currentValue))
-            }
-        }
-    }, [dsHoaDonDaThanhToanDeThongKe])
+    const [dsThongKeSoLanDatDichVu, setdsThongKeSoLanDatDichVu] = useState(undefined);
+    const [tempdsHoaDon, setTempdsHoaDon] = useState(undefined);
+    const [dsPhong, setDSPhong] = useState(undefined);
+    // const [paramNgay, setParamNgay] = useState({
+    //     tuNgay: dayjs(ngayHienTai),
+    //     denNgay: dayjs(ngayHienTai),
+    // })
+    // useEffect(() => {
+    //     loadAllRoomFromDB();
+    // }, [])
+    // const diff_hours = (dt2, dt1) => {
+    //     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    //     diff /= 60 * 60;
+    //     return Math.abs(Math.round(diff));
+    // };
+    // const loadAllRoomFromDB = async () => {
+    //     const { data } = await axios.get(getRoomsRoute, {
+    //         headers: {
+    //             "Content-Type": "application/json;charset=UTF-8",
+    //             "Access-Control-Allow-Origin": "http://localhost:3000",
+    //             "Access-Control-Allow-Credentials": "true",
+    //         },
+    //     });
+    //     if (data) {
+    //         setDSPhong(data)
+    //     }
+    // }
 
     const [search, setSearch] = useState({
         tuNgay: undefined,
         denNgay: dayjs(ngayHienTai),
         theo: ""
     });
-    //Hàm tính giờ
-    const diff_hours = (dt2, dt1) => {
-        var diff = (dt2.getTime() - dt1.getTime()) / 1000;
-        diff /= 60 * 60;
-        return Math.abs(Math.round(diff));
-    };
+
 
     const handleOnchangeSelectedCombobox = (e, value) => {
 
@@ -82,27 +66,61 @@ function FrmThongKeDoanhThu() {
         setSearch({ ...search, denNgay: date })
     }
 
-    const handleThongKeDoanhThuTheoPhong = async () => {
+    const handleThongKePhongTheoSoLanDatDichVu = async () => {
         console.log("Thống kê theo :", search);
-        const { data } = await axios.post(thongKeDoanhThuTheoPhong, search, {
+        const { data } = await axios.post(thongKeSoLanDatDichVu, search, {
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Access-Control-Allow-Origin": "http://localhost:3000",
                 "Access-Control-Allow-Credentials": "true",
             },
         });
-        // console.log("Data Thong Ke Doanh Thu :", data);
+        console.log("Data Thong Ke So Lan Dat Dich Vu :", data);
         if (data) {
-            setDSHoaDonDaThanhToanDeThongKe(data);
+            setdsThongKeSoLanDatDichVu(data);
 
         }
     }
-    // console.log("State Tong Tien  : ", currentTongTien);
+    // const handleThongKeTongDoanhThuTheoTungPhong = async () => {
+    //     console.log("Thống kê theo :", search);
+    //     const { data } = await axios.post(thongKeDoanhThuTheoPhong, search, {
+    //         headers: {
+    //             "Content-Type": "application/json;charset=UTF-8",
+    //             "Access-Control-Allow-Origin": "http://localhost:3000",
+    //             "Access-Control-Allow-Credentials": "true",
+    //         },
+    //     });
+    //     // console.log("Data Thong Ke Doanh Thu :", data);
+    //     if (data) {
+    //         setTempdsHoaDon(data);
+    //     }
+    // }
+
+    // const tinhTongTienCuaMoiPhongMangLai = (phong) => {
+    //     let price = 0;
+    //     tempdsHoaDon.map((hoadon) => {
+    //         hoadon.dsPhong.map((phongofHoaDon) => {
+    //             if (phongofHoaDon.maPhong === phong.maPhong) {
+    //                 let giaPhong = phongofHoaDon.giaPhong;
+    //                 let ngayNhan = new Date(hoadon.ngayNhanPhong)
+    //                 let ngayTra = new Date(hoadon.ngayTraPhong);
+    //                 let totalHour = diff_hours(ngayNhan, ngayTra)
+    //                 let tongTien = giaPhong * totalHour;
+    //                 price = Number(price) + Number(tongTien)
+    //                 // price = price + 2;
+    //             }
+    //         })
+    //     })
+
+    //     return price;
+    // }
+    // console.log("DSTEMPHOADON:", tempdsHoaDon);
+    // console.log("DSPhong:", dsPhong);
 
     return (
         <StyledContainer>
             <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
-                <Typography variant='h3'>Thống kê doanh thu</Typography>
+                <Typography variant='h3'>Thống kê dịch vụ</Typography>
             </Box>
             <Grid container spacing={6} sx={{ mt: '40px' }}>
                 <Grid item md={12}>
@@ -110,9 +128,9 @@ function FrmThongKeDoanhThu() {
                         onChange={(e, value) => { handleOnchangeSelectedCombobox(e, value) }}
                         disablePortal
                         id="combo-box-demo"
-                        options={['Theo phòng']}
+                        options={['Số lần đặt dịch vụ']}
                         sx={{ width: '100%' }}
-                        renderInput={(params) => <TextField  {...params} label="Thống kê doanh thu" disabled />}
+                        renderInput={(params) => <TextField  {...params} label="Thống kê dịch vụ theo" disabled />}
                     />
                 </Grid>
 
@@ -147,82 +165,59 @@ function FrmThongKeDoanhThu() {
                 </Grid>
 
                 <Grid item md={4}>
-                    {search.theo === "Theo phòng" && <Button fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKeDoanhThuTheoPhong() }} >Thống kê doanh thu theo phòng</Button>}
+                    {search.theo === "Số lần đặt dịch vụ" && <Button fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKePhongTheoSoLanDatDichVu() }} >Thống kê số lần đặt dịch vụ</Button>}
+
                 </Grid>
                 <Grid item md={4}>
                     <Button fullWidth variant='contained' startIcon={<CachedOutlinedIcon />} size='medium' onClick={() => { }} >Tải lại dữ liệu</Button>
                 </Grid>
                 <Grid item md={4}>
-                    {search.theo === "Theo phòng" && <Button fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handleThongKeDoanhThuTheoPhong() }} >In thống kê doanh thu</Button>}
+                    {search.theo === "Số lần đặt dịch vụ" && <Button fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handleThongKePhongTheoSoLanDatDichVu() }} >In thống kê số lần đặt dịch vụ</Button>}
                 </Grid>
 
 
 
             </Grid>
-            {/* Danh sách kết quả thống kê theo số lần đặt phòng */}
-            {dsHoaDonDaThanhToanDeThongKe && dsHoaDonDaThanhToanDeThongKe.length > 0 &&
+            {/* Danh sách kết quả thống kê theo số lần đặt dịch vụ */}
+            {dsThongKeSoLanDatDichVu && dsThongKeSoLanDatDichVu.length > 0 &&
                 <Paper elevation={10} sx={{ maxHeight: '100%', mt: '30px', overflow: 'auto' }}>
                     <TableContainer component={Paper} elevation={15}>
                         <Table aria-label="user table">
                             <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
                                 <TableRow>
-                                    <TableCell><Typography>Mã hoá đơn</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Ngày lập hoá đơn</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Tên khách hàng</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Nhân viên lập hoá đơn</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Ngày nhận phòng</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Ngày trả phòng</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Các phòng khách thuê</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Tiền nhận</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Tổng tiền</Typography></TableCell>
+                                    <TableCell><Typography>Mã dịch vụ</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Tên dịch vụ</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Giá dịch vụ</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Số lượng tồn kho</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Đơn vị tính</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Tên loại dịch vụ</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Tổng số lần đặt dịch vụ</Typography></TableCell>
 
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {dsHoaDonDaThanhToanDeThongKe && dsHoaDonDaThanhToanDeThongKe.length > 0 ? dsHoaDonDaThanhToanDeThongKe.map((data) => (
-                                    <TableRow key={data.maHoaDon}  >
+                                {dsThongKeSoLanDatDichVu && dsThongKeSoLanDatDichVu.length > 0 ? dsThongKeSoLanDatDichVu.map((data) => (
+                                    <TableRow key={data.maPhong}  >
                                         <TableCell component="th" scope="row">
-                                            {data.maHoaDon}
+                                            {data.maDichVu}
                                         </TableCell>
                                         <TableCell component="th" scope="row" align='center'>
-                                            {moment(data.ngayLap).format(
-                                                "DD/MM/YYYY HH:MM"
-                                            )}
+                                            {data.tenDichVu}
                                         </TableCell>
                                         <TableCell component="th" scope="row" align='center'>
-                                            {data.khachHang.hoTen}
-                                        </TableCell>
-
-                                        <TableCell component="th" scope="row" align='center'>
-                                            {data.nhanVien.hoTen}
+                                            {`${data.giaDichVu} VND`}
                                         </TableCell>
                                         <TableCell component="th" scope="row" align='center'>
-                                            {moment(data.ngayNhanPhong).format(
-                                                "DD/MM/YYYY HH:MM"
-                                            )}
+                                            {data.soLuongTon}
                                         </TableCell>
                                         <TableCell component="th" scope="row" align='center'>
-                                            {moment(data.ngayTraPhong).format(
-                                                "DD/MM/YYYY HH:MM"
-                                            )}
+                                            {data.donViTinh}
                                         </TableCell>
                                         <TableCell component="th" scope="row" align='center'>
-                                            {data.dsPhong.map((phong) => {
-                                                return `${phong.tenPhong},`
-                                            })}
+                                            {data.tenLoaiDichVu}
                                         </TableCell>
                                         <TableCell component="th" scope="row" align='center'>
-                                            {data.tienNhan}
-                                        </TableCell>
-
-                                        <TableCell component="th" scope="row" align='center'>
-
-                                            {
-
-                                                // tinhTongTien(data)
-                                                tinhTongTien(data)
-
-                                            }
+                                            {data.tongSoLanDatDichVu}
                                         </TableCell>
                                     </TableRow>
                                 )) :
@@ -235,6 +230,7 @@ function FrmThongKeDoanhThu() {
                         </Table>
                     </TableContainer>
                 </Paper>}
+
 
 
 
@@ -268,7 +264,7 @@ function FrmThongKeDoanhThu() {
     )
 }
 
-export default FrmThongKeDoanhThu
+export default FrmThongKeDichVu
 const StyledContainer = styled.div`
   width: 100%;
   height: 100%;

@@ -93,8 +93,8 @@ public class HoaDonServiceImpl implements HoaDonService{
 	@Override
 	public List<HoaDonDto> layDanhSachHoaDonDeThongKeTheoPhong(Map<String, Object> request) {
 		List<HoaDonDto> dsHoaDonDto = new ArrayList<>();
-		System.out.println("Request Nhận Thống Kế Doanh Thu Theo Phòng : " + request);
-		if (request.get("theo").toString().equals("Theo phòng")) {
+		System.out.println("Request Nhận Thống Kế  : " + request);
+		if (request.get("theo").toString().equals("Theo phòng")||request.get("theo").toString().equals("Tổng doanh thu theo từng phòng")) {
 			Instant tuNgay = Instant.parse(request.get("tuNgay").toString());
 			Instant denNgay = Instant.parse(request.get("denNgay").toString());
 			Date start = Date.from(tuNgay);

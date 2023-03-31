@@ -60,4 +60,5 @@ export const timNhanVien = `${host}/api/nhanvien/timKiemNhanVien`;
 
 //Thống Kê
 export const thongKeSoLanDatPhong = `${host}/api/thongke/thongKeSoLanDatPhong`;
+export const thongKeSoLanDatDichVu = `${host}/api/thongke/thongKeSoLanDatDichVu`;
 export const thongKeDoanhThuTheoPhong = `${host}/api/thongke/thongKeDoanhThuTheoPhong`;

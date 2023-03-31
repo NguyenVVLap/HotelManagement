@@ -11,21 +11,42 @@ import dayjs from 'dayjs';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import axios from 'axios';
-import { addNhanVien, getAllNhanVienRoute, thongKeSoLanDatPhong, timNhanVien, updateNhanVien } from '../../utils/APIRoutes';
+import { getRoomsRoute, thongKeDoanhThuTheoPhong, thongKeSoLanDatPhong } from '../../utils/APIRoutes';
 import { useEffect } from 'react';
 import { Toast, ToastContainer } from 'react-bootstrap';
-import moment from 'moment/moment';
-import { DatePicker, MobileDateTimePicker } from '@mui/x-date-pickers';
+
+import { DatePicker } from '@mui/x-date-pickers';
 
 function FrmThongKePhong() {
     let ngayHienTai = new Date();
     const [toast, setToast] = useState(null);
     const [dsThongKeSoLanDatPhong, setdsThongKeSoLanDatPhong] = useState(undefined);
-
+    const [tempdsHoaDon, setTempdsHoaDon] = useState(undefined);
+    const [dsPhong, setDSPhong] = useState(undefined);
     // const [paramNgay, setParamNgay] = useState({
     //     tuNgay: dayjs(ngayHienTai),
     //     denNgay: dayjs(ngayHienTai),
     // })
+    useEffect(() => {
+        loadAllRoomFromDB();
+    }, [])
+    const diff_hours = (dt2, dt1) => {
+        var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+        diff /= 60 * 60;
+        return Math.abs(Math.round(diff));
+    };
+    const loadAllRoomFromDB = async () => {
+        const { data } = await axios.get(getRoomsRoute, {
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8",
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+                "Access-Control-Allow-Credentials": "true",
+            },
+        });
+        if (data) {
+            setDSPhong(data)
+        }
+    }
     const [search, setSearch] = useState({
         tuNgay: undefined,
         denNgay: dayjs(ngayHienTai),
@@ -59,6 +80,40 @@ function FrmThongKePhong() {
 
         }
     }
+    const handleThongKeTongDoanhThuTheoTungPhong = async () => {
+        console.log("Thống kê theo :", search);
+        const { data } = await axios.post(thongKeDoanhThuTheoPhong, search, {
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8",
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+                "Access-Control-Allow-Credentials": "true",
+            },
+        });
+        // console.log("Data Thong Ke Doanh Thu :", data);
+        if (data) {
+            setTempdsHoaDon(data);
+        }
+    }
+    const tinhTongTienCuaMoiPhongMangLai = (phong) => {
+        let price = 0;
+        tempdsHoaDon.map((hoadon) => {
+            hoadon.dsPhong.map((phongofHoaDon) => {
+                if (phongofHoaDon.maPhong === phong.maPhong) {
+                    let giaPhong = phongofHoaDon.giaPhong;
+                    let ngayNhan = new Date(hoadon.ngayNhanPhong)
+                    let ngayTra = new Date(hoadon.ngayTraPhong);
+                    let totalHour = diff_hours(ngayNhan, ngayTra)
+                    let tongTien = giaPhong * totalHour;
+                    price = Number(price) + Number(tongTien)
+                    // price = price + 2;
+                }
+            })
+        })
+
+        return price;
+    }
+    console.log("DSTEMPHOADON:", tempdsHoaDon);
+    console.log("DSPhong:", dsPhong);
 
     return (
         <StyledContainer>
@@ -71,7 +126,7 @@ function FrmThongKePhong() {
                         onChange={(e, value) => { handleOnchangeSelectedCombobox(e, value) }}
                         disablePortal
                         id="combo-box-demo"
-                        options={['Số lần đặt phòng']}
+                        options={['Số lần đặt phòng', 'Tổng doanh thu theo từng phòng']}
                         sx={{ width: '100%' }}
                         renderInput={(params) => <TextField  {...params} label="Thống kê phòng theo" disabled />}
                     />
@@ -109,6 +164,7 @@ function FrmThongKePhong() {
 
                 <Grid item md={4}>
                     {search.theo === "Số lần đặt phòng" && <Button fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKePhongTheoSoLanDatPhong() }} >Thống kê số lần đặt phòng</Button>}
+                    {search.theo === "Tổng doanh thu theo từng phòng" && <Button fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKeTongDoanhThuTheoTungPhong() }} >Thống kê tổng doanh thu theo từng phòng</Button>}
                 </Grid>
                 <Grid item md={4}>
                     <Button fullWidth variant='contained' startIcon={<CachedOutlinedIcon />} size='medium' onClick={() => { }} >Tải lại dữ liệu</Button>
@@ -156,6 +212,54 @@ function FrmThongKePhong() {
                                         </TableCell>
                                         <TableCell component="th" scope="row" align='center'>
                                             {data.tongSoLanDat}
+                                        </TableCell>
+                                    </TableRow>
+                                )) :
+
+                                    <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                        <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                                    </Box>
+                                }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Paper>}
+            {/* Danh Sách Thống kê tổng tiền của từng phòng mang lại cho khách sạn */}
+            {dsPhong && dsPhong.length > 0 && tempdsHoaDon && tempdsHoaDon.length > 0 &&
+                <Paper elevation={10} sx={{ maxHeight: '54%', mt: '30px', overflow: 'auto' }}>
+                    <TableContainer component={Paper} elevation={15}>
+                        <Table aria-label="user table">
+                            <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
+                                <TableRow>
+                                    <TableCell><Typography>Mã phòng</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Tên phòng</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Giá phòng</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Tầng</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Loại phòng</Typography></TableCell>
+                                    <TableCell align="center"><Typography>Tổng tiền</Typography></TableCell>
+
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {dsPhong && dsPhong.length > 0 ? dsPhong.map((phong) => (
+                                    <TableRow key={phong.maPhong}  >
+                                        <TableCell component="th" scope="row">
+                                            {phong.maPhong}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row" align='center'>
+                                            {phong.tenPhong}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row" align='center'>
+                                            {`${phong.giaPhong} VND/giờ`}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row" align='center'>
+                                            {phong.tenTang}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row" align='center'>
+                                            {phong.tenLoaiPhong}
+                                        </TableCell>
+                                        <TableCell component="th" scope="row" align='center'>
+                                            {`${tinhTongTienCuaMoiPhongMangLai(phong)} VND`}
                                         </TableCell>
                                     </TableRow>
                                 )) :

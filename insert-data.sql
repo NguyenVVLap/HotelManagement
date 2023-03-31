@@ -145,14 +145,27 @@ Insert into hinh_anh_phong(ma_phong, hinh_anh_phong) values
 
 
 insert into loai_dich_vu (ma_loai_dich_vu, don_vi_loai_dich_vu, ten_loai_dich_vu) values 
-(1, N'thùng', N'nước');
+(1, N'chai', N'nước(chai)'),
+(2, N'lon', N'nước(lon)'),
+(3, N'thùng', N'nước(thùng)'),
+(4, N'suất', N'thức ăn(suất)'),
+(5, N'phần', N'thức ăn(phần)'),
+(6, N'thùng', N'thức ăn(thùng)'),
+(7, N'hộp', N'thức ăn(hộp)'),
+(8, N'gói', N'thức ăn(gói)'),
+(9, N'cái', N'thức ăn(cái)'),
+(10, N'bịch', N'thức ăn(bịch)');
 
-insert into dich_vu (ma_dich_vu, gia_dich_vu, so_luong, ten_dich_vu, don_vi_tinh, mo_ta_dich_vu, ma_loai_dich_vu) values
-(1, 20000, 100, N'Nước suối', N'chai', N'không có', 1),
-(2, 100000, 100, N'Bia', N'thùng', N'không có', 1),
-(3, 50000, 100, N'Bữa sáng', N'suất', N'không có',1),
-(4, 50000, 100, N'Bữa trưa', N'suất', N'không có', 1),
-(5, 50000, 100, N'Bữa tối', N'suất', N'không có',1);
+insert into dich_vu (ma_dich_vu, gia_dich_vu, so_luong, ten_dich_vu, ma_loai_dich_vu) values
+(1, 20000, 100, N'Nước suối Aqua', 1),
+(2, 30000, 50, N'Bia Heniken', 3),
+(3, 30000, 50, N'Bia Tiger', 2),
+(4, 30000, 50, N'Bia Heniken', 3),
+(5, 30000, 50, N'Pizza thập cẩm', 5),
+(6, 30000, 50, N'Mì hảo hảo', 6),
+(7, 30000, 50, N'Bánh oreo', 7),
+(8, 30000, 50, N'Kẹo dẻo', 10);
+
 
 
 insert into nhan_vien(ma_nhan_vien, ho_ten, cccd, luong_co_ban, dia_chi, email, ngay_vao_lam, so_dien_thoai) values 

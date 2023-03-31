@@ -2,6 +2,7 @@ package com.example.hotelserver.controller;
 
 import com.example.hotelserver.dto.HoaDonDto;
 import com.example.hotelserver.dto.NhanVienDto;
+import com.example.hotelserver.dto.ThongKeSoLanDatDichVuDto;
 import com.example.hotelserver.dto.ThongKeSoLanDatPhongDto;
 import com.example.hotelserver.entity.HoaDon;
 import com.example.hotelserver.repository.*;
@@ -27,6 +28,8 @@ public class ThongKeController {
     @Autowired
     private ChiTietPhieuDatPhongRepo chiTietPhieuDatPhongRepo;
     @Autowired
+    private ChiTietDichVuRepo chiTietDichVuRepo;
+    @Autowired
     private HoaDonService hoaDonService;
     @Autowired
     private HoaDonRepo hoaDonRepo;
@@ -45,14 +48,24 @@ public class ThongKeController {
         }
         return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
     }
+    @PostMapping("/thongKeSoLanDatDichVu")
+    public ResponseEntity<List<ThongKeSoLanDatDichVuDto>> thongKeSoLanDatDichVu(@RequestBody Map<String, Object> request) {
+        System.out.println("Request Thong Ke Dich Vu Nhan :"+request);
+        List<ThongKeSoLanDatDichVuDto> dataFromQuery = new ArrayList<>();
+        if (request.get("theo").toString().equals("Số lần đặt dịch vụ")) {
+            Instant tuNgay = Instant.parse(request.get("tuNgay").toString());
+            Instant denNgay = Instant.parse(request.get("denNgay").toString());
+            Date start = Date.from(tuNgay);
+            Date end = Date.from(denNgay);
+            dataFromQuery = chiTietDichVuRepo.getThongKeSoLanDatDichVu(start,end);
+        }
+        return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
+    }
     @PostMapping("/thongKeDoanhThuTheoPhong")
     public ResponseEntity<List<HoaDonDto>> layThongKeHoaDonTheoNgay(@RequestBody Map<String, Object> request) {
         List<HoaDonDto> hoaDonDtoList = new ArrayList<>();
         hoaDonDtoList=hoaDonService.layDanhSachHoaDonDeThongKeTheoPhong(request);
-        for(HoaDonDto hoaDonDto : hoaDonDtoList){
-            System.out.println("Ket Qua Thong Ke  Mã" + hoaDonDto.getMaHoaDon());
-            System.out.println("Ket Qua Thong Ke Ngay" + hoaDonDto.getNgayLap());
-        }
+
 
         return new ResponseEntity<List<HoaDonDto>>(hoaDonDtoList, HttpStatus.OK);
 

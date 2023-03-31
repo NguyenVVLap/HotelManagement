@@ -337,6 +337,17 @@ function Menu({
                 <MonetizationOnOutlinedIcon />
                 <p className="btn-sub-title">Doanh thu</p>
               </button>
+              <button
+                className={`btn-sub ${subNavSelected.subnav === " service-report" &&
+                  "btn-sub-selected"
+                  }`}
+                onClick={() =>
+                  onHandleSelectedSubNav("service-report", "report")
+                }
+              >
+                <FastfoodOutlinedIcon />
+                <p className="btn-sub-title">Dịch vụ</p>
+              </button>
 
 
             </div>
