@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "dich_vu")
 public class DichVu {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ma_dich_vu")
 	private long maDichVu;
 	

@@ -3,6 +3,7 @@ import { SlArrowLeft } from "react-icons/sl";
 import { Card, Carousel, Table } from "react-bootstrap";
 
 function RoomDetail({ room, setShowDetail }) {
+  console.log(room);
   return (
     <StyledContainer>
       <div className="header-detail">
@@ -28,7 +29,7 @@ function RoomDetail({ room, setShowDetail }) {
             })}
           </Carousel>
         </div>
-        <div className="cost">{room.giaPhong.toLocaleString()} VND / Đêm</div>
+        <div className="cost">{room.giaPhong.toLocaleString()} VND / Giờ</div>
         <div className="detail-info">
           <div className="common-info">
             <Card>
@@ -59,102 +60,7 @@ function RoomDetail({ room, setShowDetail }) {
           </div>
           <div className="decription">
             <p className="title">Mô tả</p>
-            <p className="content">
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-              {room.moTaPhong}
-            </p>
+            <p className="content">{room.moTaPhong}</p>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 use khachsan
 
 select * from phong
+select * from loai_phong
 select * from dich_vu
 select * from loai_dich_vu
 

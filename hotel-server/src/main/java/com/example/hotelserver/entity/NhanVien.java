@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 )
 public class NhanVien {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ma_nhan_vien")
 	private long maNhanVien;
 	

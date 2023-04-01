@@ -20,6 +20,7 @@ function FrmLoaiPhong({ setShowFrmLoaiPhong, setTempLoaiPhong }) {
   const [loaiPhongMoi, setLoaiPhongMoi] = useState({
     maLoaiPhong: 0,
     tenLoaiPhong: "",
+    moTaLoaiPhong: "",
   });
   const [toast, setToast] = useState(null);
 

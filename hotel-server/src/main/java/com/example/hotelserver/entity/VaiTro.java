@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "vai_tro")
 public class VaiTro {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ma_vai_tro")
 	private long maVaiTro;
 	

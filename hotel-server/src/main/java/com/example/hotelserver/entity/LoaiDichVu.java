@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "loai_dich_vu")
 public class LoaiDichVu {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ma_loai_dich_vu")
 	private long maLoaiDichVu;
 	

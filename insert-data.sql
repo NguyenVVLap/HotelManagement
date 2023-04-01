@@ -19,57 +19,54 @@ delete from phong;
 delete from tang;
 delete from loai_phong;
 
+Insert into loai_phong(ten_loai_phong, mo_ta_loai_phong) values
+(N'Phòng STD', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ'),
+(N'Phòng SUP', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình'),
+(N'Phòng DLX', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp'),
+(N'Phòng SUT', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn');
 
-
-Insert into loai_phong(ma_loai_phong, ten_loai_phong) values
-(1, N'Phòng đơn'),
-(2, N'Phòng đôi'),
-(3, N'Phòng gia đình'),
-(4, N'Phòng VIP'),
-(5, N'Phòng tập thể');
-
-Insert into tang(ma_tang, ten_tang) values
-(1, N'Tầng 1'),
-(2, N'Tầng 2'),
-(3, N'Tầng 3'),
-(4, N'Tầng 4'),
-(5, N'Tầng 5');
+Insert into tang(ten_tang) values
+(N'Tầng 1'),
+(N'Tầng 2'),
+(N'Tầng 3'),
+(N'Tầng 4'),
+(N'Tầng 5');
 
 Insert into phong(ma_phong, mo_ta_phong, ten_phong, trang_thai_phong, mang_thu_cung, gia_phong, duoc_hut_thuoc, suc_chua, so_giuong, ma_tang, ma_loai_phong) values
-('T01P101', N'Không có mô tả', N'Phòng 101', 1, 1, 10000, 1, 4, 2, 1, 1),
-('T01P102', N'Không có mô tả', N'Phòng 102', 1, 1, 20000, 0, 2, 1, 1, 2),
-('T01P103', N'Không có mô tả', N'Phòng 103', 0, 0, 30000, 0, 1, 1, 1, 3),
-('T01P104', N'Không có mô tả', N'Phòng 104', 0, 1, 50000, 1, 5, 4, 1, 4),
-('T01P105', N'Không có mô tả', N'Phòng 105', 1, 1, 20000, 0, 4, 3, 1, 5),
-('T01P106', N'Không có mô tả', N'Phòng 106', 1, 0, 10000, 1, 6, 6, 1, 1),
+('T01P101', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 101', 1, 1, 10000, 1, 4, 2, 1, 1),
+('T01P102', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 102', 1, 1, 20000, 0, 2, 1, 1, 2),
+('T01P103', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 103', 0, 0, 30000, 0, 1, 1, 1, 3),
+('T01P104', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 104', 0, 1, 50000, 1, 5, 4, 1, 4),
+('T01P105', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 105', 1, 1, 20000, 0, 4, 3, 1, 2),
+('T01P106', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 106', 1, 0, 10000, 1, 6, 6, 1, 1),
 
-('T02P201', N'Không có mô tả', N'Phòng 201', 1, 0, 5000, 0, 3, 2, 2, 1),
-('T02P202', N'Không có mô tả', N'Phòng 202', 1, 1, 10000, 1, 5, 5, 2, 2),
-('T02P203', N'Không có mô tả', N'Phòng 203', 0, 0, 15000, 0, 7, 6, 2, 3),
-('T02P204', N'Không có mô tả', N'Phòng 204', 0, 1, 20000, 1, 7, 7, 2, 4),
-('T02P205', N'Không có mô tả', N'Phòng 205', 0, 0, 30000, 1, 8, 8, 2, 5),
-('T02P206', N'Không có mô tả', N'Phòng 206', 0, 1, 20000, 0, 1, 1, 2, 1),
+('T02P201', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 201', 1, 0, 5000, 0, 3, 2, 2, 1),
+('T02P202', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 202', 1, 1, 10000, 1, 5, 5, 2, 2),
+('T02P203', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 203', 0, 0, 15000, 0, 7, 6, 2, 3),
+('T02P204', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 204', 0, 1, 20000, 1, 7, 7, 2, 4),
+('T02P205', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 205', 0, 0, 30000, 1, 8, 8, 2, 4),
+('T02P206', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 206', 0, 1, 20000, 0, 1, 1, 2, 1),
 
-('T03P301', N'Không có mô tả', N'Phòng 301', 0, 1, 12000, 1, 2, 2, 3, 1),
-('T03P302', N'Không có mô tả', N'Phòng 302', 1, 1, 40000, 1, 2, 1, 3, 2),
-('T03P303', N'Không có mô tả', N'Phòng 303', 0, 1, 12000, 1, 3, 3, 3, 3),
-('T03P304', N'Không có mô tả', N'Phòng 304', 1, 1, 50000, 1, 4, 4, 3, 4),
-('T03P305', N'Không có mô tả', N'Phòng 305', 0, 1, 35000, 1, 4, 3, 3, 5),
-('T03P306', N'Không có mô tả', N'Phòng 306', 1, 0, 10000, 0, 1, 1, 3, 1),
+('T03P301', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 301', 0, 1, 12000, 1, 2, 2, 3, 1),
+('T03P302', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 302', 1, 1, 40000, 1, 2, 1, 3, 2),
+('T03P303', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 303', 0, 1, 12000, 1, 3, 3, 3, 3),
+('T03P304', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 304', 1, 1, 50000, 1, 4, 4, 3, 4),
+('T03P305', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 305', 0, 1, 35000, 1, 4, 3, 3, 3),
+('T03P306', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 306', 1, 0, 10000, 0, 1, 1, 3, 1),
 
-('T04P401', N'Không có mô tả', N'Phòng 401', 0, 1, 10000, 1, 2, 1, 4, 1),
-('T04P402', N'Không có mô tả', N'Phòng 402', 0, 1, 20000, 0, 3, 2, 4, 2),
-('T04P403', N'Không có mô tả', N'Phòng 403', 0, 0, 30000, 1, 4, 3, 4, 3),
-('T04P404', N'Không có mô tả', N'Phòng 404', 0, 1, 5000, 1, 4, 4, 4, 4),
-('T04P405', N'Không có mô tả', N'Phòng 405', 0, 1, 12000, 0, 5, 5, 4, 5),
-('T04P406', N'Không có mô tả', N'Phòng 406', 1, 1, 13000, 1, 6, 5, 4, 1),
+('T04P401', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 401', 0, 1, 10000, 1, 2, 1, 4, 1),
+('T04P402', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 402', 0, 1, 20000, 0, 3, 2, 4, 2),
+('T04P403', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 403', 0, 0, 30000, 1, 4, 3, 4, 3),
+('T04P404', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 404', 0, 1, 5000, 1, 4, 4, 4, 4),
+('T04P405', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 405', 0, 1, 12000, 0, 5, 5, 4, 1),
+('T04P406', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 406', 1, 1, 13000, 1, 6, 5, 4, 1),
 
-('T05P501', N'Không có mô tả', N'Phòng 501', 0, 1, 30000, 1, 7, 7, 5, 1),
-('T05P502', N'Không có mô tả', N'Phòng 502', 1, 0, 10000, 1, 1, 1, 5, 2),
-('T05P503', N'Không có mô tả', N'Phòng 503', 1, 0, 4000, 1, 2, 1, 5, 3),
-('T05P504', N'Không có mô tả', N'Phòng 504', 1, 1, 8000, 1, 3, 2, 5, 4),
-('T05P505', N'Không có mô tả', N'Phòng 505', 1, 1, 9000, 0, 3, 3, 5, 5),
-('T05P506', N'Không có mô tả', N'Phòng 506', 0, 1, 55000, 0, 4, 3, 5, 1);
+('T05P501', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 501', 0, 1, 30000, 1, 7, 7, 5, 1),
+('T05P502', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 502', 1, 0, 10000, 1, 1, 1, 5, 2),
+('T05P503', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 503', 1, 0, 4000, 1, 2, 1, 5, 3),
+('T05P504', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 504', 1, 1, 8000, 1, 3, 2, 5, 4),
+('T05P505', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 505', 1, 1, 9000, 0, 3, 3, 5, 1),
+('T05P506', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 506', 0, 1, 55000, 0, 4, 3, 5, 1);
 
 
 Insert into hinh_anh_phong(ma_phong, hinh_anh_phong) values
@@ -144,49 +141,43 @@ Insert into hinh_anh_phong(ma_phong, hinh_anh_phong) values
 ('T05P506', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-gSljIcniHWOYEqZhcxCebSX5iN80B7Hl7g&usqp=CAU');
 
 
-insert into loai_dich_vu (ma_loai_dich_vu, don_vi_loai_dich_vu, ten_loai_dich_vu) values 
-(1, N'chai', N'nước(chai)'),
-(2, N'lon', N'nước(lon)'),
-(3, N'thùng', N'nước(thùng)'),
-(4, N'suất', N'thức ăn(suất)'),
-(5, N'phần', N'thức ăn(phần)'),
-(6, N'thùng', N'thức ăn(thùng)'),
-(7, N'hộp', N'thức ăn(hộp)'),
-(8, N'gói', N'thức ăn(gói)'),
-(9, N'cái', N'thức ăn(cái)'),
-(10, N'bịch', N'thức ăn(bịch)');
+insert into loai_dich_vu (don_vi_loai_dich_vu, ten_loai_dich_vu) values 
+(N'chai', N'nước(chai)'),
+(N'lon', N'nước(lon)'),
+(N'thùng', N'nước(thùng)'),
+(N'suất', N'thức ăn(suất)'),
+(N'phần', N'thức ăn(phần)'),
+(N'thùng', N'thức ăn(thùng)'),
+(N'hộp', N'thức ăn(hộp)'),
+(N'gói', N'thức ăn(gói)'),
+(N'cái', N'thức ăn(cái)'),
+(N'bịch', N'thức ăn(bịch)');
 
-insert into dich_vu (ma_dich_vu, gia_dich_vu, so_luong, ten_dich_vu, ma_loai_dich_vu) values
-(1, 20000, 100, N'Nước suối Aqua', 1),
-(2, 30000, 50, N'Bia Heniken', 3),
-(3, 30000, 50, N'Bia Tiger', 2),
-(4, 30000, 50, N'Bia Heniken', 3),
-(5, 30000, 50, N'Pizza thập cẩm', 5),
-(6, 30000, 50, N'Mì hảo hảo', 6),
-(7, 30000, 50, N'Bánh oreo', 7),
-(8, 30000, 50, N'Kẹo dẻo', 10);
+insert into dich_vu (gia_dich_vu, so_luong, ten_dich_vu, ma_loai_dich_vu) values
+(20000, 100, N'Nước suối Aqua', 1),
+(30000, 50, N'Bia Heniken', 3),
+(30000, 50, N'Bia Tiger', 2),
+(30000, 50, N'Bia Heniken', 3),
+(30000, 50, N'Pizza thập cẩm', 5),
+(30000, 50, N'Mì hảo hảo', 6),
+(30000, 50, N'Bánh oreo', 7),
+(30000, 50, N'Kẹo dẻo', 10);
 
+insert into nhan_vien(ho_ten, cccd, luong_co_ban, dia_chi, email, ngay_vao_lam, so_dien_thoai) values 
+('Lap', '012345678900', 1000000, '12 Trần Hưng Đạo', 'lap@gmail.com', '2023-03-19T10:00:56.117+00:00', '+84392589774');
 
-
-insert into nhan_vien(ma_nhan_vien, ho_ten, cccd, luong_co_ban, dia_chi, email, ngay_vao_lam, so_dien_thoai) values 
-(2, 'Lap', '012345678900', 0, '12 Trần Hưng Đạo', 'lap@gmail.com', '2023-03-19T10:00:56.117+00:00', '+84392589774');
-
+Insert into khach_hang(cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_thoai_kh) values 
+('123456789000', N'12 Lê Lợi', 'test@gmail.com', N'Trần Quang Linh', '0123456789');
 
 /*
-Insert into khach_hang(ma_khach_hang, cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_thoai_kh) values 
-(1, '123456789000', N'12 Lê Lợi', 'test@gmail.com', N'Trần Quang Linh', '0123456789');
-
 Insert into phieu_dat_phong(ma_phieu_dat_phong, ghi_chu_dat_phong, giam_gia, ngay_dat_phong, ngay_nhan_phong, ngay_tra_phong, trang_thai_dat_phong, ma_khach_hang) values
-(1, N'không có', 0, '2022-12-17', '2023-01-19', '2023-01-21', 'HOAN_TAT', 1);
-
-
+(1, N'không có', 0, '2022-12-17', '2023-01-19', '2023-01-21', 'MOI_DAT', 1);
 
 Insert into chi_tiet_phieu_dat_phong(ma_phieu_dat_phong, ma_phong) values 
 (1, 1),
-(1, 2),
-(1, 3);
-
+(1, 2);
 */
+
 
 
 

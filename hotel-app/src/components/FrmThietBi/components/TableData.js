@@ -19,6 +19,7 @@ function TableData({ loaiPhongSelected, setLoaiPhongSelected, dsLoaiPhong }) {
           <tr>
             <th>Mã loại phòng</th>
             <th>Tên loại phòng</th>
+            <th>Mô tả</th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +39,16 @@ function TableData({ loaiPhongSelected, setLoaiPhongSelected, dsLoaiPhong }) {
                 >
                   <td>{loaiPhong.maLoaiPhong}</td>
                   <td>{loaiPhong.tenLoaiPhong}</td>
+                  <td
+                    style={{
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      maxWidth: 200,
+                    }}
+                  >
+                    {loaiPhong.moTaLoaiPhong}
+                  </td>
                 </tr>
               );
             })}

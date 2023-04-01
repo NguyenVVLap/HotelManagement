@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "phieu_dat_phong")
 public class PhieuDatPhong {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ma_phieu_dat_phong")
 	private long maPhieuDatPhong;
 	

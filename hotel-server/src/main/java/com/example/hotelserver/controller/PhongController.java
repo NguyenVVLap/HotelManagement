@@ -60,7 +60,7 @@ public class PhongController {
 					, (List<String>) phongRequestDto.get("hinhAnhPhong")
 					, phongRequestDto.get("moTaPhong").toString()
 					, new Tang(Integer.parseInt(phongRequestDto.get("maTang").toString()), ""), 
-					new LoaiPhong(Long.parseLong(phongRequestDto.get("maLoaiPhong").toString()), "")
+					new LoaiPhong(Long.parseLong(phongRequestDto.get("maLoaiPhong").toString()), "", "")
 					, Double.parseDouble(phongRequestDto.get("giaPhong").toString())
 					, phongRequestDto.get("duocHutThuoc").toString().equals("true")
 					, phongRequestDto.get("mangThuCung").toString().equals("true")
