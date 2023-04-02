@@ -16,11 +16,12 @@ import { useEffect } from 'react';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import moment from 'moment/moment';
 import { DatePicker, MobileDateTimePicker } from '@mui/x-date-pickers';
+import PopupPrintHoaDonTheoPhong from './PopupPrintHoaDonTheoPhong';
 
 function FrmThongKeDoanhThu() {
     let ngayHienTai = new Date();
 
-
+    const [openPopupPrint, setOpenPopupPrint] = useState(false);
     const [toast, setToast] = useState(null);
     const [dsHoaDonDaThanhToanDeThongKe, setDSHoaDonDaThanhToanDeThongKe] = useState(undefined);
     const [dsTongTien, setDSTongTien] = useState([]);
@@ -53,7 +54,7 @@ function FrmThongKeDoanhThu() {
     useEffect(() => {
         if (tinhTongTien) {
             if (dsTongTienTemp.length > 0) {
-                console.log("Tong Tien Reduce:", dsTongTienTemp.reduce((preValue, currentValue) => preValue + currentValue));
+                // console.log("Tong Tien Reduce:", dsTongTienTemp.reduce((preValue, currentValue) => preValue + currentValue));
                 setCurrentTongTien(dsTongTienTemp.reduce((preValue, currentValue) => preValue + currentValue))
             }
         }
@@ -62,7 +63,8 @@ function FrmThongKeDoanhThu() {
     const [search, setSearch] = useState({
         tuNgay: undefined,
         denNgay: dayjs(ngayHienTai),
-        theo: ""
+        theo: "",
+        ngayHienTai: dayjs(ngayHienTai)
     });
     //Hàm tính giờ
     const diff_hours = (dt2, dt1) => {
@@ -97,7 +99,12 @@ function FrmThongKeDoanhThu() {
 
         }
     }
-    // console.log("State Tong Tien  : ", currentTongTien);
+    const handlePrint = () => {
+
+        setOpenPopupPrint(true);
+    }
+    console.log("State Tong Tien  : ", currentTongTien);
+    console.log("DSThanhToanDeThongKe:", dsHoaDonDaThanhToanDeThongKe);
 
     return (
         <StyledContainer>
@@ -153,7 +160,7 @@ function FrmThongKeDoanhThu() {
                     <Button fullWidth variant='contained' startIcon={<CachedOutlinedIcon />} size='medium' onClick={() => { }} >Tải lại dữ liệu</Button>
                 </Grid>
                 <Grid item md={4}>
-                    {search.theo === "Theo phòng" && <Button fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handleThongKeDoanhThuTheoPhong() }} >In thống kê doanh thu</Button>}
+                    {search.theo === "Theo phòng" && <Button fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handlePrint() }} >In thống kê doanh thu theo phòng</Button>}
                 </Grid>
 
 
@@ -219,7 +226,7 @@ function FrmThongKeDoanhThu() {
 
                                             {
 
-                                                // tinhTongTien(data)
+
                                                 tinhTongTien(data)
 
                                             }
@@ -263,7 +270,7 @@ function FrmThongKeDoanhThu() {
                     </Toast>
                 </ToastContainer>
             )}
-
+            <PopupPrintHoaDonTheoPhong openPopupPrint={openPopupPrint} setOpenPopupPrint={setOpenPopupPrint} dsHoaDonDaThanhToanDeThongKe={dsHoaDonDaThanhToanDeThongKe} currentTongTien={currentTongTien} search={search} />
         </StyledContainer>
     )
 }
