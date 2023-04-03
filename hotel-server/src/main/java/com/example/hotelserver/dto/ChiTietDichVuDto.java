@@ -16,4 +16,6 @@ public class ChiTietDichVuDto {
 	private String tenDichVu;
 	private double giaDichVu;
 	private int soLuong;
+
+	private String tenLoaiDichVu;
 }

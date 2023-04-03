@@ -151,23 +151,47 @@ insert into loai_dich_vu (don_vi_loai_dich_vu, ten_loai_dich_vu) values
 (N'hộp', N'thức ăn(hộp)'),
 (N'gói', N'thức ăn(gói)'),
 (N'cái', N'thức ăn(cái)'),
-(N'bịch', N'thức ăn(bịch)');
+(N'bịch', N'thức ăn(bịch)'),
+(N'ly', N'thức ăn(ly)');
 
 insert into dich_vu (gia_dich_vu, so_luong, ten_dich_vu, ma_loai_dich_vu) values
 (20000, 100, N'Nước suối Aqua', 1),
 (30000, 50, N'Bia Heniken', 3),
 (30000, 50, N'Bia Tiger', 2),
-(30000, 50, N'Bia Heniken', 3),
+(300000, 50, N'Bia Heniken', 3),
 (30000, 50, N'Pizza thập cẩm', 5),
 (30000, 50, N'Mì hảo hảo', 6),
 (30000, 50, N'Bánh oreo', 7),
+(15000, 150, N'Soda chanh', 2),
+(15000, 250, N'String dâu', 1),
+(10000, 150, N'Bò cụng', 2),
+(9000, 50, N'Trà chanh hạt chia Fuze Tea', 1),
+(41000, 150, N'Nước gạo hàn quốc OKF', 1),
+(270000, 350, N'Cà phê sữa đá NesCafe', 3),
+(128000, 50, N'Mì Kokomi chua cay', 6),
+(18000, 150, N'Mì khoai tây cung đình', 11),
+(25000, 150, N'Mì khoai tây Omachi sốt thái', 11),
 (30000, 50, N'Kẹo dẻo', 10);
 
 insert into nhan_vien(ho_ten, cccd, luong_co_ban, dia_chi, email, ngay_vao_lam, so_dien_thoai) values 
 ('Lap', '012345678900', 1000000, '12 Trần Hưng Đạo', 'lap@gmail.com', '2023-03-19T10:00:56.117+00:00', '+84392589774');
 
 Insert into khach_hang(cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_thoai_kh) values 
-('123456789000', N'12 Lê Lợi', 'test@gmail.com', N'Trần Quang Linh', '0123456789');
+('123456789000', N'12 Lê Lợi', 'test@gmail.com', N'Trần Quang Linh', '0123456789'),
+('123456789001', N'12 Lê Lai', 'test1@gmail.com', N'Trần Quang Thái', '0123456788'),
+('123456789002', N'12 Huy Giáp', 'test2@gmail.com', N'Thái Anh Văn', '0123456787'),
+('123456789003', N'12 Ánh Thủ', 'test3@gmail.com', N'Phùng Anh Tú', '0123456786'),
+('123456789004', N'12 Lê Lai', 'test4@gmail.com', N'Bùi Xuân Nhàn', '0123456785'),
+('123456789005', N'12 Hưng Đạo', 'test5@gmail.com', N'Đỗ Anh Dũng', '0123456784'),
+('123456789006', N'12 Quốc Nghĩa', 'test6@gmail.com', N'Nguyễn Cửu Quang', '0123456783'),
+('123456789007', N'12 Lê Quốc', 'test7@gmail.com', N'Đỗ Thị Diệu', '0123456782'),
+('123456789008', N'12 Lê Gia Định', 'test8@gmail.com', N'Đỗ Xuân Cường', '0123456781'),
+('123456789009', N'12 Lê Công Định', 'test9@gmail.com', N'Nguyễn Ánh Thủ', '0123456780'),
+('123456789111', N'12 Lê Công Thành', 'test10@gmail.com', N'Đỗ Xuân Kiên', '0123456100'),
+('123456789112', N'12 Tân Xuân', 'test11@gmail.com', N'Lưu Bá Trạc', '0123456101'),
+('123456789113', N'12 Lê Tấn', 'test12@gmail.com', N'Bùi Tiến Dũng', '0123456102'),
+('123456789114', N'12 Lê Lai', 'test13@gmail.com', N'Đỗ Bá Lam', '0123456103'),
+('123456789115', N'12 Lê Công', 'test14@gmail.com', N'Mai Anh Tài', '0123456104');
 
 /*
 Insert into phieu_dat_phong(ma_phieu_dat_phong, ghi_chu_dat_phong, giam_gia, ngay_dat_phong, ngay_nhan_phong, ngay_tra_phong, trang_thai_dat_phong, ma_khach_hang) values

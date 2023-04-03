@@ -132,7 +132,7 @@ public class HoaDonServiceImpl implements HoaDonService{
 						for (Map<String, Object> obj : listObject) {
 							ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
 									, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
-									, Integer.parseInt(obj.get("soLuong").toString()));
+									, Integer.parseInt(obj.get("soLuong").toString()), obj.get("tenLoaiDichVu").toString());
 							dsChiTietDichVuDto.add(chiTietDichVuDto);
 						}
 					}
@@ -186,7 +186,7 @@ public class HoaDonServiceImpl implements HoaDonService{
 					for (Map<String, Object> obj : listObject) {
 						ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
 								, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
-								, Integer.parseInt(obj.get("soLuong").toString()));
+								, Integer.parseInt(obj.get("soLuong").toString()),  obj.get("tenLoaiDichVu").toString());
 						dsChiTietDichVuDto.add(chiTietDichVuDto);
 					}
 				}
@@ -268,7 +268,7 @@ public class HoaDonServiceImpl implements HoaDonService{
 				for (Map<String, Object> obj : listObject) {
 					ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
 							, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
-							, Integer.parseInt(obj.get("soLuong").toString()));
+							, Integer.parseInt(obj.get("soLuong").toString()),  obj.get("tenLoaiDichVu").toString());
 					dsChiTietDichVuDto.add(chiTietDichVuDto);
 				}
 			}
@@ -339,7 +339,7 @@ public class HoaDonServiceImpl implements HoaDonService{
 					for (Map<String, Object> obj : listObject2) {
 						ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
 								, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
-								, Integer.parseInt(obj.get("soLuong").toString()));
+								, Integer.parseInt(obj.get("soLuong").toString()),  obj.get("tenLoaiDichVu").toString());
 						dsChiTietDichVuDto2.add(chiTietDichVuDto);
 					}
 				}

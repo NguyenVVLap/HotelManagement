@@ -256,7 +256,7 @@ function FrmDichVu() {
 
 
             {/* Danh sách Dịch Vụ */}
-            <Paper elevation={24} sx={{ maxHeight: '30%', mt: '11px', overflow: 'auto' }}>
+            <Paper elevation={24} sx={{ maxHeight: '38%', mt: '11px', overflow: 'auto' }}>
                 <TableContainer component={Paper} elevation={15}>
                     <Table aria-label="user table">
                         <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>

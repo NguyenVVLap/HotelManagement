@@ -240,7 +240,9 @@ function FrmDatDichVu() {
       });
     }
   };
+  // console.log(hoaDonSelected.dsChiTietDichVuDto);
   // console.log(dichVuNew);
+  console.log(dsHoaDon);
   return (
     <StyledContainer>
       <div className="container">
@@ -268,12 +270,11 @@ function FrmDatDichVu() {
                 dsHoaDon.map((hoaDon, index) => {
                   return (
                     <div
-                      className={`booking-item ${
-                        hoaDonSelected.maHoaDon &&
+                      className={`booking-item ${hoaDonSelected.maHoaDon &&
                         hoaDon.maHoaDon === hoaDonSelected.maHoaDon
-                          ? "selected"
-                          : ""
-                      }`}
+                        ? "selected"
+                        : ""
+                        }`}
                       onClick={() => setHoaDonSelected(hoaDon)}
                       key={index}
                     >
@@ -294,11 +295,10 @@ function FrmDatDichVu() {
                             {hoaDon.dsPhong &&
                               hoaDon.dsPhong.length > 0 &&
                               hoaDon.dsPhong.map((phong, index) => {
-                                return `${
-                                  index === hoaDon.dsPhong.length - 1
-                                    ? phong.tenPhong + "."
-                                    : phong.tenPhong + ","
-                                } `;
+                                return `${index === hoaDon.dsPhong.length - 1
+                                  ? phong.tenPhong + "."
+                                  : phong.tenPhong + ","
+                                  } `;
                               })}
                           </p>
                         </div>
@@ -326,11 +326,10 @@ function FrmDatDichVu() {
                   {hoaDonSelected.dsPhong &&
                     hoaDonSelected.dsPhong.length > 0 &&
                     hoaDonSelected.dsPhong.map((phong, index) => {
-                      return `${
-                        index === hoaDonSelected.dsPhong.length - 1
-                          ? phong.tenPhong + "."
-                          : phong.tenPhong + ","
-                      } `;
+                      return `${index === hoaDonSelected.dsPhong.length - 1
+                        ? phong.tenPhong + "."
+                        : phong.tenPhong + ","
+                        } `;
                     })}
                   <br></br>- Ngày nhận phòng:{" "}
                   {hoaDonSelected &&
@@ -354,8 +353,8 @@ function FrmDatDichVu() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                        hoaDonSelected.dsChiTietDichVuDto &&
-                        hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                          hoaDonSelected.dsChiTietDichVuDto &&
+                          hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
                           hoaDonSelected.dsChiTietDichVuDto.map(
                             (dichVu, index) => {
                               // console.log(isSelected(room));
@@ -365,6 +364,7 @@ function FrmDatDichVu() {
                                   <td>{dichVu.tenDichVu}</td>
                                   <td>{dichVu.giaDichVu.toLocaleString()}</td>
                                   <td>{dichVu.soLuong}</td>
+                                  <td>{dichVu.tenLoaiDichVu}</td>
                                   <td></td>
                                 </tr>
                               );
@@ -397,7 +397,7 @@ function FrmDatDichVu() {
                                   {dichVuSelected.giaDichVu.toLocaleString()}
                                 </td>
                                 <td>{dichVuSelected.soLuongChon}</td>
-                                <td></td>
+                                <td>{dichVuSelected.donViLoaiDichVu}</td>
                               </tr>
                             );
                           })}
@@ -430,9 +430,9 @@ function FrmDatDichVu() {
             </div>
             <div className="btn-function">
               {hoaDonSelected &&
-              hoaDonSelected.maHoaDon &&
-              dichVuNew &&
-              dichVuNew.length > 0 ? (
+                hoaDonSelected.maHoaDon &&
+                dichVuNew &&
+                dichVuNew.length > 0 ? (
                 <Button
                   variant="success"
                   type="submit"

@@ -126,7 +126,7 @@ function ListDichVu({ setDichVuNew, dichVuNew, showDichVu, setShowDichVu }) {
                   return (
                     <tr
                       key={index}
-                      // className={`${isSelected(dichVu) ? "row-selected" : ""}`}
+                    // className={`${isSelected(dichVu) ? "row-selected" : ""}`}
                     >
                       <td>{dichVu.tenDichVu}</td>
                       {/* <td
@@ -145,8 +145,8 @@ function ListDichVu({ setDichVuNew, dichVuNew, showDichVu, setShowDichVu }) {
                           name={dichVu.maDichVu}
                           value={
                             soLuongDichVu &&
-                            soLuongDichVu.length > 0 &&
-                            getSoLuong(dichVu.maDichVu)
+                              soLuongDichVu.length > 0 &&
+                              getSoLuong(dichVu.maDichVu)
                               ? getSoLuong(dichVu.maDichVu)
                               : 0
                           }
@@ -154,7 +154,7 @@ function ListDichVu({ setDichVuNew, dichVuNew, showDichVu, setShowDichVu }) {
                         />
                       </td>
                       <td>{dichVu.soLuong}</td>
-                      <td>{dichVu.donVi}</td>
+                      <td>{dichVu.donViLoaiDichVu}</td>
                     </tr>
                   );
                 })}
