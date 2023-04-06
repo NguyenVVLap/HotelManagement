@@ -22,7 +22,7 @@ const PopupPrintHoaDonTheoPhong = (props) => {
         diff /= 60 * 60;
         return Math.abs(Math.round(diff));
     };
-    const tinhTongTien = (data) => {
+    const tinhTongTienPhong = (data) => {
         let prices = 0;
         data.dsPhong.map((phong, index) => {
             let giaPhong = phong.giaPhong;
@@ -36,13 +36,56 @@ const PopupPrintHoaDonTheoPhong = (props) => {
 
         }
         )
-
-
-
-
         return prices;
     }
-    console.log("Thong tin nhan Vien :", JSON.parse(thongTinNhanVien));
+    const tinhTongTienDichVu = (data) => {
+        let priceDichVu = 0;
+        data.dsChiTietDichVuDto.map((dv, index) => {
+            let soLuong = dv.soLuong;
+            let giaDichVu = dv.giaDichVu;
+            let tongTien = soLuong * giaDichVu;
+            priceDichVu = Number(priceDichVu) + Number(tongTien)
+
+        }
+        )
+
+
+
+
+        return priceDichVu;
+    }
+    const tinhTongTienPhongVaDichVu = (data) => {
+        let pricePhong = 0;
+        let priceDichVu = 0;
+        let priceTong = 0
+        data.dsPhong.map((phong, index) => {
+            let giaPhong = phong.giaPhong;
+            let ngayNhan = new Date(data.ngayNhanPhong)
+            let ngayTra = new Date(data.ngayTraPhong);
+            let totalHour = diff_hours(ngayNhan, ngayTra)
+
+            let tongTien = giaPhong * totalHour;
+
+            pricePhong = Number(pricePhong) + Number(tongTien)
+
+        }
+        )
+        data.dsChiTietDichVuDto.map((dv, index) => {
+            let soLuong = dv.soLuong;
+            let giaDichVu = dv.giaDichVu;
+            let tongTien = soLuong * giaDichVu;
+            priceDichVu = Number(priceDichVu) + Number(tongTien)
+
+        }
+        )
+        priceTong = pricePhong + priceDichVu
+
+
+
+
+        return priceTong;
+    }
+    // console.log("Thong tin nhan Vien :", JSON.parse(thongTinNhanVien));
     return (
         <Dialog open={openPopupPrint} fullScreen>
             <DialogTitle>
@@ -134,9 +177,12 @@ const PopupPrintHoaDonTheoPhong = (props) => {
                                             <TableCell align="center"><Typography>Nhân viên lập hoá đơn</Typography></TableCell>
                                             <TableCell align="center"><Typography>Ngày nhận phòng</Typography></TableCell>
                                             <TableCell align="center"><Typography>Ngày trả phòng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Các phòng khách thuê</Typography></TableCell>
+                                            <TableCell align="center"><Typography>Các phòng đã thuê</Typography></TableCell>
+                                            <TableCell align="center"><Typography>Các dịch vụ đã sử dụng</Typography></TableCell>
                                             <TableCell align="center"><Typography>Tiền nhận</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Tổng tiền</Typography></TableCell>
+                                            <TableCell align="center"><Typography>Tiền phòng</Typography></TableCell>
+                                            <TableCell align="center"><Typography>Tiền dịch vụ</Typography></TableCell>
+                                            <TableCell align="center"><Typography>Tổng Tiền</Typography></TableCell>
 
                                         </TableRow>
                                     </TableHead>
@@ -169,9 +215,26 @@ const PopupPrintHoaDonTheoPhong = (props) => {
                                                     )}
                                                 </TableCell>
                                                 <TableCell component="th" scope="row" align='center'>
-                                                    {data.dsPhong.map((phong) => {
-                                                        return `${phong.tenPhong},`
+                                                    {data.dsPhong.map((phong, index) => {
+                                                        if (index === data.dsPhong.length - 1) {
+                                                            return `${phong.tenPhong}`
+                                                        }
+                                                        else {
+                                                            return `${phong.tenPhong},`
+                                                        }
+
                                                     })}
+                                                </TableCell>
+                                                <TableCell component="th" scope="row" align='center'>
+                                                    {data.dsChiTietDichVuDto.length > 0 ? data.dsChiTietDichVuDto.map((dv, index) => {
+                                                        if (index === data.dsChiTietDichVuDto.length - 1) {
+                                                            return `${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu})`
+                                                        }
+                                                        else {
+                                                            return ` ${dv.soLuong} ${dv.tenDichVu}(${dv.tenLoaiDichVu}),`
+                                                        }
+
+                                                    }) : 'Không có'}
                                                 </TableCell>
                                                 <TableCell component="th" scope="row" align='center'>
                                                     {data.tienNhan}
@@ -180,9 +243,24 @@ const PopupPrintHoaDonTheoPhong = (props) => {
                                                 <TableCell component="th" scope="row" align='center'>
 
                                                     {
+                                                        tinhTongTienPhong(data)
+                                                    }
+                                                </TableCell>
+                                                <TableCell component="th" scope="row" align='center'>
+
+                                                    {
 
 
-                                                        tinhTongTien(data)
+                                                        tinhTongTienDichVu(data)
+
+                                                    }
+                                                </TableCell>
+                                                <TableCell component="th" scope="row" align='center'>
+
+                                                    {
+
+
+                                                        tinhTongTienPhongVaDichVu(data)
 
                                                     }
                                                 </TableCell>
