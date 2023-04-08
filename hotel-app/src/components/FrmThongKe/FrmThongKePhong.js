@@ -19,10 +19,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import { DatePicker } from '@mui/x-date-pickers';
 import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import PopupPrintThongKeSoLanDatPhong from './PopupPrintThongKeSoLanDatPhong';
+import { Empty } from 'antd';
 
 function FrmThongKePhong() {
     let ngayHienTai = new Date();
     const [toast, setToast] = useState(null);
+    const [isEmpty, setIsEmpty] = useState(true);
     const [dsThongKeSoLanDatPhong, setdsThongKeSoLanDatPhong] = useState(undefined);
     const [detailReportSoLanDatPhong, setDetailReportSoLanDatPhong] = useState(false);
     const [dsThongKeSoLanDatPhongCustome, setdsThongKeSoLanDatPhongCustome] = useState(undefined);
@@ -31,7 +33,12 @@ function FrmThongKePhong() {
     const [openPopupPrintSoLanDatPhong, setOpenPopupPrintSoLanDatPhong] = useState(false);
 
 
+    useEffect(() => {
+        if (dsThongKeSoLanDatPhong && dsThongKeSoLanDatPhong.length === 0) {
+            setIsEmpty(true);
+        }
 
+    }, [dsThongKeSoLanDatPhong])
     useEffect(() => {
         if (dsThongKeSoLanDatPhong) {
             const newDsThongKeSoLanDatPhong = dsThongKeSoLanDatPhong.map((obj) => {
@@ -96,7 +103,7 @@ function FrmThongKePhong() {
         console.log("Data Thong Ke So Lan Dat Phong :", data);
         if (data) {
             setdsThongKeSoLanDatPhong(data);
-
+            setIsEmpty(false);
         }
     }
     const handleThongKeTongDoanhThuTheoTungPhong = async () => {
@@ -147,6 +154,7 @@ function FrmThongKePhong() {
     // console.log("DSPhong:", dsPhong);
     // console.log("SoLanDatPhongCustome:", dsThongKeSoLanDatPhongCustome);
     console.log("DetailReport:", detailReportSoLanDatPhong);
+    console.log("isEmpty:", isEmpty);
     return (
         <StyledContainer>
             <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
@@ -200,7 +208,6 @@ function FrmThongKePhong() {
                 </Grid>
                 <Grid item md={4}>
                     {search.theo === "Số lần đặt phòng" && <Button fullWidth variant='contained' startIcon={<CachedOutlinedIcon />} size='medium' onClick={() => { handleDetailReport() }} >Xem chi tiết báo cáo</Button>}
-
                 </Grid>
                 <Grid item md={4}>
                     {search.theo === "Số lần đặt phòng" && <Button fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handlePrintThongKeSoLanDatPhong() }} >In thống kê số lần đặt phòng</Button>}
@@ -209,9 +216,20 @@ function FrmThongKePhong() {
 
 
             </Grid>
+            {/* Hiển thị khi không có dữ liệu */}
+            {isEmpty === true && <Empty image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                imageStyle={{ height: 200 }}
+                description={
+                    <span>
+                        Không có dữ liệu
+                    </span>
+                }>
+
+            </Empty>}
+
             {/* Danh sách kết quả thống kê theo số lần đặt phòng */}
             {dsThongKeSoLanDatPhong && dsThongKeSoLanDatPhong.length > 0 && detailReportSoLanDatPhong === true &&
-                <Paper elevation={10} sx={{ height: '700px', mt: '30px', overflow: 'auto' }}>
+                <Paper elevation={10} sx={{ height: '350px', mt: '30px', overflow: 'auto' }}>
                     <Stack flexDirection='row' justifyContent='space-between'>
                         <Box flexGrow={1}>
 
@@ -273,11 +291,11 @@ function FrmThongKePhong() {
             {
                 dsThongKeSoLanDatPhong && dsThongKeSoLanDatPhong.length > 0 && detailReportSoLanDatPhong === false &&
                 <Stack mt='35px' overflow='auto' >
-                    <ResponsiveContainer width="100%" height={700}>
+                    <ResponsiveContainer width="100%" height={350}>
                         <BarChart width={1300} height={500} data={dsThongKeSoLanDatPhongCustome}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="tenPhong" />
-                            <YAxis />
+                            <YAxis allowDecimals={false} />
                             <Tooltip />
                             <Legend />
                             <Bar dataKey="số_lần_đặt_phòng" fill="#f45c43" />
@@ -288,7 +306,7 @@ function FrmThongKePhong() {
 
             {/* Danh Sách Thống kê tổng tiền của từng phòng mang lại cho khách sạn */}
             {dsPhong && dsPhong.length > 0 && tempdsHoaDon && tempdsHoaDon.length > 0 &&
-                <Paper elevation={10} sx={{ height: '54%', mt: '30px', overflow: 'auto' }}>
+                <Paper elevation={10} sx={{ height: '340px', mt: '12px', overflow: 'auto' }}>
                     <TableContainer component={Paper} elevation={15}>
                         <Table aria-label="user table">
                             <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>

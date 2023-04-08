@@ -422,7 +422,7 @@ function FrmTimKiemNhanVien() {
                 </Box>
             </Box>
             {/* Danh sách Nhân Viên */}
-            <Paper elevation={10} sx={{ maxHeight: '100%', mt: '11px', overflow: 'auto' }}>
+            <Paper elevation={10} sx={{ height: '600px', mt: '11px', overflow: 'auto' }}>
                 <TableContainer component={Paper} elevation={15}>
                     <Table aria-label="user table">
                         <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>

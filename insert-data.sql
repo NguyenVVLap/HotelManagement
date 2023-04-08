@@ -201,6 +201,18 @@ Insert into chi_tiet_phieu_dat_phong(ma_phieu_dat_phong, ma_phong) values
 (1, 1),
 (1, 2);
 */
+update hoa_don set ngay_lap ='2023-01-04 00:41:20.526000' where ma_hoa_don=1
+update hoa_don set ngay_lap ='2023-02-04 00:41:20.526000' where ma_hoa_don=2
+update hoa_don set ngay_lap ='2023-03-04 00:41:20.526000' where ma_hoa_don=3
+update hoa_don set ngay_lap ='2023-04-04 00:41:20.526000' where ma_hoa_don=4
+update hoa_don set ngay_lap ='2023-05-04 00:41:20.526000' where ma_hoa_don=5
+update hoa_don set ngay_lap ='2023-06-04 00:41:20.526000' where ma_hoa_don=6
+update hoa_don set ngay_lap ='2023-07-04 00:41:20.526000' where ma_hoa_don=7
+update hoa_don set ngay_lap ='2023-08-04 00:41:20.526000' where ma_hoa_don=8
+update hoa_don set ngay_lap ='2023-09-04 00:41:20.526000' where ma_hoa_don=9
+update hoa_don set ngay_lap ='2023-10-04 00:41:20.526000' where ma_hoa_don=10
+update hoa_don set ngay_lap ='2023-11-04 00:41:20.526000' where ma_hoa_don=11
+update hoa_don set ngay_lap ='2023-12-04 00:41:20.526000' where ma_hoa_don=12
 
 
 

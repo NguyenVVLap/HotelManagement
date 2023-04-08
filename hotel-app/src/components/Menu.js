@@ -332,7 +332,7 @@ function Menu({
                 <p className="btn-sub-title">Doanh thu</p>
               </button>
               <button
-                className={`btn-sub ${subNavSelected.subnav === " service-report" &&
+                className={`btn-sub ${subNavSelected.subnav === "service-report" &&
                   "btn-sub-selected"
                   }`}
                 onClick={() =>

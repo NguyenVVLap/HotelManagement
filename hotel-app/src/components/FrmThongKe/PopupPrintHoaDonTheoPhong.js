@@ -124,7 +124,7 @@ const PopupPrintHoaDonTheoPhong = (props) => {
 
                     </Stack>
                     <Box sx={{ display: 'flex', justifyContent: 'center', mt: '10px' }}>
-                        <Typography variant='h4' color='dodgerblue'>Báo cáo doanh thu khách sạn theo phòng</Typography>
+                        <Typography variant='h4' color='dodgerblue'>Báo cáo doanh thu khách sạn Sama</Typography>
                     </Box>
                     <Stack flexDirection='row' justifyContent='space-between'  >
 
@@ -282,8 +282,8 @@ const PopupPrintHoaDonTheoPhong = (props) => {
 
                             </Stack>
 
-                            <Stack flexDirection='row'>
-                                <Typography variant='h5' color='red'>Tổng doanh thu phòng:</Typography>
+                            <Stack flexDirection='row' mt='20px'>
+                                <Typography variant='h5' color='red'>Tổng doanh thu của khách sạn:</Typography>
                                 <Typography variant='h5' ml='10px'>{currentTongTien} VND</Typography>
                             </Stack>
                         </Stack>
@@ -315,7 +315,7 @@ const PopupPrintHoaDonTheoPhong = (props) => {
                         </Stack>
                         <Box>
                             <Typography variant='h5' align='center' >
-                                Cám ơn quý khách và hẹn gặp lại
+                                Khách sạn Sama Gò Vấp
                             </Typography>
                             <Divider sx={{ backgroundColor: 'black' }} variant='fullWidth' ></Divider>
                         </Box>
