@@ -10,7 +10,15 @@ function Inputs({
   onHandleRefresh,
 }) {
   const handleOnChange = (e) => {
-    setTangMoi({ ...tangMoi, [e.target.name]: e.target.value });
+    let tenField = e.target.name;
+    if (tenField === "tenTang") {
+      let soTang = Number(e.target.value.slice(5));
+      if (!isNaN(soTang)) {
+        setTangMoi({ ...tangMoi, [e.target.name]: e.target.value });
+      }
+    } else {
+      setTangMoi({ ...tangMoi, [e.target.name]: e.target.value });
+    }
   };
   const onHandleClear = () => {
     setTangMoi({
@@ -44,7 +52,13 @@ function Inputs({
             type="text"
             placeholder="Tên tầng"
             name="tenTang"
-            value={tangMoi && tangMoi.tenTang ? tangMoi.tenTang : ""}
+            value={
+              tangMoi &&
+              tangMoi.tenTang &&
+              tangMoi.tenTang.slice(0, 5) === "Tầng "
+                ? tangMoi.tenTang
+                : "Tầng "
+            }
             onChange={(e) => handleOnChange(e)}
           />
         </FloatingLabel>

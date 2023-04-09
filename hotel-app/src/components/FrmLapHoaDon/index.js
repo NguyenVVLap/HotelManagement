@@ -13,6 +13,7 @@ import {
   getBillsByCCCD,
   getBillsOrderDateRoute,
 } from "../../utils/APIRoutes";
+import FrmXacNhanHoaDon from "../FrmXacNhanHoaDon";
 
 function FrmLapHoaDon() {
   const [toast, setToast] = useState(null);
@@ -20,6 +21,12 @@ function FrmLapHoaDon() {
   const [hoaDonSelected, setHoaDonSelected] = useState({});
   const [searchInput, setSearchInput] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
+  const [showConfirmBill, setShowConfirmBill] = useState(false);
+  const [totalHour, setTotalHour] = useState(0);
+  const [totalRoomPrice, setTotalRoomPrice] = useState(0);
+  const [totalServicePrice, setTotalServicePrice] = useState(0);
+  const [isPrint, setIsPrint] = useState(false);
+
   const diff_hours = (dt2, dt1) => {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
     diff /= 60 * 60;
@@ -36,25 +43,34 @@ function FrmLapHoaDon() {
       ngayTra = new Date(hoaDonSelected.ngayTraPhong);
     }
     let totalHours = diff_hours(ngayNhan, ngayTra);
+    setTotalHour(totalHours);
     if (
       hoaDonSelected &&
       hoaDonSelected.dsPhong &&
       hoaDonSelected.dsPhong.length > 0
-    )
+    ) {
       for (let i = 0; i < hoaDonSelected.dsPhong.length; i++) {
         price += hoaDonSelected.dsPhong[i].giaPhong * totalHours;
       }
+      setTotalRoomPrice(price);
+    }
 
     if (
       hoaDonSelected &&
       hoaDonSelected.dsChiTietDichVuDto &&
       hoaDonSelected.dsChiTietDichVuDto.length > 0
-    )
+    ) {
+      let productPrices = 0;
       for (let i = 0; i < hoaDonSelected.dsChiTietDichVuDto.length; i++) {
         price +=
           hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
           hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
+        productPrices +=
+          hoaDonSelected.dsChiTietDichVuDto[i].soLuong *
+          hoaDonSelected.dsChiTietDichVuDto[i].giaDichVu;
       }
+      setTotalServicePrice(productPrices);
+    }
     setTotalPrice(price);
   }, [hoaDonSelected]);
   useEffect(() => {
@@ -128,7 +144,7 @@ function FrmLapHoaDon() {
         }
       );
       if (data) {
-        setHoaDonSelected({});
+        // setHoaDonSelected({});
         setToast({
           header: "Lập hóa đơn thành công",
           content: "",
@@ -136,6 +152,8 @@ function FrmLapHoaDon() {
           textColor: "#fff",
         });
         loadHoaDon();
+        // setShowConfirmBill(false);
+        setIsPrint(true);
       }
     }
   };
@@ -160,6 +178,11 @@ function FrmLapHoaDon() {
   const onHandleChange = (e) => {
     if (hoaDonSelected && hoaDonSelected.maHoaDon) {
       setHoaDonSelected({ ...hoaDonSelected, [e.target.name]: e.target.value });
+    }
+  };
+  const onHandleConfirm = () => {
+    if (hoaDonSelected.maHoaDon && hoaDonSelected.tienNhan && validate()) {
+      setShowConfirmBill(true);
     }
   };
   return (
@@ -189,11 +212,12 @@ function FrmLapHoaDon() {
                 dsHoaDon.map((hoaDon, index) => {
                   return (
                     <div
-                      className={`booking-item ${hoaDonSelected.maHoaDon &&
+                      className={`booking-item ${
+                        hoaDonSelected.maHoaDon &&
                         hoaDon.maHoaDon === hoaDonSelected.maHoaDon
-                        ? "selected"
-                        : ""
-                        }`}
+                          ? "selected"
+                          : ""
+                      }`}
                       onClick={() => setHoaDonSelected(hoaDon)}
                       key={index}
                     >
@@ -264,8 +288,8 @@ function FrmLapHoaDon() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                          hoaDonSelected.dsPhong &&
-                          hoaDonSelected.dsPhong.length > 0 ? (
+                        hoaDonSelected.dsPhong &&
+                        hoaDonSelected.dsPhong.length > 0 ? (
                           hoaDonSelected.dsPhong.map((room, index) => {
                             // console.log(isSelected(room));
                             return (
@@ -300,8 +324,8 @@ function FrmLapHoaDon() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                          hoaDonSelected.dsChiTietDichVuDto &&
-                          hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                        hoaDonSelected.dsChiTietDichVuDto &&
+                        hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
                           hoaDonSelected.dsChiTietDichVuDto.map(
                             (dichVu, index) => {
                               // console.log(isSelected(room));
@@ -330,19 +354,25 @@ function FrmLapHoaDon() {
                     - Ngày đặt phòng:{" "}
                     {hoaDonSelected &&
                       hoaDonSelected.ngayLap &&
-                      moment(hoaDonSelected.ngayNhanPhong).format("DD/MM/YYYY HH:MM")}
+                      moment(hoaDonSelected.ngayNhanPhong).format(
+                        "DD/MM/YYYY HH:MM"
+                      )}
                   </div>
                   <div className="date-info">
                     - Ngày nhận phòng:{" "}
                     {hoaDonSelected &&
                       hoaDonSelected.ngayLap &&
-                      moment(hoaDonSelected.ngayNhanPhong).format("DD/MM/YYYY HH:MM")}
+                      moment(hoaDonSelected.ngayNhanPhong).format(
+                        "DD/MM/YYYY HH:MM"
+                      )}
                   </div>
                   <div className="date-info">
                     - Ngày trả phòng:{" "}
                     {hoaDonSelected &&
                       hoaDonSelected.ngayLap &&
-                      moment(hoaDonSelected.ngayTraPhong).format("DD/MM/YYYY HH:MM")}
+                      moment(hoaDonSelected.ngayTraPhong).format(
+                        "DD/MM/YYYY HH:MM"
+                      )}
                   </div>
                   <div className="price-container">
                     <p>Tổng tiền</p>
@@ -381,13 +411,13 @@ function FrmLapHoaDon() {
             </div>
             <div className="btn-function">
               {hoaDonSelected &&
-                hoaDonSelected.maHoaDon &&
-                hoaDonSelected.tienNhan &&
-                hoaDonSelected.tienNhan > 0 ? (
+              hoaDonSelected.maHoaDon &&
+              hoaDonSelected.tienNhan &&
+              hoaDonSelected.tienNhan >= totalPrice ? (
                 <Button
                   variant="success"
                   type="submit"
-                  onClick={() => onHandleCheckIn()}
+                  onClick={() => onHandleConfirm()}
                 >
                   Lập hóa đơn
                 </Button>
@@ -400,6 +430,20 @@ function FrmLapHoaDon() {
           </div>
         </div>
       </div>
+      {showConfirmBill && (
+        <FrmXacNhanHoaDon
+          setShowConfirmBill={setShowConfirmBill}
+          hoaDonSelected={hoaDonSelected}
+          totalPrice={totalPrice}
+          totalHour={totalHour}
+          totalRoomPrice={totalRoomPrice}
+          totalServicePrice={totalServicePrice}
+          onHandleCheckIn={onHandleCheckIn}
+          isPrint={isPrint}
+          setIsPrint={setIsPrint}
+          setHoaDonSelected={setHoaDonSelected}
+        />
+      )}
       {toast && (
         <ToastContainer
           position="bottom-end"

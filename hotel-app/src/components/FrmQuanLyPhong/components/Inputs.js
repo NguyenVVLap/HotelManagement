@@ -57,12 +57,16 @@ function Inputs({
         soTang = "0" + soTang;
       }
       let soPhong = Number(e.target.value.slice(6));
-      if (!isNaN(soPhong))
+      if (!isNaN(soPhong)) {
+        if (soPhong < 10) {
+          soPhong = "0" + soPhong;
+        }
         setPhongMoi({
           ...phongMoi,
           [tenField]: e.target.value,
-          maPhong: `T${soTang}P${soPhong}`,
+          maPhong: `${soTang}${soPhong}`,
         });
+      }
     } else {
       setPhongMoi({
         ...phongMoi,
@@ -88,7 +92,7 @@ function Inputs({
       setPhongMoi({
         ...phongMoi,
         [name]: e.target.value,
-        maPhong: `T${soTang}P${soPhong}`,
+        maPhong: `${soTang}${soPhong}`,
       });
     } else {
       setPhongMoi({
