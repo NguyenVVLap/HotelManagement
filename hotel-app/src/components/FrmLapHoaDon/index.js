@@ -111,7 +111,12 @@ function FrmLapHoaDon() {
     // if (data && data.length > 0) {
     // }
   };
+  const onHandleCancelPrint = () => {
+    setHoaDonSelected({});
+    setShowConfirmBill(false);
+    setIsPrint(false);
 
+  }
   const onHandleCheckIn = async () => {
     if (hoaDonSelected.maHoaDon && hoaDonSelected.tienNhan && validate()) {
       let dsMaPhong = [];
@@ -442,6 +447,7 @@ function FrmLapHoaDon() {
           isPrint={isPrint}
           setIsPrint={setIsPrint}
           setHoaDonSelected={setHoaDonSelected}
+          onHandleCancelPrint={onHandleCancelPrint}
         />
       )}
       {toast && (

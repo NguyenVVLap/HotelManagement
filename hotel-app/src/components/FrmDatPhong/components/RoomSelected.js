@@ -45,7 +45,7 @@ function RoomSelected({ roomChoosen, setShowDetail, setRoomChoosen }) {
                       style={{ color: "red", fontSize: "2rem" }}
                     />
                   </td>
-                  <td>{room.tenPhong}</td>
+                  <td>{room.maPhong}</td>
                   <td>{room.tenLoaiPhong}</td>
                   <td>{room.tenTang}</td>
                   <td>{room.giaPhong.toLocaleString()}</td>

@@ -173,9 +173,10 @@ insert into dich_vu (gia_dich_vu, so_luong, ten_dich_vu, ma_loai_dich_vu) values
 (25000, 150, N'Mì khoai tây Omachi sốt thái', 11),
 (30000, 50, N'Kẹo dẻo', 10);
 
+/*
 insert into nhan_vien(ho_ten, cccd, luong_co_ban, dia_chi, email, ngay_vao_lam, so_dien_thoai) values 
 ('Lap', '012345678900', 1000000, '12 Trần Hưng Đạo', 'lap@gmail.com', '2023-03-19T10:00:56.117+00:00', '+84392589774');
-
+*/
 Insert into khach_hang(cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_thoai_kh) values 
 ('123456789000', N'12 Lê Lợi', 'test@gmail.com', N'Trần Quang Linh', '0123456789'),
 ('123456789001', N'12 Lê Lai', 'test1@gmail.com', N'Trần Quang Thái', '0123456788'),

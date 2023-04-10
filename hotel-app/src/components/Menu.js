@@ -56,13 +56,13 @@ function Menu({
             src="/logo1.png"
             alt="logo"
             style={{
-              width: "90px",
+              width: "60px",
               backgroundColor: "white",
-              borderRadius: "150px",
+              borderRadius: "10px",
             }}
           />
         </div>
-        <p className="title" style={{ marginLeft: "20px" }}>
+        <p className="title" style={{ marginLeft: "5px" }}>
           Khách Sạn Sama
         </p>
       </div>

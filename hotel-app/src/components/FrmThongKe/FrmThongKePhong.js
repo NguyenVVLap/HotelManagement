@@ -294,8 +294,8 @@ function FrmThongKePhong() {
                     <ResponsiveContainer width="100%" height={350}>
                         <BarChart width={1300} height={500} data={dsThongKeSoLanDatPhongCustome}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="tenPhong" />
-                            <YAxis allowDecimals={false} />
+                            <XAxis dataKey="maPhong" label={{ value: 'Phòng', position: 'insideBottom'} }  />
+                            <YAxis allowDecimals={false} label={{ value: 'Số lần đặt phòng', angle: -90, position: 'insideLeft' }} />
                             <Tooltip />
                             <Legend />
                             <Bar dataKey="số_lần_đặt_phòng" fill="#f45c43" />
@@ -392,6 +392,7 @@ const StyledContainer = styled.div`
   overflow: hidden;
   /* background-color: red; */
   padding: 20px;
+  
   table {
     .row-selected {
       

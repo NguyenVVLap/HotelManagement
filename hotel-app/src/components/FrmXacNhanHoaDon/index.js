@@ -1,6 +1,8 @@
 import moment from "moment";
+import { useRef } from "react";
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import ReactToPrint from "react-to-print";
 import styled from "styled-components";
 
 // import Logo from "/logo1.png";
@@ -16,9 +18,14 @@ function FrmXacNhanHoaDon({
   onHandleCheckIn,
   setIsPrint,
   setHoaDonSelected,
+  onHandleCancelPrint
 }) {
   // console.log(hoaDonSelected);
   const [nhanVien, setNhanVien] = useState();
+  const handlePrint = () => {
+    window.print();
+}
+const componentRef = useRef();
   useEffect(() => {
     const nhanVienTemp = JSON.parse(localStorage.getItem("nhanVien"));
     setNhanVien(nhanVienTemp);
@@ -26,9 +33,9 @@ function FrmXacNhanHoaDon({
   return (
     <StyledContainer>
       <div className="container-styled">
-        <div className="booking-detail">
+        <div ref={componentRef} className="booking-detail">
           <div className="content-detail">
-            <div className="bill-title">
+            <div className="bill-title" style={{display:'flex', gap:'0.1rem', justifyContent: 'center', alignItems: 'center'}}>
               <div className="img-container">
                 <img
                   className="logo-img"
@@ -207,24 +214,24 @@ function FrmXacNhanHoaDon({
                     </tbody>
                   </Table>
                 </div>
-                <div className="price-container">
-                  <p>Tổng tiền</p>
-                  <div className="total-price">
+                <div className="price-container" style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <p style={{fontWeight: 'bold'}}>Tổng tiền</p>
+                  <div className="total-price" style={{fontWeight: 'bold'}}>
                     {totalPrice && totalPrice.toLocaleString()} VND
                   </div>
                 </div>
-                <div className="price-container">
-                  <p>Tiền nhận</p>
-                  <div className="total-price">
+                <div className="price-container" style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <p style={{fontWeight: 'bold'}}>Tiền nhận</p>
+                  <div className="total-price" style={{fontWeight: 'bold'}}>
                     {hoaDonSelected.tienNhan
                       ? Number(hoaDonSelected.tienNhan).toLocaleString()
                       : 0}{" "}
                     VND
                   </div>
                 </div>
-                <div className="price-container">
-                  <p>Tiền thừa</p>
-                  <div className="total-price">
+                <div className="price-container" style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <p style={{fontWeight: 'bold'}}>Tiền thừa</p>
+                  <div className="total-price" style={{fontWeight: 'bold'}}>
                     {totalPrice &&
                       (hoaDonSelected.tienNhan - totalPrice).toLocaleString()}
                     {/* {hoaDonSelected.tienNhan - totalPrice < 0
@@ -257,17 +264,15 @@ function FrmXacNhanHoaDon({
           </div>
         ) : (
           <div className="btn-container">
-            <Button variant="primary" type="submit">
-              In hóa đơn
-            </Button>
+            <ReactToPrint trigger={() => (
+                     <Button variant='primary' onClick={() => handlePrint()}>In hóa đơn</Button>
+                 )}
+                     content={() => componentRef.current}
+                 />
             <Button
               variant="danger"
               type="submit"
-              onClick={() => {
-                setHoaDonSelected({});
-                setShowConfirmBill(false);
-                setIsPrint(false);
-              }}
+              onClick={onHandleCancelPrint}
             >
               Hủy
             </Button>

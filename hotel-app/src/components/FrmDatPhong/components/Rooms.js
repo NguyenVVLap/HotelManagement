@@ -103,7 +103,7 @@ function Rooms({
                       <td>
                         {isSelected(room) ? <GrRadialSelected /> : <GrRadial />}
                       </td>
-                      <td>{room.tenPhong}</td>
+                      <td>{room.maPhong}</td>
                       {/* <td
                         className={`${
                           room.trangThaiPhong ? "text-green" : "text-red"
