@@ -289,9 +289,21 @@ function FrmKhachHang() {
                     <TextField id="emailKH" name='emailKH' label="Email" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={khachHangMoi && khachHangMoi.emailKH ? khachHangMoi.emailKH : ""} />
                     <TextField id="diaChiKH" name='diaChiKH' label="Địa chỉ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={khachHangMoi && khachHangMoi.diaChiKH ? khachHangMoi.diaChiKH : ""} />
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
-                        <Button type='submit' variant='contained' size='small' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm khách hàng</Button>
-                        <Button size='small' variant='contained' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateKhachHang()}>Cập nhật khách hàng</Button>
-                        <Button size='small' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshKhachHang()}>Tải lại dữ liệu</Button>
+                        <Button type='submit' variant='contained' size='small' sx={{
+                            backgroundColor: '#198754', '&:hover': {
+                                backgroundColor: '#198754'
+                            }
+                        }} startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm khách hàng</Button>
+                        <Button sx={{
+                            backgroundColor: '#0D6EFD', '&:hover': {
+                                backgroundColor: '#0D6EFD',
+                            }
+                        }} size='small' variant='contained' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateKhachHang()}>Cập nhật khách hàng</Button>
+                        <Button sx={{
+                            backgroundColor: '#FFC107', '&:hover': {
+                                backgroundColor: '#FFC107',
+                            }
+                        }} size='small' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshKhachHang()}>Tải lại dữ liệu</Button>
                     </Box>
                 </Box>
 

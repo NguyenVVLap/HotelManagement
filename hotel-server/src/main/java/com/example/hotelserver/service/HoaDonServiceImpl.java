@@ -98,9 +98,12 @@ public class HoaDonServiceImpl implements HoaDonService{
 			Instant tuNgay = Instant.parse(request.get("tuNgay").toString());
 			Instant denNgay = Instant.parse(request.get("denNgay").toString());
 			Date start = Date.from(tuNgay);
+			int year = start.getYear()+1900;
+		System.out.println("Năm chọn : " + year);
 			Date end = Date.from(denNgay);
 			try {
-				List<HoaDon> dsHoaDon = hoaDonRepo.layHoaDonDaThanhToanTheoNgayCuThe(start,end);
+//				List<HoaDon> dsHoaDon = hoaDonRepo.layHoaDonDaThanhToanTheoNgayCuThe(start,end);
+				List<HoaDon> dsHoaDon = hoaDonRepo.layHoaDonDaThanhToanTheoNam(year);
 				for (HoaDon hoaDon : dsHoaDon) {
 					KhachHang khachHang = khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get();
 					HoaDonDto hoaDonDto = HoaDonDto.builder()
@@ -144,10 +147,119 @@ public class HoaDonServiceImpl implements HoaDonService{
 			}catch (Exception e) {
 				System.out.println("Error at layHoaDonDeThongKePhong: " + e);
 			}
+		return dsHoaDonDto;
+	}
+	@Override
+	public List<HoaDonDto> layDanhSachHoaDonDeThongKeTheoNgay(Map<String, Object> request) {
+		List<HoaDonDto> dsHoaDonDto = new ArrayList<>();
+		System.out.println("Request Nhận Thống Kế  : " + request);
+		Instant tuNgay = Instant.parse(request.get("tuNgay").toString());
+		Instant denNgay = Instant.parse(request.get("denNgay").toString());
+		Date start = Date.from(tuNgay);
+		Date end = Date.from(denNgay);
+		try {
+				List<HoaDon> dsHoaDon = hoaDonRepo.layHoaDonDaThanhToanTheoNgayCuThe(start,end);
+			for (HoaDon hoaDon : dsHoaDon) {
+				KhachHang khachHang = khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get();
+				HoaDonDto hoaDonDto = HoaDonDto.builder()
+						.maHoaDon(hoaDon.getMaHoaDon())
+						.ngayLap(hoaDon.getNgayLap())
+						.ngayNhanPhong(hoaDon.getNgayNhanPhong())
+						.ngayTraPhong(hoaDon.getNgayTraPhong())
+						.tienNhan(hoaDon.getTienNhan())
+						.phieuDatPhong(hoaDon.getPhieuDatPhong())
+						.nhanVien(hoaDon.getNhanVien())
+						.build();
+				List<Phong> dsPhong = new ArrayList<>();
+				List<String> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
+				if (!dsMaPhong.isEmpty()) {
+					for (String maPhong : dsMaPhong) {
+						Phong phong = phongRepo.findById(maPhong).get();
+						dsPhong.add(phong);
+					}
+				}
+				List<PhongResponseDto> phongResponseDtos = new ArrayList<>();
+				if (!dsPhong.isEmpty()) {
+					for (Phong phong : dsPhong) {
+						phongResponseDtos.add(convertPhongToPhongDto(phong));
+					}
+				}
+				List<Map<String, Object>> listObject = hoaDonRepo.layChiTietDichVuTuMaHoaDon(hoaDon.getMaHoaDon());
+				List<ChiTietDichVuDto> dsChiTietDichVuDto = new ArrayList<>();
+				if (!listObject.isEmpty()) {
+					for (Map<String, Object> obj : listObject) {
+						ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
+								, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
+								, Integer.parseInt(obj.get("soLuong").toString()), obj.get("tenLoaiDichVu").toString());
+						dsChiTietDichVuDto.add(chiTietDichVuDto);
+					}
+				}
+				hoaDonDto.setDsPhong(phongResponseDtos);
+				hoaDonDto.setDsChiTietDichVuDto(dsChiTietDichVuDto);
+				hoaDonDto.setKhachHang(khachHang);
+				dsHoaDonDto.add(hoaDonDto);
+			}
+		}catch (Exception e) {
+			System.out.println("Error at layHoaDonDeThongKePhong: " + e);
+		}
+		return dsHoaDonDto;
+	}
+	@Override
+	public List<HoaDonDto> layDanhSachHoaDonDeThongKeTheoPhongTheoThang(Map<String, Object> request) {
+		List<HoaDonDto> dsHoaDonDto = new ArrayList<>();
+		System.out.println("Request Nhận Thống Kế Theo Tháng  : " + request);
+		Instant tuNgay = Instant.parse(request.get("tuNgay").toString());
+		Date start = Date.from(tuNgay);
+		int year = start.getYear()+1900;
+		int month = start.getMonth()+1;
+		System.out.println("Năm chọn : " + year);
+		System.out.println("Tháng chọn : " + month);
 
-
-
-
+		try {
+			List<HoaDon> dsHoaDon = hoaDonRepo.layHoaDonDaThanhToanTheoThang(year,month);
+			for (HoaDon hoaDon : dsHoaDon) {
+				KhachHang khachHang = khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get();
+				HoaDonDto hoaDonDto = HoaDonDto.builder()
+						.maHoaDon(hoaDon.getMaHoaDon())
+						.ngayLap(hoaDon.getNgayLap())
+						.ngayNhanPhong(hoaDon.getNgayNhanPhong())
+						.ngayTraPhong(hoaDon.getNgayTraPhong())
+						.tienNhan(hoaDon.getTienNhan())
+						.phieuDatPhong(hoaDon.getPhieuDatPhong())
+						.nhanVien(hoaDon.getNhanVien())
+						.build();
+				List<Phong> dsPhong = new ArrayList<>();
+				List<String> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
+				if (!dsMaPhong.isEmpty()) {
+					for (String maPhong : dsMaPhong) {
+						Phong phong = phongRepo.findById(maPhong).get();
+						dsPhong.add(phong);
+					}
+				}
+				List<PhongResponseDto> phongResponseDtos = new ArrayList<>();
+				if (!dsPhong.isEmpty()) {
+					for (Phong phong : dsPhong) {
+						phongResponseDtos.add(convertPhongToPhongDto(phong));
+					}
+				}
+				List<Map<String, Object>> listObject = hoaDonRepo.layChiTietDichVuTuMaHoaDon(hoaDon.getMaHoaDon());
+				List<ChiTietDichVuDto> dsChiTietDichVuDto = new ArrayList<>();
+				if (!listObject.isEmpty()) {
+					for (Map<String, Object> obj : listObject) {
+						ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
+								, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
+								, Integer.parseInt(obj.get("soLuong").toString()), obj.get("tenLoaiDichVu").toString());
+						dsChiTietDichVuDto.add(chiTietDichVuDto);
+					}
+				}
+				hoaDonDto.setDsPhong(phongResponseDtos);
+				hoaDonDto.setDsChiTietDichVuDto(dsChiTietDichVuDto);
+				hoaDonDto.setKhachHang(khachHang);
+				dsHoaDonDto.add(hoaDonDto);
+			}
+		}catch (Exception e) {
+			System.out.println("Error at layHoaDonDeThongKePhong: " + e);
+		}
 		return dsHoaDonDto;
 	}
 	@Override

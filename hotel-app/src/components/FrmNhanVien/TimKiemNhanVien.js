@@ -417,8 +417,16 @@ function FrmTimKiemNhanVien() {
                     />
                 </Box>
                 <Box sx={{ width: '30%', alignItems: 'center', display: 'flex', marginLeft: '20px', justifyContent: 'space-between' }}>
-                    <Button variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleSearchNhanVien() }} >Tìm kiếm</Button>
-                    <Button size='medium' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshNhanVien() }}>Tải lại dữ liệu</Button>
+                    <Button sx={{
+                        backgroundColor: '#0D6EFD', '&:hover': {
+                            backgroundColor: '#0D6EFD',
+                        }
+                    }} variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleSearchNhanVien() }} >Tìm kiếm</Button>
+                    <Button sx={{
+                        backgroundColor: '#FFC107', '&:hover': {
+                            backgroundColor: '#FFC107',
+                        }
+                    }} size='medium' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshNhanVien() }}>Tải lại dữ liệu</Button>
                 </Box>
             </Box>
             {/* Danh sách Nhân Viên */}

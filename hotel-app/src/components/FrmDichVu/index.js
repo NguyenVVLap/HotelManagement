@@ -245,9 +245,21 @@ function FrmDichVu() {
                     <TextField type='number' id="soLuong" name='soLuong' label="Số lượng" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.soLuong ? dichvuMoi.soLuong : ""} />
 
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
-                        <Button type='submit' variant='contained' size='medium' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm dịch vụ</Button>
-                        <Button variant='contained' size='medium' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateDichVu()}>Cập nhật dịch vụ</Button>
-                        <Button variant='contained' size='medium' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshDichVu()}>Tải lại dữ liệu</Button>
+                        <Button sx={{
+                            backgroundColor: '#198754', '&:hover': {
+                                backgroundColor: '#198754'
+                            }
+                        }} type='submit' variant='contained' size='medium' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm dịch vụ</Button>
+                        <Button sx={{
+                            backgroundColor: '#0D6EFD', '&:hover': {
+                                backgroundColor: '#0D6EFD',
+                            }
+                        }} variant='contained' size='medium' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateDichVu()}>Cập nhật dịch vụ</Button>
+                        <Button sx={{
+                            backgroundColor: '#FFC107', '&:hover': {
+                                backgroundColor: '#FFC107',
+                            }
+                        }} variant='contained' size='medium' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshDichVu()}>Tải lại dữ liệu</Button>
                     </Box>
                 </Box>
 

@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import axios from 'axios';
-import { getRoomsRoute, thongKeDoanhThuTheoPhong, thongKeSoLanDatPhong } from '../../utils/APIRoutes';
+import { getAllHoaDonTheoNgay, getRoomsRoute, thongKeDoanhThuTheoPhong, thongKeSoLanDatPhong } from '../../utils/APIRoutes';
 import { useEffect } from 'react';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,6 +20,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import PopupPrintThongKeSoLanDatPhong from './PopupPrintThongKeSoLanDatPhong';
 import { Empty } from 'antd';
+import PopupPrintDoanhThuTheoTungPhong from './PopupPrintDoanhThuTheoTungPhong';
 
 function FrmThongKePhong() {
     let ngayHienTai = new Date();
@@ -27,18 +28,36 @@ function FrmThongKePhong() {
     const [isEmpty, setIsEmpty] = useState(true);
     const [dsThongKeSoLanDatPhong, setdsThongKeSoLanDatPhong] = useState(undefined);
     const [detailReportSoLanDatPhong, setDetailReportSoLanDatPhong] = useState(false);
+    const [hienThiChartDoanhThuTheoTungPhong, setHienThiChartDoanhThuTheoTungPhongDoanhThuTheoTungPhong] = useState(undefined);
     const [dsThongKeSoLanDatPhongCustome, setdsThongKeSoLanDatPhongCustome] = useState(undefined);
     const [tempdsHoaDon, setTempdsHoaDon] = useState(undefined);
     const [dsPhong, setDSPhong] = useState(undefined);
+    const [currentTongTienTungPhongMangLai, setCurrentTongTienTungPhongMangLai] = useState(0);
+    const [dsChartThongKeDoanhThuTungPhongMangLai, setDsChartThongKeDoanhThuTungPhongMangLai] = useState(undefined);
     const [openPopupPrintSoLanDatPhong, setOpenPopupPrintSoLanDatPhong] = useState(false);
+    const [openPopupPrintDoanhThuTheoPhong, setOpenPopupPrintDoanhThuTheoPhong] = useState(false);
+    const dsTongTienTempTungPhongMangLai = [];
+    const dsChartThongKeDoanhThuTungPhong = [];
 
 
     useEffect(() => {
         if (dsThongKeSoLanDatPhong && dsThongKeSoLanDatPhong.length === 0) {
             setIsEmpty(true);
         }
-
     }, [dsThongKeSoLanDatPhong])
+    useEffect(() => {
+        if (dsPhong && dsPhong.length > 0 && tempdsHoaDon && tempdsHoaDon.length > 0) {
+            setIsEmpty(false);
+        }
+        if (tempdsHoaDon && tempdsHoaDon.length === 0) {
+            setIsEmpty(true);
+        }
+        if (tinhTongTienCuaMoiPhongMangLai) {
+            setDsChartThongKeDoanhThuTungPhongMangLai(dsChartThongKeDoanhThuTungPhong)
+        }
+    }, [tempdsHoaDon])
+
+
     useEffect(() => {
         if (dsThongKeSoLanDatPhong) {
             const newDsThongKeSoLanDatPhong = dsThongKeSoLanDatPhong.map((obj) => {
@@ -90,6 +109,12 @@ function FrmThongKePhong() {
     const handlOnChangeDenNgay = (date) => {
         setSearch({ ...search, denNgay: date })
     }
+    useEffect(() => {
+        if (search.theo === null) {
+            setIsEmpty(true);
+        }
+
+    }, [search])
 
     const handleThongKePhongTheoSoLanDatPhong = async () => {
         console.log("Thống kê theo :", search);
@@ -108,7 +133,7 @@ function FrmThongKePhong() {
     }
     const handleThongKeTongDoanhThuTheoTungPhong = async () => {
         console.log("Thống kê theo :", search);
-        const { data } = await axios.post(thongKeDoanhThuTheoPhong, search, {
+        const { data } = await axios.post(getAllHoaDonTheoNgay, search, {
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -119,6 +144,8 @@ function FrmThongKePhong() {
         if (data) {
             setTempdsHoaDon(data);
         }
+        setHienThiChartDoanhThuTheoTungPhongDoanhThuTheoTungPhong(false);
+
     }
     const tinhTongTienCuaMoiPhongMangLai = (phong) => {
         let price = 0;
@@ -135,7 +162,10 @@ function FrmThongKePhong() {
                 }
             })
         })
-
+        // console.log("Object Chart :", { phong: phong.maPhong, price });
+        dsChartThongKeDoanhThuTungPhong.push({ phong: phong.maPhong, tổng_tiền: price });
+        // setDsChartThongKeDoanhThuTungPhong((preState) => [...preState, { Phong: phong.maPhong, price }]);
+        dsTongTienTempTungPhongMangLai.push(price);
         return price;
     }
     const handleRefesh = () => {
@@ -147,14 +177,25 @@ function FrmThongKePhong() {
     const handleDetailReport = () => {
         setDetailReportSoLanDatPhong(true);
     }
+    const handleDetailReportDoanhThuTheoTungPhong = () => {
+        setHienThiChartDoanhThuTheoTungPhongDoanhThuTheoTungPhong(true);
+    }
     const handlePrintThongKeSoLanDatPhong = () => {
         setOpenPopupPrintSoLanDatPhong(true);
+    }
+    const handlePrintDoanhThuTungPhongMangLai = () => {
+        setCurrentTongTienTungPhongMangLai(dsTongTienTempTungPhongMangLai.reduce((preValue, currentValue) => preValue + currentValue))
+        setOpenPopupPrintDoanhThuTheoPhong(true)
     }
     // console.log("DSTEMPHOADON:", tempdsHoaDon);
     // console.log("DSPhong:", dsPhong);
     // console.log("SoLanDatPhongCustome:", dsThongKeSoLanDatPhongCustome);
-    console.log("DetailReport:", detailReportSoLanDatPhong);
+    console.log("detailReportDoanhThuTheoTungPhong:", hienThiChartDoanhThuTheoTungPhong);
     console.log("isEmpty:", isEmpty);
+    console.log('Chart Thong Ke Tung Phong Mang Lai : ', dsChartThongKeDoanhThuTungPhongMangLai);
+    // console.log("dsTongTienTempTungPhongMangLai:", dsTongTienTempTungPhongMangLai);
+    console.log("currentTongTienTungPhongMangLai:", currentTongTienTungPhongMangLai);
+    // console.log('Search', search.theo)
     return (
         <StyledContainer>
             <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
@@ -203,14 +244,34 @@ function FrmThongKePhong() {
                 </Grid>
 
                 <Grid item md={4}>
-                    {search.theo === "Số lần đặt phòng" && <Button fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKePhongTheoSoLanDatPhong() }} >Thống kê số lần đặt phòng</Button>}
-                    {search.theo === "Tổng doanh thu theo từng phòng" && <Button fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKeTongDoanhThuTheoTungPhong() }} >Thống kê tổng doanh thu theo từng phòng</Button>}
+                    {search.theo === "Số lần đặt phòng" && <Button sx={{
+                        backgroundColor: '#198754', '&:hover': {
+                            backgroundColor: '#198754'
+                        }
+                    }} fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKePhongTheoSoLanDatPhong() }} >Thống kê số lần đặt phòng</Button>}
+                    {search.theo === "Tổng doanh thu theo từng phòng" && <Button sx={{
+                        backgroundColor: '#0D6EFD', '&:hover': {
+                            backgroundColor: '#0D6EFD',
+                        }
+                    }} fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKeTongDoanhThuTheoTungPhong() }} >Thống kê doanh thu từng phòng</Button>}
                 </Grid>
+
                 <Grid item md={4}>
                     {search.theo === "Số lần đặt phòng" && <Button fullWidth variant='contained' startIcon={<CachedOutlinedIcon />} size='medium' onClick={() => { handleDetailReport() }} >Xem chi tiết báo cáo</Button>}
+                    {search.theo === "Tổng doanh thu theo từng phòng" && hienThiChartDoanhThuTheoTungPhong === false && <Button fullWidth variant='contained' startIcon={<CachedOutlinedIcon />} size='medium' onClick={() => { handleDetailReportDoanhThuTheoTungPhong() }} >Xem biểu đồ thống kê</Button>}
                 </Grid>
+
                 <Grid item md={4}>
-                    {search.theo === "Số lần đặt phòng" && <Button fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handlePrintThongKeSoLanDatPhong() }} >In thống kê số lần đặt phòng</Button>}
+                    {search.theo === "Số lần đặt phòng" && <Button sx={{
+                        backgroundColor: '#FFC107', '&:hover': {
+                            backgroundColor: '#FFC107',
+                        }
+                    }} fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handlePrintThongKeSoLanDatPhong() }} >In thống kê số lần đặt phòng</Button>}
+                    {search.theo === "Tổng doanh thu theo từng phòng" && hienThiChartDoanhThuTheoTungPhong === false && <Button sx={{
+                        backgroundColor: '#FFC107', '&:hover': {
+                            backgroundColor: '#FFC107',
+                        }
+                    }} fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handlePrintDoanhThuTungPhongMangLai() }} >In thống kê doanh thu từng phòng</Button>}
                 </Grid>
 
 
@@ -294,7 +355,7 @@ function FrmThongKePhong() {
                     <ResponsiveContainer width="100%" height={350}>
                         <BarChart width={1300} height={500} data={dsThongKeSoLanDatPhongCustome}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="maPhong" label={{ value: 'Phòng', position: 'insideBottom'} }  />
+                            <XAxis dataKey="maPhong" label={{ value: 'Phòng', position: 'insideBottom' }} interval={0} />
                             <YAxis allowDecimals={false} label={{ value: 'Số lần đặt phòng', angle: -90, position: 'insideLeft' }} />
                             <Tooltip />
                             <Legend />
@@ -303,10 +364,36 @@ function FrmThongKePhong() {
                     </ResponsiveContainer>
                 </Stack>
             }
+            {/* Char thống kê doanh thu theo từng phòng */}
+            {
+                tempdsHoaDon && tempdsHoaDon.length > 0 && hienThiChartDoanhThuTheoTungPhong === true &&
+                <Stack mt='35px' overflow='auto' >
+                    <Stack flexDirection='row' justifyContent='space-between'>
+                        <Box flexGrow={1}>
+                        </Box>
+                        <IconButton color="inherit" aria-label="close" onClick={() => {
+                            setHienThiChartDoanhThuTheoTungPhongDoanhThuTheoTungPhong(false);
+                        }}>
+                            <CloseIcon />
+                        </IconButton>
+                    </Stack>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart width={1300} height={500} data={dsChartThongKeDoanhThuTungPhongMangLai}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="phong" label={{ value: 'Phòng', position: 'insideBottom' }} interval={0} />
+                            <YAxis allowDecimals={false} label={{ value: 'Tổng tiền', angle: -90, position: 'insideLeft' }} />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="tổng_tiền" fill="#f45c43" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </Stack>
+            }
 
             {/* Danh Sách Thống kê tổng tiền của từng phòng mang lại cho khách sạn */}
-            {dsPhong && dsPhong.length > 0 && tempdsHoaDon && tempdsHoaDon.length > 0 &&
+            {dsPhong && dsPhong.length > 0 && tempdsHoaDon && tempdsHoaDon.length > 0 && hienThiChartDoanhThuTheoTungPhong === false &&
                 <Paper elevation={10} sx={{ height: '340px', mt: '12px', overflow: 'auto' }}>
+
                     <TableContainer component={Paper} elevation={15}>
                         <Table aria-label="user table">
                             <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
@@ -381,6 +468,7 @@ function FrmThongKePhong() {
                 </ToastContainer>
             )}
             <PopupPrintThongKeSoLanDatPhong openPopupPrintSoLanDatPhong={openPopupPrintSoLanDatPhong} setOpenPopupPrintSoLanDatPhong={setOpenPopupPrintSoLanDatPhong} dsThongKeSoLanDatPhong={dsThongKeSoLanDatPhong} search={search} />
+            <PopupPrintDoanhThuTheoTungPhong openPopupPrintDoanhThuTheoPhong={openPopupPrintDoanhThuTheoPhong} setOpenPopupPrintDoanhThuTheoPhong={setOpenPopupPrintDoanhThuTheoPhong} search={search} currentTongTienTungPhongMangLai={currentTongTienTungPhongMangLai} dsPhong={dsPhong} tempdsHoaDon={tempdsHoaDon} />
         </StyledContainer>
     )
 }

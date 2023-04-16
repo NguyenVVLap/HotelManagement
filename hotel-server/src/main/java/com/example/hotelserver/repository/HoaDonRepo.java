@@ -40,6 +40,10 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, Long>{
 	@Query(nativeQuery = true,value = "select * from hoa_don hd where hd.tien_nhan >0 and hd.ngay_lap BETWEEN :start AND :end ")
 	List<HoaDon> layHoaDonDaThanhToanTheoNgayCuThe(@Param("start") Date start
 			, @Param("end") Date end);
+	@Query(nativeQuery = true,value = "select * from hoa_don hd where hd.tien_nhan >0 and YEAR(hd.ngay_lap) = :year ")
+	List<HoaDon> layHoaDonDaThanhToanTheoNam(@Param("year") int year);
+	@Query(nativeQuery = true,value = "select * from hoa_don hd where hd.tien_nhan >0 and YEAR(hd.ngay_lap) = :year and MONTH(hd.ngay_lap) = :month ")
+	List<HoaDon> layHoaDonDaThanhToanTheoThang(@Param("year") int year, @Param("month") int month);
 	@Query(nativeQuery = true, value = "select * from hoa_don "
 			+ "where ma_khach_hang = :maKhachHang and tien_nhan = 0"
 			+ "order by ngay_tra_phong DESC")

@@ -61,10 +61,26 @@ public class ThongKeController {
         }
         return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
     }
+    @PostMapping("/layAllHoaDonTheoNgay")
+    public ResponseEntity<List<HoaDonDto>> layAllHoaDonTheoNgay(@RequestBody Map<String, Object> request) {
+        List<HoaDonDto> hoaDonDtoList = new ArrayList<>();
+        hoaDonDtoList=hoaDonService.layDanhSachHoaDonDeThongKeTheoNgay(request);
+
+
+        return new ResponseEntity<List<HoaDonDto>>(hoaDonDtoList, HttpStatus.OK);
+    }
     @PostMapping("/thongKeDoanhThuTheoPhong")
     public ResponseEntity<List<HoaDonDto>> layThongKeHoaDonTheoNgay(@RequestBody Map<String, Object> request) {
         List<HoaDonDto> hoaDonDtoList = new ArrayList<>();
         hoaDonDtoList=hoaDonService.layDanhSachHoaDonDeThongKeTheoPhong(request);
+
+
+        return new ResponseEntity<List<HoaDonDto>>(hoaDonDtoList, HttpStatus.OK);
+    }
+    @PostMapping("/thongKeDoanhThuTheoThang")
+    public ResponseEntity<List<HoaDonDto>> layThongKeHoaDonTheoThang(@RequestBody Map<String, Object> request) {
+        List<HoaDonDto> hoaDonDtoList = new ArrayList<>();
+        hoaDonDtoList=hoaDonService.layDanhSachHoaDonDeThongKeTheoPhongTheoThang(request);
 
 
         return new ResponseEntity<List<HoaDonDto>>(hoaDonDtoList, HttpStatus.OK);

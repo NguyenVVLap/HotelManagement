@@ -13,6 +13,8 @@ public interface HoaDonService {
 //	List<PhieuDatPhongDto> layHoaDon();
 	List<HoaDonDto> layHoaDonTheoNgay();
 	List<HoaDonDto> layDanhSachHoaDonDeThongKeTheoPhong(@RequestBody Map<String, Object> request );
+	List<HoaDonDto> layDanhSachHoaDonDeThongKeTheoNgay(@RequestBody Map<String, Object> request );
+	List<HoaDonDto> layDanhSachHoaDonDeThongKeTheoPhongTheoThang(@RequestBody Map<String, Object> request );
 	List<HoaDonDto> layHoaDonTheoNgayCCCD(String cccd);
 	List<HoaDonDto> layHoaDonTheoTenPhong(String tenPhong);
 	HoaDonDto datDichVu(long maHoaDon, List<DatDichVuDto> datDichVuDtos);

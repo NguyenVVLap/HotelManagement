@@ -213,9 +213,21 @@ const PopupLoaiDichVu = (props) => {
                             <TextField id="donViLoaiDichVu" name='donViLoaiDichVu' label="Đơn vị tính" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={loaidichvuMoi && loaidichvuMoi.donViLoaiDichVu ? loaidichvuMoi.donViLoaiDichVu : ""} />
 
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
-                                <Button onClick={() => handleAddLoaiDichVu()} variant='contained' size='small' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm loại dịch vụ</Button>
-                                <Button variant='contained' size='small' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateLoaiDichVu()}>Cập nhật loại dịch vụ</Button>
-                                <Button variant='contained' size='small' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshLoaiDichVu()}>Tải lại dữ liệu</Button>
+                                <Button sx={{
+                                    backgroundColor: '#198754', '&:hover': {
+                                        backgroundColor: '#198754'
+                                    }
+                                }} onClick={() => handleAddLoaiDichVu()} variant='contained' size='small' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm loại dịch vụ</Button>
+                                <Button sx={{
+                                    backgroundColor: '#0D6EFD', '&:hover': {
+                                        backgroundColor: '#0D6EFD',
+                                    }
+                                }} variant='contained' size='small' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateLoaiDichVu()}>Cập nhật loại dịch vụ</Button>
+                                <Button sx={{
+                                    backgroundColor: '#FFC107', '&:hover': {
+                                        backgroundColor: '#FFC107',
+                                    }
+                                }} variant='contained' size='small' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshLoaiDichVu()}>Tải lại dữ liệu</Button>
                             </Box>
                         </Box>
 
@@ -238,7 +250,11 @@ const PopupLoaiDichVu = (props) => {
                             />
                         </Box>
                         <Box sx={{ alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
-                            <Button variant='contained' size='medium' endIcon={<SearchOutlinedIcon />} onClick={() => { handleSearchDichVu() }} >Tìm kiếm</Button>
+                            <Button sx={{
+                                backgroundColor: '#0D6EFD', '&:hover': {
+                                    backgroundColor: '#0D6EFD',
+                                }
+                            }} variant='contained' size='medium' endIcon={<SearchOutlinedIcon />} onClick={() => { handleSearchDichVu() }} >Tìm kiếm</Button>
                         </Box>
 
 

@@ -62,3 +62,5 @@ export const timNhanVien = `${host}/api/nhanvien/timKiemNhanVien`;
 export const thongKeSoLanDatPhong = `${host}/api/thongke/thongKeSoLanDatPhong`;
 export const thongKeSoLanDatDichVu = `${host}/api/thongke/thongKeSoLanDatDichVu`;
 export const thongKeDoanhThuTheoPhong = `${host}/api/thongke/thongKeDoanhThuTheoPhong`;
+export const thongKeDoanhThuTheoThang = `${host}/api/thongke/thongKeDoanhThuTheoThang`;
+export const getAllHoaDonTheoNgay = `${host}/api/thongke/layAllHoaDonTheoNgay`;

@@ -173,10 +173,14 @@ insert into dich_vu (gia_dich_vu, so_luong, ten_dich_vu, ma_loai_dich_vu) values
 (25000, 150, N'Mì khoai tây Omachi sốt thái', 11),
 (30000, 50, N'Kẹo dẻo', 10);
 
-/*
-insert into nhan_vien(ho_ten, cccd, luong_co_ban, dia_chi, email, ngay_vao_lam, so_dien_thoai) values 
-('Lap', '012345678900', 1000000, '12 Trần Hưng Đạo', 'lap@gmail.com', '2023-03-19T10:00:56.117+00:00', '+84392589774');
-*/
+INSERT INTO vai_tro(ten_vai_tro) values('ROLE_EMPLOYEE'),('ROLE_MANAGEMENT');
+INSERT INTO tai_khoan(da_kich_hoat,mat_khau,ten_tai_khoan,ma_vai_tro) values 
+(1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84392589774',1),
+(1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84523564371',2);
+insert into nhan_vien(cccd, dia_chi, email, ho_ten, luong_co_ban, ngay_sinh,ngay_vao_lam, so_dien_thoai,ma_tai_khoan) values 
+('012345678900','12 Trần Hưng Đạo','lap@gmail.com', N'Nguyễn Võ Vươn Lập',1000000, '2001-03-19T10:00:56.117+00:00','2022-03-19T10:00:56.117+00:00', '+84392589774',1),
+('012345678901','19 Trần Hưng Đạo','minh@gmail.com',N'Nguyễn Lâm Nhật Minh',900000, '2001-04-19T10:00:56.117+00:00','2023-03-19T10:00:56.117+00:00', '+84523564371',2);
+
 Insert into khach_hang(cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_thoai_kh) values 
 ('123456789000', N'12 Lê Lợi', 'test@gmail.com', N'Trần Quang Linh', '0123456789'),
 ('123456789001', N'12 Lê Lai', 'test1@gmail.com', N'Trần Quang Thái', '0123456788'),
@@ -194,28 +198,114 @@ Insert into khach_hang(cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_th
 ('123456789114', N'12 Lê Lai', 'test13@gmail.com', N'Đỗ Bá Lam', '0123456103'),
 ('123456789115', N'12 Lê Công', 'test14@gmail.com', N'Mai Anh Tài', '0123456104');
 
-/*
-Insert into phieu_dat_phong(ma_phieu_dat_phong, ghi_chu_dat_phong, giam_gia, ngay_dat_phong, ngay_nhan_phong, ngay_tra_phong, trang_thai_dat_phong, ma_khach_hang) values
-(1, N'không có', 0, '2022-12-17', '2023-01-19', '2023-01-21', 'MOI_DAT', 1);
+Insert into phieu_dat_phong(ghi_chu_dat_phong,giam_gia,ngay_dat_phong,ngay_nhan_phong,ngay_tra_phong,trang_thai_dat_phong,ma_khach_hang)
+values (null,0,'2023-04-10 15:53:55.874000','2023-04-10 15:53:55.874000','2023-04-10 16:53:35.196000','HOAN_TAT',1),
+(null,0,'2023-04-10 15:56:19.482000','2023-04-10 15:56:19.482000','2023-04-10 16:56:04.324000','HOAN_TAT',2),
+(null,0,'2023-04-10 15:57:09.818000','2023-04-10 15:57:09.818000','2023-04-10 17:56:59.628000','HOAN_TAT',3),
+(null,0,'2023-04-10 15:57:36.363000','2023-04-10 15:57:36.363000','2023-04-10 17:57:25.963000','HOAN_TAT',4),
+(null,0,'2023-04-10 15:58:01.906000','2023-04-10 15:58:01.906000','2023-04-10 19:57:48.565000','HOAN_TAT',5),
+(null,0,'2023-04-10 15:58:24.035000','2023-04-10 15:58:24.035000','2023-04-10 19:58:14.788000','HOAN_TAT',6),
+(null,0,'2023-04-10 15:58:46.514000','2023-04-10 15:58:46.514000','2023-04-10 17:58:36.859000','HOAN_TAT',7),
+(null,0,'2023-04-10 15:59:23.002000','2023-04-10 15:59:23.002000','2023-04-10 18:59:02.659000','HOAN_TAT',8),
+(null,0,'2023-04-10 16:00:18.786000','2023-04-10 16:00:18.786000','2023-04-10 21:00:04.371000','HOAN_TAT',9),
+(null,0,'2023-04-10 16:00:51.514000','2023-04-11 16:00:32.000000','2023-04-11 20:00:37.000000','HOAN_TAT',10),
+(null,0,'2023-04-10 16:01:16.106000','2023-04-11 16:00:56.000000','2023-04-11 18:00:58.000000','HOAN_TAT',11),
+(null,0,'2023-04-10 16:01:36.979000','2023-04-11 16:01:23.000000','2023-04-11 18:01:25.000000','HOAN_TAT',12);
 
-Insert into chi_tiet_phieu_dat_phong(ma_phieu_dat_phong, ma_phong) values 
-(1, 1),
-(1, 2);
-*/
+INSERT INTO chi_tiet_phieu_dat_phong (ma_phieu_dat_phong,ma_phong) values 
+(1,'0105'),
+(1,'0106'),
+(2,'0102'),
+(3,'0304'),
+(4,'0406'),
+(5,'0101'),
+(6,'0302'),
+(7,'0504'),
+(7,'0505'),
+(8,'0201'),
+(8,'0302'),
+(9,'0502'),
+(9,'0503'),
+(10,'0504'),
+(10,'0505'),
+(11,'0302'),
+(11,'0304'),
+(12,'0502'),
+(12,'0503');
+
+INSERT INTO hoa_don (ngay_lap,ngay_nhan_phong,ngay_tra_phong,tien_nhan,ma_khach_hang,ma_nhan_vien,ma_phieu_dat_phong) values 
+('2023-01-04 00:41:20.526000','2023-04-10 15:53:55.874000','2023-04-10 16:53:35.196000',9000000,1,1,1),
+('2023-02-04 00:41:20.5260000','2023-04-10 15:56:19.482000','2023-04-10 16:56:04.324000',9000000,1,2,2),
+('2023-03-04 00:41:20.526000','2023-04-10 15:57:09.818000','2023-04-10 17:56:59.628000',9000000,1,1,3),
+('2023-04-04 00:41:20.526000','2023-04-10 15:57:36.363000','2023-04-10 17:57:25.963000',9000000,1,2,4),
+('2023-05-04 00:41:20.526000','2023-04-10 15:58:01.906000','2023-04-10 19:57:48.565000',9000000,1,1,5),
+('2023-06-04 00:41:20.526000','2023-04-10 15:58:24.035000','2023-04-10 19:58:14.788000',9000000,1,2,6),
+('2023-07-04 00:41:20.526000','2023-04-10 15:59:23.002000','2023-04-10 18:59:02.659000',9000000,1,1,7),
+('2023-08-04 00:41:20.526000','2023-04-10 15:58:46.514000','2023-04-10 17:58:36.859000',9000000,1,2,8),
+('2023-09-04 00:41:20.526000','2023-04-10 16:00:18.786000','2023-04-10 21:00:04.371000',9000000,1,1,9),
+('2023-10-04 00:41:20.526000','2023-04-11 16:01:42.000000','2023-04-11 19:01:42.000000',9000000,1,2,10),
+('2023-11-04 00:41:20.526000','2023-04-11 16:00:56.000000','2023-04-11 18:00:58.000000',9000000,1,1,11),
+('2023-12-04 00:41:20.526000','2023-04-11 16:01:23.000000','2023-04-11 18:01:25.000000',9000000,1,2,12);
+
+
+INSERT INTO chi_tiet_hoa_don(ma_hoa_don,ma_phong) values 
+(1,'0105'),
+(1,'0106'),
+(2,'0102'),
+(3,'0304'),
+(4,'0406'),
+(5,'0101'),
+(6,'0302'),
+(7,'0504'),
+(7,'0505'),
+(8,'0201'),
+(8,'0302'),
+(9,'0502'),
+(9,'0503'),
+(10,'0504'),
+(10,'0505'),
+(11,'0302'),
+(11,'0304'),
+(12,'0502'),
+(12,'0503');
+
+
+INSERT INTO chi_tiet_dich_vu(ma_dich_vu,ma_hoa_don,so_luong) values 
+(1,1,2),
+(2,1,5),
+(3,2,3),
+(4,3,4),
+(5,4,6),
+(6,5,1),
+(7,6,3),
+(8,7,4),
+(9,7,1),
+(10,8,2),
+(11,8,3),
+(1,9,4),
+(2,9,5),
+(3,10,2),
+(4,10,3),
+(5,11,4),
+(6,11,2),
+(7,12,1),
+(8,12,5);
+
 /*
-update hoa_don set ngay_lap ='2023-01-04 00:41:20.526000' where ma_hoa_don=1
-update hoa_don set ngay_lap ='2023-02-04 00:41:20.526000' where ma_hoa_don=2
-update hoa_don set ngay_lap ='2023-03-04 00:41:20.526000' where ma_hoa_don=3
-update hoa_don set ngay_lap ='2023-04-04 00:41:20.526000' where ma_hoa_don=4
-update hoa_don set ngay_lap ='2023-05-04 00:41:20.526000' where ma_hoa_don=5
-update hoa_don set ngay_lap ='2023-06-04 00:41:20.526000' where ma_hoa_don=6
-update hoa_don set ngay_lap ='2023-07-04 00:41:20.526000' where ma_hoa_don=7
-update hoa_don set ngay_lap ='2023-08-04 00:41:20.526000' where ma_hoa_don=8
-update hoa_don set ngay_lap ='2023-09-04 00:41:20.526000' where ma_hoa_don=9
-update hoa_don set ngay_lap ='2023-10-04 00:41:20.526000' where ma_hoa_don=10
-update hoa_don set ngay_lap ='2023-11-04 00:41:20.526000' where ma_hoa_don=11
-update hoa_don set ngay_lap ='2023-12-04 00:41:20.526000' where ma_hoa_don=12
+update hoa_don set ngay_lap ='2023-01-04 00:41:20.526000' where ma_hoa_don=4
+update hoa_don set ngay_lap ='2023-02-04 00:41:20.526000' where ma_hoa_don=5
+update hoa_don set ngay_lap ='2023-03-04 00:41:20.526000' where ma_hoa_don=6
+update hoa_don set ngay_lap ='2023-04-04 00:41:20.526000' where ma_hoa_don=7
+update hoa_don set ngay_lap ='2023-05-04 00:41:20.526000' where ma_hoa_don=8
+update hoa_don set ngay_lap ='2023-06-04 00:41:20.526000' where ma_hoa_don=9
+update hoa_don set ngay_lap ='2023-08-04 00:41:20.526000' where ma_hoa_don=10
+update hoa_don set ngay_lap ='2023-07-04 00:41:20.526000' where ma_hoa_don=11
+update hoa_don set ngay_lap ='2023-09-04 00:41:20.526000' where ma_hoa_don=12
+update hoa_don set ngay_lap ='2023-10-04 00:41:20.526000' where ma_hoa_don=13
+update hoa_don set ngay_lap ='2023-11-04 00:41:20.526000' where ma_hoa_don=14
+update hoa_don set ngay_lap ='2023-12-04 00:41:20.526000' where ma_hoa_don=15
 */
+
 
 
 

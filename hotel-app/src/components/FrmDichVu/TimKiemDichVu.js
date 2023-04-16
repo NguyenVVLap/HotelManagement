@@ -105,10 +105,18 @@ function FrmTimKiemDichVu() {
                     />
                 </Box>
                 <Box sx={{ alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
-                    <Button variant='contained' size='medium' endIcon={<SearchOutlinedIcon />} onClick={() => { handleSearchDichVu() }} >Tìm kiếm</Button>
+                    <Button sx={{
+                        backgroundColor: '#0D6EFD', '&:hover': {
+                            backgroundColor: '#0D6EFD',
+                        }
+                    }} variant='contained' size='medium' endIcon={<SearchOutlinedIcon />} onClick={() => { handleSearchDichVu() }} >Tìm kiếm</Button>
                 </Box>
                 <Box sx={{ alignItems: 'center', display: 'flex', marginLeft: '5px' }}>
-                    <Button size='medium' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshDichVu() }}>Tải lại dữ liệu</Button>
+                    <Button sx={{
+                        backgroundColor: '#FFC107', '&:hover': {
+                            backgroundColor: '#FFC107',
+                        }
+                    }} size='medium' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshDichVu() }}>Tải lại dữ liệu</Button>
                 </Box>
 
             </Box>

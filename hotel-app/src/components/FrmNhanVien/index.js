@@ -495,13 +495,25 @@ function FrmNhanVien() {
 
                     <Stack sx={{ width: '100%', flexDirection: 'row', justifyContent: 'space-evenly', mt: '10px' }}>
                         <Grid item md={3}>
-                            <Button type='submit' variant='contained' size='large' startIcon={<AddCircleOutlineOutlinedIcon />} onClick={() => { handleAddNhanVienMoi() }}>Thêm Nhân Viên</Button>
+                            <Button sx={{
+                                backgroundColor: '#198754', '&:hover': {
+                                    backgroundColor: '#198754'
+                                }
+                            }} type='submit' variant='contained' size='large' startIcon={<AddCircleOutlineOutlinedIcon />} onClick={() => { handleAddNhanVienMoi() }}>Thêm Nhân Viên</Button>
                         </Grid>
                         <Grid item md={3}>
-                            <Button size='large' variant='contained' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => { handleUpdateNhanVien() }}>Cập nhật nhân viên</Button>
+                            <Button sx={{
+                                backgroundColor: '#0D6EFD', '&:hover': {
+                                    backgroundColor: '#0D6EFD',
+                                }
+                            }} size='large' variant='contained' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => { handleUpdateNhanVien() }}>Cập nhật nhân viên</Button>
                         </Grid>
                         <Grid item md={3}>
-                            <Button size='large' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshNhanVien() }}>Tải lại dữ liệu</Button>
+                            <Button sx={{
+                                backgroundColor: '#FFC107', '&:hover': {
+                                    backgroundColor: '#FFC107',
+                                }
+                            }} size='large' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshNhanVien() }}>Tải lại dữ liệu</Button>
                         </Grid>
                     </Stack>
                 </Grid>
