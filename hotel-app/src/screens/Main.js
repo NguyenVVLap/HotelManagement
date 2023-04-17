@@ -26,23 +26,21 @@ import FrmThongKePhong from "../components/FrmThongKe/FrmThongKePhong";
 import FrmThongKeDoanhThu from "../components/FrmThongKe/FrmThongKeDoanhThu";
 import FrmThongKeDichVu from "../components/FrmThongKe/FrmThongKeDichVu";
 
-
-
 function Main() {
   const navigate = useNavigate();
   const [navSelected, setNavSelected] = useState({
-    room: true,
-    guest: false,
+    room: false,
+    guest: true,
     staff: false,
     bill: false,
     roomType: false,
     floor: false,
     booking: false,
     service: false,
-    report: false
+    report: false,
   });
   const [subNavSelected, setSubNavSelected] = useState({
-    nav: "room",
+    nav: "guest",
     subnav: "book",
   });
 
@@ -86,7 +84,9 @@ function Main() {
           {subNavSelected.subnav === "search-staff" && <FrmTimKiemNhanVien />}
           {subNavSelected.subnav === "room-report" && <FrmThongKePhong />}
           {subNavSelected.subnav === "service-report" && <FrmThongKeDichVu />}
-          {subNavSelected.subnav === "doanhthu-report" && <FrmThongKeDoanhThu />}
+          {subNavSelected.subnav === "doanhthu-report" && (
+            <FrmThongKeDoanhThu />
+          )}
         </div>
       </div>
     </Container>

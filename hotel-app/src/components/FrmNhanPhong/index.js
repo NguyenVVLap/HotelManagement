@@ -25,6 +25,12 @@ function FrmNhanPhong() {
   const diff_hours = (dt2, dt1) => {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
     diff /= 60 * 60;
+    if (dt2.getTime() === dt1.getTime()) {
+      return 0;
+    }
+    if (Math.abs(Math.round(diff)) === 0) {
+      return 1;
+    }
     return Math.abs(Math.round(diff));
   };
   useEffect(() => {
@@ -211,12 +217,13 @@ function FrmNhanPhong() {
                 dsPhieuDatPhong.map((phieuDatPhong, index) => {
                   return (
                     <div
-                      className={`booking-item ${phieuDatPhongSelected.maPhieuDatPhong &&
+                      className={`booking-item ${
+                        phieuDatPhongSelected.maPhieuDatPhong &&
                         phieuDatPhong.maPhieuDatPhong ===
-                        phieuDatPhongSelected.maPhieuDatPhong
-                        ? "selected"
-                        : ""
-                        }`}
+                          phieuDatPhongSelected.maPhieuDatPhong
+                          ? "selected"
+                          : ""
+                      }`}
                       onClick={() => setPhieuDatPhongSelected(phieuDatPhong)}
                       key={index}
                     >
@@ -285,15 +292,15 @@ function FrmNhanPhong() {
                         <tr>
                           <th></th>
                           <th>Phòng</th>
-                          <th>Tầng</th>
                           <th>Loại phòng</th>
+                          <th>Tầng</th>
                           <th>Giá (1 đêm)</th>
                         </tr>
                       </thead>
                       <tbody>
                         {phieuDatPhongSelected &&
-                          phieuDatPhongSelected.dsPhong &&
-                          phieuDatPhongSelected.dsPhong.length > 0 ? (
+                        phieuDatPhongSelected.dsPhong &&
+                        phieuDatPhongSelected.dsPhong.length > 0 ? (
                           phieuDatPhongSelected.dsPhong.map((room, index) => {
                             // console.log(isSelected(room));
                             return (
@@ -308,7 +315,7 @@ function FrmNhanPhong() {
                                     style={{ color: "red", fontSize: "2rem" }}
                                   />
                                 </td>
-                                <td>{room.tenPhong}</td>
+                                <td>{room.maPhong}</td>
                                 <td>{room.tenLoaiPhong}</td>
                                 <td>{room.tenTang}</td>
                                 <td>{room.giaPhong.toLocaleString()}</td>
@@ -353,7 +360,7 @@ function FrmNhanPhong() {
                   </div>
                   <div className="btn-function">
                     {phieuDatPhongSelected &&
-                      phieuDatPhongSelected.maPhieuDatPhong ? (
+                    phieuDatPhongSelected.maPhieuDatPhong ? (
                       <Button
                         variant="success"
                         type="submit"

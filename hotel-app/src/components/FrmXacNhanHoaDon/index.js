@@ -18,14 +18,14 @@ function FrmXacNhanHoaDon({
   onHandleCheckIn,
   setIsPrint,
   setHoaDonSelected,
-  onHandleCancelPrint
+  onHandleCancelPrint,
 }) {
   // console.log(hoaDonSelected);
   const [nhanVien, setNhanVien] = useState();
   const handlePrint = () => {
     window.print();
-}
-const componentRef = useRef();
+  };
+  const componentRef = useRef();
   useEffect(() => {
     const nhanVienTemp = JSON.parse(localStorage.getItem("nhanVien"));
     setNhanVien(nhanVienTemp);
@@ -35,7 +35,15 @@ const componentRef = useRef();
       <div className="container-styled">
         <div ref={componentRef} className="booking-detail">
           <div className="content-detail">
-            <div className="bill-title" style={{display:'flex', gap:'0.1rem', justifyContent: 'center', alignItems: 'center'}}>
+            <div
+              className="bill-title"
+              style={{
+                display: "flex",
+                gap: "0.1rem",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <div className="img-container">
                 <img
                   className="logo-img"
@@ -214,24 +222,33 @@ const componentRef = useRef();
                     </tbody>
                   </Table>
                 </div>
-                <div className="price-container" style={{display: 'flex', justifyContent: 'space-between'}}>
-                  <p style={{fontWeight: 'bold'}}>Tổng tiền</p>
-                  <div className="total-price" style={{fontWeight: 'bold'}}>
+                <div
+                  className="price-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ fontWeight: "bold" }}>Tổng tiền</p>
+                  <div className="total-price" style={{ fontWeight: "bold" }}>
                     {totalPrice && totalPrice.toLocaleString()} VND
                   </div>
                 </div>
-                <div className="price-container" style={{display: 'flex', justifyContent: 'space-between'}}>
-                  <p style={{fontWeight: 'bold'}}>Tiền nhận</p>
-                  <div className="total-price" style={{fontWeight: 'bold'}}>
+                <div
+                  className="price-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ fontWeight: "bold" }}>Tiền nhận</p>
+                  <div className="total-price" style={{ fontWeight: "bold" }}>
                     {hoaDonSelected.tienNhan
                       ? Number(hoaDonSelected.tienNhan).toLocaleString()
                       : 0}{" "}
                     VND
                   </div>
                 </div>
-                <div className="price-container" style={{display: 'flex', justifyContent: 'space-between'}}>
-                  <p style={{fontWeight: 'bold'}}>Tiền thừa</p>
-                  <div className="total-price" style={{fontWeight: 'bold'}}>
+                <div
+                  className="price-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ fontWeight: "bold" }}>Tiền thừa</p>
+                  <div className="total-price" style={{ fontWeight: "bold" }}>
                     {totalPrice &&
                       (hoaDonSelected.tienNhan - totalPrice).toLocaleString()}
                     {/* {hoaDonSelected.tienNhan - totalPrice < 0
@@ -264,11 +281,14 @@ const componentRef = useRef();
           </div>
         ) : (
           <div className="btn-container">
-            <ReactToPrint trigger={() => (
-                     <Button variant='primary' onClick={() => handlePrint()}>In hóa đơn</Button>
-                 )}
-                     content={() => componentRef.current}
-                 />
+            <ReactToPrint
+              trigger={() => (
+                <Button variant="primary" onClick={() => handlePrint()}>
+                  In hóa đơn
+                </Button>
+              )}
+              content={() => componentRef.current}
+            />
             <Button
               variant="danger"
               type="submit"

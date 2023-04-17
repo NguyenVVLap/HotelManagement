@@ -9,7 +9,11 @@ import {
 } from "react-bootstrap";
 import styled from "styled-components";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
-import { DateTimePicker, LocalizationProvider, MobileDateTimePicker } from "@mui/x-date-pickers";
+import {
+  DateTimePicker,
+  LocalizationProvider,
+  MobileDateTimePicker,
+} from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -32,6 +36,12 @@ function FrmDatPhong() {
   const diff_hours = (dt2, dt1) => {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
     diff /= 60 * 60;
+    if (dt2.getTime() === dt1.getTime()) {
+      return 0;
+    }
+    if (Math.abs(Math.round(diff)) === 0) {
+      return 1;
+    }
     return Math.abs(Math.round(diff));
   };
 

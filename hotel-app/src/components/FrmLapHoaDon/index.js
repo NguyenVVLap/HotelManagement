@@ -30,6 +30,12 @@ function FrmLapHoaDon() {
   const diff_hours = (dt2, dt1) => {
     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
     diff /= 60 * 60;
+    if (dt2.getTime() === dt1.getTime()) {
+      return 0;
+    }
+    if (Math.abs(Math.round(diff)) === 0) {
+      return 1;
+    }
     return Math.abs(Math.round(diff));
   };
   useEffect(() => {
@@ -115,8 +121,7 @@ function FrmLapHoaDon() {
     setHoaDonSelected({});
     setShowConfirmBill(false);
     setIsPrint(false);
-
-  }
+  };
   const onHandleCheckIn = async () => {
     if (hoaDonSelected.maHoaDon && hoaDonSelected.tienNhan && validate()) {
       let dsMaPhong = [];
@@ -286,9 +291,10 @@ function FrmLapHoaDon() {
                       <thead>
                         <tr>
                           <th>Phòng</th>
-                          <th>Tầng</th>
-                          <th>Loại phòng</th>
+                          <th>Loại</th>
                           <th>Giá (1 giờ)</th>
+                          <th>Tổng giờ</th>
+                          <th>T tiền</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -299,10 +305,13 @@ function FrmLapHoaDon() {
                             // console.log(isSelected(room));
                             return (
                               <tr key={index}>
-                                <td>{room.tenPhong}</td>
+                                <td>{room.maPhong}</td>
                                 <td>{room.tenLoaiPhong}</td>
-                                <td>{room.tenTang}</td>
                                 <td>{room.giaPhong.toLocaleString()}</td>
+                                <td>{totalHour}</td>
+                                <td>
+                                  {(totalHour * room.giaPhong).toLocaleString()}
+                                </td>
                               </tr>
                             );
                           })
@@ -313,6 +322,17 @@ function FrmLapHoaDon() {
                             </td>
                           </tr>
                         )}
+                        <tr>
+                          <td
+                            colSpan={4}
+                            style={{ fontWeight: "bold", textAlign: "center" }}
+                          >
+                            Tồng thành tiền
+                          </td>
+                          <td style={{ fontWeight: "bold" }}>
+                            {totalRoomPrice.toLocaleString()} VND
+                          </td>
+                        </tr>
                       </tbody>
                     </Table>
                   </div>
@@ -322,9 +342,10 @@ function FrmLapHoaDon() {
                       <thead>
                         <tr>
                           <th>Tên</th>
-                          <th>Giá</th>
-                          <th>Số lượng</th>
                           <th>Đơn vị</th>
+                          <th>Giá</th>
+                          <th>SL</th>
+                          <th>T tiền</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -337,9 +358,14 @@ function FrmLapHoaDon() {
                               return (
                                 <tr key={index}>
                                   <td>{dichVu.tenDichVu}</td>
+                                  <td>{dichVu.tenLoaiDichVu}</td>
                                   <td>{dichVu.giaDichVu.toLocaleString()}</td>
                                   <td>{dichVu.soLuong}</td>
-                                  <td></td>
+                                  <td>
+                                    {(
+                                      dichVu.giaDichVu * dichVu.soLuong
+                                    ).toLocaleString()}
+                                  </td>
                                 </tr>
                               );
                             }
@@ -351,6 +377,17 @@ function FrmLapHoaDon() {
                             </td>
                           </tr>
                         )}
+                        <tr>
+                          <td
+                            colSpan={4}
+                            style={{ fontWeight: "bold", textAlign: "center" }}
+                          >
+                            Tồng thành tiền
+                          </td>
+                          <td style={{ fontWeight: "bold" }}>
+                            {totalServicePrice.toLocaleString()} VND
+                          </td>
+                        </tr>
                       </tbody>
                     </Table>
                   </div>

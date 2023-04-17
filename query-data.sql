@@ -45,3 +45,13 @@ select ctdv.ma_dich_vu as maDichVu, dv.ten_dich_vu as tenDichVu
 from chi_tiet_dich_vu ctdv 
 inner join dich_vu dv on ctdv.ma_dich_vu = dv.ma_dich_vu
 where ctdv.ma_hoa_don=1
+
+select * from phieu_dat_phong;
+
+select ma_phieu_dat_phong from phieu_dat_phong pdp where
+pdp.trang_thai_dat_phong != 'HUY' and
+(pdp.ngay_nhan_phong between '2023-04-17 09:14' and '2023-04-17 09:16'
+or pdp.ngay_tra_phong between '2023-04-17 09:14' and '2023-04-17 09:16'
+or '2023-04-17 09:16' between pdp.ngay_nhan_phong and pdp.ngay_tra_phong
+or '2023-04-17 09:14' between pdp.ngay_nhan_phong and pdp.ngay_tra_phong)
+;

@@ -13,8 +13,11 @@ import com.example.hotelserver.entity.PhieuDatPhong;
 @Repository
 public interface PhieuDatPhongRepo extends JpaRepository<PhieuDatPhong, Long> {
 	@Query(nativeQuery = true, value = "select ma_phieu_dat_phong from phieu_dat_phong pdp "
-			+ "where pdp.ngay_nhan_phong between :ngayNhanPhong and :ngayTraPhong "
-			+ "or pdp.ngay_tra_phong between :ngayNhanPhong and :ngayTraPhong ")
+			+ "where pdp.trang_thai_dat_phong != 'HUY' "
+			+ "and (pdp.ngay_nhan_phong between :ngayNhanPhong and :ngayTraPhong "
+			+ "or pdp.ngay_tra_phong between :ngayNhanPhong and :ngayTraPhong "
+			+ "or :ngayNhanPhong between pdp.ngay_nhan_phong and pdp.ngay_tra_phong "
+			+ "or :ngayTraPhong between pdp.ngay_nhan_phong and pdp.ngay_tra_phong)")
 	List<Long> layMaPhieuTheoNgayNhanNgayTra(@Param("ngayNhanPhong") Date ngayNhanPhong
 			, @Param("ngayTraPhong") Date ngayTraPhong);
 	
