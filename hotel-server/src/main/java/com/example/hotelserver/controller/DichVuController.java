@@ -54,18 +54,42 @@ public class DichVuController {
         return new ResponseEntity<List<DichVuResponseDto>>(dichvuService.layTatCaDichVuAndLoaiDichVu(), HttpStatus.OK);
     }
     @PostMapping("/timKiemDichVu")
-    public ResponseEntity<List<DichVu>> timKiemDichVu(@RequestBody Map<String, Object> request) {
-        List<DichVu> results = new ArrayList<>();
+    public ResponseEntity<List<DichVuResponseDto>> timKiemDichVu(@RequestBody Map<String, Object> request) {
+        List<DichVuResponseDto> results = new ArrayList<>();
         if (request.get("theo").toString().equals("Theo tên dịch vụ")) {
-            results = dichvuService.timDichVuTheoTen(request.get("keyword").toString());
+            List<DichVu> dichVuList =  dichvuService.timDichVuTheoTen(request.get("keyword").toString());
+            for(DichVu dv : dichVuList) {
+                var dvDto = DichVuResponseDto.builder()
+                        .maDichVu(dv.getMaDichVu())
+                        .tenDichVu(dv.getTenDichVu())
+                        .giaDichVu(dv.getGiaDichVu())
+                        .soLuong(dv.getSoLuong())
+                        .maLoaiDichVu(dv.getLoaiDichVu().getMaLoaiDichVu())
+                        .tenLoaiDichVu(dv.getLoaiDichVu().getTenLoaiDichVu())
+                        .donViLoaiDichVu(dv.getLoaiDichVu().getDonViLoaiDichVu())
+                        .build();
+                results.add(dvDto);
+            }
         } else if (request.get("theo").toString().equals("Theo mã dịch vụ")) {
             try {
-                results.add(dichvuService.timDichVuTheoMa(Integer.parseInt(request.get("keyword").toString())));
+                var dv =dichvuService.timDichVuTheoMa(Integer.parseInt(request.get("keyword").toString()));
+                System.out.println("Dich Vu Search :"+dv);
+                var dichVuDTO = DichVuResponseDto.builder()
+                        .maDichVu(dv.getMaDichVu())
+                        .tenDichVu(dv.getTenDichVu())
+                        .giaDichVu(dv.getGiaDichVu())
+                        .soLuong(dv.getSoLuong())
+                        .maLoaiDichVu(dv.getLoaiDichVu().getMaLoaiDichVu())
+                        .tenLoaiDichVu(dv.getLoaiDichVu().getTenLoaiDichVu())
+                        .donViLoaiDichVu(dv.getLoaiDichVu().getDonViLoaiDichVu())
+                        .build();
+                System.out.println("Dich Vu Search DTO :"+dichVuDTO);
+                results.add(dichVuDTO);
             } catch (Exception e) {
                 System.out.println("Error when parse to int " + e);
             }
         }
-        return new ResponseEntity<List<DichVu>>(results, HttpStatus.OK);
+        return new ResponseEntity<List<DichVuResponseDto>>(results, HttpStatus.OK);
     }
     @GetMapping("/layAllDichVuAndLoaiDichVu")
     public ResponseEntity<List<DichVuResponseDto>> getAllDichVuAndLoaiDichVu() {

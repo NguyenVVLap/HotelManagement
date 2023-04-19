@@ -28,15 +28,20 @@ function FrmLapHoaDon() {
   const [isPrint, setIsPrint] = useState(false);
 
   const diff_hours = (dt2, dt1) => {
-    var diff = (dt2.getTime() - dt1.getTime()) / 1000;
-    diff /= 60 * 60;
-    if (dt2.getTime() === dt1.getTime()) {
-      return 0;
-    }
-    if (Math.abs(Math.round(diff)) === 0) {
-      return 1;
-    }
-    return Math.abs(Math.round(diff));
+    // var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    // diff /= 60 * 60;
+    // if (dt2.getTime() === dt1.getTime()) {
+    //   return 0;
+    // }
+    // if (Math.abs(Math.round(diff)) === 0) {
+    //   return 1;
+    // }
+    // return Math.abs(Math.round(diff));
+    const millisecondsPerHour = 1000 * 60 * 60;
+    const differenceInMilliseconds = dt1 - dt2;
+    const totalHours = Math.ceil(differenceInMilliseconds / millisecondsPerHour);
+    // console.log('totalHours', totalHours);
+    return totalHours;
   };
   useEffect(() => {
     let price = 0;
@@ -222,12 +227,11 @@ function FrmLapHoaDon() {
                 dsHoaDon.map((hoaDon, index) => {
                   return (
                     <div
-                      className={`booking-item ${
-                        hoaDonSelected.maHoaDon &&
-                        hoaDon.maHoaDon === hoaDonSelected.maHoaDon
+                      className={`booking-item ${hoaDonSelected.maHoaDon &&
+                          hoaDon.maHoaDon === hoaDonSelected.maHoaDon
                           ? "selected"
                           : ""
-                      }`}
+                        }`}
                       onClick={() => setHoaDonSelected(hoaDon)}
                       key={index}
                     >
@@ -299,8 +303,8 @@ function FrmLapHoaDon() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                        hoaDonSelected.dsPhong &&
-                        hoaDonSelected.dsPhong.length > 0 ? (
+                          hoaDonSelected.dsPhong &&
+                          hoaDonSelected.dsPhong.length > 0 ? (
                           hoaDonSelected.dsPhong.map((room, index) => {
                             // console.log(isSelected(room));
                             return (
@@ -350,8 +354,8 @@ function FrmLapHoaDon() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                        hoaDonSelected.dsChiTietDichVuDto &&
-                        hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                          hoaDonSelected.dsChiTietDichVuDto &&
+                          hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
                           hoaDonSelected.dsChiTietDichVuDto.map(
                             (dichVu, index) => {
                               // console.log(isSelected(room));
@@ -453,9 +457,9 @@ function FrmLapHoaDon() {
             </div>
             <div className="btn-function">
               {hoaDonSelected &&
-              hoaDonSelected.maHoaDon &&
-              hoaDonSelected.tienNhan &&
-              hoaDonSelected.tienNhan >= totalPrice ? (
+                hoaDonSelected.maHoaDon &&
+                hoaDonSelected.tienNhan &&
+                hoaDonSelected.tienNhan >= totalPrice ? (
                 <Button
                   variant="success"
                   type="submit"

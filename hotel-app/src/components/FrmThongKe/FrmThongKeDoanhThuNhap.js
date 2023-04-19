@@ -225,9 +225,14 @@ function FrmThongKeDoanhThu() {
     }, [dsHoaDonChartTheoThang12])
     //Hàm tính giờ
     const diff_hours = (dt2, dt1) => {
-        var diff = (dt2.getTime() - dt1.getTime()) / 1000;
-        diff /= 60 * 60;
-        return Math.abs(Math.round(diff));
+        // var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+        // diff /= 60 * 60;
+        // return Math.abs(Math.round(diff));
+        const millisecondsPerHour = 1000 * 60 * 60;
+        const differenceInMilliseconds = dt1 - dt2;
+        const totalHours = Math.ceil(differenceInMilliseconds / millisecondsPerHour);
+        // console.log('totalHours', totalHours);
+        return totalHours;
     };
 
     const handleOnchangeSelectedCombobox = (e, value) => {

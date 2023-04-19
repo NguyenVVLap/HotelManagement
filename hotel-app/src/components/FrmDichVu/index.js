@@ -1,11 +1,6 @@
-import { Autocomplete, Box, Button, Grid, IconButton, Paper, Stack, TextField, Typography } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { FloatingLabel, Form, Toast, ToastContainer } from "react-bootstrap";
+import { Autocomplete, Box, Button as ButtonMUI, Grid, IconButton, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Toast, ToastContainer, Button, FloatingLabel, Form, Table } from "react-bootstrap";
+import { BiRefresh } from 'react-icons/bi';
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
@@ -21,6 +16,7 @@ function FrmDichVu() {
     const [maDichVuCu, setMaDichVuCu] = useState(undefined);
     const [temoLoaiDichVu, setTempLoaiDichVu] = useState([]);
     const [dsDichVu, setDsDichVu] = useState(undefined);
+    const [dichVuXoaRongTemp, setDichVuXoaRongTemp] = useState(undefined);
     const [dichvuMoi, setDichVuMoi] = useState({
 
     });
@@ -39,7 +35,8 @@ function FrmDichVu() {
     // useEffect để hiển thị selected data mỗi khi dichvuSelected bị thay đổi
     useEffect(() => {
         if (dichVuSelected) {
-            setDichVuMoi(dichVuSelected)
+            setDichVuMoi(dichVuSelected);
+            setDichVuXoaRongTemp(dichVuSelected);
         }
         else {
             setDichVuMoi({
@@ -48,6 +45,7 @@ function FrmDichVu() {
                 giaDichVu: "",
                 soLuong: ""
             })
+            setDichVuXoaRongTemp(undefined);
         }
     }, [dichVuSelected])
     const loadDichVuFromDB = async () => {
@@ -111,17 +109,17 @@ function FrmDichVu() {
             });
             return false;
         }
-        for (var i = 0; i < dsDichVu.length; i++) {
-            if (tenDichVu == dsDichVu[i].tenDichVu || giaDichVu === dsDichVu[i].giaDichVu) {
-                setToast({
-                    header: "Tên và giá dịch vụ không được trùng",
-                    content: "",
-                    bg: "danger",
-                    textColor: "#fff",
-                });
-                return false;
-            }
-        }
+        // for (var i = 0; i < dsDichVu.length; i++) {
+        //     if (tenDichVu == dsDichVu[i].tenDichVu || giaDichVu === dsDichVu[i].giaDichVu) {
+        //         setToast({
+        //             header: "Tên và giá dịch vụ không được trùng",
+        //             content: "",
+        //             bg: "danger",
+        //             textColor: "#fff",
+        //         });
+        //         return false;
+        //     }
+        // }
 
         return true;
     };
@@ -193,118 +191,193 @@ function FrmDichVu() {
         });
 
     };
+    const handleXoaRong = () => {
+        if (dichVuXoaRongTemp) {
+            setDichVuMoi({
+                maDichVu: dichVuXoaRongTemp.maDichVu,
+                tenDichVu: "",
+                giaDichVu: "",
+                soLuong: "",
+                maLoaiDichVu: 1
+
+            });
+        }
+        else {
+            setDichVuMoi({
+                maDichVu: 0,
+                tenDichVu: "",
+                giaDichVu: "",
+                soLuong: "",
+                maLoaiDichVu: 1
+            });
+        }
+
+    }
     // console.log("Search combobox :", search);
     // console.log("Temp loai DichVu :", temoLoaiDichVu);
-    // console.log("Dich vu moi :", dichvuMoi);
+    console.log("Dich vu moi :", dichvuMoi);
     return (
         <StyledContainer>
-            <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Typography variant='h3'>Quản lý dịch vụ</Typography>
             </Box>
-            <Paper elevation={15} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '10px', flexDirection: 'column', minHeight: '30%' }}>
-                <Box component='form' onSubmit={(e) => handleAddDichVu(e)} sx={{ width: '50%' }}>
-                    <TextField id="ma_dich_vu" name='ma_dich_vu' label="" variant="outlined" fullWidth disabled value={dichvuMoi && dichvuMoi.maDichVu && dichvuMoi.maDichVu !== 0 ? dichvuMoi.maDichVu : "Mã dịch vụ"} />
-                    <TextField id="ten_dich_vu" name='tenDichVu' label="Tên dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.tenDichVu ? dichvuMoi.tenDichVu : ""} />
-                    {/* Loai dich Vu */}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Paper elevation={15} sx={{ marginTop: '10px', flexDirection: 'column', maxHeight: '45%', overflow: 'auto', padding: '15px' }}>
+                <Grid container spacing={2} component='form' onSubmit={(e) => handleAddDichVu(e)}>
+                    <Grid item md={4}>
                         <FloatingLabel
                             controlId="floatingInput"
-                            label="Loại dịch vụ"
-                            className="mb-3"
-                            style={{ marginTop: '15px', flexGrow: '2' }}
+                            label=""
+                            className="mb-1"
                         >
-                            <Form.Select
-                                aria-label="Default select example"
-                                onChange={(e) => handleOnSelect("maLoaiDichVu", e)}
-                            >
-                                {temoLoaiDichVu &&
-                                    temoLoaiDichVu.length !== 0 &&
-                                    temoLoaiDichVu.map((loaiDichVu, index) => {
-                                        return (
-                                            <option
-                                                value={`${loaiDichVu.maLoaiDichVu}`}
-                                                key={index}
-                                                selected={
-                                                    dichvuMoi.maLoaiDichVu &&
-                                                    dichvuMoi.maLoaiDichVu == loaiDichVu.maLoaiDichVu
-                                                }
-                                            >
-                                                {loaiDichVu.tenLoaiDichVu}
-                                            </option>
-                                        );
-                                    })}
-
-                            </Form.Select>
+                            <Form.Control
+                                type="text"
+                                name="ma_dich_vu"
+                                disabled={true}
+                                value={dichvuMoi && dichvuMoi.maDichVu && dichvuMoi.maDichVu !== 0 ? dichvuMoi.maDichVu : "Mã dịch vụ"}
+                            />
                         </FloatingLabel>
-                        <IconButton color="success" aria-label="add to shopping cart" onClick={() => setOpenPopup(true)}>
-                            <LoupeOutlinedIcon />
-                        </IconButton>
-                    </Box>
+                    </Grid>
 
-                    <TextField id="gia_dich_vu" name='giaDichVu' label="Giá dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '5px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.giaDichVu ? dichvuMoi.giaDichVu : ""} />
-                    <TextField type='number' id="soLuong" name='soLuong' label="Số lượng" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={dichvuMoi && dichvuMoi.soLuong ? dichvuMoi.soLuong : ""} />
+                    <Grid item md={4}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Tên dịch vụ"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="tenDichVu"
+                                value={dichvuMoi && dichvuMoi.tenDichVu ? dichvuMoi.tenDichVu : ""}
+                                onChange={(e) => handleOnChange(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
 
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
-                        <Button sx={{
-                            backgroundColor: '#198754', '&:hover': {
-                                backgroundColor: '#198754'
-                            }
-                        }} type='submit' variant='contained' size='medium' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm dịch vụ</Button>
-                        <Button sx={{
-                            backgroundColor: '#0D6EFD', '&:hover': {
-                                backgroundColor: '#0D6EFD',
-                            }
-                        }} variant='contained' size='medium' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateDichVu()}>Cập nhật dịch vụ</Button>
-                        <Button sx={{
-                            backgroundColor: '#FFC107', '&:hover': {
-                                backgroundColor: '#FFC107',
-                            }
-                        }} variant='contained' size='medium' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshDichVu()}>Tải lại dữ liệu</Button>
-                    </Box>
-                </Box>
+                    <Grid item md={4}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Giá dịch vụ"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="number"
+                                name="giaDichVu"
+                                value={dichvuMoi && dichvuMoi.giaDichVu ? dichvuMoi.giaDichVu : ""}
+                                onChange={(e) => handleOnChange(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+
+                    <Grid item md={4}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Số lượng"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="number"
+                                name="soLuong"
+                                value={dichvuMoi && dichvuMoi.soLuong ? dichvuMoi.soLuong : ""}
+                                onChange={(e) => handleOnChange(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+                    <Grid item md={8}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', }}>
+                            <FloatingLabel
+                                controlId="floatingInput"
+                                label="Loại dịch vụ"
+                                className="mb-1"
+                                style={{ flexGrow: '2' }}
+                            >
+                                <Form.Select
+                                    aria-label="Default select example"
+                                    onChange={(e) => handleOnSelect("maLoaiDichVu", e)}
+                                >
+                                    {temoLoaiDichVu &&
+                                        temoLoaiDichVu.length !== 0 &&
+                                        temoLoaiDichVu.map((loaiDichVu, index) => {
+                                            return (
+                                                <option
+                                                    value={`${loaiDichVu.maLoaiDichVu}`}
+                                                    key={index}
+                                                    selected={
+                                                        dichvuMoi.maLoaiDichVu &&
+                                                        dichvuMoi.maLoaiDichVu == loaiDichVu.maLoaiDichVu
+                                                    }
+                                                >
+                                                    {loaiDichVu.tenLoaiDichVu}
+                                                </option>
+                                            );
+                                        })}
+
+                                </Form.Select>
+                            </FloatingLabel>
+                            <IconButton color="success" aria-label="add to shopping cart" onClick={() => setOpenPopup(true)} sx={{ '&:hover': 'none' }}>
+                                <LoupeOutlinedIcon />
+                            </IconButton>
+                        </Box>
+                    </Grid>
+
+
+
+
+                    <Stack sx={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', mt: '10px', ml: '8px', gap: '1.5rem' }}>
+                        <Button variant="success" style={{ padding: '0.5rem 1.5rem' }} type='submit' >
+                            Thêm dịch vụ
+                        </Button>
+                        <Button variant="primary" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleUpdateDichVu()}>
+                            Cập nhật
+                        </Button>
+                        <Button variant="danger" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleXoaRong()} >
+                            Xóa rỗng
+                        </Button>
+                        <Button variant="warning" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleRefeshDichVu()}>
+                            <BiRefresh style={{ fontSize: '1.5rem' }} />
+                        </Button>
+                    </Stack>
+                </Grid>
+
 
             </Paper>
-
-
 
             {/* Danh sách Dịch Vụ */}
-            <Paper elevation={24} sx={{ maxHeight: '38%', mt: '11px', overflow: 'auto' }}>
-                <TableContainer component={Paper} elevation={15}>
-                    <Table aria-label="user table">
-                        <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
-                            <TableRow>
-                                <TableCell><Typography>Mã dịch vụ</Typography></TableCell>
-                                <TableCell align="center"><Typography>Tên dịch vụ</Typography></TableCell>
-                                <TableCell align="center"><Typography>Tên loại dịch vụ</Typography></TableCell>
-                                <TableCell align="center"><Typography>Đơn vị tính</Typography></TableCell>
-                                <TableCell align="center"><Typography>Giá dịch vụ</Typography></TableCell>
-                                <TableCell align="right"><Typography>Số lượng</Typography></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {dsDichVu && dsDichVu.length > 0 ? dsDichVu.map((data) => (
-                                <TableRow key={data.maDichVu} onClick={() => handleSelected(data)} className={dichVuSelected && dichVuSelected.maDichVu === data.maDichVu
-                                    ? "row-selected"
-                                    : ""}>
-                                    <TableCell component="th" scope="row">
-                                        {data.maDichVu}
-                                    </TableCell>
-                                    <TableCell align="center">{data.tenDichVu}</TableCell>
-                                    <TableCell align="center">{data.tenLoaiDichVu}</TableCell>
-                                    <TableCell align="center">{data.donViLoaiDichVu}</TableCell>
-                                    <TableCell align="center">{data.giaDichVu}</TableCell>
-                                    <TableCell align="right">{data.soLuong}</TableCell>
-                                </TableRow>
-                            )) :
+            <StyledPaper elevation={10}>
+                <Table striped hover>
+                    <thead>
+                        <tr>
+                            <th>Mã dịch vụ</th>
+                            <th >Tên dịch vụ</th>
+                            <th>Tên loại dịch vụ</th>
+                            <th>Đơn vị tính</th>
+                            <th>Giá dịch vụ</th>
+                            <th>Số lượng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {dsDichVu && dsDichVu.length > 0 ? dsDichVu.map((data) => (
+                            <tr key={data.maDichVu} onClick={() => handleSelected(data)} className={dichVuSelected && dichVuSelected.maDichVu === data.maDichVu
+                                ? "row-selected"
+                                : ""} >
+                                <td component="th" scope="row">
+                                    {data.maDichVu}
+                                </td>
+                                <td>{data.tenDichVu}</td>
+                                <td>{data.tenLoaiDichVu}</td>
+                                <td>{data.donViLoaiDichVu}</td>
+                                <td>{`${data.giaDichVu.toLocaleString()} VND`}</td>
+                                <td>{data.soLuong}</td>
+                            </tr>
+                        )) :
 
-                                <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
-                                    <Typography variant='h3'>Chưa có dữ liệu</Typography>
-                                </Box>
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+                            <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                            </Box>
+                        }
+                    </tbody>
+                </Table>
+            </StyledPaper>
+
 
 
 
@@ -348,8 +421,21 @@ const StyledContainer = styled.div`
   table {
     .row-selected {
       
-        background: linear-gradient(to bottom, #ee0979, #ff6a00);
+        background-color: #9fbce7d1 !important;
       
     }
   }
 `;
+const StyledPaper = styled(Paper)`
+height: 455px;
+overflow: auto;
+margin-top: 15px;
+&::-webkit-scrollbar {
+    width: 0.2rem;
+    &-thumb {
+      background-image: linear-gradient(#373b44, #1095c1);
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`

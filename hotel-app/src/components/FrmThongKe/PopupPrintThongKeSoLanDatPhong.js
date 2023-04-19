@@ -1,6 +1,6 @@
-import { Box, Button, Dialog, DialogContent, DialogTitle, Divider, Paper, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, DialogTitle, Divider, Paper, Snackbar, Stack, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState, useRef } from 'react'
-
+import { Toast, ToastContainer, FloatingLabel, Form, Table } from "react-bootstrap";
 import ReactToPrint from 'react-to-print';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -99,51 +99,49 @@ const PopupPrintThongKeSoLanDatPhong = (props) => {
 
                     {dsThongKeSoLanDatPhong && dsThongKeSoLanDatPhong.length > 0 &&
                         <Paper elevation={10} sx={{ mt: '30px' }}>
+                            <Table striped hover>
 
-                            <TableContainer component={Paper} elevation={15}>
-                                <Table aria-label="user table">
-                                    <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
-                                        <TableRow>
-                                            <TableCell><Typography>Mã phòng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Tên phòng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Giá phòng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Tầng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Loại phòng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Tổng số lần đặt phòng</Typography></TableCell>
+                                <thead>
+                                    <tr>
+                                        <th>Mã phòng</th>
+                                        <th >Tên phòng</th>
+                                        <th>Giá phòng</th>
+                                        <th>Tầng</th>
+                                        <th>Loại phòng</th>
+                                        <th>Tổng số lần đặt phòng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {dsThongKeSoLanDatPhong && dsThongKeSoLanDatPhong.length > 0 ? dsThongKeSoLanDatPhong.map((data) => (
+                                        <tr key={data.maPhong}  >
+                                            <td >
+                                                {data.maPhong}
+                                            </td>
+                                            <td>
+                                                {data.tenPhong}
+                                            </td>
+                                            <td>
+                                                {`${data.giaPhong.toLocaleString()} VND/giờ`}
+                                            </td>
+                                            <td>
+                                                {data.tenTang}
+                                            </td>
+                                            <td>
+                                                {data.tenLoaiPhong}
+                                            </td>
+                                            <td>
+                                                {data.tongSoLanDat}
+                                            </td>
+                                        </tr>
+                                    )) :
 
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {dsThongKeSoLanDatPhong && dsThongKeSoLanDatPhong.length > 0 ? dsThongKeSoLanDatPhong.map((data) => (
-                                            <TableRow key={data.maPhong}  >
-                                                <TableCell component="th" scope="row">
-                                                    {data.maPhong}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {data.tenPhong}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {`${data.giaPhong} VND/giờ`}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {data.tenTang}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {data.tenLoaiPhong}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {data.tongSoLanDat}
-                                                </TableCell>
-                                            </TableRow>
-                                        )) :
+                                        <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                            <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                                        </Box>
+                                    }
+                                </tbody>
+                            </Table>
 
-                                            <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
-                                                <Typography variant='h3'>Chưa có dữ liệu</Typography>
-                                            </Box>
-                                        }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
                         </Paper>}
                     <Box sx={{ mt: '20px' }}>
                         <Stack flexDirection='row' justifyContent='space-between'  >

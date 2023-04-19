@@ -130,8 +130,8 @@ function FrmXacNhanHoaDon({
                     </thead>
                     <tbody>
                       {hoaDonSelected &&
-                      hoaDonSelected.dsPhong &&
-                      hoaDonSelected.dsPhong.length > 0 ? (
+                        hoaDonSelected.dsPhong &&
+                        hoaDonSelected.dsPhong.length > 0 ? (
                         hoaDonSelected.dsPhong.map((room, index) => {
                           // console.log(isSelected(room));
                           return (
@@ -181,8 +181,8 @@ function FrmXacNhanHoaDon({
                     </thead>
                     <tbody>
                       {hoaDonSelected &&
-                      hoaDonSelected.dsChiTietDichVuDto &&
-                      hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                        hoaDonSelected.dsChiTietDichVuDto &&
+                        hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
                         hoaDonSelected.dsChiTietDichVuDto.map(
                           (dichVu, index) => {
                             // console.log(isSelected(room));
@@ -398,6 +398,15 @@ const StyledContainer = styled.div`
       justify-content: flex-end;
       gap: 1rem;
     }
+    /* .print-container {
+      background-color: white;
+      width: 77vw;
+      height: 100vh;
+      position: absolute;
+      z-index: 99;
+      top: -25px;
+      left: -260px;
+    } */
   }
 `;
 export default FrmXacNhanHoaDon;

@@ -1,4 +1,7 @@
-import { Box, Grid, Paper, TextField, Typography, Button, Radio, Chip, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Stack, Autocomplete } from '@mui/material';
+import { Box, Grid, Paper, TextField, Typography, Radio, Chip, Button as ButtonMUI, TableContainer, TableHead, TableRow, TableCell, TableBody, Stack, Autocomplete } from '@mui/material';
+import {
+    Button, FloatingLabel, Form, Table
+} from "react-bootstrap";
 import React from 'react'
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -393,8 +396,8 @@ function FrmTimKiemNhanVien() {
 
     return (
         <StyledContainer>
-            <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
-                <Typography variant='h3'>Tìm nhân viên</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <h1>Tìm nhân viên</h1>
             </Box>
             <Box sx={{ display: 'flex', height: '100px', mt: '10px' }}>
                 {search.theo === "Theo số điện thoại" ?
@@ -417,69 +420,67 @@ function FrmTimKiemNhanVien() {
                     />
                 </Box>
                 <Box sx={{ width: '30%', alignItems: 'center', display: 'flex', marginLeft: '20px', justifyContent: 'space-between' }}>
-                    <Button sx={{
+                    <ButtonMUI sx={{
                         backgroundColor: '#0D6EFD', '&:hover': {
                             backgroundColor: '#0D6EFD',
                         }
-                    }} variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleSearchNhanVien() }} >Tìm kiếm</Button>
-                    <Button sx={{
+                    }} variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleSearchNhanVien() }} >Tìm kiếm</ButtonMUI>
+                    <ButtonMUI sx={{
                         backgroundColor: '#FFC107', '&:hover': {
                             backgroundColor: '#FFC107',
                         }
-                    }} size='medium' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshNhanVien() }}>Tải lại dữ liệu</Button>
+                    }} size='medium' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshNhanVien() }}>Tải lại dữ liệu</ButtonMUI>
                 </Box>
             </Box>
-            {/* Danh sách Nhân Viên */}
-            <Paper elevation={10} sx={{ height: '600px', mt: '11px', overflow: 'auto' }}>
-                <TableContainer component={Paper} elevation={15}>
-                    <Table aria-label="user table">
-                        <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
-                            <TableRow>
-                                <TableCell><Typography>Mã nhân viên</Typography></TableCell>
-                                <TableCell align="center"><Typography>Họ Tên</Typography></TableCell>
-                                <TableCell align="center"><Typography>Địa chỉ</Typography></TableCell>
-                                <TableCell align="center"><Typography>Căn cước</Typography></TableCell>
-                                <TableCell align="center"><Typography>Email</Typography></TableCell>
-                                <TableCell align="center"><Typography>Số điện thoại</Typography></TableCell>
-                                <TableCell align="center"><Typography>Lương cơ bản</Typography></TableCell>
-                                <TableCell align="center"><Typography>Ngày sinh</Typography></TableCell>
-                                <TableCell align="center"><Typography>Ngày vào làm</Typography></TableCell>
-                                <TableCell align="center"><Typography>Tình trạng</Typography></TableCell>
-                                <TableCell align="center"><Typography>Hành động</Typography></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {dsNhanVien && dsNhanVien.length > 0 ? dsNhanVien.map((data) => (
-                                <TableRow key={data.nhanvien.maNhanVien} onClick={() => handleSelected(data)} className={nhanVienSelected && nhanVienSelected.nhanvien.maNhanVien === data.nhanvien.maNhanVien
-                                    ? "row-selected"
-                                    : ""} >
-                                    <TableCell component="th" scope="row">
-                                        {data.nhanvien.maNhanVien}
-                                    </TableCell>
-                                    <TableCell align="center">{data.nhanvien.hoTen}</TableCell>
-                                    <TableCell align="center">{data.nhanvien.diaChi}</TableCell>
-                                    <TableCell align="center">{data.nhanvien.cccd}</TableCell>
-                                    <TableCell align="center">{data.nhanvien.email}</TableCell>
-                                    <TableCell align="center">{data.nhanvien.soDienThoai}</TableCell>
-                                    <TableCell align="center">{data.nhanvien.luongCoBan}</TableCell>
-                                    <TableCell align="center">{data.nhanvien.ngaySinh ? moment(data.nhanvien.ngaySinh).format("DD/MM/YYYY") : "Chưa có dữ liệu "}</TableCell>
-                                    <TableCell align="center">{data.nhanvien.ngayVaoLam ? moment(data.nhanvien.ngayVaoLam).format("DD/MM/YYYY") : "Chưa có dữ liệu "}</TableCell>
-                                    <TableCell align="center">
-                                        {data.nhanvien.daKichHoat ? <Typography variant='h6'>Đã kích hoạt</Typography> : <Typography variant='h6'>Chưa kích hoạt</Typography>}
-                                    </TableCell>
-                                    <TableCell align="center">{data.nhanvien.daKichHoat ? <Button variant='contained' size='small' sx={{ backgroundColor: 'red' }} onClick={() => { handlehuyKichHoatTaiKhoan(data.nhanvien) }}>Khóa</Button> : <Button onClick={() => { handleKichHoatTaiKhoan(data.nhanvien) }} variant='contained' size='small' sx={{ backgroundColor: 'green' }}>Kích hoạt</Button>}
-                                    </TableCell>
-                                </TableRow>
-                            )) :
 
-                                <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
-                                    <Typography variant='h3'>Chưa có dữ liệu</Typography>
-                                </Box>
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+            {/* Danh sách Nhân Viên */}
+            <StyledPaper elevation={10}>
+                <Table striped hover>
+                    <thead>
+                        <tr>
+                            <th>Mã nhân viên</th>
+                            <th align="center">Họ Tên</th>
+                            <th align="center">Địa chỉ</th>
+                            <th align="center">Căn cước</th>
+                            <th align="center">Email</th>
+                            <th align="center">Số điện thoại</th>
+                            <th align="center">Lương cơ bản</th>
+                            <th align="center">Ngày sinh</th>
+                            <th align="center">Ngày vào làm</th>
+                            <th align="center">Tình trạng</th>
+                            <th align="center">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {dsNhanVien && dsNhanVien.length > 0 ? dsNhanVien.map((data) => (
+                            <tr key={data.nhanvien.maNhanVien}  >
+                                <td component="th" scope="row">
+                                    {data.nhanvien.maNhanVien}
+                                </td>
+                                <td align="center">{data.nhanvien.hoTen}</td>
+                                <td align="center">{data.nhanvien.diaChi}</td>
+                                <td align="center">{data.nhanvien.cccd}</td>
+                                <td align="center">{data.nhanvien.email}</td>
+                                <td align="center">{data.nhanvien.soDienThoai}</td>
+                                <td align="center">{data.nhanvien.luongCoBan}</td>
+                                <td align="center">{data.nhanvien.ngaySinh ? moment(data.nhanvien.ngaySinh).format("DD/MM/YYYY") : "Chưa có dữ liệu "}</td>
+                                <td align="center">{data.nhanvien.ngayVaoLam ? moment(data.nhanvien.ngayVaoLam).format("DD/MM/YYYY") : "Chưa có dữ liệu "}</td>
+                                <td align="center">
+                                    {data.nhanvien.daKichHoat ? 'Đã kích hoạt' : 'Chưa kích hoạt'}
+                                </td>
+                                <td align="center">{data.nhanvien.daKichHoat ? <ButtonMUI variant='contained' size='small' sx={{ backgroundColor: 'red' }} onClick={() => { handlehuyKichHoatTaiKhoan(data.nhanvien) }}>Khóa</ButtonMUI> : <ButtonMUI onClick={() => { handleKichHoatTaiKhoan(data.nhanvien) }} variant='contained' size='small' sx={{ backgroundColor: 'green' }}>Kích hoạt</ButtonMUI>}
+                                </td>
+                            </tr>
+                        )) :
+
+                            <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                            </Box>
+                        }
+                    </tbody>
+                </Table>
+            </StyledPaper>
+
 
 
 
@@ -528,3 +529,16 @@ const StyledContainer = styled.div`
     }
   }
 `;
+const StyledPaper = styled(Paper)`
+height: 590px;
+overflow: auto;
+margin-top: 15px;
+&::-webkit-scrollbar {
+    width: 0.2rem;
+    &-thumb {
+      background-image: linear-gradient(#373b44, #1095c1);
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`

@@ -1,23 +1,15 @@
-import { Autocomplete, Box, Button, Chip, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { Toast, ToastContainer } from "react-bootstrap";
+import { Box, Button as ButtonMUI, Chip, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Toast, ToastContainer, Button, FloatingLabel, Form, Table } from "react-bootstrap";
 import React, { useEffect, useState } from 'react'
+import { BiRefresh } from 'react-icons/bi';
 import styled from "styled-components";
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
-import SystemUpdateAltOutlinedIcon from '@mui/icons-material/SystemUpdateAltOutlined';
 import { addKhachHang, getAllKhachHangRoute, timKiemKhachHang, updateKhachHang } from '../../utils/APIRoutes';
 import axios from 'axios';
 function FrmKhachHang() {
     const [toast, setToast] = useState(null);
     const [khachHangSelected, setKhachHangSelected] = useState(undefined);
     const [dsKhachHang, setDsKhachHang] = useState(undefined);
+    const [khachHangXoaRongTemp, setKhachHangXoaRongTemp] = useState(undefined);
     const [khachHangMoi, setKhachHangMoi] = useState({
         maKhachHang: 0,
         hoTen: "",
@@ -37,6 +29,7 @@ function FrmKhachHang() {
     // useEffect để hiển thị selected data mỗi khi dichvuSelected bị thay đổi
     useEffect(() => {
         if (khachHangSelected) {
+            setKhachHangXoaRongTemp(khachHangSelected)
             setKhachHangMoi(khachHangSelected)
         }
         else {
@@ -48,6 +41,7 @@ function FrmKhachHang() {
                 diaChiKH: "",
                 emailKH: "",
             })
+            setKhachHangXoaRongTemp(undefined);
         }
     }, [khachHangSelected])
     const loadKhachHangFromDB = async () => {
@@ -270,87 +264,191 @@ function FrmKhachHang() {
     const handleRefeshKhachHang = () => {
         loadKhachHangFromDB();
     }
-    console.log("Search combobox :", search);
+    const handleXoaRong = () => {
+        if (khachHangXoaRongTemp) {
+            setKhachHangMoi({
+                maKhachHang: khachHangXoaRongTemp.maKhachHang,
+                hoTen: "",
+                cccdKhachHang: "",
+                soDienThoaiKH: "",
+                diaChiKH: "",
+                emailKH: "",
+            });
+        }
+        else {
+            setKhachHangMoi({
+                maKhachHang: 0,
+                hoTen: "",
+                cccdKhachHang: "",
+                soDienThoaiKH: "",
+                diaChiKH: "",
+                emailKH: "",
+            });
+        }
+
+    }
+    // console.log("khachHangMoi :", khachHangMoi);
+    // console.log("khachHangXoaRongTemp :", khachHangXoaRongTemp);
 
     return (
         <StyledContainer>
-            <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Typography variant='h3'>Quản lý khách hàng</Typography>
             </Box>
-            <Paper elevation={15} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '10px', flexDirection: 'column', maxHeight: '40%', overflow: 'auto', paddingTop: '200px' }}>
-                <Box component='form' onSubmit={(e) => handleAddKhachHang(e)} sx={{ width: '60%' }}>
-                    <TextField id="ma_khach_hang" name='maKhachHang' label="Mã khách hàng" variant="outlined" fullWidth disabled value={khachHangMoi && khachHangMoi.maKhachHang != 0 ? khachHangMoi.maKhachHang : ""} />
-                    <TextField id="hoTen" name='hoTen' label="Tên khách hàng" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={khachHangMoi && khachHangMoi.hoTen ? khachHangMoi.hoTen : ""} />
-                    <TextField id="cccdKhachHang" name='cccdKhachHang' label="Căn cước công dân" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={khachHangMoi && khachHangMoi.cccdKhachHang ? khachHangMoi.cccdKhachHang : ""} />
-                    <Box sx={{ display: 'flex', alignItems: 'center', mt: '10px' }}>
-                        <Chip color="info" label="+84" sx={{ height: '50px', width: '71px', borderRadius: '100px' }} />
-                        <TextField id="soDienThoaiKH" name='soDienThoaiKH' label="Số điện thoại(+84)" variant="outlined" fullWidth sx={{}} onChange={(e) => handleOnChange(e)} value={khachHangMoi && khachHangMoi.soDienThoaiKH ? khachHangMoi.soDienThoaiKH : ""} />
-                    </Box>
-                    <TextField id="emailKH" name='emailKH' label="Email" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={khachHangMoi && khachHangMoi.emailKH ? khachHangMoi.emailKH : ""} />
-                    <TextField id="diaChiKH" name='diaChiKH' label="Địa chỉ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={khachHangMoi && khachHangMoi.diaChiKH ? khachHangMoi.diaChiKH : ""} />
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
-                        <Button type='submit' variant='contained' size='small' sx={{
-                            backgroundColor: '#198754', '&:hover': {
-                                backgroundColor: '#198754'
-                            }
-                        }} startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm khách hàng</Button>
-                        <Button sx={{
-                            backgroundColor: '#0D6EFD', '&:hover': {
-                                backgroundColor: '#0D6EFD',
-                            }
-                        }} size='small' variant='contained' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateKhachHang()}>Cập nhật khách hàng</Button>
-                        <Button sx={{
-                            backgroundColor: '#FFC107', '&:hover': {
-                                backgroundColor: '#FFC107',
-                            }
-                        }} size='small' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshKhachHang()}>Tải lại dữ liệu</Button>
-                    </Box>
-                </Box>
+            <Paper elevation={15} sx={{ marginTop: '10px', flexDirection: 'column', maxHeight: '45%', overflow: 'auto', padding: '15px' }}>
+                <Grid container spacing={2} component='form' onSubmit={(e) => handleAddKhachHang(e)}>
+                    <Grid item md={4}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Mã khách hàng"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="maKhachHang"
+                                disabled={true}
+                                value={khachHangMoi && khachHangMoi.maKhachHang != 0 ? khachHangMoi.maKhachHang : ""}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+
+                    <Grid item md={4}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Tên khách hàng"
+                            className="mb-3"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="hoTen"
+                                value={khachHangMoi && khachHangMoi.hoTen ? khachHangMoi.hoTen : ""}
+                                onChange={(e) => handleOnChange(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+
+                    <Grid item md={4}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Căn cước công dân"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="cccdKhachHang"
+                                value={khachHangMoi && khachHangMoi.cccdKhachHang ? khachHangMoi.cccdKhachHang : ""}
+                                onChange={(e) => handleOnChange(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+                    <Grid item md={4}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', }}>
+                            <Chip color="info" label="+84" sx={{ height: '47px', width: '47px', borderRadius: '30px' }} />
+                            <FloatingLabel
+                                controlId="floatingInput"
+                                label="Số điện thoại"
+                                className="mb-1"
+                                style={{ width: '100%' }}
+                            >
+                                <Form.Control
+                                    type="text"
+                                    name="soDienThoaiKH"
+                                    value={khachHangMoi && khachHangMoi.soDienThoaiKH ? khachHangMoi.soDienThoaiKH : ""}
+                                    onChange={(e) => handleOnChange(e)}
+                                />
+                            </FloatingLabel>
+                        </Box>
+                    </Grid>
+
+
+                    <Grid item md={4}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Email"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="emailKH"
+                                value={khachHangMoi && khachHangMoi.emailKH ? khachHangMoi.emailKH : ""}
+                                onChange={(e) => handleOnChange(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+
+                    <Grid item md={4}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Địa chỉ"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="diaChiKH"
+                                value={khachHangMoi && khachHangMoi.diaChiKH ? khachHangMoi.diaChiKH : ""}
+                                onChange={(e) => handleOnChange(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+
+
+
+                    <Stack sx={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', mt: '10px', ml: '8px', gap: '1.5rem' }}>
+                        <Button variant="success" style={{ padding: '0.5rem 1.5rem' }} type='submit' >
+                            Thêm
+                        </Button>
+                        <Button variant="primary" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleUpdateKhachHang()}>
+                            Cập nhật
+                        </Button>
+                        <Button variant="danger" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleXoaRong()} >
+                            Xóa rỗng
+                        </Button>
+                        <Button variant="warning" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleRefeshKhachHang()}>
+                            <BiRefresh style={{ fontSize: '1.5rem' }} />
+                        </Button>
+                    </Stack>
+                </Grid>
+
 
             </Paper>
 
+            {/* Danh sách khách hàng */}
 
+            <StyledPaper elevation={10}>
+                <Table striped hover>
+                    <thead>
+                        <tr>
+                            <th>Mã khách hàng</th>
+                            <th >Tên khách hàng</th>
+                            <th>Căn cước</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Địa chỉ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {dsKhachHang && dsKhachHang.length > 0 ? dsKhachHang.map((data) => (
+                            <tr key={data.maKhachHang} onClick={() => handleSelected(data)} className={khachHangSelected && khachHangSelected.maKhachHang === data.maKhachHang
+                                ? "row-selected"
+                                : ""} >
+                                <td component="th" scope="row">
+                                    {data.maKhachHang}
+                                </td>
+                                <td>{data.hoTen}</td>
+                                <td>{data.cccdKhachHang}</td>
+                                <td>{data.soDienThoaiKH}</td>
+                                <td>{data.emailKH}</td>
+                                <td>{data.diaChiKH}</td>
+                            </tr>
+                        )) :
 
-            {/* Danh sách Dịch Vụ */}
-            <Paper elevation={24} sx={{ maxHeight: '50%', mt: '11px', overflow: 'auto' }}>
-                <TableContainer component={Paper} elevation={15}>
-                    <Table aria-label="user table">
-                        <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
-                            <TableRow>
-                                <TableCell><Typography>Mã khách hàng</Typography></TableCell>
-                                <TableCell align="center"><Typography>Tên khách hàng</Typography></TableCell>
-                                <TableCell align="center"><Typography>Căn cước</Typography></TableCell>
-                                <TableCell align="center"><Typography>Số điện thoại</Typography></TableCell>
-                                <TableCell align="center"><Typography>Email</Typography></TableCell>
-                                <TableCell align="center"><Typography>Địa chỉ</Typography></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {dsKhachHang && dsKhachHang.length > 0 ? dsKhachHang.map((data) => (
-                                <TableRow key={data.maKhachHang} onClick={() => handleSelected(data)} className={khachHangSelected && khachHangSelected.maKhachHang === data.maKhachHang
-                                    ? "row-selected"
-                                    : ""}>
-                                    <TableCell component="th" scope="row">
-                                        {data.maKhachHang}
-                                    </TableCell>
-                                    <TableCell align="center">{data.hoTen}</TableCell>
-                                    <TableCell align="center">{data.cccdKhachHang}</TableCell>
-                                    <TableCell align="center">{data.soDienThoaiKH}</TableCell>
-                                    <TableCell align="center">{data.emailKH}</TableCell>
-                                    <TableCell align="center">{data.diaChiKH}</TableCell>
-                                </TableRow>
-                            )) :
-
-                                <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
-                                    <Typography variant='h3'>Chưa có dữ liệu</Typography>
-                                </Box>
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
-
-
+                            <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                            </Box>
+                        }
+                    </tbody>
+                </Table>
+            </StyledPaper>
 
             {/* Toast Thông báo */}
             {toast && (
@@ -391,8 +489,21 @@ const StyledContainer = styled.div`
   table {
     .row-selected {
       
-        background: linear-gradient(to bottom, #ee0979, #ff6a00);
+        background-color: #9fbce7d1 !important;
       
     }
   }
 `;
+const StyledPaper = styled(Paper)`
+height: 455px;
+overflow: auto;
+margin-top: 15px;
+&::-webkit-scrollbar {
+    width: 0.2rem;
+    &-thumb {
+      background-image: linear-gradient(#373b44, #1095c1);
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`

@@ -34,15 +34,20 @@ function FrmDatPhong() {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const diff_hours = (dt2, dt1) => {
-    var diff = (dt2.getTime() - dt1.getTime()) / 1000;
-    diff /= 60 * 60;
-    if (dt2.getTime() === dt1.getTime()) {
-      return 0;
-    }
-    if (Math.abs(Math.round(diff)) === 0) {
-      return 1;
-    }
-    return Math.abs(Math.round(diff));
+    // var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    // diff /= 60 * 60;
+    // if (dt2.getTime() === dt1.getTime()) {
+    //   return 0;
+    // }
+    // if (Math.abs(Math.round(diff)) === 0) {
+    //   return 1;
+    // }
+    // return Math.abs(Math.round(diff));
+    const millisecondsPerHour = 1000 * 60 * 60;
+    const differenceInMilliseconds = dt1 - dt2;
+    const totalHours = Math.ceil(differenceInMilliseconds / millisecondsPerHour);
+    // console.log('totalHours', totalHours);
+    return totalHours;
   };
 
   useEffect(() => {

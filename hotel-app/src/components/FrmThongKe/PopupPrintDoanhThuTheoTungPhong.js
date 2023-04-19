@@ -1,11 +1,11 @@
-import { Box, Button, Dialog, DialogContent, DialogTitle, Divider, Paper, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, DialogTitle, Divider, Paper, Snackbar, Stack, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState, useRef } from 'react'
 
 import ReactToPrint from 'react-to-print';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Toast, ToastContainer, FloatingLabel, Form, Table } from "react-bootstrap";
 
-import moment from 'moment/moment';
 
 const PopupPrintDoanhThuTheoTungPhong = (props) => {
 
@@ -18,9 +18,11 @@ const PopupPrintDoanhThuTheoTungPhong = (props) => {
     }
     //Hàm tính giờ
     const diff_hours = (dt2, dt1) => {
-        var diff = (dt2.getTime() - dt1.getTime()) / 1000;
-        diff /= 60 * 60;
-        return Math.abs(Math.round(diff));
+        const millisecondsPerHour = 1000 * 60 * 60;
+        const differenceInMilliseconds = dt1 - dt2;
+        const totalHours = Math.ceil(differenceInMilliseconds / millisecondsPerHour);
+        // console.log('totalHours', totalHours);
+        return totalHours;
     };
     const tinhTongTienCuaMoiPhongMangLai = (phong) => {
         let price = 0;
@@ -123,50 +125,48 @@ const PopupPrintDoanhThuTheoTungPhong = (props) => {
                     {dsPhong && dsPhong.length > 0 && tempdsHoaDon && tempdsHoaDon.length > 0 &&
                         <Paper elevation={10} sx={{}}>
 
-                            <TableContainer component={Paper} elevation={15}>
-                                <Table aria-label="user table">
-                                    <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
-                                        <TableRow>
-                                            <TableCell><Typography>Mã phòng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Tên phòng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Giá phòng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Tầng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Loại phòng</Typography></TableCell>
-                                            <TableCell align="center"><Typography>Tổng tiền</Typography></TableCell>
+                            <Table striped hover>
+                                <thead >
+                                    <tr>
+                                        <th><>Mã phòng</></th>
+                                        <th><>Tên phòng</></th>
+                                        <th><>Giá phòng</></th>
+                                        <th><>Tầng</></th>
+                                        <th><>Loại phòng</></th>
+                                        <th><>Tổng tiền</></th>
 
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {dsPhong && dsPhong.length > 0 ? dsPhong.map((phong) => (
-                                            <TableRow key={phong.maPhong}  >
-                                                <TableCell component="th" scope="row">
-                                                    {phong.maPhong}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {phong.tenPhong}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {`${phong.giaPhong} VND/giờ`}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {phong.tenTang}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {phong.tenLoaiPhong}
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" align='center'>
-                                                    {`${tinhTongTienCuaMoiPhongMangLai(phong)} VND`}
-                                                </TableCell>
-                                            </TableRow>
-                                        )) :
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {dsPhong && dsPhong.length > 0 ? dsPhong.map((phong) => (
+                                        <tr key={phong.maPhong}  >
+                                            <td>
+                                                {phong.maPhong}
+                                            </td>
+                                            <td>
+                                                {phong.tenPhong}
+                                            </td>
+                                            <td>
+                                                {`${phong.giaPhong.toLocaleString()} VND/giờ`}
+                                            </td>
+                                            <td>
+                                                {phong.tenTang}
+                                            </td>
+                                            <td>
+                                                {phong.tenLoaiPhong}
+                                            </td>
+                                            <td>
+                                                {`${tinhTongTienCuaMoiPhongMangLai(phong).toLocaleString()} VND`}
+                                            </td>
+                                        </tr>
+                                    )) :
 
-                                            <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
-                                                <Typography variant='h3'>Chưa có dữ liệu</Typography>
-                                            </Box>
-                                        }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                                        <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                            <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                                        </Box>
+                                    }
+                                </tbody>
+                            </Table>
                         </Paper>}
 
 
@@ -179,9 +179,10 @@ const PopupPrintDoanhThuTheoTungPhong = (props) => {
 
                             <Stack flexDirection='row' mt='20px'>
                                 <Typography variant='h5' color='red'>Tổng doanh thu phòng:</Typography>
-                                <Typography variant='h5' ml='10px'>{currentTongTienTungPhongMangLai} VND</Typography>
+                                <Typography variant='h5' ml='10px'> {currentTongTienTungPhongMangLai.toLocaleString()} VND</Typography>
                             </Stack>
                         </Stack>
+
                         <Stack flexDirection='row' justifyContent='space-between'  >
 
                             <Stack flexDirection='row'>

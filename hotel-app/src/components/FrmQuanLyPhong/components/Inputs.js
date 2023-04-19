@@ -109,6 +109,7 @@ function Inputs({
   const onHandleClear = () => {
     setPhongMoi({});
   };
+  console.log('Phòng mới :', phongMoi);
   return (
     <StyledContainer>
       <div className="field-container">
@@ -146,8 +147,8 @@ function Inputs({
                   name="tenPhong"
                   value={
                     phongMoi &&
-                    phongMoi.tenPhong &&
-                    phongMoi.tenPhong.slice(0, 6) === "Phòng "
+                      phongMoi.tenPhong &&
+                      phongMoi.tenPhong.slice(0, 6) === "Phòng "
                       ? phongMoi.tenPhong
                       : "Phòng "
                   }

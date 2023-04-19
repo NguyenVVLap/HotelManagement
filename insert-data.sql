@@ -42,10 +42,10 @@ Insert into phong(ma_phong, mo_ta_phong, ten_phong, trang_thai_phong, mang_thu_c
 
 ('0201', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 1, 0, 5000, 0, 3, 2, 2, 1),
 ('0202', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 2', 1, 1, 10000, 1, 5, 5, 2, 2),
-('0203', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 203', 0, 0, 15000, 0, 7, 6, 2, 3),
+('0203', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 0, 0, 15000, 0, 7, 6, 2, 3),
 ('0204', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 4', 0, 1, 20000, 1, 7, 7, 2, 4),
 ('0205', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 5', 0, 0, 30000, 1, 8, 8, 2, 4),
-('0206', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 206', 0, 1, 20000, 0, 1, 1, 2, 1),
+('0206', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 6', 0, 1, 20000, 0, 1, 1, 2, 1),
 
 ('0301', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 0, 1, 12000, 1, 2, 2, 3, 1),
 ('0302', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 2', 1, 1, 40000, 1, 2, 1, 3, 2),
@@ -178,8 +178,8 @@ INSERT INTO tai_khoan(da_kich_hoat,mat_khau,ten_tai_khoan,ma_vai_tro) values
 (1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84392589774',1),
 (1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84523564371',2);
 insert into nhan_vien(cccd, dia_chi, email, ho_ten, luong_co_ban, ngay_sinh,ngay_vao_lam, so_dien_thoai,ma_tai_khoan) values 
-('012345678900','12 Trần Hưng Đạo','lap@gmail.com', N'Nguyễn Võ Vươn Lập',1000000, '2001-03-19T10:00:56.117+00:00','2022-03-19T10:00:56.117+00:00', '+84392589774',1),
-('012345678901','19 Trần Hưng Đạo','minh@gmail.com',N'Nguyễn Lâm Nhật Minh',900000, '2001-04-19T10:00:56.117+00:00','2023-03-19T10:00:56.117+00:00', '+84523564371',2);
+('012345678900', N'12 Trần Hưng Đạo','lap@gmail.com', N'Nguyễn Võ Vươn Lập',1000000, '2001-03-19T10:00:56.117+00:00','2022-03-19T10:00:56.117+00:00', '+84392589774',1),
+('012345678901', N'19 Trần Hưng Đạo','minh@gmail.com',N'Nguyễn Lâm Nhật Minh',900000, '2001-04-19T10:00:56.117+00:00','2023-03-19T10:00:56.117+00:00', '+84523564371',2);
 
 Insert into khach_hang(cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_thoai_kh) values 
 ('123456789000', N'12 Lê Lợi', 'test@gmail.com', N'Trần Quang Linh', '0123456789'),
@@ -290,6 +290,7 @@ INSERT INTO chi_tiet_dich_vu(ma_dich_vu,ma_hoa_don,so_luong) values
 (6,11,2),
 (7,12,1),
 (8,12,5);
+update hoa_don set ngay_lap ='2023-04-13 00:41:20.526000' where ma_hoa_don=15
 
 /*
 update hoa_don set ngay_lap ='2023-01-04 00:41:20.526000' where ma_hoa_don=4

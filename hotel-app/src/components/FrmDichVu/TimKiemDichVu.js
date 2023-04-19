@@ -1,11 +1,5 @@
 import { Autocomplete, Box, Button, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer, Button as ButtonBootrap, FloatingLabel, Form, Table } from "react-bootstrap";
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
@@ -82,10 +76,10 @@ function FrmTimKiemDichVu() {
     const handleRefeshDichVu = () => {
         loadDichVuFromDB();
     }
-    // console.log("Search combobox :", search);
+    console.log("dsDichVuSauKhiSearch:", dsDichVu);
     return (
         <StyledContainer>
-            <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Typography variant='h3'>Tìm dịch vụ</Typography>
             </Box>
 
@@ -123,39 +117,39 @@ function FrmTimKiemDichVu() {
 
 
             {/* Danh sách Dịch Vụ */}
-            <Paper elevation={24} sx={{ height: '600px', mt: '11px', overflow: 'auto' }}>
-                <TableContainer component={Paper} elevation={15}>
-                    <Table aria-label="user table">
-                        <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
-                            <TableRow>
-                                <TableCell><Typography>Mã dịch vụ</Typography></TableCell>
-                                <TableCell align="center"><Typography>Tên dịch vụ</Typography></TableCell>
-                                <TableCell align="center"><Typography>Mô tả dịch vụ</Typography></TableCell>
-                                <TableCell align="center"><Typography>Đơn vị tính</Typography></TableCell>
-                                <TableCell align="right"><Typography>Giá dịch vụ</Typography></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {dsDichVu && dsDichVu.length > 0 ? dsDichVu.map((data) => (
-                                <TableRow key={data.maDichVu} >
-                                    <TableCell component="th" scope="row">
-                                        {data.maDichVu}
-                                    </TableCell>
-                                    <TableCell align="center">{data.tenDichVu}</TableCell>
-                                    <TableCell align="center">{data.motaDichVu}</TableCell>
-                                    <TableCell align="center">{data.donviTinh}</TableCell>
-                                    <TableCell align="right">{data.giaDichVu}</TableCell>
-                                </TableRow>
-                            )) :
+            <StyledPaper elevation={10}>
+                <Table striped hover>
+                    <thead>
+                        <tr>
+                            <th>Mã dịch vụ</th>
+                            <th >Tên dịch vụ</th>
+                            <th>Tên loại dịch vụ</th>
+                            <th>Đơn vị tính</th>
+                            <th>Giá dịch vụ</th>
+                            <th>Số lượng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {dsDichVu && dsDichVu.length > 0 ? dsDichVu.map((data) => (
+                            <tr key={data.maDichVu}  >
+                                <td component="th" scope="row">
+                                    {data.maDichVu}
+                                </td>
+                                <td>{data.tenDichVu}</td>
+                                <td>{data.tenLoaiDichVu}</td>
+                                <td>{data.donViLoaiDichVu}</td>
+                                <td>{`${data.giaDichVu.toLocaleString()} VND`}</td>
+                                <td>{data.soLuong}</td>
+                            </tr>
+                        )) :
 
-                                <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
-                                    <Typography variant='h3'>Chưa có dữ liệu</Typography>
-                                </Box>
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+                            <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                            </Box>
+                        }
+                    </tbody>
+                </Table>
+            </StyledPaper>
 
 
 
@@ -197,3 +191,16 @@ const StyledContainer = styled.div`
   padding: 20px;
  
 `;
+const StyledPaper = styled(Paper)`
+height: 590px;
+overflow: auto;
+margin-top: 15px;
+&::-webkit-scrollbar {
+    width: 0.2rem;
+    &-thumb {
+      background-image: linear-gradient(#373b44, #1095c1);
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`

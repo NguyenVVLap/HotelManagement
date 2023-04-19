@@ -248,6 +248,7 @@ function FrmQuanLyPhong() {
       setPhongMoi({ ...phongMoi, hinhAnhPhong: [downloadURL] });
     }
   };
+  console.log('Mã phòng cũ :', maPhongCu);
   return (
     <StyleContainer>
       <h1>Cập nhật phòng</h1>

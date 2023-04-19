@@ -1,21 +1,20 @@
-import { Autocomplete, Box, Button, Dialog, DialogContent, DialogTitle, Paper, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button as ButtonMUI, Dialog, DialogContent, DialogTitle, Paper, Grid, Stack, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-
+import { Toast, ToastContainer, Button, FloatingLabel, Form, Table } from "react-bootstrap";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
-import SystemUpdateAltOutlinedIcon from '@mui/icons-material/SystemUpdateAltOutlined';
+import { BiRefresh } from 'react-icons/bi';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axios from 'axios';
 import { addLoaiDichVu, getAllLoaiDichVuRoute, timKiemLoaiDichVu, updateLoaiDichVu } from '../../utils/APIRoutes';
 import styled from 'styled-components';
-import { Toast, ToastContainer } from 'react-bootstrap';
+
 const PopupLoaiDichVu = (props) => {
     const { openPopup, setOpenPopup } = props;
     const [toast, setToast] = useState(null);
     const [loaidichvuSelected, setLoaiDichVuSelected] = useState(undefined);
-
+    const [loaidichVuXoaRongTemp, setLoaiDichVuXoaRongTemp] = useState(undefined);
     const [dsLoaiDichVu, setDsLoaiDichVu] = useState(undefined);
     const [loaidichvuMoi, setLoaiDichVuMoi] = useState({
         maLoaiDichVu: 0,
@@ -33,6 +32,7 @@ const PopupLoaiDichVu = (props) => {
         if (loaidichvuSelected) {
             console.log("Loai dich vụ moi", loaidichvuMoi);
             setLoaiDichVuMoi(loaidichvuSelected)
+            setLoaiDichVuXoaRongTemp(loaidichvuSelected);
         }
         else {
             setLoaiDichVuMoi({
@@ -40,6 +40,7 @@ const PopupLoaiDichVu = (props) => {
                 tenLoaiDichVu: "",
                 donViLoaiDichVu: "",
             })
+            setLoaiDichVuXoaRongTemp(undefined);
         }
     }, [loaidichvuSelected])
     const loadLoaiDichVuFromDB = async () => {
@@ -89,17 +90,17 @@ const PopupLoaiDichVu = (props) => {
             });
             return false;
         }
-        for (var i = 0; i < dsLoaiDichVu.length; i++) {
-            if (tenLoaiDichVu === dsLoaiDichVu[i].tenLoaiDichVu || donViLoaiDichVu === dsLoaiDichVu[i].donViLoaiDichVu) {
-                setToast({
-                    header: "Tên loại dịch vụ hoặc đơn vị tính đã tồn tại trên hệ thống !",
-                    content: "",
-                    bg: "danger",
-                    textColor: "#fff",
-                });
-                return false;
-            }
-        }
+        // for (var i = 0; i < dsLoaiDichVu.length; i++) {
+        //     if (tenLoaiDichVu === dsLoaiDichVu[i].tenLoaiDichVu || donViLoaiDichVu === dsLoaiDichVu[i].donViLoaiDichVu) {
+        //         setToast({
+        //             header: "Tên loại dịch vụ hoặc đơn vị tính đã tồn tại trên hệ thống !",
+        //             content: "",
+        //             bg: "danger",
+        //             textColor: "#fff",
+        //         });
+        //         return false;
+        //     }
+        // }
 
 
         return true;
@@ -188,6 +189,25 @@ const PopupLoaiDichVu = (props) => {
         }
 
     }
+    const handleXoaRong = () => {
+        if (loaidichVuXoaRongTemp) {
+            setLoaiDichVuMoi({
+                maLoaiDichVu: loaidichVuXoaRongTemp.maLoaiDichVu,
+                tenLoaiDichVu: "",
+                donViLoaiDichVu: "",
+
+            });
+        }
+        else {
+            setLoaiDichVuMoi({
+                maLoaiDichVu: 0,
+                tenLoaiDichVu: "",
+                donViLoaiDichVu: "",
+
+            });
+        }
+
+    }
 
 
     return (
@@ -205,31 +225,68 @@ const PopupLoaiDichVu = (props) => {
             </DialogTitle>
             <DialogContent dividers>
                 <StyledContainer>
+                    <Paper elevation={15} sx={{ marginTop: '1px', flexDirection: 'column', maxHeight: '45%', overflow: 'auto', padding: '15px' }}>
+                        <Grid container spacing={2}>
+                            <Grid item md={4}>
+                                <FloatingLabel
+                                    controlId="floatingInput"
+                                    label="Mã loại dịch vụ"
+                                    className="mb-1"
+                                >
+                                    <Form.Control
+                                        type="text"
+                                        name="maLoaiDichVu"
+                                        disabled={true}
+                                        value={loaidichvuMoi && loaidichvuMoi.maLoaiDichVu !== 0 ? loaidichvuMoi.maLoaiDichVu : ""}
+                                    />
+                                </FloatingLabel>
+                            </Grid>
 
-                    <Paper elevation={15} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', minHeight: '30%' }}>
-                        <Box sx={{ width: '50%' }}>
-                            <TextField id="maLoaiDichVu" name='maLoaiDichVu' label="Mã loại dịch vụ" variant="outlined" fullWidth disabled value={loaidichvuMoi && loaidichvuMoi.maLoaiDichVu !== 0 ? loaidichvuMoi.maLoaiDichVu : ""} />
-                            <TextField id="tenLoaiDichVu" name='tenLoaiDichVu' label="Tên loại dịch vụ" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={loaidichvuMoi && loaidichvuMoi.tenLoaiDichVu ? loaidichvuMoi.tenLoaiDichVu : ""} />
-                            <TextField id="donViLoaiDichVu" name='donViLoaiDichVu' label="Đơn vị tính" variant="outlined" fullWidth sx={{ marginTop: '15px' }} onChange={(e) => handleOnChange(e)} value={loaidichvuMoi && loaidichvuMoi.donViLoaiDichVu ? loaidichvuMoi.donViLoaiDichVu : ""} />
+                            <Grid item md={4}>
+                                <FloatingLabel
+                                    controlId="floatingInput"
+                                    label="Tên loại dịch vụ"
+                                    className="mb-1"
+                                >
+                                    <Form.Control
+                                        type="text"
+                                        name="tenLoaiDichVu"
+                                        value={loaidichvuMoi && loaidichvuMoi.tenLoaiDichVu ? loaidichvuMoi.tenLoaiDichVu : ""}
+                                        onChange={(e) => handleOnChange(e)}
+                                    />
+                                </FloatingLabel>
+                            </Grid>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', height: '50px' }}>
-                                <Button sx={{
-                                    backgroundColor: '#198754', '&:hover': {
-                                        backgroundColor: '#198754'
-                                    }
-                                }} onClick={() => handleAddLoaiDichVu()} variant='contained' size='small' startIcon={<AddCircleOutlineOutlinedIcon />}>Thêm loại dịch vụ</Button>
-                                <Button sx={{
-                                    backgroundColor: '#0D6EFD', '&:hover': {
-                                        backgroundColor: '#0D6EFD',
-                                    }
-                                }} variant='contained' size='small' startIcon={<SystemUpdateAltOutlinedIcon />} onClick={() => handleUpdateLoaiDichVu()}>Cập nhật loại dịch vụ</Button>
-                                <Button sx={{
-                                    backgroundColor: '#FFC107', '&:hover': {
-                                        backgroundColor: '#FFC107',
-                                    }
-                                }} variant='contained' size='small' startIcon={<CachedOutlinedIcon />} onClick={() => handleRefeshLoaiDichVu()}>Tải lại dữ liệu</Button>
-                            </Box>
-                        </Box>
+                            <Grid item md={4}>
+                                <FloatingLabel
+                                    controlId="floatingInput"
+                                    label="Đơn vị tính"
+                                    className="mb-1"
+                                >
+                                    <Form.Control
+                                        type="text"
+                                        name="donViLoaiDichVu"
+                                        value={loaidichvuMoi && loaidichvuMoi.donViLoaiDichVu ? loaidichvuMoi.donViLoaiDichVu : ""}
+                                        onChange={(e) => handleOnChange(e)}
+                                    />
+                                </FloatingLabel>
+                            </Grid>
+                            <Stack sx={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', mt: '10px', ml: '8px', gap: '1.5rem' }}>
+                                <Button variant="success" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleAddLoaiDichVu()} >
+                                    Thêm loại dịch vụ
+                                </Button>
+                                <Button variant="primary" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleUpdateLoaiDichVu()}>
+                                    Cập nhật loại dịch vụ
+                                </Button>
+                                <Button variant="danger" style={{ padding: '0.5rem 1.5rem' }} onClick={() => { handleXoaRong() }} >
+                                    Xóa rỗng
+                                </Button>
+                                <Button variant="warning" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleRefeshLoaiDichVu()}>
+                                    <BiRefresh style={{ fontSize: '1.5rem' }} />
+                                </Button>
+                            </Stack>
+                        </Grid>
+
 
                     </Paper>
 
@@ -250,11 +307,11 @@ const PopupLoaiDichVu = (props) => {
                             />
                         </Box>
                         <Box sx={{ alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
-                            <Button sx={{
+                            <ButtonMUI sx={{
                                 backgroundColor: '#0D6EFD', '&:hover': {
                                     backgroundColor: '#0D6EFD',
                                 }
-                            }} variant='contained' size='medium' endIcon={<SearchOutlinedIcon />} onClick={() => { handleSearchDichVu() }} >Tìm kiếm</Button>
+                            }} variant='contained' size='medium' endIcon={<SearchOutlinedIcon />} onClick={() => { handleSearchDichVu() }} >Tìm kiếm</ButtonMUI>
                         </Box>
 
 
@@ -262,7 +319,36 @@ const PopupLoaiDichVu = (props) => {
 
 
                     {/* Danh sách Loại Dịch Vụ */}
-                    <Paper elevation={24} sx={{ overflow: 'auto', backgroundColor: 'red' }}>
+                    <StyledPaper elevation={10}>
+                        <Table striped hover>
+                            <thead>
+                                <tr>
+                                    <th>Mã loại dịch vụ</th>
+                                    <th >Tên loại dịch vụ</th>
+                                    <th>Đơn vị tính</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {dsLoaiDichVu && dsLoaiDichVu.length > 0 ? dsLoaiDichVu.map((data) => (
+                                    <tr key={data.maLoaiDichVu} onClick={() => handleSelected(data)} className={loaidichvuSelected && loaidichvuSelected.maLoaiDichVu === data.maLoaiDichVu
+                                        ? "row-selected"
+                                        : ""} >
+                                        <td component="th" scope="row">
+                                            {data.maLoaiDichVu}
+                                        </td>
+                                        <td>{data.tenLoaiDichVu}</td>
+                                        <td>{data.donViLoaiDichVu}</td>
+                                    </tr>
+                                )) :
+
+                                    <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                        <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                                    </Box>
+                                }
+                            </tbody>
+                        </Table>
+                    </StyledPaper>
+                    {/* <Paper elevation={24} sx={{ overflow: 'auto', backgroundColor: 'red' }}>
                         <TableContainer component={Paper} elevation={15}>
                             <Table aria-label="user table">
                                 <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
@@ -293,7 +379,7 @@ const PopupLoaiDichVu = (props) => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    </Paper>
+                    </Paper> */}
 
 
 
@@ -333,14 +419,27 @@ export default PopupLoaiDichVu
 const StyledContainer = styled.div`
   width: 100%;
   max-height: 100%;
-  overflow: auto;
+  overflow: hidden;
   /* background-color: red; */
   padding: 20px;
   table {
     .row-selected {
       
-        background: linear-gradient(to bottom, #ee0979, #ff6a00);
+        background-color: #9fbce7d1 !important;
       
     }
   }
 `;
+const StyledPaper = styled(Paper)`
+height: 400px;
+overflow: auto;
+margin-top: 10px;
+&::-webkit-scrollbar {
+    width: 0.2rem;
+    &-thumb {
+      background-image: linear-gradient(#373b44, #1095c1);
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`

@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, TextField, Typography, Button, Radio, Chip, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Stack, Autocomplete } from '@mui/material';
+import { Box, Grid, Paper, TextField, Typography, Button, Radio, Chip, TableContainer, Stack, Autocomplete } from '@mui/material';
 import React from 'react'
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -7,14 +7,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import LocalPrintshopOutlinedIcon from '@mui/icons-material/LocalPrintshopOutlined';
 import dayjs from 'dayjs';
-
+import { Toast, ToastContainer, FloatingLabel, Form, Table } from "react-bootstrap";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import axios from 'axios';
 import { thongKeSoLanDatDichVu } from '../../utils/APIRoutes';
 import { useEffect } from 'react';
-import { Toast, ToastContainer } from 'react-bootstrap';
-
 import { DatePicker } from '@mui/x-date-pickers';
 
 function FrmThongKeDichVu() {
@@ -180,56 +178,56 @@ function FrmThongKeDichVu() {
             </Grid>
             {/* Danh sách kết quả thống kê theo số lần đặt dịch vụ */}
             {dsThongKeSoLanDatDichVu && dsThongKeSoLanDatDichVu.length > 0 &&
-                <Paper elevation={10} sx={{ maxHeight: '100%', mt: '30px', overflow: 'auto' }}>
-                    <TableContainer component={Paper} elevation={15}>
-                        <Table aria-label="user table">
-                            <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
-                                <TableRow>
-                                    <TableCell><Typography>Mã dịch vụ</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Tên dịch vụ</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Giá dịch vụ</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Số lượng tồn kho</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Đơn vị tính</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Tên loại dịch vụ</Typography></TableCell>
-                                    <TableCell align="center"><Typography>Tổng số lần đặt dịch vụ</Typography></TableCell>
+                <StyledPaper elevation={10} >
 
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {dsThongKeSoLanDatDichVu && dsThongKeSoLanDatDichVu.length > 0 ? dsThongKeSoLanDatDichVu.map((data) => (
-                                    <TableRow key={data.maPhong}  >
-                                        <TableCell component="th" scope="row">
-                                            {data.maDichVu}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align='center'>
-                                            {data.tenDichVu}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align='center'>
-                                            {`${data.giaDichVu} VND`}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align='center'>
-                                            {data.soLuongTon}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align='center'>
-                                            {data.donViTinh}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align='center'>
-                                            {data.tenLoaiDichVu}
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" align='center'>
-                                            {data.tongSoLanDatDichVu}
-                                        </TableCell>
-                                    </TableRow>
-                                )) :
+                    <Table striped hover>
+                        <thead >
+                            <tr>
+                                <th><>Mã dịch vụ</></th>
+                                <th><>Tên dịch vụ</></th>
+                                <th><>Giá dịch vụ</></th>
+                                <th><>Số lượng tồn kho</></th>
+                                <th><>Đơn vị tính</></th>
+                                <th><>Tên loại dịch vụ</></th>
+                                <th><>Tổng số lần đặt dịch vụ</></th>
 
-                                    <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
-                                        <Typography variant='h3'>Chưa có dữ liệu</Typography>
-                                    </Box>
-                                }
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Paper>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {dsThongKeSoLanDatDichVu && dsThongKeSoLanDatDichVu.length > 0 ? dsThongKeSoLanDatDichVu.map((data) => (
+                                <tr key={data.maPhong}  >
+                                    <td >
+                                        {data.maDichVu}
+                                    </td>
+                                    <td  >
+                                        {data.tenDichVu}
+                                    </td>
+                                    <td  >
+                                        {`${data.giaDichVu.toLocaleString()} VND`}
+                                    </td>
+                                    <td  >
+                                        {data.soLuongTon}
+                                    </td>
+                                    <td  >
+                                        {data.donViTinh}
+                                    </td>
+                                    <td  >
+                                        {data.tenLoaiDichVu}
+                                    </td>
+                                    <td  >
+                                        {data.tongSoLanDatDichVu}
+                                    </td>
+                                </tr>
+                            )) :
+
+                                <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                    <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                                </Box>
+                            }
+                        </tbody>
+                    </Table>
+
+                </StyledPaper>}
 
 
 
@@ -279,3 +277,16 @@ const StyledContainer = styled.div`
     }
   }
 `;
+const StyledPaper = styled(Paper)`
+height: 350px;
+overflow: auto;
+margin-top: 12px;
+&::-webkit-scrollbar {
+    width: 0.2rem;
+    &-thumb {
+      background-image: linear-gradient(#373b44, #1095c1);
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`

@@ -1,11 +1,5 @@
 import { Autocomplete, Box, Button, Chip, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer, Table } from "react-bootstrap";
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
@@ -77,7 +71,7 @@ function FrmTimKiemKhachHang() {
 
     return (
         <StyledContainer>
-            <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Typography variant='h3'>Tìm kiếm khách hàng</Typography>
             </Box>
 
@@ -113,42 +107,41 @@ function FrmTimKiemKhachHang() {
             </Box>
 
 
-            {/* Danh sách Dịch Vụ */}
-            <Paper elevation={24} sx={{ maxHeight: '600px', mt: '11px', overflow: 'auto' }}>
-                <TableContainer component={Paper} elevation={15}>
-                    <Table aria-label="user table">
-                        <TableHead sx={{ background: 'linear-gradient(to right, #ffe259, #ffa751)' }}>
-                            <TableRow>
-                                <TableCell><Typography>Mã khách hàng</Typography></TableCell>
-                                <TableCell align="center"><Typography>Tên khách hàng</Typography></TableCell>
-                                <TableCell align="center"><Typography>Căn cước</Typography></TableCell>
-                                <TableCell align="center"><Typography>Số điện thoại</Typography></TableCell>
-                                <TableCell align="center"><Typography>Email</Typography></TableCell>
-                                <TableCell align="center"><Typography>Địa chỉ</Typography></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {dsKhachHang && dsKhachHang.length > 0 ? dsKhachHang.map((data) => (
-                                <TableRow key={data.maKhachHang} >
-                                    <TableCell component="th" scope="row">
-                                        {data.maKhachHang}
-                                    </TableCell>
-                                    <TableCell align="center">{data.hoTen}</TableCell>
-                                    <TableCell align="center">{data.cccdKhachHang}</TableCell>
-                                    <TableCell align="center">{data.soDienThoaiKH}</TableCell>
-                                    <TableCell align="center">{data.emailKH}</TableCell>
-                                    <TableCell align="center">{data.diaChiKH}</TableCell>
-                                </TableRow>
-                            )) :
+            {/* Danh sách Khách hàng */}
+            <StyledPaper elevation={10}>
+                <Table striped hover>
+                    <thead>
+                        <tr>
+                            <th>Mã khách hàng</th>
+                            <th >Tên khách hàng</th>
+                            <th>Căn cước</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Địa chỉ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {dsKhachHang && dsKhachHang.length > 0 ? dsKhachHang.map((data) => (
+                            <tr key={data.maKhachHang}>
+                                <td component="th" scope="row">
+                                    {data.maKhachHang}
+                                </td>
+                                <td>{data.hoTen}</td>
+                                <td>{data.cccdKhachHang}</td>
+                                <td>{data.soDienThoaiKH}</td>
+                                <td>{data.emailKH}</td>
+                                <td>{data.diaChiKH}</td>
+                            </tr>
+                        )) :
 
-                                <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
-                                    <Typography variant='h3'>Chưa có dữ liệu</Typography>
-                                </Box>
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+                            <Box sx={{ display: 'flex', height: '420px', width: '100%' }}>
+                                <Typography variant='h3'>Chưa có dữ liệu</Typography>
+                            </Box>
+                        }
+                    </tbody>
+                </Table>
+            </StyledPaper>
+
 
 
 
@@ -190,3 +183,16 @@ const StyledContainer = styled.div`
   padding: 20px;
   
 `;
+const StyledPaper = styled(Paper)`
+height: 595px;
+overflow: auto;
+margin-top: 15px;
+&::-webkit-scrollbar {
+    width: 0.2rem;
+    &-thumb {
+      background-image: linear-gradient(#373b44, #1095c1);
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`
