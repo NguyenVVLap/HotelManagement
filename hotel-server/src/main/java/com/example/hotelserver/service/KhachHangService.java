@@ -13,5 +13,6 @@ public interface KhachHangService {
 	boolean kiemtraKhachHangTonTai(String cccdKhachHang);
 	List<KhachHang> timKhachHangTheoTen(String tenKhachHang);
 	KhachHang timKhachHangTheoCCCD(String cccdKhachHang);
+	List<KhachHang> timKhachHangCustomeQuey(String query);
 
 }

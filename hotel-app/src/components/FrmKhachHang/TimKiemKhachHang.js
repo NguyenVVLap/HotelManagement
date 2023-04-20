@@ -1,20 +1,31 @@
-import { Autocomplete, Box, Button, Chip, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
-import { Toast, ToastContainer, Table } from "react-bootstrap";
+import { Autocomplete, Box, Button as ButtonMUI, Chip, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
+import { BiRefresh } from 'react-icons/bi';
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
-import SystemUpdateAltOutlinedIcon from '@mui/icons-material/SystemUpdateAltOutlined';
-import { addKhachHang, getAllKhachHangRoute, timKiemKhachHang, updateKhachHang } from '../../utils/APIRoutes';
+import { Toast, ToastContainer, Button, FloatingLabel, Form, Table } from "react-bootstrap";
+import { getAllKhachHangRoute, timKiemKhachHang } from '../../utils/APIRoutes';
 import axios from 'axios';
 function FrmTimKiemKhachHang() {
     const [toast, setToast] = useState(null);
     const [dsKhachHang, setDsKhachHang] = useState(undefined);
-    const [search, setSearch] = useState({
-        keyword: "",
-        theo: "Theo căn cước công dân"
-    });
+    const [search, setSearch] = useState([
+        {
+            theo: "Theo mã",
+            keyword: "",
+        },
+        {
+            theo: "Theo tên",
+            keyword: "",
+        },
+        {
+            theo: "Theo số điện thoại",
+            keyword: "",
+        },
+        {
+            theo: "Theo địa chỉ",
+            keyword: "",
+        },
+    ]);
 
     useEffect(() => {
         loadKhachHangFromDB();
@@ -32,13 +43,32 @@ function FrmTimKiemKhachHang() {
         setDsKhachHang(data);
     }
 
-    const handleOnchangeSelectedCombobox = (e, value) => {
-        // console.log("Selected combobox: ", value);
-        setSearch({ ...search, theo: value })
-    }
+
     const handleChangeTextFieldSearch = (e) => {
-        // console.log("Selected combobox: ", value);
-        setSearch({ ...search, keyword: e.target.value })
+        let tempSearch = [...search];
+        if (search.length === 0) {
+            setSearch([{ theo: e.target.name, keyword: e.target.value }]);
+            return;
+        }
+        for (let i = 0; i < search.length; i++) {
+            if (search[i].theo === e.target.name) {
+                tempSearch.splice(i, 1);
+                tempSearch = [
+                    ...tempSearch,
+                    { theo: e.target.name, keyword: e.target.value },
+                ];
+                setSearch(tempSearch);
+                return;
+            }
+            if (i === search.length - 1) {
+                tempSearch = [
+                    ...tempSearch,
+                    { theo: e.target.name, keyword: e.target.value },
+                ];
+                setSearch(tempSearch);
+            }
+        }
+        // setSearch({ ...search, keyword: e.target.value })
     }
     Array.prototype.isNull = function () {
         return this.join().replace(/,/g, '').length === 0;
@@ -51,7 +81,7 @@ function FrmTimKiemKhachHang() {
                 "Access-Control-Allow-Credentials": "true",
             },
         });
-        console.log("data response", data);
+        console.log("Danh Sach KhachHangTiemKiem", data);
         if (data.isNull()) {
             console.log("Mảng null");
             setDsKhachHang(undefined)
@@ -65,7 +95,7 @@ function FrmTimKiemKhachHang() {
     const handleRefeshKhachHang = () => {
         loadKhachHangFromDB();
     }
-    console.log("Search combobox :", search);
+    console.log("Search Khách hàng :", search);
 
 
 
@@ -76,36 +106,75 @@ function FrmTimKiemKhachHang() {
             </Box>
 
             {/* Thanh Search */}
-            <Box sx={{ display: 'flex', height: '100px', mt: '10px' }}>
-                <Box sx={{ width: '30%', alignItems: 'center', display: 'flex' }}>
-                    <TextField id="outlined-search" label="Nhập để tìm kiếm" type="search" fullWidth onChange={(e) => { handleChangeTextFieldSearch(e) }} />
-                </Box>
-                <Box sx={{ width: '20%', alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
-                    <Autocomplete
-                        onChange={(e, value) => { handleOnchangeSelectedCombobox(e, value) }}
-                        disablePortal
-                        id="combo-box-demo"
-                        options={['Theo căn cước công dân', 'Theo họ tên']}
-                        sx={{ width: '100%' }}
-                        renderInput={(params) => <TextField  {...params} label="Tìm theo" disabled />}
-                    />
-                </Box>
-                <Box sx={{ alignItems: 'center', display: 'flex', marginLeft: '20px' }}>
-                    <Button sx={{
-                        backgroundColor: '#0D6EFD', '&:hover': {
-                            backgroundColor: '#0D6EFD',
-                        }
-                    }} variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleSearchKhachHang() }} >Tìm kiếm</Button>
-                </Box>
-                <Box sx={{ alignItems: 'center', display: 'flex', marginLeft: '5px' }}>
-                    <Button sx={{
-                        backgroundColor: '#FFC107', '&:hover': {
-                            backgroundColor: '#FFC107',
-                        }
-                    }} size='medium' variant='contained' startIcon={<CachedOutlinedIcon />} onClick={() => { handleRefeshKhachHang() }}>Tải lại dữ liệu</Button>
-                </Box>
-            </Box>
+            <Paper elevation={15} sx={{ marginTop: '10px', flexDirection: 'column', maxHeight: '45%', overflow: 'auto', padding: '15px' }}>
+                <Grid container spacing={2} >
+                    <Grid item md={6}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Mã khách hàng"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="Theo mã"
+                                onChange={(e) => handleChangeTextFieldSearch(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
 
+                    <Grid item md={6}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Tên khách hàng"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="Theo tên"
+                                onChange={(e) => handleChangeTextFieldSearch(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+                    <Grid item md={6}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Số điện thoại"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="Theo số điện thoại"
+                                onChange={(e) => handleChangeTextFieldSearch(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+
+                    <Grid item md={6}>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Địa chỉ"
+                            className="mb-1"
+                        >
+                            <Form.Control
+                                type="text"
+                                name="Theo địa chỉ"
+                                onChange={(e) => handleChangeTextFieldSearch(e)}
+                            />
+                        </FloatingLabel>
+                    </Grid>
+                    <Stack sx={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', mt: '10px', ml: '8px', gap: '1.5rem' }}>
+                        <Button variant="success" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleSearchKhachHang()} >
+                            Tìm kiếm
+                        </Button>
+
+                        <Button variant="warning" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleRefeshKhachHang()}>
+                            <BiRefresh style={{ fontSize: '1.5rem' }} />
+                        </Button>
+                    </Stack>
+                </Grid>
+
+
+            </Paper>
 
             {/* Danh sách Khách hàng */}
             <StyledPaper elevation={10}>
@@ -184,7 +253,7 @@ const StyledContainer = styled.div`
   
 `;
 const StyledPaper = styled(Paper)`
-height: 595px;
+height: 470px;
 overflow: auto;
 margin-top: 15px;
 &::-webkit-scrollbar {

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.hotelserver.entity.KhachHang;
 import com.example.hotelserver.repository.KhachHangRepo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,6 +63,20 @@ public class KhachHangServiceImpl implements KhachHangService {
 		return khachHangRepo.findByCccdKhachHang(cccdKhachHang);
 	}
 
+	@Override
+	public List<KhachHang> timKhachHangCustomeQuey(String query) {
+		List<KhachHang> result = new ArrayList<>();
+		List<String> maKhachHangS=khachHangRepo.findMaKhachHangByCustomField(query);
+		if (!maKhachHangS.isEmpty()) {
+			for (String maKhachHang : maKhachHangS) {
+				KhachHang kh = khachHangRepo.findById(Integer.valueOf(maKhachHang)).get();
+				if(kh!=null){
+					result.add(kh);
+				}
+			}
+		}
+		return result;
+	}
 
 
 }

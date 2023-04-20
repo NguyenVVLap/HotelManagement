@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.hotelserver.entity.KhachHang;
 
-public interface KhachHangRepo extends JpaRepository<KhachHang, Integer> {
+public interface KhachHangRepo extends JpaRepository<KhachHang, Integer>,CustomRepoKhachHang {
 	KhachHang findByCccdKhachHang(String cccdKhachHang);
 	KhachHang findBySoDienThoaiKH(String soDienThoaiKH);
 	@Query(nativeQuery = true, value = ("select * from khach_hang "))

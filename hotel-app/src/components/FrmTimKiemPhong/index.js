@@ -19,8 +19,7 @@ import {
   getRoomsRoute,
   getRoomTypesRoute,
 } from "../../utils/APIRoutes";
-import Search from "../FrmQuanLyPhong/components/Search";
-import TableData from "../FrmQuanLyPhong/components/TableData";
+
 
 function FrmTimKiemPhong() {
   const [phongSelected, setPhongSelected] = useState(undefined);
@@ -152,6 +151,7 @@ function FrmTimKiemPhong() {
     const { data } = await axios.get(`${getRoomsRoute}`, {}, config);
     setDsPhong(data);
   };
+  console.log('searchPhong:', search);
   return (
     <StyleContainer>
       <h1>Tìm kiếm phòng</h1>
@@ -261,13 +261,12 @@ function FrmTimKiemPhong() {
                   return (
                     <tr
                       key={index}
-                      className={`${
-                        phongSelected &&
+                      className={`${phongSelected &&
                         phongSelected &&
                         phongSelected.maPhong === phongDto.maPhong
-                          ? "row-selected"
-                          : ""
-                      }`}
+                        ? "row-selected"
+                        : ""
+                        }`}
                     >
                       <td>{phongDto.maPhong}</td>
                       <td>{phongDto.tenPhong}</td>
