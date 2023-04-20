@@ -24,26 +24,27 @@ public class NhanVienServiceImpl implements NhanVienService {
     private final VaiTroRepo vaiTroRepo;
     private final TaiKhoanRepo taiKhoanRepo;
     private final JwtService jwtService;
+
     @Override
     public List<Map<String, Object>> getAllInfoNhanVienWithAccount() {
         List<Map<String, Object>> result = new ArrayList<>();
-        List<NhanVien>  listNhanVien = employeeRepo.getAllNhanVien();
-        for(NhanVien nv : listNhanVien){
+        List<NhanVien> listNhanVien = employeeRepo.getAllNhanVien();
+        for (NhanVien nv : listNhanVien) {
             Map<String, Object> map = new HashMap<>();
-           var nhanvienDTO = NhanVienDto.builder().maNhanVien(nv.getMaNhanVien())
-                   .hoTen(nv.getHoTen())
-                   .diaChi(nv.getDiaChi())
-                   .email(nv.getEmail())
-                   .soDienThoai(nv.getSoDienThoai())
-                   .cccd(nv.getCccd())
-                   .ngaySinh(nv.getNgaySinh())
-                   .luongCoBan(nv.getLuongCoBan())
-                   .ngayVaoLam(nv.getNgayVaoLam())
-                   .maTaiKhoan(nv.getTaiKhoan().getMaTaiKhoan())
-                   .tenTaiKhoan(nv.getTaiKhoan().getTenTaiKhoan())
-                   .matKhau(nv.getTaiKhoan().getMatKhau())
-                   .daKichHoat(nv.getTaiKhoan().isDaKichHoat())
-                   .build();
+            var nhanvienDTO = NhanVienDto.builder().maNhanVien(nv.getMaNhanVien())
+                    .hoTen(nv.getHoTen())
+                    .diaChi(nv.getDiaChi())
+                    .email(nv.getEmail())
+                    .soDienThoai(nv.getSoDienThoai())
+                    .cccd(nv.getCccd())
+                    .ngaySinh(nv.getNgaySinh())
+                    .luongCoBan(nv.getLuongCoBan())
+                    .ngayVaoLam(nv.getNgayVaoLam())
+                    .maTaiKhoan(nv.getTaiKhoan().getMaTaiKhoan())
+                    .tenTaiKhoan(nv.getTaiKhoan().getTenTaiKhoan())
+                    .matKhau(nv.getTaiKhoan().getMatKhau())
+                    .daKichHoat(nv.getTaiKhoan().isDaKichHoat())
+                    .build();
             map.put("nhanvien", nhanvienDTO);
             result.add(map);
         }
@@ -53,8 +54,8 @@ public class NhanVienServiceImpl implements NhanVienService {
     @Override
     public List<Map<String, Object>> getAllInfoNhanVienWithAccountByHoTen(String tenNhanVien) {
         List<Map<String, Object>> result = new ArrayList<>();
-        List<NhanVien>  listNhanVien = employeeRepo.timNhanVienBangHoTen(tenNhanVien);
-        for(NhanVien nv : listNhanVien){
+        List<NhanVien> listNhanVien = employeeRepo.timNhanVienBangHoTen(tenNhanVien);
+        for (NhanVien nv : listNhanVien) {
             Map<String, Object> map = new HashMap<>();
             var nhanvienDTO = NhanVienDto.builder().maNhanVien(nv.getMaNhanVien())
                     .hoTen(nv.getHoTen())
@@ -82,23 +83,23 @@ public class NhanVienServiceImpl implements NhanVienService {
 //        List<NhanVien>  listNhanVien= new ArrayList<>();
         NhanVien nv = employeeRepo.findBySoDienThoai(phone);
 
-            Map<String, Object> map = new HashMap<>();
-            var nhanvienDTO = NhanVienDto.builder().maNhanVien(nv.getMaNhanVien())
-                    .hoTen(nv.getHoTen())
-                    .diaChi(nv.getDiaChi())
-                    .email(nv.getEmail())
-                    .soDienThoai(nv.getSoDienThoai())
-                    .cccd(nv.getCccd())
-                    .ngaySinh(nv.getNgaySinh())
-                    .luongCoBan(nv.getLuongCoBan())
-                    .ngayVaoLam(nv.getNgayVaoLam())
-                    .maTaiKhoan(nv.getTaiKhoan().getMaTaiKhoan())
-                    .tenTaiKhoan(nv.getTaiKhoan().getTenTaiKhoan())
-                    .matKhau(nv.getTaiKhoan().getMatKhau())
-                    .daKichHoat(nv.getTaiKhoan().isDaKichHoat())
-                    .build();
-            map.put("nhanvien", nhanvienDTO);
-            result.add(map);
+        Map<String, Object> map = new HashMap<>();
+        var nhanvienDTO = NhanVienDto.builder().maNhanVien(nv.getMaNhanVien())
+                .hoTen(nv.getHoTen())
+                .diaChi(nv.getDiaChi())
+                .email(nv.getEmail())
+                .soDienThoai(nv.getSoDienThoai())
+                .cccd(nv.getCccd())
+                .ngaySinh(nv.getNgaySinh())
+                .luongCoBan(nv.getLuongCoBan())
+                .ngayVaoLam(nv.getNgayVaoLam())
+                .maTaiKhoan(nv.getTaiKhoan().getMaTaiKhoan())
+                .tenTaiKhoan(nv.getTaiKhoan().getTenTaiKhoan())
+                .matKhau(nv.getTaiKhoan().getMatKhau())
+                .daKichHoat(nv.getTaiKhoan().isDaKichHoat())
+                .build();
+        map.put("nhanvien", nhanvienDTO);
+        result.add(map);
 
         return result;
     }
@@ -110,8 +111,8 @@ public class NhanVienServiceImpl implements NhanVienService {
 
     @Override
     public String themMoiNhanVien(NhanVienDto request) {
-        System.out.println("Request thêm mới nhân viên nhận vào : "+request);
-        if(checkNhanVienExist(request.getSoDienThoai(),request.getCccd())){
+        System.out.println("Request thêm mới nhân viên nhận vào : " + request);
+        if (checkNhanVienExist(request.getSoDienThoai(), request.getCccd())) {
             VaiTro role = vaiTroRepo.findByTenVaiTro("ROLE_EMPLOYEE");
             if (role == null) {
                 role = new VaiTro(0, "ROLE_EMPLOYEE");
@@ -135,13 +136,13 @@ public class NhanVienServiceImpl implements NhanVienService {
             employeeRepo.save(newNhanVien);
             String jwtToken = jwtService.generateToken(taikhoan);
             return jwtToken;
-        }
-        else {
+        } else {
             return null;
         }
 
 
     }
+
     @Override
     public boolean checkNhanVienExist(String sdt, String cccd) {
         if (taiKhoanRepo.findByTenTaiKhoan(sdt).isEmpty() &&
@@ -154,7 +155,7 @@ public class NhanVienServiceImpl implements NhanVienService {
     @Override
     public String capnhatNhanVien(NhanVienDto request) {
         VaiTro role = vaiTroRepo.findByTenVaiTro("ROLE_EMPLOYEE");
-        
+
         TaiKhoan taikhoanUpdate = taiKhoanRepo.findTaiKhoansByMaTaiKhoan(request.getMaTaiKhoan());
         taikhoanUpdate.setDaKichHoat(request.isDaKichHoat());
 
@@ -171,10 +172,40 @@ public class NhanVienServiceImpl implements NhanVienService {
         return "update success";
     }
 
-	@Override
-	public NhanVien findByCCCD(String cccd) {
-		return employeeRepo.findByCccd(cccd);
-	}
+    @Override
+    public List<NhanVienDto> timNhanVienCustomQuery(String query) {
+        List<NhanVienDto> result = new ArrayList<>();
+        List<String> maNhanViens = employeeRepo.findMaNhanVienByCustomField(query);
+        if (!maNhanViens.isEmpty()) {
+            for (String maNV : maNhanViens) {
+                NhanVien nv = employeeRepo.findById(Long.valueOf(maNV)).get();
+                if (nv != null) {
+                    var nhanVienDTO = NhanVienDto.builder()
+                            .maNhanVien(nv.getMaNhanVien())
+                            .hoTen(nv.getHoTen())
+                            .diaChi(nv.getDiaChi())
+                            .email(nv.getEmail())
+                            .soDienThoai(nv.getSoDienThoai())
+                            .cccd(nv.getCccd())
+                            .luongCoBan(nv.getLuongCoBan())
+                            .ngaySinh(nv.getNgaySinh())
+                            .ngayVaoLam(nv.getNgayVaoLam())
+                            .maTaiKhoan(nv.getTaiKhoan().getMaTaiKhoan())
+                            .tenTaiKhoan(nv.getTaiKhoan().getTenTaiKhoan())
+                            .daKichHoat(nv.getTaiKhoan().isDaKichHoat())
+                            .build();
+                    result.add(nhanVienDTO);
+                }
+            }
+        }
+
+            return result;
+        }
 
 
+
+    @Override
+    public NhanVien findByCCCD(String cccd) {
+        return employeeRepo.findByCccd(cccd);
+    }
 }

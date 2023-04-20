@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.hotelserver.dto.ThongKeSoLanDatPhongDto;
+import com.example.hotelserver.entity.KhachHang;
 import com.example.hotelserver.entity.NhanVien;
 import com.example.hotelserver.entity.TaiKhoan;
 import com.example.hotelserver.entity.VaiTro;
@@ -57,26 +58,54 @@ public class NhanVienController {
         }
         return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
     }
+//    @PostMapping("/timKiemNhanVien")
+//    public ResponseEntity<List<Map<String, Object>>> timNhanVien(@RequestBody Map<String, Object> request) {
+//        List<Map<String, Object>> dataFromQuery = new ArrayList<>();
+//        if (request.get("theo").toString().equals("Theo họ tên")) {
+//             dataFromQuery = employeeService.getAllInfoNhanVienWithAccountByHoTen(request.get("keyword").toString());
+//
+//        } else if (request.get("theo").toString().equals("Theo số điện thoại")) {
+//            try {
+//               dataFromQuery = employeeService.getAllInfoNhanVienWithAccountByPhone(request.get("keyword").toString());
+//            } catch (Exception e) {
+//                System.out.println("Error tim nhan vien " + e);
+//            }
+//        }
+//        return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
+//    }
     @PostMapping("/timKiemNhanVien")
-    public ResponseEntity<List<Map<String, Object>>> timNhanVien(@RequestBody Map<String, Object> request) {
-        List<Map<String, Object>> dataFromQuery = new ArrayList<>();
-        if (request.get("theo").toString().equals("Theo họ tên")) {
-             dataFromQuery = employeeService.getAllInfoNhanVienWithAccountByHoTen(request.get("keyword").toString());
-
-        } else if (request.get("theo").toString().equals("Theo số điện thoại")) {
-            try {
-               dataFromQuery = employeeService.getAllInfoNhanVienWithAccountByPhone(request.get("keyword").toString());
-            } catch (Exception e) {
-                System.out.println("Error tim nhan vien " + e);
+    public ResponseEntity<List<NhanVienDto>> timNhanVienDTOCustomeQuery(@RequestBody List<Map<String, Object>> request) {
+        List<NhanVienDto> results = new ArrayList<>();
+        String query = "select ma_nhan_vien from nhan_vien";
+        List<String> conditions = new ArrayList<>();
+        if (!request.isEmpty()) {
+            for (Map<String, Object> map : request) {
+                if (map.get("theo").toString().equals("Theo tên") && !map.get("keyword").toString().trim().equals("")) {
+                    conditions.add("ho_ten like '%" + map.get("keyword").toString()+ "%'");
+                } else if (map.get("theo").toString().equals("Theo mã") && !map.get("keyword").toString().trim().equals("")) {
+                    conditions.add("ma_nhan_vien = " + map.get("keyword").toString());
+                } else if (map.get("theo").toString().equals("Theo số điện thoại") && !map.get("keyword").toString().trim().equals("")) {
+                    conditions.add("so_dien_thoai like '" + map.get("keyword").toString() + "'");
+                } else if (map.get("theo").toString().equals("Theo địa chỉ") && !map.get("keyword").toString().trim().equals("")) {
+                    conditions.add("dia_chi  like '%" + map.get("keyword").toString()+ "%'");
+                }
+                else if (map.get("theo").toString().equals("Theo tình trạng tài khoản") && !map.get("keyword").toString().trim().equals("")) {
+                    conditions.add("ma_tai_khoan in (select nv.ma_nhan_vien from nhan_vien nv JOIN tai_khoan tk on nv.ma_tai_khoan=tk.ma_tai_khoan where tk.da_kich_hoat = '"+map.get("keyword").toString() + "')" );
+                }
             }
+            if (!conditions.isEmpty()) {
+                query += " where ";
+                for (int i = 0; i < conditions.size(); i++) {
+                    query += conditions.get(i);
+                    if (i != conditions.size() - 1) {
+                        query += " and ";
+                    }
+
+                }
+            }
+            results = employeeService.timNhanVienCustomQuery(query);
         }
-        return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
-
-
-
-
-
-
+        return new ResponseEntity<List<NhanVienDto>>(results, HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<String> themMoiNhanVien(@RequestBody NhanVienDto request) {

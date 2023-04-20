@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.example.hotelserver.entity.NhanVien;
 
 @Repository
-public interface NhanVienRepo extends JpaRepository<NhanVien, Long>{
+public interface NhanVienRepo extends JpaRepository<NhanVien, Long>,CustomRepoNhanVien{
 	NhanVien findBySoDienThoai(String soDienThoai);
 	NhanVien findByCccd(String cccd);
 	

@@ -1,6 +1,7 @@
 package com.example.hotelserver.service;
 
 import com.example.hotelserver.dto.NhanVienDto;
+import com.example.hotelserver.dto.PhongResponseDto;
 import com.example.hotelserver.entity.NhanVien;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface NhanVienService {
     public String themMoiNhanVien(NhanVienDto request);
     public boolean checkNhanVienExist(String sdt, String cccd);
     public String capnhatNhanVien(NhanVienDto request);
+    public List<NhanVienDto> timNhanVienCustomQuery(String query);
 }
