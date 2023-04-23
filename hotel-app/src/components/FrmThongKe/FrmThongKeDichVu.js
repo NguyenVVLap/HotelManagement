@@ -117,10 +117,10 @@ function FrmThongKeDichVu() {
 
     return (
         <StyledContainer>
-            <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
+            {/* <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
                 <Typography variant='h3'>Thống kê dịch vụ</Typography>
-            </Box>
-            <Grid container spacing={6} sx={{ mt: '40px' }}>
+            </Box> */}
+            <Grid container spacing={2}>
                 <Grid item md={12}>
                     <Autocomplete
                         onChange={(e, value) => { handleOnchangeSelectedCombobox(e, value) }}
@@ -278,7 +278,7 @@ const StyledContainer = styled.div`
   }
 `;
 const StyledPaper = styled(Paper)`
-height: 350px;
+height: 495px;
 overflow: auto;
 margin-top: 12px;
 &::-webkit-scrollbar {

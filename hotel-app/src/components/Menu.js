@@ -66,8 +66,8 @@ function Menu({
     localStorage.clear();
     navigate("/login");
   };
-  console.log('Thong Tin Nhan Vien Menu:', nhanVien);
-  console.log('Vai Tro Menu:', nhanVien.taiKhoan.vaiTro.tenVaiTro);
+  // console.log('Thong Tin Nhan Vien Menu:', nhanVien);
+  // console.log('Vai Tro Menu:', nhanVien.taiKhoan.vaiTro.tenVaiTro);
   // console.log('length Name', nhanVien.hoTen.split(' ').length);
   // console.log('full Name', `${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 2]} ${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 1]} `);
   return (
@@ -235,6 +235,15 @@ function Menu({
                     <SearchIcon />
                     <p className="btn-sub-title">Tìm kiếm</p>
                   </button>
+
+                  <button
+                    className={`btn-sub ${subNavSelected.subnav === "report-staff" && "btn-sub-selected"
+                      }`}
+                    onClick={() => onHandleSelectedSubNav("report-staff", "staff")}
+                  >
+                    <AssessmentOutlinedIcon />
+                    <p className="btn-sub-title">Thống kê</p>
+                  </button>
                 </div>
               )}
             </button>
@@ -266,14 +275,14 @@ function Menu({
                     <p className="btn-sub-title">Cập nhật</p>
                   </button>
 
-                  <button
+                  {/* <button
                     className={`btn-sub ${subNavSelected.subnav === "record" && "btn-sub-selected"
                       }`}
                     onClick={() => onHandleSelectedSubNav("record", "bill")}
                   >
                     <BsDoorOpen />
                     <p className="btn-sub-title">Thống kê</p>
-                  </button>
+                  </button> */}
                 </div>
               )}
             </button>
@@ -338,7 +347,7 @@ function Menu({
             </button>
 
             {/* Thống Kê */}
-            <button className={`btn ${navSelected.report && "btn-selected"}`}>
+            {/* <button className={`btn ${navSelected.report && "btn-selected"}`}>
               <div
                 className="menu-content"
                 onClick={() => onHandleSelectedNav("report", !navSelected.report)}
@@ -380,7 +389,7 @@ function Menu({
                   </button>
                 </div>
               )}
-            </button>
+            </button> */}
           </div>
           <div style={{ width: '100%', padding: '16px', height: '18%', display: 'flex', flexDirection: 'column', justifyContent: 'center', }}>
             <div style={{ width: '100%', height: '90%', borderRadius: '10px', padding: '10px', border: '1px solid white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -392,11 +401,11 @@ function Menu({
                 </Tooltip>
                 <div style={{ display: 'flex', flexDirection: 'column', flexGrow: '2', marginLeft: '5px' }}>
                   <Typography variant="h6" >
-                    {
+                    {nhanVien &&
                       `${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 2]} ${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 1]} `
                     }
                   </Typography>
-                  {nhanVien.taiKhoan.vaiTro.tenVaiTro === 'ROLE_MANAGEMENT' ? <Chip color="error" size="small" label='Quản lý' sx={{ width: '90px' }} /> : <Chip color="primary" size="small" label='Nhân viên' sx={{ width: '90px' }} />}
+                  {nhanVien && nhanVien.taiKhoan.vaiTro.tenVaiTro === 'ROLE_MANAGEMENT' ? <Chip color="error" size="small" label='Quản lý' sx={{ width: '90px' }} /> : <Chip color="primary" size="small" label='Nhân viên' sx={{ width: '90px' }} />}
 
                 </div>
               </div>
@@ -415,13 +424,13 @@ function Menu({
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Họ tên:</p>
-              {nhanVien.hoTen}
+              {nhanVien && nhanVien.hoTen}
             </div>
           </Col>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Căn cước công dân:</p>
-              {nhanVien.cccd}
+              {nhanVien && nhanVien.cccd}
             </div>
           </Col>
         </Row>
@@ -429,7 +438,7 @@ function Menu({
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Ngày sinh:</p>
-              {moment(nhanVien.ngaySinh).format("DD/MM/YYYY")}
+              {moment(nhanVien && nhanVien.ngaySinh).format("DD/MM/YYYY")}
 
             </div>
           </Col>
@@ -447,13 +456,13 @@ function Menu({
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Số điện thoại</p>
-              {nhanVien.soDienThoai}
+              {nhanVien && nhanVien.soDienThoai}
             </div>
           </Col>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Địa chỉ:</p>
-              {nhanVien.diaChi}
+              {nhanVien && nhanVien.diaChi}
             </div>
           </Col>
 
@@ -464,25 +473,25 @@ function Menu({
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Tên tài khoản:</p>
-              {nhanVien.soDienThoai}
+              {nhanVien && nhanVien.soDienThoai}
             </div>
           </Col>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Tình trạng tài khoản:</p>
-              {nhanVien.taiKhoan.daKichHoat === true ? 'Đã kích hoạt' : 'Chưa kích hoạt'}
+              {nhanVien && nhanVien.taiKhoan.daKichHoat === true ? 'Đã kích hoạt' : 'Chưa kích hoạt'}
             </div>
           </Col>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Chức vụ:</p>
-              {nhanVien.taiKhoan.vaiTro.tenVaiTro === 'ROLE_MANAGEMENT' ? 'nhân viên quản lý' : 'nhân viên lễ tân'}
+              {nhanVien && nhanVien.taiKhoan.vaiTro.tenVaiTro === 'ROLE_MANAGEMENT' ? 'nhân viên quản lý' : 'nhân viên lễ tân'}
             </div>
           </Col>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Ngày vào làm:</p>
-              {moment(nhanVien.ngayVaoLam).format("DD/MM/YYYY")}
+              {moment(nhanVien && nhanVien.ngayVaoLam).format("DD/MM/YYYY")}
             </div>
           </Col>
         </Row>

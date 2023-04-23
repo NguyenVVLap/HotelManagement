@@ -25,6 +25,7 @@ import FrmDatDichVu from "../components/FrmDatDichVu";
 import FrmThongKePhong from "../components/FrmThongKe/FrmThongKePhong";
 import FrmThongKeDoanhThu from "../components/FrmThongKe/FrmThongKeDoanhThu";
 import FrmThongKeDichVu from "../components/FrmThongKe/FrmThongKeDichVu";
+import TabThongKe from "../components/FrmThongKe/TabThongKe";
 
 function Main() {
   const navigate = useNavigate();
@@ -87,6 +88,7 @@ function Main() {
           {subNavSelected.subnav === "doanhthu-report" && (
             <FrmThongKeDoanhThu />
           )}
+          {subNavSelected.subnav === "report-staff" && <TabThongKe />}
         </div>
       </div>
     </Container>

@@ -1367,10 +1367,10 @@ function FrmThongKeDoanhThu() {
     // console.log("dsTongTienTempThang4:", dsTongTienPhongTempThang4);
     return (
         <StyledContainer>
-            <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
+            {/* <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
                 <Typography variant='h3'>Thống kê doanh thu</Typography>
-            </Box>
-            <Grid container spacing={6} sx={{ mt: '40px' }}>
+            </Box> */}
+            <Grid container spacing={2} >
                 <Grid item md={12}>
                     <Autocomplete
                         onChange={(e, value) => { handleOnchangeSelectedCombobox(e, value) }}
@@ -1695,7 +1695,7 @@ function FrmThongKeDoanhThu() {
                             <Line type="monotone" dataKey="tongTien" stroke="#ea384d" />
                         </LineChart>
                     </ResponsiveContainer> */}
-                    <ResponsiveContainer width="100%" height={350}>
+                    <ResponsiveContainer width="100%" height={450}>
                         <ComposedChart
                             width={500}
                             height={400}
@@ -1718,10 +1718,10 @@ function FrmThongKeDoanhThu() {
             {
                 dsHoaDonDaThanhToanDeThongKeTheoThang && dsHoaDonDaThanhToanDeThongKeTheoThang.length > 0 && detailReportDoanhThuPhongVaDichVuTheoThang === false && <Stack mt='35px' overflow='hidden' >
 
-                    <ResponsiveContainer width="100%" height={350}>
+                    <ResponsiveContainer width="100%" height={450}>
                         <ComposedChart
                             width={500}
-                            height={400}
+                            height={300}
                             data={dsHoaDonChartTheoTungNgayCuaThang}
 
                         >
@@ -1788,7 +1788,7 @@ const StyledContainer = styled.div`
   }
 `;
 const StyledPaper = styled(Paper)`
-height: 350px;
+height: 495px;
 overflow: auto;
 margin-top: 12px;
 &::-webkit-scrollbar {

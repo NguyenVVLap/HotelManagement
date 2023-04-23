@@ -203,10 +203,10 @@ function FrmThongKePhong() {
     // console.log('Search', search.theo)
     return (
         <StyledContainer>
-            <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
+            {/* <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
                 <Typography variant='h3'>Thống kê phòng</Typography>
-            </Box>
-            <Grid container spacing={6} sx={{ mt: '40px' }}>
+            </Box> */}
+            <Grid container spacing={2} >
                 <Grid item md={12}>
                     <Autocomplete
                         onChange={(e, value) => { handleOnchangeSelectedCombobox(e, value) }}
@@ -356,8 +356,8 @@ function FrmThongKePhong() {
             {
                 dsThongKeSoLanDatPhong && dsThongKeSoLanDatPhong.length > 0 && detailReportSoLanDatPhong === false &&
                 <Stack mt='35px' overflow='auto' >
-                    <ResponsiveContainer width="100%" height={350}>
-                        <BarChart width={1300} height={500} data={dsThongKeSoLanDatPhongCustome}>
+                    <ResponsiveContainer width="100%" height={450}>
+                        <BarChart width={1300} height={450} data={dsThongKeSoLanDatPhongCustome}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="maPhong" label={{ value: 'Phòng', position: 'insideBottom' }} interval={0} />
                             <YAxis allowDecimals={false} label={{ value: 'Số lần đặt phòng', angle: -90, position: 'insideLeft' }} />
@@ -381,8 +381,8 @@ function FrmThongKePhong() {
                             <CloseIcon />
                         </IconButton>
                     </Stack>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart width={1300} height={500} data={dsChartThongKeDoanhThuTungPhongMangLai}>
+                    <ResponsiveContainer width="100%" height={400}>
+                        <BarChart width={1300} height={400} data={dsChartThongKeDoanhThuTungPhongMangLai}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="phong" label={{ value: 'Phòng', position: 'insideBottom' }} interval={0} />
                             <YAxis allowDecimals={false} label={{ value: 'Tổng tiền', angle: -90, position: 'insideLeft' }} />
@@ -492,7 +492,7 @@ const StyledContainer = styled.div`
   }
 `;
 const StyledPaper = styled(Paper)`
-height: 350px;
+height: 495px;
 overflow: auto;
 margin-top: 12px;
 &::-webkit-scrollbar {
