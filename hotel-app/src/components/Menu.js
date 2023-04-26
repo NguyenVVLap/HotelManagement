@@ -13,12 +13,14 @@ import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import { Avatar, Col, Divider, Drawer, List, Row } from 'antd';
-import { Chip, IconButton, Tooltip, Typography } from "@mui/material";
+import { Avatar, Col, Divider, Drawer, List, Popconfirm, Row } from 'antd';
+import { Box, Chip, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, FloatingLabel, Form, Toast, ToastContainer } from "react-bootstrap";
 import moment from "moment";
+import axios from "axios";
+import { changeMatKhauRoute } from "../utils/APIRoutes";
 function Menu({
   navSelected,
   setNavSelected,
@@ -53,23 +55,112 @@ function Menu({
     });
   };
   const [openUserInfo, setOpenUserInfo] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [objectDoiMatKhau, setObjectDoiMatKhau] = useState({
+    matKhauCu: "",
+    matKhauMoi: ""
+  })
+  const [openDoiMatKhauDrawwer, setOpenDoiMatKhauDrawer] = useState(false);
   const thongTinNhanVien = localStorage.getItem("nhanVien")
   const nhanVien = JSON.parse(thongTinNhanVien)
   const navigate = useNavigate();
+  const handleOnChange = (e) => {
+    setObjectDoiMatKhau({ ...objectDoiMatKhau, [e.target.name]: e.target.value });
+  }
   const showDrawer = () => {
     setOpenUserInfo(true);
   };
   const onClose = () => {
     setOpenUserInfo(false);
   };
+  const onCloseDoiMatKhau = () => {
+    setOpenUserInfo(true);
+    setOpenDoiMatKhauDrawer(false);
+    setObjectDoiMatKhau({
+      matKhauCu: "",
+      matKhauMoi: ""
+    })
+  }
   const handleLogOut = () => {
     localStorage.clear();
     navigate("/login");
+  };
+  const handleDoiMatKhau = () => {
+    setOpenUserInfo(false);
+    setOpenDoiMatKhauDrawer(true);
+  };
+  const requestDoiMatKhau = async () => {
+    if (validateChangeMatKhau()) {
+      const finalObjectDoiMatKhau = {
+        ...objectDoiMatKhau,
+        maTaiKhoan: nhanVien.taiKhoan.maTaiKhoan,
+        encodePassWord: nhanVien.taiKhoan.matKhau
+      }
+      const { data } = await axios.post(changeMatKhauRoute, finalObjectDoiMatKhau, {}, {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      })
+      console.log("Response changeMatKhau :", data);
+      if (data) {
+        setToast({
+          header: "Đổi mật khẩu thành công",
+          content: "",
+          bg: "success",
+          textColor: "#fff",
+        });
+        handleLogOut();
+      }
+      else {
+        setToast({
+          header: "Mật khẩu cũ không đúng",
+          content: "",
+          bg: "danger",
+          textColor: "#fff",
+        });
+      }
+    }
+  }
+  const validateChangeMatKhau = () => {
+    const { matKhauCu, matKhauMoi } = objectDoiMatKhau;
+    if (matKhauCu === "") {
+      setToast({
+        header: "Mật khẩu cũ không được bỏ trống",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+      return false;
+    }
+    else if (matKhauMoi === "") {
+      setToast({
+        header: "Mật khẩu mới không được bỏ trống",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+      return false;
+    }
+
+
+    return true;
+  };
+  // const confirm = (e) => {
+  //   console.log(e);
+
+  // };
+  const cancel = (e) => {
+    console.log(e);
+
   };
   // console.log('Thong Tin Nhan Vien Menu:', nhanVien);
   // console.log('Vai Tro Menu:', nhanVien.taiKhoan.vaiTro.tenVaiTro);
   // console.log('length Name', nhanVien.hoTen.split(' ').length);
   // console.log('full Name', `${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 2]} ${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 1]} `);
+  console.log('dataDoiMatKhau:', objectDoiMatKhau);
+
   return (
     <>
       <Container>
@@ -417,6 +508,32 @@ function Menu({
             </div>
           </div>
         </div>
+        {
+          toast && (
+            <ToastContainer
+              position="bottom-end"
+              style={{ bottom: "1rem", right: "1rem" }}
+            >
+              <Toast
+                onClose={() => setToast(null)}
+                show={toast !== null}
+                bg={toast.bg}
+                autohide={true}
+              >
+                <Toast.Header>
+                  <img
+                    src="holder.js/20x20?text=%20"
+                    className="rounded me-2"
+                    alt=""
+                  />
+                  <strong className="me-auto">{toast.header}</strong>
+                  <small className="text-muted"></small>
+                </Toast.Header>
+
+              </Toast>
+            </ToastContainer>
+          )
+        }
       </Container>
       <StyleDrawer width={640} placement="right" onClose={onClose} open={openUserInfo}>
         <p className="site-description-item-profile-p"> Thông tin cá nhân</p>
@@ -496,14 +613,81 @@ function Menu({
           </Col>
         </Row>
         <Row >
-          <Col span={24} style={{ display: 'flex', justifyContent: 'center' }}>
+          <Col span={24} style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+            <Button variant="success" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleDoiMatKhau()}>
+              Đổi mật khẩu
+            </Button>
             <Button variant="danger" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleLogOut()}>
               Đăng Xuất
             </Button>
           </Col>
         </Row>
+      </StyleDrawer>
+
+      {/* Drawwer đổi mật khẩu */}
+      <StyleDrawer width={640} height={300} placement="top" onClose={onCloseDoiMatKhau} open={openDoiMatKhauDrawwer} title="Đổi mật khẩu">
+        <Row>
+          <Col span={24}>
+            <Box sx={{}}>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Xác nhận mật khẩu cũ"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="password"
+                  name="matKhauCu"
+                  onChange={(e) => handleOnChange(e)}
+                  value={objectDoiMatKhau.matKhauCu && objectDoiMatKhau.matKhauCu.length != 0 ? objectDoiMatKhau.matKhauCu : ""}
+                />
+              </FloatingLabel>
+            </Box>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Box sx={{}}>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Nhập mật khẩu mới"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="password"
+                  name="matKhauMoi"
+                  value={objectDoiMatKhau.matKhauMoi && objectDoiMatKhau.matKhauMoi.length != 0 ? objectDoiMatKhau.matKhauMoi : ""}
+                  onChange={(e) => handleOnChange(e)}
+                />
+              </FloatingLabel>
+            </Box>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Stack>
+              <Popconfirm
+                title="Đổi mật khẩu"
+                description="Nếu bạn đổi mật khẩu thành công bạn sẽ bị đăng xuất khỏi chương trình !"
+                onConfirm={requestDoiMatKhau}
+                onCancel={cancel}
+                okText="Đồng ý"
+                cancelText="Hủy"
+              >
+
+                <Button variant="primary" style={{ padding: '0.5rem 1.5rem' }} >
+                  Đổi mật khẩu
+                </Button>
+              </Popconfirm>
+
+
+
+            </Stack>
+          </Col>
+        </Row>
+
 
       </StyleDrawer>
+
     </>
 
   );

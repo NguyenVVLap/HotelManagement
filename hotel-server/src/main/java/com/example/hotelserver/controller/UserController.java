@@ -3,9 +3,13 @@ package com.example.hotelserver.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.hotelserver.entity.TaiKhoan;
+import com.example.hotelserver.repository.TaiKhoanRepo;
 import com.example.hotelserver.service.NhanVienService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +31,9 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	private final AuthenticationService service;
 	private final NhanVienService nhanVienService;
+	private final TaiKhoanRepo taiKhoanRepo;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, Object>> register(@RequestBody RegisterRequest request) {
@@ -71,6 +78,30 @@ public class UserController {
 			result = true;
 		}
 //		System.out.println(request.get("phone").toString());
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@PostMapping("/changeMatKhau")
+	public ResponseEntity<Boolean> changeMatKhau(@RequestBody Map<String, Object> request) {
+		boolean result = false;
+				System.out.println(request);
+				String requestMatKhauCu = request.get("matKhauCu").toString();
+				String requestEncodePassword = request.get("encodePassWord").toString();
+		String matKhauMoi = request.get("matKhauMoi").toString();
+		System.out.println("matKhauCu:"+requestMatKhauCu);
+		System.out.println("encodePassWord:"+requestEncodePassword);
+		System.out.println("newPassWord:"+matKhauMoi);
+		if(passwordEncoder.matches(requestMatKhauCu,requestEncodePassword)){
+			System.out.println("Xác nhận mật khẩu khớp");
+			TaiKhoan tk = taiKhoanRepo.findTaiKhoansByMaTaiKhoan(Long.parseLong(request.get("maTaiKhoan").toString()));
+			tk.setMatKhau(passwordEncoder.encode(matKhauMoi));
+			taiKhoanRepo.save(tk);
+			result=true;
+		}
+		else {
+			System.out.println("Sai mật khẩu cũ");
+		}
+
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
