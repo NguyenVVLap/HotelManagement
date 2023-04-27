@@ -3,6 +3,8 @@ export const host = "http://localhost:8080";
 export const loginRoute = `${host}/api/auth/authenticate`;
 //Change Password
 export const changeMatKhauRoute = `${host}/api/auth/changeMatKhau`;
+//Forgot Password
+export const forgotPassWord = `${host}/api/auth/forgotPassWord`;
 //Register
 export const registerRoute = `${host}/api/auth/register`;
 export const checkPhoneExistRoute = `${host}/api/auth/checkPhoneExist`;

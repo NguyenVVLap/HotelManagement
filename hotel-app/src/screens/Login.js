@@ -27,6 +27,9 @@ function Login() {
   const openRegisterScreen = () => {
     navigate("/register");
   };
+  const openForgetPassWord = () => {
+    navigate("/forgotPassword");
+  }
 
   const onHandleSubmit = async (e) => {
     e.preventDefault();
@@ -119,7 +122,7 @@ function Login() {
                         onChange={(e) => handleOnChange(e)}
                       />
                     </Form.Group>
-                    <p className="btn-forgot-password">Quên mật khẩu ?</p>
+                    <p className="btn-forgot-password" onClick={openForgetPassWord}>Quên mật khẩu ?</p>
                     <div className="btn-container">
                       <Button variant="primary" type="submit">
                         Đăng nhập

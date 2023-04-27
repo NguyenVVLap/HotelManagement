@@ -104,5 +104,20 @@ public class UserController {
 
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
+	@PostMapping("/forgotPassWord")
+	public ResponseEntity<Boolean> forgotPassWord(@RequestBody Map<String, Object> request) {
+		boolean result = false;
+		System.out.println(request);
+		String matKhauMoi = request.get("matKhauMoi").toString();
+		System.out.println("newPassWord:"+matKhauMoi);
+		TaiKhoan tk = taiKhoanRepo.findByTenTaiKhoan(request.get("soDienThoai").toString()).get();
+		tk.setMatKhau(passwordEncoder.encode(matKhauMoi));
+		taiKhoanRepo.save(tk);
+		result=true;
+
+
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 	
 }
