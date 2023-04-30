@@ -1,10 +1,8 @@
 package com.example.hotelserver.controller;
 
-import com.example.hotelserver.dto.HoaDonDto;
-import com.example.hotelserver.dto.NhanVienDto;
-import com.example.hotelserver.dto.ThongKeSoLanDatDichVuDto;
-import com.example.hotelserver.dto.ThongKeSoLanDatPhongDto;
+import com.example.hotelserver.dto.*;
 import com.example.hotelserver.entity.HoaDon;
+import com.example.hotelserver.entity.KhachHang;
 import com.example.hotelserver.repository.*;
 import com.example.hotelserver.service.HoaDonService;
 import com.example.hotelserver.service.NhanVienService;
@@ -33,6 +31,8 @@ public class ThongKeController {
     private HoaDonService hoaDonService;
     @Autowired
     private HoaDonRepo hoaDonRepo;
+    @Autowired
+    private KhachHangRepo khachHangRepo;
     @PostMapping("/thongKeSoLanDatPhong")
     public ResponseEntity<List<ThongKeSoLanDatPhongDto>> thongKeSoLanDatPhong(@RequestBody Map<String, Object> request) {
         System.out.println("Request Nhận Thống Kế Số lần dặt phòng : "+request);
@@ -85,6 +85,58 @@ public class ThongKeController {
 
         return new ResponseEntity<List<HoaDonDto>>(hoaDonDtoList, HttpStatus.OK);
 
+    }
+    @PostMapping("/danhSachMaKhachHangVaSoLanDatThanhCong")
+    public ResponseEntity<List<ThongKeKhachHangSoLanDatPhongThanhCongDto>> danhSachMaKhachHangVaSoLanDatThanhCong(@RequestBody Map<String, Object> request) {
+        System.out.println("Request Danh sach ma khach hang va so lan dat thanh cong :"+request);
+        List<ThongKeKhachHangSoLanDatPhongThanhCongDto> dataFromQuery = new ArrayList<>();
+        List<DanhSachSoLanDatPhongThanhCongVaMaKhachHangDto> dsMaKhachHang = new ArrayList<>();
+        if (request.get("theo").toString().equals("Số lần khách hàng đặt phòng thành công")) {
+            Instant tuNgay = Instant.parse(request.get("tuNgay").toString());
+            Instant denNgay = Instant.parse(request.get("denNgay").toString());
+            Date start = Date.from(tuNgay);
+            Date end = Date.from(denNgay);
+            dsMaKhachHang = hoaDonRepo.getDanhSachSoLanDatPhongThanhCongVaMaKhachHang(start,end);
+            for(DanhSachSoLanDatPhongThanhCongVaMaKhachHangDto dsTemp : dsMaKhachHang){
+                KhachHang kh = khachHangRepo.findByMaKhachHang(dsTemp.getMaKhachHang());
+                ThongKeKhachHangSoLanDatPhongThanhCongDto result = ThongKeKhachHangSoLanDatPhongThanhCongDto.builder()
+                        .maKhachHang(dsTemp.getMaKhachHang())
+                        .emailKhachHang(kh.getEmailKH())
+                        .hoTenKhachHang(kh.getHoTen())
+                        .diaChiKhachHang(kh.getDiaChiKH())
+                        .soDienThoaiKhachHang(kh.getSoDienThoaiKH())
+                        .tongSoDatThanhCong(dsTemp.getTongSoDatThanhCong())
+                        .build();
+                dataFromQuery.add(result);
+            }
+        }
+        return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
+    }
+    @PostMapping("/danhSachMaKhachHangVaSoLanHuyDatPhong")
+    public ResponseEntity<List<ThongKeKhachHangSoLanHuyDatPhongDto>> danhSachMaKhachHangVaSoLanHuyDatPhong(@RequestBody Map<String, Object> request) {
+        System.out.println("Request Danh sach ma khach hang va so lan hủy đặt phòng :"+request);
+        List<ThongKeKhachHangSoLanHuyDatPhongDto> dataFromQuery = new ArrayList<>();
+        List<DanhSachSoLanHuyDatPhongVaMaKhachHangDto> dsMaKhachHang = new ArrayList<>();
+        if (request.get("theo").toString().equals("Số lần khách hàng hủy đặt phòng")) {
+            Instant tuNgay = Instant.parse(request.get("tuNgay").toString());
+            Instant denNgay = Instant.parse(request.get("denNgay").toString());
+            Date start = Date.from(tuNgay);
+            Date end = Date.from(denNgay);
+            dsMaKhachHang = hoaDonRepo.getDanhSachSoLanHuyDatPhongVaMaKhachHang(start,end);
+            for(DanhSachSoLanHuyDatPhongVaMaKhachHangDto dsTemp : dsMaKhachHang){
+                KhachHang kh = khachHangRepo.findByMaKhachHang(dsTemp.getMaKhachHang());
+                ThongKeKhachHangSoLanHuyDatPhongDto result = ThongKeKhachHangSoLanHuyDatPhongDto.builder()
+                        .maKhachHang(dsTemp.getMaKhachHang())
+                        .emailKhachHang(kh.getEmailKH())
+                        .hoTenKhachHang(kh.getHoTen())
+                        .diaChiKhachHang(kh.getDiaChiKH())
+                        .soDienThoaiKhachHang(kh.getSoDienThoaiKH())
+                        .tongSoLanHuyPhong(dsTemp.getTongSoLanHuyPhong())
+                        .build();
+                dataFromQuery.add(result);
+            }
+        }
+        return new ResponseEntity<>(dataFromQuery, HttpStatus.OK);
     }
 
 }

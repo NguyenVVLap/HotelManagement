@@ -54,6 +54,7 @@ export const getAllKhachHangRoute = `${host}/api/khachhang`;
 export const addKhachHang = `${host}/api/khachhang`;
 export const updateKhachHang = `${host}/api/khachhang`;
 export const timKiemKhachHang = `${host}/api/khachhang/timKiemKhachHang`;
+export const timKiemKhachHangWithCCCD = `${host}/api/khachhang/timKiemKhachHangCCCD`;
 
 //Employee
 export const addNhanVien = `${host}/api/nhanvien`;
@@ -67,3 +68,5 @@ export const thongKeSoLanDatDichVu = `${host}/api/thongke/thongKeSoLanDatDichVu`
 export const thongKeDoanhThuTheoPhong = `${host}/api/thongke/thongKeDoanhThuTheoPhong`;
 export const thongKeDoanhThuTheoThang = `${host}/api/thongke/thongKeDoanhThuTheoThang`;
 export const getAllHoaDonTheoNgay = `${host}/api/thongke/layAllHoaDonTheoNgay`;
+export const layDanhSachMaKhachHangVaSoLanDatPhongThanhCong = `${host}/api/thongke/danhSachMaKhachHangVaSoLanDatThanhCong`;
+export const layDanhSachMaKhachHangVaSoLanHuyDatPhong = `${host}/api/thongke/danhSachMaKhachHangVaSoLanHuyDatPhong`;

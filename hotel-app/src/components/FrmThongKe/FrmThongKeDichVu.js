@@ -1,4 +1,5 @@
-import { Box, Grid, Paper, TextField, Typography, Button, Radio, Chip, TableContainer, Stack, Autocomplete } from '@mui/material';
+import { Box, Grid, Paper, TextField, Typography, Button, IconButton, Stack, Autocomplete } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React from 'react'
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -14,44 +15,39 @@ import axios from 'axios';
 import { thongKeSoLanDatDichVu } from '../../utils/APIRoutes';
 import { useEffect } from 'react';
 import { DatePicker } from '@mui/x-date-pickers';
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import PopupPrintThongKeSoLanDatDichVu from './PopupPrintThongKeSoLanDatDichVu';
 
 function FrmThongKeDichVu() {
     let ngayHienTai = new Date();
     const [toast, setToast] = useState(null);
     const [dsThongKeSoLanDatDichVu, setdsThongKeSoLanDatDichVu] = useState(undefined);
-    const [tempdsHoaDon, setTempdsHoaDon] = useState(undefined);
-    const [dsPhong, setDSPhong] = useState(undefined);
-    // const [paramNgay, setParamNgay] = useState({
-    //     tuNgay: dayjs(ngayHienTai),
-    //     denNgay: dayjs(ngayHienTai),
-    // })
-    // useEffect(() => {
-    //     loadAllRoomFromDB();
-    // }, [])
-    // const diff_hours = (dt2, dt1) => {
-    //     var diff = (dt2.getTime() - dt1.getTime()) / 1000;
-    //     diff /= 60 * 60;
-    //     return Math.abs(Math.round(diff));
-    // };
-    // const loadAllRoomFromDB = async () => {
-    //     const { data } = await axios.get(getRoomsRoute, {
-    //         headers: {
-    //             "Content-Type": "application/json;charset=UTF-8",
-    //             "Access-Control-Allow-Origin": "http://localhost:3000",
-    //             "Access-Control-Allow-Credentials": "true",
-    //         },
-    //     });
-    //     if (data) {
-    //         setDSPhong(data)
-    //     }
-    // }
+    const [dsThongKeSoLanDatDichVuCustome, setdsThongKeSoLanDatDichVuCustome] = useState(undefined);
+    const [detailReportSoLanDatDichVu, setDetailReportSoLanDatDichVu] = useState(false);
+    const [openPopupPrintSoLanDatDichVu, setOpenPopupPrintSoLanDatDichVu] = useState(false);
 
     const [search, setSearch] = useState({
         tuNgay: undefined,
         denNgay: dayjs(ngayHienTai),
-        theo: ""
+        theo: "",
+        ngayHienTai: dayjs(ngayHienTai)
     });
+    useEffect(() => {
+        setdsThongKeSoLanDatDichVu(undefined);
+    }, [search])
+    useEffect(() => {
+        if (dsThongKeSoLanDatDichVu) {
+            const newDsThongKeSoLanDatDichVu = dsThongKeSoLanDatDichVu.map((obj) => {
+                return {
+                    ...obj,
+                    số_lần_đặt_dịch_vụ: obj.tongSoLanDatDichVu,
+                    truc_x_chart: `${obj.tenDichVu}(${obj.donViTinh})`
+                }
+            })
+            setdsThongKeSoLanDatDichVuCustome(newDsThongKeSoLanDatDichVu)
+        }
 
+    }, [dsThongKeSoLanDatDichVu])
 
     const handleOnchangeSelectedCombobox = (e, value) => {
 
@@ -79,47 +75,17 @@ function FrmThongKeDichVu() {
 
         }
     }
-    // const handleThongKeTongDoanhThuTheoTungPhong = async () => {
-    //     console.log("Thống kê theo :", search);
-    //     const { data } = await axios.post(thongKeDoanhThuTheoPhong, search, {
-    //         headers: {
-    //             "Content-Type": "application/json;charset=UTF-8",
-    //             "Access-Control-Allow-Origin": "http://localhost:3000",
-    //             "Access-Control-Allow-Credentials": "true",
-    //         },
-    //     });
-    //     // console.log("Data Thong Ke Doanh Thu :", data);
-    //     if (data) {
-    //         setTempdsHoaDon(data);
-    //     }
-    // }
+    const handlePrintThongKeSoLanDatDichVu = () => {
+        setOpenPopupPrintSoLanDatDichVu(true);
+    }
+    const handleDetailReportSoLanDatPhong = () => {
+        setDetailReportSoLanDatDichVu(true);
+    }
 
-    // const tinhTongTienCuaMoiPhongMangLai = (phong) => {
-    //     let price = 0;
-    //     tempdsHoaDon.map((hoadon) => {
-    //         hoadon.dsPhong.map((phongofHoaDon) => {
-    //             if (phongofHoaDon.maPhong === phong.maPhong) {
-    //                 let giaPhong = phongofHoaDon.giaPhong;
-    //                 let ngayNhan = new Date(hoadon.ngayNhanPhong)
-    //                 let ngayTra = new Date(hoadon.ngayTraPhong);
-    //                 let totalHour = diff_hours(ngayNhan, ngayTra)
-    //                 let tongTien = giaPhong * totalHour;
-    //                 price = Number(price) + Number(tongTien)
-    //                 // price = price + 2;
-    //             }
-    //         })
-    //     })
-
-    //     return price;
-    // }
-    // console.log("DSTEMPHOADON:", tempdsHoaDon);
-    // console.log("DSPhong:", dsPhong);
-
+    console.log('Chart Thong Ke So Lan Dat Dich Vu Custome:', dsThongKeSoLanDatDichVuCustome);
     return (
         <StyledContainer>
-            {/* <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
-                <Typography variant='h3'>Thống kê dịch vụ</Typography>
-            </Box> */}
+
             <Grid container spacing={2}>
                 <Grid item md={12}>
                     <Autocomplete
@@ -163,23 +129,43 @@ function FrmThongKeDichVu() {
                 </Grid>
 
                 <Grid item md={4}>
-                    {search.theo === "Số lần đặt dịch vụ" && <Button fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKePhongTheoSoLanDatDichVu() }} >Thống kê số lần đặt dịch vụ</Button>}
+
+                    {search.theo === "Số lần đặt dịch vụ" && <Button sx={{
+                        backgroundColor: '#198754', '&:hover': {
+                            backgroundColor: '#198754'
+                        }
+                    }} fullWidth variant='contained' endIcon={<SearchOutlinedIcon />} size='medium' onClick={() => { handleThongKePhongTheoSoLanDatDichVu() }} >Thống kê số lần đặt dịch vụ</Button>}
 
                 </Grid>
                 <Grid item md={4}>
-                    <Button fullWidth variant='contained' startIcon={<CachedOutlinedIcon />} size='medium' onClick={() => { }} >Tải lại dữ liệu</Button>
+                    {search.theo === "Số lần đặt dịch vụ" && <Button fullWidth variant='contained' startIcon={<CachedOutlinedIcon />} size='medium' onClick={() => { handleDetailReportSoLanDatPhong() }} >Xem chi tiết báo cáo</Button>}
                 </Grid>
                 <Grid item md={4}>
-                    {search.theo === "Số lần đặt dịch vụ" && <Button fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handleThongKePhongTheoSoLanDatDichVu() }} >In thống kê số lần đặt dịch vụ</Button>}
+                    {search.theo === "Số lần đặt dịch vụ" && <Button sx={{
+                        backgroundColor: '#FFC107', '&:hover': {
+                            backgroundColor: '#FFC107',
+                        }
+                    }} fullWidth variant='contained' endIcon={<LocalPrintshopOutlinedIcon />} size='medium' onClick={() => { handlePrintThongKeSoLanDatDichVu() }} >In thống kê số lần đặt dịch vụ</Button>}
                 </Grid>
 
 
 
             </Grid>
             {/* Danh sách kết quả thống kê theo số lần đặt dịch vụ */}
-            {dsThongKeSoLanDatDichVu && dsThongKeSoLanDatDichVu.length > 0 &&
+            {dsThongKeSoLanDatDichVu && dsThongKeSoLanDatDichVu.length > 0 && detailReportSoLanDatDichVu === true &&
                 <StyledPaper elevation={10} >
+                    <Stack flexDirection='row' justifyContent='space-between'>
+                        <Box flexGrow={1}>
 
+                        </Box>
+                        <IconButton color="inherit" aria-label="close" onClick={() => {
+                            setDetailReportSoLanDatDichVu(false);
+
+                        }}>
+                            <CloseIcon />
+                        </IconButton>
+
+                    </Stack>
                     <Table striped hover>
                         <thead >
                             <tr>
@@ -228,6 +214,22 @@ function FrmThongKeDichVu() {
                     </Table>
 
                 </StyledPaper>}
+            {/* Char thống kê số lần đặt dịch vụ */}
+            {
+                dsThongKeSoLanDatDichVu && dsThongKeSoLanDatDichVu.length > 0 && detailReportSoLanDatDichVu === false &&
+                <Stack mt='35px' overflow='auto' >
+                    <ResponsiveContainer width="100%" height={450}>
+                        <BarChart width={1300} height={450} data={dsThongKeSoLanDatDichVuCustome}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="truc_x_chart" label={{ value: 'Dịch vụ', position: 'insideBottom' }} interval={0} />
+                            <YAxis allowDecimals={false} label={{ value: 'Số lần đặt dịch vụ', angle: -90, position: 'insideLeft' }} />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="số_lần_đặt_dịch_vụ" fill="#f45c43" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </Stack>
+            }
 
 
 
@@ -257,6 +259,7 @@ function FrmThongKeDichVu() {
                     </Toast>
                 </ToastContainer>
             )}
+            <PopupPrintThongKeSoLanDatDichVu openPopupPrintSoLanDatDichVu={openPopupPrintSoLanDatDichVu} setOpenPopupPrintSoLanDatDichVu={setOpenPopupPrintSoLanDatDichVu} dsThongKeSoLanDatDichVu={dsThongKeSoLanDatDichVu} search={search} />
 
         </StyledContainer>
     )

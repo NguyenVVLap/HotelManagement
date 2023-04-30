@@ -3,25 +3,29 @@ package com.example.hotelserver.entity;
 import java.util.Date;
 import java.util.List;
 
+import com.example.hotelserver.dto.DanhSachSoLanDatPhongThanhCongVaMaKhachHangDto;
+import com.example.hotelserver.dto.DanhSachSoLanHuyDatPhongVaMaKhachHangDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@NamedNativeQuery(
+		name = "danhSachSoLanHuyDatPhongVaMaKhachHang",
+		query = "select pdp.ma_khach_hang as maKhachHang ,COUNT(*) as tongSoLanHuyPhong from phieu_dat_phong pdp  where pdp.trang_thai_dat_phong like 'HUY' AND pdp.ngay_dat_phong BETWEEN :start AND :end GROUP BY pdp.ma_khach_hang",
+		resultSetMapping = "danh_sach_khachhang_voi_so_lan_huy_dat_phong"
+)
+@SqlResultSetMapping(
+		name = "danh_sach_khachhang_voi_so_lan_huy_dat_phong",
+		classes = @ConstructorResult(
+				targetClass = DanhSachSoLanHuyDatPhongVaMaKhachHangDto.class,
+				columns = {
+						@ColumnResult(name = "maKhachHang",type = Integer.class),
+						@ColumnResult(name = "tongSoLanHuyPhong",type = Integer.class),
+				}
+		)
+)
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity

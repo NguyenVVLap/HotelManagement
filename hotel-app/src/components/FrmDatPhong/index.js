@@ -21,7 +21,7 @@ import { Toast, ToastContainer } from "react-bootstrap";
 
 import RoomSelected from "./components/RoomSelected";
 import Rooms from "./components/Rooms";
-import { addBookingsRoute, timKiemKhachHang } from "../../utils/APIRoutes";
+import { addBookingsRoute, timKiemKhachHang, timKiemKhachHangWithCCCD } from "../../utils/APIRoutes";
 import axios from "axios";
 
 function FrmDatPhong() {
@@ -235,7 +235,7 @@ function FrmDatPhong() {
 
   const onHandleSearchGuest = async () => {
     const { data } = await axios.post(
-      timKiemKhachHang,
+      timKiemKhachHangWithCCCD,
       { theo: "Theo căn cước công dân", keyword: guestInfo.cccdKhachHang },
       {
         headers: {
