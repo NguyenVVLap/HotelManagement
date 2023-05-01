@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.hotelserver.dto.ChiTietDichVuDto;
 import com.example.hotelserver.dto.DatDichVuDto;
 import com.example.hotelserver.dto.HoaDonDto;
+import com.example.hotelserver.dto.PhieuDatPhongDto;
 import com.example.hotelserver.dto.PhongResponseDto;
 import com.example.hotelserver.dto.TaoHoaDonRequestDto;
 import com.example.hotelserver.entity.ChiTietDichVu;
@@ -269,6 +270,16 @@ public class HoaDonServiceImpl implements HoaDonService{
 			List<HoaDon> dsHoaDon = hoaDonRepo.layHoaDonChuaThanhToanSapXepTheoNgay();
 			for (HoaDon hoaDon : dsHoaDon) {
 				KhachHang khachHang = khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get();
+//				PhieuDatPhong p = hoaDon.getPhieuDatPhong();
+//				PhieuDatPhongDto phieuDatPhongDto = PhieuDatPhongDto.builder()
+//					.maPhieuDatPhong(p.getMaPhieuDatPhong())
+//					.ngayDatPhong(p.getNgayDatPhong())
+//					.ngayTraPhong(p.getNgayTraPhong())
+//					.ngayNhanPhong(p.getNgayNhanPhong())
+//					.trangThaiDatPhong(p.getTrangThaiDatPhong())
+//					.khachHang(khachHang)
+//					.build();
+						
 				HoaDonDto hoaDonDto = HoaDonDto.builder()
 						.maHoaDon(hoaDon.getMaHoaDon())
 						.ngayLap(hoaDon.getNgayLap())

@@ -48,9 +48,9 @@ public class PhieuDatHangController {
 	
 	@PostMapping("/themPhieu")
 	public ResponseEntity<Boolean> themPhieu(@RequestBody ThemPhieuDto request) {
+//		System.out.println(request.getNgayNhanPhong());
 		try {
 			KhachHang khachHang = khachHangService.timKhachHangTheoCCCD(request.getKhachHang().getCccdKhachHang());
-			System.out.println(khachHang);
 			if (khachHang == null) {
 				if (khachHangService.themKhachHang(request.getKhachHang())) {
 					khachHang = khachHangService.timKhachHangTheoCCCD(request.getKhachHang().getCccdKhachHang());

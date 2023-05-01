@@ -21,7 +21,10 @@ import { Toast, ToastContainer } from "react-bootstrap";
 
 import RoomSelected from "./components/RoomSelected";
 import Rooms from "./components/Rooms";
-import { addBookingsRoute, timKiemKhachHang } from "../../utils/APIRoutes";
+import {
+  addBookingsRoute,
+  timKiemKhachHangDatPhong,
+} from "../../utils/APIRoutes";
 import axios from "axios";
 
 function FrmDatPhong() {
@@ -45,7 +48,9 @@ function FrmDatPhong() {
     // return Math.abs(Math.round(diff));
     const millisecondsPerHour = 1000 * 60 * 60;
     const differenceInMilliseconds = dt1 - dt2;
-    const totalHours = Math.ceil(differenceInMilliseconds / millisecondsPerHour);
+    const totalHours = Math.ceil(
+      differenceInMilliseconds / millisecondsPerHour
+    );
     // console.log('totalHours', totalHours);
     return totalHours;
   };
@@ -132,6 +137,7 @@ function FrmDatPhong() {
     // const { data } = await axios.get(`${getBookingsRoute}`, {}, config);
     // console.log(data);
     if (validateBooking()) {
+      console.log(bookingInfo.ngayNhanPhong);
       let dsMaPhong = [];
       for (let i = 0; i < roomChoosen.length; i++) {
         dsMaPhong = [...dsMaPhong, roomChoosen[i].maPhong];
@@ -235,7 +241,7 @@ function FrmDatPhong() {
 
   const onHandleSearchGuest = async () => {
     const { data } = await axios.post(
-      timKiemKhachHang,
+      timKiemKhachHangDatPhong,
       { theo: "Theo căn cước công dân", keyword: guestInfo.cccdKhachHang },
       {
         headers: {

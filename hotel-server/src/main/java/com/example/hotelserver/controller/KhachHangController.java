@@ -57,20 +57,20 @@ public class KhachHangController {
 
 
     }
-//    @PostMapping("/timKiemKhachHang")
-//    public ResponseEntity<List<KhachHang>> timKiemKhachHang(@RequestBody Map<String, Object> request) {
-//        List<KhachHang> results = new ArrayList<>();
-//        if (request.get("theo").toString().equals("Theo họ tên")) {
-//            results = khachHangService.timKhachHangTheoTen(request.get("keyword").toString());
-//        } else if (request.get("theo").toString().equals("Theo căn cước công dân")) {
-//            try {
-//                results.add(khachHangService.timKhachHangTheoCCCD(request.get("keyword").toString()));
-//            } catch (Exception e) {
-//                System.out.println("Error Khach Hang " + e);
-//            }
-//        }
-//        return new ResponseEntity<List<KhachHang>>(results, HttpStatus.OK);
-//    }
+    @PostMapping("/timKiemKhachHangDatPhong")
+    public ResponseEntity<List<KhachHang>> timKiemKhachHang(@RequestBody Map<String, Object> request) {
+        List<KhachHang> results = new ArrayList<>();
+        if (request.get("theo").toString().equals("Theo họ tên")) {
+            results = khachHangService.timKhachHangTheoTen(request.get("keyword").toString());
+        } else if (request.get("theo").toString().equals("Theo căn cước công dân")) {
+            try {
+                results.add(khachHangService.timKhachHangTheoCCCD(request.get("keyword").toString()));
+            } catch (Exception e) {
+                System.out.println("Error Khach Hang " + e);
+            }
+        }
+        return new ResponseEntity<List<KhachHang>>(results, HttpStatus.OK);
+    }
     @PostMapping("/timKiemKhachHang")
     public ResponseEntity<List<KhachHang>> timKhachHangCustomeQuery(@RequestBody List<Map<String, Object>> request) {
         List<KhachHang> results = new ArrayList<>();

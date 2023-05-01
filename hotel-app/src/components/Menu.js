@@ -13,11 +13,24 @@ import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import { Avatar, Col, Divider, Drawer, List, Popconfirm, Row } from 'antd';
-import { Box, Chip, IconButton, Stack, Tooltip, Typography } from "@mui/material";
-import LogoutIcon from '@mui/icons-material/Logout';
+import { Avatar, Col, Divider, Drawer, List, Popconfirm, Row } from "antd";
+import {
+  Box,
+  Chip,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
-import { Button, FloatingLabel, Form, Toast, ToastContainer } from "react-bootstrap";
+import {
+  Button,
+  FloatingLabel,
+  Form,
+  Toast,
+  ToastContainer,
+} from "react-bootstrap";
 import moment from "moment";
 import axios from "axios";
 import { changeMatKhauRoute } from "../utils/APIRoutes";
@@ -37,6 +50,7 @@ function Menu({
       floor: false,
       booking: false,
       service: false,
+      shift: false,
       [nav]: value,
     });
   };
@@ -51,6 +65,7 @@ function Menu({
       floor: false,
       booking: false,
       service: false,
+      shift: false,
       [nav]: true,
     });
   };
@@ -58,15 +73,18 @@ function Menu({
   const [toast, setToast] = useState(null);
   const [objectDoiMatKhau, setObjectDoiMatKhau] = useState({
     matKhauCu: "",
-    matKhauMoi: ""
-  })
+    matKhauMoi: "",
+  });
   const [openDoiMatKhauDrawwer, setOpenDoiMatKhauDrawer] = useState(false);
-  const thongTinNhanVien = localStorage.getItem("nhanVien")
-  const nhanVien = JSON.parse(thongTinNhanVien)
+  const thongTinNhanVien = localStorage.getItem("nhanVien");
+  const nhanVien = JSON.parse(thongTinNhanVien);
   const navigate = useNavigate();
   const handleOnChange = (e) => {
-    setObjectDoiMatKhau({ ...objectDoiMatKhau, [e.target.name]: e.target.value });
-  }
+    setObjectDoiMatKhau({
+      ...objectDoiMatKhau,
+      [e.target.name]: e.target.value,
+    });
+  };
   const showDrawer = () => {
     setOpenUserInfo(true);
   };
@@ -78,9 +96,9 @@ function Menu({
     setOpenDoiMatKhauDrawer(false);
     setObjectDoiMatKhau({
       matKhauCu: "",
-      matKhauMoi: ""
-    })
-  }
+      matKhauMoi: "",
+    });
+  };
   const handleLogOut = () => {
     localStorage.clear();
     navigate("/login");
@@ -94,15 +112,20 @@ function Menu({
       const finalObjectDoiMatKhau = {
         ...objectDoiMatKhau,
         maTaiKhoan: nhanVien.taiKhoan.maTaiKhoan,
-        encodePassWord: nhanVien.taiKhoan.matKhau
-      }
-      const { data } = await axios.post(changeMatKhauRoute, finalObjectDoiMatKhau, {}, {
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8",
-          "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Credentials": "true",
-        },
-      })
+        encodePassWord: nhanVien.taiKhoan.matKhau,
+      };
+      const { data } = await axios.post(
+        changeMatKhauRoute,
+        finalObjectDoiMatKhau,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Access-Control-Allow-Credentials": "true",
+          },
+        }
+      );
       console.log("Response changeMatKhau :", data);
       if (data) {
         setToast({
@@ -112,8 +135,7 @@ function Menu({
           textColor: "#fff",
         });
         handleLogOut();
-      }
-      else {
+      } else {
         setToast({
           header: "Mật khẩu cũ không đúng",
           content: "",
@@ -122,7 +144,7 @@ function Menu({
         });
       }
     }
-  }
+  };
   const validateChangeMatKhau = () => {
     const { matKhauCu, matKhauMoi } = objectDoiMatKhau;
     if (matKhauCu === "") {
@@ -133,8 +155,7 @@ function Menu({
         textColor: "#fff",
       });
       return false;
-    }
-    else if (matKhauMoi === "") {
+    } else if (matKhauMoi === "") {
       setToast({
         header: "Mật khẩu mới không được bỏ trống",
         content: "",
@@ -144,7 +165,6 @@ function Menu({
       return false;
     }
 
-
     return true;
   };
   // const confirm = (e) => {
@@ -153,13 +173,12 @@ function Menu({
   // };
   const cancel = (e) => {
     console.log(e);
-
   };
   // console.log('Thong Tin Nhan Vien Menu:', nhanVien);
   // console.log('Vai Tro Menu:', nhanVien.taiKhoan.vaiTro.tenVaiTro);
   // console.log('length Name', nhanVien.hoTen.split(' ').length);
   // console.log('full Name', `${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 2]} ${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 1]} `);
-  console.log('dataDoiMatKhau:', objectDoiMatKhau);
+  console.log("dataDoiMatKhau:", objectDoiMatKhau);
 
   return (
     <>
@@ -195,17 +214,25 @@ function Menu({
               {navSelected.room && (
                 <div className="sub-menu-container">
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "update-room" && "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("update-room", "room")}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "update-room" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("update-room", "room")
+                    }
                   >
                     <BsDoorOpen />
                     <p className="btn-sub-title">Cập nhật</p>
                   </button>
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "search-room" && "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("search-room", "room")}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "search-room" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("search-room", "room")
+                    }
                   >
                     <BsDoorOpen />
                     <p className="btn-sub-title">Tìm kiếm</p>
@@ -227,18 +254,26 @@ function Menu({
               {navSelected.floor && (
                 <div className="sub-menu-container">
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "update-floor" && "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("update-floor", "floor")}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "update-floor" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("update-floor", "floor")
+                    }
                   >
                     <ManageAccountsOutlinedIcon />
                     <p className="btn-sub-title">Cập nhật</p>
                   </button>
                   {/* Tìm kiếm khách hàng */}
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "search-floor" && "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("search-floor", "floor")}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "search-floor" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("search-floor", "floor")
+                    }
                   >
                     <SearchIcon />
                     <p className="btn-sub-title">Tìm kiếm</p>
@@ -261,34 +296,44 @@ function Menu({
               {navSelected.guest && (
                 <div className="sub-menu-container">
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "book" && "btn-sub-selected"
-                      }`}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "book" && "btn-sub-selected"
+                    }`}
                     onClick={() => onHandleSelectedSubNav("book", "guest")}
                   >
                     <BsDoorOpen />
                     <p className="btn-sub-title">Đặt phòng</p>
                   </button>
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "check-in" && "btn-sub-selected"
-                      }`}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "check-in" && "btn-sub-selected"
+                    }`}
                     onClick={() => onHandleSelectedSubNav("check-in", "guest")}
                   >
                     <BsDoorOpen />
                     <p className="btn-sub-title">Nhận phòng</p>
                   </button>
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "update-guest" && "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("update-guest", "guest")}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "update-guest" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("update-guest", "guest")
+                    }
                   >
                     <ManageAccountsOutlinedIcon />
                     <p className="btn-sub-title">Cập nhật</p>
                   </button>
                   {/* Tìm kiếm khách hàng */}
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "search-guest" && "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("search-guest", "guest")}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "search-guest" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("search-guest", "guest")
+                    }
                   >
                     <SearchIcon />
                     <p className="btn-sub-title">Tìm kiếm</p>
@@ -311,26 +356,38 @@ function Menu({
               {navSelected.staff && (
                 <div className="sub-menu-container">
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "update-staff" && "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("update-staff", "staff")}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "update-staff" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("update-staff", "staff")
+                    }
                   >
                     <GroupAddOutlinedIcon />
                     <p className="btn-sub-title">Cập nhật</p>
                   </button>
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "search-staff" && "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("search-staff", "staff")}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "search-staff" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("search-staff", "staff")
+                    }
                   >
                     <SearchIcon />
                     <p className="btn-sub-title">Tìm kiếm</p>
                   </button>
 
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "report-staff" && "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("report-staff", "staff")}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "report-staff" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("report-staff", "staff")
+                    }
                   >
                     <AssessmentOutlinedIcon />
                     <p className="btn-sub-title">Thống kê</p>
@@ -349,18 +406,22 @@ function Menu({
               {navSelected.bill && (
                 <div className="sub-menu-container">
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "add-bill" && "btn-sub-selected"
-                      }`}
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "add-bill" && "btn-sub-selected"
+                    }`}
                     onClick={() => onHandleSelectedSubNav("add-bill", "bill")}
                   >
                     <BsDoorOpen />
                     <p className="btn-sub-title">Lập hóa đơn</p>
                   </button>
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "manage-booking" &&
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "manage-booking" &&
                       "btn-sub-selected"
-                      }`}
-                    onClick={() => onHandleSelectedSubNav("manage-booking", "bill")}
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("manage-booking", "bill")
+                    }
                   >
                     <BsDoorOpen />
                     <p className="btn-sub-title">Cập nhật</p>
@@ -381,7 +442,9 @@ function Menu({
             <button className={`btn ${navSelected.service && "btn-selected"}`}>
               <div
                 className="menu-content"
-                onClick={() => onHandleSelectedNav("service", !navSelected.service)}
+                onClick={() =>
+                  onHandleSelectedNav("service", !navSelected.service)
+                }
               >
                 <FastfoodOutlinedIcon />
                 <p className="btn-title">Dịch vụ</p>
@@ -400,9 +463,10 @@ function Menu({
                  <p className="btn-sub-title">Loại dịch vụ</p>
                </button> */}
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "booking-service" &&
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "booking-service" &&
                       "btn-sub-selected"
-                      }`}
+                    }`}
                     onClick={() =>
                       onHandleSelectedSubNav("booking-service", "service")
                     }
@@ -411,9 +475,10 @@ function Menu({
                     <p className="btn-sub-title">Đặt dịch vụ</p>
                   </button>
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "update-service" &&
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "update-service" &&
                       "btn-sub-selected"
-                      }`}
+                    }`}
                     onClick={() =>
                       onHandleSelectedSubNav("update-service", "service")
                     }
@@ -423,15 +488,54 @@ function Menu({
                   </button>
                   {/* Search Dich Vu */}
                   <button
-                    className={`btn-sub ${subNavSelected.subnav === "search-service" &&
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "search-service" &&
                       "btn-sub-selected"
-                      }`}
+                    }`}
                     onClick={() =>
                       onHandleSelectedSubNav("search-service", "service")
                     }
                   >
                     <SearchIcon />
                     <p className="btn-sub-title">Tìm kiếm</p>
+                  </button>
+                </div>
+              )}
+            </button>
+
+            {/* Ca làm việc */}
+            <button className={`btn ${navSelected.shift && "btn-selected"}`}>
+              <div
+                className="menu-content"
+                onClick={() => onHandleSelectedNav("shift", !navSelected.shift)}
+              >
+                <FastfoodOutlinedIcon />
+                <p className="btn-title">Ca làm việc</p>
+              </div>
+              {navSelected.shift && (
+                <div className="sub-menu-container">
+                  {/* <button
+                 className={`btn-sub ${subNavSelected.subnav === "update-type-service" &&
+                   "btn-sub-selected"
+                   }`}
+                 onClick={() =>
+                   onHandleSelectedSubNav("update-type-service", "service")
+                 }
+               >
+                 <DiningOutlinedIcon />
+                 <p className="btn-sub-title">Loại dịch vụ</p>
+               </button> */}
+                  <button
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "update-shift" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("update-shift", "shift")
+                    }
+                  >
+                    <ManageAccountsOutlinedIcon />
+                    <p className="btn-sub-title">Cập nhật</p>
                   </button>
                 </div>
               )}
@@ -482,22 +586,86 @@ function Menu({
               )}
             </button> */}
           </div>
-          <div style={{ width: '100%', padding: '16px', height: '18%', display: 'flex', flexDirection: 'column', justifyContent: 'center', }}>
-            <div style={{ width: '100%', height: '90%', borderRadius: '10px', padding: '10px', border: '1px solid white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', flexGrow: '2' }}>
-                <Tooltip title='Xem thông tin cá nhân' placement="bottom-end">
-                  <IconButton onClick={() => { showDrawer() }}>
-                    <Avatar size={50} src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
+          <div
+            style={{
+              width: "100%",
+              padding: "16px",
+              height: "18%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "90%",
+                borderRadius: "10px",
+                padding: "10px",
+                border: "1px solid white",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ display: "flex", flexGrow: "2" }}>
+                <Tooltip title="Xem thông tin cá nhân" placement="bottom-end">
+                  <IconButton
+                    onClick={() => {
+                      showDrawer();
+                    }}
+                  >
+                    <Avatar
+                      size={50}
+                      src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
+                    />
                   </IconButton>
                 </Tooltip>
-                <div style={{ display: 'flex', flexDirection: 'column', flexGrow: '2', marginLeft: '5px' }}>
-                  <Typography variant="h6" >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flexGrow: "2",
+                    marginLeft: "5px",
+                  }}
+                >
+                  <h6
+                    style={{
+                      margin: 0,
+                      fontWeight: 500,
+                      fontSize: "1.25rem",
+                      lineHeight: 1.6,
+                      letterSpacing: "0.0075em",
+                      color: "white",
+                    }}
+                  >
                     {nhanVien &&
-                      `${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 2]} ${nhanVien.hoTen.split(' ')[nhanVien.hoTen.split(' ').length - 1]} `
-                    }
-                  </Typography>
-                  {nhanVien && nhanVien.taiKhoan.vaiTro.tenVaiTro === 'ROLE_MANAGEMENT' ? <Chip color="error" size="small" label='Quản lý' sx={{ width: '90px' }} /> : <Chip color="primary" size="small" label='Nhân viên' sx={{ width: '90px' }} />}
-
+                      `${
+                        nhanVien.hoTen.split(" ")[
+                          nhanVien.hoTen.split(" ").length - 2
+                        ]
+                      } ${
+                        nhanVien.hoTen.split(" ")[
+                          nhanVien.hoTen.split(" ").length - 1
+                        ]
+                      } `}
+                  </h6>
+                  {nhanVien &&
+                  nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" ? (
+                    <Chip
+                      color="error"
+                      size="small"
+                      label="Quản lý"
+                      sx={{ width: "90px" }}
+                    />
+                  ) : (
+                    <Chip
+                      color="primary"
+                      size="small"
+                      label="Nhân viên"
+                      sx={{ width: "90px" }}
+                    />
+                  )}
                 </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -508,34 +676,36 @@ function Menu({
             </div>
           </div>
         </div>
-        {
-          toast && (
-            <ToastContainer
-              position="bottom-end"
-              style={{ bottom: "1rem", right: "1rem" }}
+        {toast && (
+          <ToastContainer
+            position="bottom-end"
+            style={{ bottom: "1rem", right: "1rem" }}
+          >
+            <Toast
+              onClose={() => setToast(null)}
+              show={toast !== null}
+              bg={toast.bg}
+              autohide={true}
             >
-              <Toast
-                onClose={() => setToast(null)}
-                show={toast !== null}
-                bg={toast.bg}
-                autohide={true}
-              >
-                <Toast.Header>
-                  <img
-                    src="holder.js/20x20?text=%20"
-                    className="rounded me-2"
-                    alt=""
-                  />
-                  <strong className="me-auto">{toast.header}</strong>
-                  <small className="text-muted"></small>
-                </Toast.Header>
-
-              </Toast>
-            </ToastContainer>
-          )
-        }
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">{toast.header}</strong>
+                <small className="text-muted"></small>
+              </Toast.Header>
+            </Toast>
+          </ToastContainer>
+        )}
       </Container>
-      <StyleDrawer width={640} placement="right" onClose={onClose} open={openUserInfo}>
+      <StyleDrawer
+        width={640}
+        placement="right"
+        onClose={onClose}
+        open={openUserInfo}
+      >
         <p className="site-description-item-profile-p"> Thông tin cá nhân</p>
         <Row>
           <Col span={12}>
@@ -546,7 +716,9 @@ function Menu({
           </Col>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
-              <p className="site-description-item-profile-p-label">Căn cước công dân:</p>
+              <p className="site-description-item-profile-p-label">
+                Căn cước công dân:
+              </p>
               {nhanVien && nhanVien.cccd}
             </div>
           </Col>
@@ -554,9 +726,10 @@ function Menu({
         <Row>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
-              <p className="site-description-item-profile-p-label">Ngày sinh:</p>
+              <p className="site-description-item-profile-p-label">
+                Ngày sinh:
+              </p>
               {moment(nhanVien && nhanVien.ngaySinh).format("DD/MM/YYYY")}
-
             </div>
           </Col>
           <Col span={12}>
@@ -572,7 +745,9 @@ function Menu({
         <Row>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
-              <p className="site-description-item-profile-p-label">Số điện thoại</p>
+              <p className="site-description-item-profile-p-label">
+                Số điện thoại
+              </p>
               {nhanVien && nhanVien.soDienThoai}
             </div>
           </Col>
@@ -582,42 +757,63 @@ function Menu({
               {nhanVien && nhanVien.diaChi}
             </div>
           </Col>
-
         </Row>
         <Divider />
         <p className="site-description-item-profile-p">Công ty</p>
         <Row>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
-              <p className="site-description-item-profile-p-label">Tên tài khoản:</p>
+              <p className="site-description-item-profile-p-label">
+                Tên tài khoản:
+              </p>
               {nhanVien && nhanVien.soDienThoai}
             </div>
           </Col>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
-              <p className="site-description-item-profile-p-label">Tình trạng tài khoản:</p>
-              {nhanVien && nhanVien.taiKhoan.daKichHoat === true ? 'Đã kích hoạt' : 'Chưa kích hoạt'}
+              <p className="site-description-item-profile-p-label">
+                Tình trạng tài khoản:
+              </p>
+              {nhanVien && nhanVien.taiKhoan.daKichHoat === true
+                ? "Đã kích hoạt"
+                : "Chưa kích hoạt"}
             </div>
           </Col>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
               <p className="site-description-item-profile-p-label">Chức vụ:</p>
-              {nhanVien && nhanVien.taiKhoan.vaiTro.tenVaiTro === 'ROLE_MANAGEMENT' ? 'nhân viên quản lý' : 'nhân viên lễ tân'}
+              {nhanVien &&
+              nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT"
+                ? "nhân viên quản lý"
+                : "nhân viên lễ tân"}
             </div>
           </Col>
           <Col span={12}>
             <div className="site-description-item-profile-wrapper">
-              <p className="site-description-item-profile-p-label">Ngày vào làm:</p>
+              <p className="site-description-item-profile-p-label">
+                Ngày vào làm:
+              </p>
               {moment(nhanVien && nhanVien.ngayVaoLam).format("DD/MM/YYYY")}
             </div>
           </Col>
         </Row>
-        <Row >
-          <Col span={24} style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button variant="success" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleDoiMatKhau()}>
+        <Row>
+          <Col
+            span={24}
+            style={{ display: "flex", justifyContent: "space-evenly" }}
+          >
+            <Button
+              variant="success"
+              style={{ padding: "0.5rem 1.5rem" }}
+              onClick={() => handleDoiMatKhau()}
+            >
               Đổi mật khẩu
             </Button>
-            <Button variant="danger" style={{ padding: '0.5rem 1.5rem' }} onClick={() => handleLogOut()}>
+            <Button
+              variant="danger"
+              style={{ padding: "0.5rem 1.5rem" }}
+              onClick={() => handleLogOut()}
+            >
               Đăng Xuất
             </Button>
           </Col>
@@ -625,7 +821,14 @@ function Menu({
       </StyleDrawer>
 
       {/* Drawwer đổi mật khẩu */}
-      <StyleDrawer width={640} height={300} placement="top" onClose={onCloseDoiMatKhau} open={openDoiMatKhauDrawwer} title="Đổi mật khẩu">
+      <StyleDrawer
+        width={640}
+        height={300}
+        placement="top"
+        onClose={onCloseDoiMatKhau}
+        open={openDoiMatKhauDrawwer}
+        title="Đổi mật khẩu"
+      >
         <Row>
           <Col span={24}>
             <Box sx={{}}>
@@ -638,7 +841,12 @@ function Menu({
                   type="password"
                   name="matKhauCu"
                   onChange={(e) => handleOnChange(e)}
-                  value={objectDoiMatKhau.matKhauCu && objectDoiMatKhau.matKhauCu.length != 0 ? objectDoiMatKhau.matKhauCu : ""}
+                  value={
+                    objectDoiMatKhau.matKhauCu &&
+                    objectDoiMatKhau.matKhauCu.length != 0
+                      ? objectDoiMatKhau.matKhauCu
+                      : ""
+                  }
                 />
               </FloatingLabel>
             </Box>
@@ -655,7 +863,12 @@ function Menu({
                 <Form.Control
                   type="password"
                   name="matKhauMoi"
-                  value={objectDoiMatKhau.matKhauMoi && objectDoiMatKhau.matKhauMoi.length != 0 ? objectDoiMatKhau.matKhauMoi : ""}
+                  value={
+                    objectDoiMatKhau.matKhauMoi &&
+                    objectDoiMatKhau.matKhauMoi.length != 0
+                      ? objectDoiMatKhau.matKhauMoi
+                      : ""
+                  }
                   onChange={(e) => handleOnChange(e)}
                 />
               </FloatingLabel>
@@ -673,23 +886,15 @@ function Menu({
                 okText="Đồng ý"
                 cancelText="Hủy"
               >
-
-                <Button variant="primary" style={{ padding: '0.5rem 1.5rem' }} >
+                <Button variant="primary" style={{ padding: "0.5rem 1.5rem" }}>
                   Đổi mật khẩu
                 </Button>
               </Popconfirm>
-
-
-
             </Stack>
           </Col>
         </Row>
-
-
       </StyleDrawer>
-
     </>
-
   );
 }
 
@@ -731,14 +936,14 @@ const Container = styled.div`
       font-size: 1.5rem;
     }
   }
-  .wrapper_btn_container{
+  .wrapper_btn_container {
     display: flex;
     flex-direction: column;
-   justify-content: space-between;
+    justify-content: space-between;
     width: 100%;
     height: 93%;
     /* background-color:red; */
-    overflow:hidden;
+    overflow: hidden;
   }
   .btn-container {
     display: flex;
@@ -852,25 +1057,25 @@ const Container = styled.div`
   }
 `;
 const StyleDrawer = styled(Drawer)`
-.site-description-item-profile-wrapper {
-  margin-bottom: 7px;
-  color: rgba(0, 0, 0, 0.65);
-  font-size: 14px;
-  line-height: 1.5715;
-}
+  .site-description-item-profile-wrapper {
+    margin-bottom: 7px;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    line-height: 1.5715;
+  }
 
-.ant-drawer-body p.site-description-item-profile-p {
-  display: block;
-  margin-bottom: 16px;
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 16px;
-  line-height: 1.5715;
-}
+  .ant-drawer-body p.site-description-item-profile-p {
+    display: block;
+    margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 16px;
+    line-height: 1.5715;
+  }
 
-.site-description-item-profile-p-label {
-  display: inline-block;
-  margin-right: 8px;
-  color: rgba(0, 0, 0, 0.85);
-}
+  .site-description-item-profile-p-label {
+    display: inline-block;
+    margin-right: 8px;
+    color: rgba(0, 0, 0, 0.85);
+  }
 `;
 export default Menu;

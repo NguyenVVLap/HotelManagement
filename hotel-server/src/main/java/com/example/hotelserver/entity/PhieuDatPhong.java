@@ -3,6 +3,7 @@ package com.example.hotelserver.entity;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -33,18 +34,22 @@ public class PhieuDatPhong {
 	private long maPhieuDatPhong;
 	
 	@Column(name = "ngay_dat_phong")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Jakarta")
 	private Date ngayDatPhong;
 	
 	@Column(name = "giam_gia")
 	private double giamGia;
 	
 	@Column(name = "ghi_chu_dat_phong", columnDefinition = "nvarchar(255)")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Jakarta")
 	private String ghiChuDatPhong;
 	
 	@Column(name = "ngay_nhan_phong")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Jakarta")
 	private Date ngayNhanPhong;
 	
 	@Column(name = "ngay_tra_phong")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Jakarta")
 	private Date ngayTraPhong;
 	
 	@Enumerated(EnumType.STRING)

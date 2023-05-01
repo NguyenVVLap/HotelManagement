@@ -10,7 +10,6 @@ import Menu from "../components/Menu";
 import FrmKhachHang from "../components/FrmKhachHang";
 import FrmNhanVien from "../components/FrmNhanVien";
 import FrmQuanLyPhong from "../components/FrmQuanLyPhong";
-import FrmLoaiPhong from "../components/FrmThietBi";
 import FrmTimKiemDichVu from "../components/FrmDichVu/TimKiemDichVu";
 import FrmTimKiemKhachHang from "../components/FrmKhachHang/TimKiemKhachHang";
 import FrmTimKiemNhanVien from "../components/FrmNhanVien/TimKiemNhanVien";
@@ -19,6 +18,7 @@ import FrmLapHoaDon from "../components/FrmLapHoaDon";
 import FrmTimKiemLoaiPhong from "../components/FrmTimKiemLoaiPhong";
 import FrmTimKiemTang from "../components/FrmTimKiemTang";
 import FrmTimKiemPhong from "../components/FrmTimKiemPhong";
+import FrmCapNhatCa from "../components/FrmCapNhatCa";
 
 import FrmDatDichVu from "../components/FrmDatDichVu";
 
@@ -39,6 +39,7 @@ function Main() {
     booking: false,
     service: false,
     report: false,
+    shift: false,
   });
   const [subNavSelected, setSubNavSelected] = useState({
     nav: "guest",
@@ -72,7 +73,6 @@ function Main() {
           {subNavSelected.subnav === "add-bill" && <FrmLapHoaDon />}
           {subNavSelected.subnav === "update-floor" && <FrmTang />}
           {subNavSelected.subnav === "search-floor" && <FrmTimKiemTang />}
-          {/* {subNavSelected.subnav === "update-room-type" && <FrmLoaiPhong />} */}
           {subNavSelected.subnav === "search-room-type" && (
             <FrmTimKiemLoaiPhong />
           )}
@@ -89,6 +89,7 @@ function Main() {
             <FrmThongKeDoanhThu />
           )}
           {subNavSelected.subnav === "report-staff" && <TabThongKe />}
+          {subNavSelected.subnav === "update-shift" && <FrmCapNhatCa />}
         </div>
       </div>
     </Container>

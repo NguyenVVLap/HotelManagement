@@ -19,6 +19,9 @@ delete from phong;
 delete from tang;
 delete from loai_phong;
 
+delete from ca_lam_viec;
+
+
 Insert into loai_phong(ten_loai_phong, mo_ta_loai_phong) values
 (N'Phòng STD', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ'),
 (N'Phòng SUP', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình'),
@@ -290,6 +293,16 @@ INSERT INTO chi_tiet_dich_vu(ma_dich_vu,ma_hoa_don,so_luong) values
 (6,11,2),
 (7,12,1),
 (8,12,5);
+
+insert into ca_lam_viec (ten_ca, gio_bat_dau, so_gio, gio_ket_thuc) values
+(N'Ca 1', '09:00:00', 3.5, '12:30:00'),
+(N'Ca 2', '12:30:00', 4, '16:30:00'),
+(N'Ca 3', '16:30:00', 2, '18:30:00'),
+(N'Ca 4', '18:30:00', 3.5, '22:00:00'),
+(N'Ca 5', '22:30:00', 3, '01:30:00'),
+(N'Ca 6', '01:30:00', 3.5, '05:00:00'),
+(N'Ca 7', '05:30:00', 4, '09:00:00'),
+
 update hoa_don set ngay_lap ='2023-04-13 00:41:20.526000' where ma_hoa_don=15
 
 /*

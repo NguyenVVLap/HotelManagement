@@ -7,6 +7,7 @@ import com.example.hotelserver.entity.KhachHang;
 import com.example.hotelserver.entity.NhanVien;
 import com.example.hotelserver.entity.PhieuDatPhong;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
 import lombok.AllArgsConstructor;
@@ -23,8 +24,14 @@ import lombok.ToString;
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class HoaDonDto{
 	private long maHoaDon;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Jakarta")
 	private Date ngayLap;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Jakarta")
 	private Date ngayNhanPhong;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Jakarta")
 	private Date ngayTraPhong;
 	private double tienNhan;
 	private PhieuDatPhong phieuDatPhong;

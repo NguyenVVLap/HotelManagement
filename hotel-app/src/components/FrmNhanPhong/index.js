@@ -34,7 +34,9 @@ function FrmNhanPhong() {
     // return Math.abs(Math.round(diff));
     const millisecondsPerHour = 1000 * 60 * 60;
     const differenceInMilliseconds = dt1 - dt2;
-    const totalHours = Math.ceil(differenceInMilliseconds / millisecondsPerHour);
+    const totalHours = Math.ceil(
+      differenceInMilliseconds / millisecondsPerHour
+    );
     // console.log('totalHours', totalHours);
     return totalHours;
   };
@@ -69,6 +71,7 @@ function FrmNhanPhong() {
       }
     );
     if (data && data.length > 0) {
+      // console.log(data);
       setDsPhieuDatPhong(data);
     } else {
       setDsPhieuDatPhong([]);
@@ -107,8 +110,8 @@ function FrmNhanPhong() {
         {
           maHoaDon: 0,
           ngayLap: new Date(),
-          ngayNhanPhong: phieuDatPhongSelected.ngayNhanPhong,
-          ngayTraPhong: phieuDatPhongSelected.ngayTraPhong,
+          ngayNhanPhong: new Date(phieuDatPhongSelected.ngayNhanPhong),
+          ngayTraPhong: new Date(phieuDatPhongSelected.ngayTraPhong),
           tienNhan: 0,
           dsMaPhong,
           maPhieuDatPhong: phieuDatPhongSelected.maPhieuDatPhong,
@@ -189,12 +192,30 @@ function FrmNhanPhong() {
           bg: "success",
           textColor: "#fff",
         });
-        console.log("12314");
         loadPhieuDatPhong();
       }
     }
   };
-  console.log("Ngày nhận phòng : ", phieuDatPhongSelected.ngayNhanPhong);
+  const formatDate = (date) => {
+    let min = date.getMinutes() + "";
+    if (date.getMinutes() < 10) {
+      min = "0" + date.getMinutes();
+    }
+    let month = date.getMonth() + 1;
+    let monthStr = month + "";
+    if (month < 10) {
+      monthStr = "0" + month;
+    }
+    return (
+      [date.getDate(), monthStr, date.getFullYear()].join("/") +
+      " " +
+      [date.getHours(), min].join(":")
+    );
+  };
+  // console.log(
+  //   "Ngày nhận phòng : ",
+  //   new Date(phieuDatPhongSelected.ngayNhanPhong)
+  // );
   return (
     <StyledContainer>
       <div className="container">
@@ -222,12 +243,13 @@ function FrmNhanPhong() {
                 dsPhieuDatPhong.map((phieuDatPhong, index) => {
                   return (
                     <div
-                      className={`booking-item ${phieuDatPhongSelected.maPhieuDatPhong &&
+                      className={`booking-item ${
+                        phieuDatPhongSelected.maPhieuDatPhong &&
                         phieuDatPhong.maPhieuDatPhong ===
-                        phieuDatPhongSelected.maPhieuDatPhong
-                        ? "selected"
-                        : ""
-                        }`}
+                          phieuDatPhongSelected.maPhieuDatPhong
+                          ? "selected"
+                          : ""
+                      }`}
                       onClick={() => setPhieuDatPhongSelected(phieuDatPhong)}
                       key={index}
                     >
@@ -239,17 +261,16 @@ function FrmNhanPhong() {
                         <div className="booking-date">
                           Ngày đặt phòng:{" "}
                           <p>
-                            {moment(phieuDatPhong.ngayDatPhong).format(
-                              "DD/MM/YYYY HH:MM"
-                            )}
+                            {/* {moment(
+                              new Date(phieuDatPhong.ngayDatPhong)
+                            ).format("DD/MM/YYYY HH:MM")} */}
+                            {formatDate(new Date(phieuDatPhong.ngayDatPhong))}
                           </p>
                         </div>
                         <div className="check-in-date">
                           Ngày nhận phòng:{" "}
                           <p>
-                            {moment(phieuDatPhong.ngayNhanPhong).format(
-                              "DD/MM/YYYY HH:MM"
-                            )}
+                            {formatDate(new Date(phieuDatPhong.ngayNhanPhong))}
                           </p>
                         </div>
                       </div>
@@ -303,8 +324,8 @@ function FrmNhanPhong() {
                       </thead>
                       <tbody>
                         {phieuDatPhongSelected &&
-                          phieuDatPhongSelected.dsPhong &&
-                          phieuDatPhongSelected.dsPhong.length > 0 ? (
+                        phieuDatPhongSelected.dsPhong &&
+                        phieuDatPhongSelected.dsPhong.length > 0 ? (
                           phieuDatPhongSelected.dsPhong.map((room, index) => {
                             // console.log(isSelected(room));
                             return (
@@ -346,25 +367,19 @@ function FrmNhanPhong() {
                     - Ngày đặt phòng:{" "}
                     {phieuDatPhongSelected &&
                       phieuDatPhongSelected.ngayDatPhong &&
-                      moment(phieuDatPhongSelected.ngayDatPhong).format(
-                        "DD/MM/YYYY HH:MM"
-                      )}
+                      formatDate(new Date(phieuDatPhongSelected.ngayDatPhong))}
                     <br></br>- Ngày nhận phòng:{" "}
                     {phieuDatPhongSelected &&
                       phieuDatPhongSelected.ngayNhanPhong &&
-                      moment(phieuDatPhongSelected.ngayNhanPhong).format(
-                        "DD/MM/YYYY HH:MM"
-                      )}
+                      formatDate(new Date(phieuDatPhongSelected.ngayNhanPhong))}
                     <br></br>- Ngày trả phòng:{" "}
                     {phieuDatPhongSelected &&
                       phieuDatPhongSelected.ngayTraPhong &&
-                      moment(phieuDatPhongSelected.ngayTraPhong).format(
-                        "DD/MM/YYYY HH:MM"
-                      )}
+                      formatDate(new Date(phieuDatPhongSelected.ngayTraPhong))}
                   </div>
                   <div className="btn-function">
                     {phieuDatPhongSelected &&
-                      phieuDatPhongSelected.maPhieuDatPhong ? (
+                    phieuDatPhongSelected.maPhieuDatPhong ? (
                       <Button
                         variant="success"
                         type="submit"

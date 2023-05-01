@@ -19,6 +19,7 @@ function FrmXacNhanHoaDon({
   setIsPrint,
   setHoaDonSelected,
   onHandleCancelPrint,
+  formatDate,
 }) {
   // console.log(hoaDonSelected);
   const [nhanVien, setNhanVien] = useState();
@@ -75,15 +76,15 @@ function FrmXacNhanHoaDon({
               <br></br>- Ngày đặt phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                moment(hoaDonSelected.ngayNhanPhong).format("DD/MM/YYYY HH:MM")}
+                formatDate(hoaDonSelected.ngayNhanPhong)}
               <br></br>- Ngày nhận phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                moment(hoaDonSelected.ngayNhanPhong).format("DD/MM/YYYY HH:MM")}
+                formatDate(hoaDonSelected.ngayNhanPhong)}
               <br></br>- Ngày trả phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                moment(hoaDonSelected.ngayTraPhong).format("DD/MM/YYYY HH:MM")}
+                formatDate(hoaDonSelected.ngayTraPhong)}
               <br></br> - Thu ngân:{" "}
               {nhanVien && `${nhanVien.hoTen} - ${nhanVien.maNhanVien}`}
               <br></br>
@@ -130,8 +131,8 @@ function FrmXacNhanHoaDon({
                     </thead>
                     <tbody>
                       {hoaDonSelected &&
-                        hoaDonSelected.dsPhong &&
-                        hoaDonSelected.dsPhong.length > 0 ? (
+                      hoaDonSelected.dsPhong &&
+                      hoaDonSelected.dsPhong.length > 0 ? (
                         hoaDonSelected.dsPhong.map((room, index) => {
                           // console.log(isSelected(room));
                           return (
@@ -181,8 +182,8 @@ function FrmXacNhanHoaDon({
                     </thead>
                     <tbody>
                       {hoaDonSelected &&
-                        hoaDonSelected.dsChiTietDichVuDto &&
-                        hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                      hoaDonSelected.dsChiTietDichVuDto &&
+                      hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
                         hoaDonSelected.dsChiTietDichVuDto.map(
                           (dichVu, index) => {
                             // console.log(isSelected(room));
