@@ -11,6 +11,7 @@ import com.example.hotelserver.entity.KhachHang;
 public interface KhachHangRepo extends JpaRepository<KhachHang, Integer>,CustomRepoKhachHang {
 	KhachHang findByCccdKhachHang(String cccdKhachHang);
 	KhachHang findBySoDienThoaiKH(String soDienThoaiKH);
+	KhachHang findByMaKhachHang(int maKhachHang);
 	@Query(nativeQuery = true, value = ("select * from khach_hang "))
 	List<KhachHang> layAllDanhSachKhachHang();
 	@Query(nativeQuery = true, value = "select * from khach_hang kh where kh.cccd_khach_hang= :cccdKhachHang AND kh.so_dien_thoai_kh= :soDienThoaiKH")

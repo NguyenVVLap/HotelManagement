@@ -57,8 +57,8 @@ public class KhachHangController {
 
 
     }
-    @PostMapping("/timKiemKhachHangDatPhong")
-    public ResponseEntity<List<KhachHang>> timKiemKhachHang(@RequestBody Map<String, Object> request) {
+    @PostMapping("/timKiemKhachHangCCCD")
+    public ResponseEntity<List<KhachHang>> timKiemKhachHangCCCD(@RequestBody Map<String, Object> request) {
         List<KhachHang> results = new ArrayList<>();
         if (request.get("theo").toString().equals("Theo họ tên")) {
             results = khachHangService.timKhachHangTheoTen(request.get("keyword").toString());

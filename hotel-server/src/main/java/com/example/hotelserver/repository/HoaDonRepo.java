@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.example.hotelserver.dto.DanhSachSoLanDatPhongThanhCongVaMaKhachHangDto;
+import com.example.hotelserver.dto.DanhSachSoLanHuyDatPhongVaMaKhachHangDto;
+import com.example.hotelserver.dto.ThongKeSoLanDatDichVuDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -57,4 +60,10 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, Long>{
     void updateSoLuongChiTietDichVu(@Param("maDichVu") long maDichVu
     		, @Param("maHoaDon") long maHoaDon
     		, @Param("soLuong") int soLuong);
+	@Query(name = "danhSachSoLanDatPhongThanhCongVaMaKhachHang", nativeQuery = true)
+	List<DanhSachSoLanDatPhongThanhCongVaMaKhachHangDto> getDanhSachSoLanDatPhongThanhCongVaMaKhachHang(@Param("start") Date start
+			, @Param("end") Date end);
+	@Query(name = "danhSachSoLanHuyDatPhongVaMaKhachHang", nativeQuery = true)
+	List<DanhSachSoLanHuyDatPhongVaMaKhachHangDto> getDanhSachSoLanHuyDatPhongVaMaKhachHang(@Param("start") Date start
+			, @Param("end") Date end);
 }
