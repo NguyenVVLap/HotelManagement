@@ -301,7 +301,7 @@ insert into ca_lam_viec (ten_ca, gio_bat_dau, so_gio, gio_ket_thuc) values
 (N'Ca 4', '18:30:00', 3.5, '22:00:00'),
 (N'Ca 5', '22:30:00', 3, '01:30:00'),
 (N'Ca 6', '01:30:00', 3.5, '05:00:00'),
-(N'Ca 7', '05:30:00', 4, '09:00:00'),
+(N'Ca 7', '05:30:00', 4, '09:00:00');
 
 update hoa_don set ngay_lap ='2023-04-13 00:41:20.526000' where ma_hoa_don=15
 

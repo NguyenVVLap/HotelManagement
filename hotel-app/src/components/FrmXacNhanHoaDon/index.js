@@ -76,15 +76,15 @@ function FrmXacNhanHoaDon({
               <br></br>- Ngày đặt phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                formatDate(hoaDonSelected.ngayNhanPhong)}
+                formatDate(new Date(hoaDonSelected.phieuDatPhong.ngayDatPhong))}
               <br></br>- Ngày nhận phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                formatDate(hoaDonSelected.ngayNhanPhong)}
+                formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
               <br></br>- Ngày trả phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                formatDate(hoaDonSelected.ngayTraPhong)}
+                formatDate(new Date(hoaDonSelected.ngayTraPhong))}
               <br></br> - Thu ngân:{" "}
               {nhanVien && `${nhanVien.hoTen} - ${nhanVien.maNhanVien}`}
               <br></br>

@@ -22,7 +22,10 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import RoomSelected from "./components/RoomSelected";
 import Rooms from "./components/Rooms";
 import axios from "axios";
-import { addBookingsRoute } from "../../utils/APIRoutes";
+import {
+  addBookingsRoute,
+  timKiemKhachHangWithCCCD,
+} from "../../utils/APIRoutes";
 
 function FrmDatPhong() {
   const [showRooms, setShowRooms] = useState(false);
