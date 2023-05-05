@@ -30,6 +30,11 @@ public class CaLamViecController {
 		return caLamViecService.layTatCaCaLamViec();
 	}
 	
+	@GetMapping("/orderByGioBatDau")
+	public List<CaLamViec> layHetCaLamViecSapXepGioBatDau() {
+		return caLamViecService.timCaLamViecSapXepGioBatDau();
+	}
+	
 	@PostMapping
 	public ResponseEntity<List<CaLamViec>> themCaLamViec(@RequestBody ThemCaLamViecDto caLamViecDto) {
 		caLamViecDto.setGioBatDau(caLamViecDto.getGioBatDau().plusHours(7));

@@ -379,7 +379,15 @@ function Menu({
                     <SearchIcon />
                     <p className="btn-sub-title">Tìm kiếm</p>
                   </button>
-
+                  <button
+                    className={`btn-sub ${
+                      subNavSelected.subnav === "assign" && "btn-sub-selected"
+                    }`}
+                    onClick={() => onHandleSelectedSubNav("assign", "staff")}
+                  >
+                    <SearchIcon />
+                    <p className="btn-sub-title">Phân công</p>
+                  </button>
                   <button
                     className={`btn-sub ${
                       subNavSelected.subnav === "report-staff" &&
@@ -668,8 +676,12 @@ function Menu({
                   )}
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <IconButton onClick={() => { handleLogOut() }} >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <IconButton
+                  onClick={() => {
+                    handleLogOut();
+                  }}
+                >
                   <LogoutIcon />
                 </IconButton>
               </div>

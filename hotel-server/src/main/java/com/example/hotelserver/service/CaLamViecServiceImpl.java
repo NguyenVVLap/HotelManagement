@@ -55,6 +55,11 @@ public class CaLamViecServiceImpl implements CaLamViecService {
 		return caLamViecRepo.findById(maCa).get();
 
 	}
+
+	@Override
+	public List<CaLamViec> timCaLamViecSapXepGioBatDau() {
+		return caLamViecRepo.findAllOrderByGioBatDau();
+	}
 	
 	
 }

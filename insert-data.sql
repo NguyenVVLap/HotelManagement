@@ -301,7 +301,65 @@ insert into ca_lam_viec (ten_ca, gio_bat_dau, so_gio, gio_ket_thuc) values
 (N'Ca 4', '18:30:00', 3.5, '22:00:00'),
 (N'Ca 5', '22:30:00', 3, '01:30:00'),
 (N'Ca 6', '01:30:00', 3.5, '05:00:00'),
-(N'Ca 7', '05:30:00', 4, '09:00:00');
+(N'Ca 7', '05:30:00', 4, '09:00:00'),
+(N'Ca 8', '09:30:00', 2.5, '12:00:00'),
+(N'Ca 9', '12:00:00', 4, '16:00:00'),
+(N'Ca 10', '16:00:00', 4, '18:30:00');
+
+/*
+insert into bang_phan_cong (ngay_chinh_sua, ngay_phan_cong, ma_nhan_vien) values
+('2023-04-13 00:41:20.526000', '2023-04-13 00:41:20.526000', 1),
+('2023-04-13 00:41:20.526000', '2023-04-13 00:41:20.526000', 2);
+
+insert into chi_tiet_phan_cong (ma_ca, ma_bang_phan_cong) values
+(1, 1),
+(2, 1),
+(4, 1),
+(1, 2),
+(3, 2),
+(5, 2);
+
+insert into thu (ma_chi_tiet_phan_cong, thu) values
+(1, 0),
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(2, 0),
+(2, 2),
+(2, 4),
+(2, 6),
+(3, 5),
+(3, 6),
+(4, 1),
+(4, 3),
+(4, 5),
+(5, 0),
+(5, 2),
+(5, 4),
+(6, 6);
+*/
+
+insert into bang_phan_cong (ngay_chinh_sua, ngay_phan_cong, ngay_bat_dau, ma_nhan_vien) values
+('2023-04-13 00:41:20.526000', '2023-04-13 00:41:20.526000', '2023-04-15 00:00:00', 1);
+
+insert into chi_tiet_phan_cong (ma_ca, ma_bang_phan_cong) values
+(1, 1),
+(2, 1),
+(4, 1);
+
+insert into thu (ma_chi_tiet_phan_cong, thu) values
+(1, 0),
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(2, 0),
+(2, 2),
+(2, 4),
+(2, 6),
+(3, 5),
+(3, 6);
 
 update hoa_don set ngay_lap ='2023-04-13 00:41:20.526000' where ma_hoa_don=15
 

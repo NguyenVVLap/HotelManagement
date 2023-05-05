@@ -12,4 +12,5 @@ public interface CaLamViecService {
 	boolean kiemTraCaLamViecTonTaiTheoTen(String tenCa);
 	List<CaLamViec> timCaLamViecTheoTen(String tenCa);
 	CaLamViec timCaLamViecTheoMa(long maCa);
+	List<CaLamViec> timCaLamViecSapXepGioBatDau();
 }

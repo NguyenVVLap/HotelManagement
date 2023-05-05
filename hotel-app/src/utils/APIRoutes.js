@@ -76,3 +76,9 @@ export const layDanhSachMaKhachHangVaSoLanHuyDatPhong = `${host}/api/thongke/dan
 export const addShiftRoute = `${host}/api/caLamViec`;
 export const findShiftRoute = ``;
 export const getShiftsRoute = `${host}/api/caLamViec`;
+export const getShiftsOrderGioBatDauRoute = `${host}/api/caLamViec/orderByGioBatDau`;
+
+//Phân công
+export const getAssignmentsRoute = `${host}/api/bangPhanCong`;
+export const getAssignmentByNhanVienRoute = `${host}/api/bangPhanCong/getByMaNhanVien`;
+export const addAssignment = `${host}/api/bangPhanCong`;

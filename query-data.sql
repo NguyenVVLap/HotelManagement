@@ -10,6 +10,7 @@ select * from nhan_vien
 
 select * from khach_hang
 select * from ca_lam_viec
+select * from bang_phan_cong
 
 -- 12345678
 --$2a$10$h27./FD4LJEPvDPtqHeWOeA2Ec3EMJ6lXNq8UeF9bY0VKQtCwmV4G 

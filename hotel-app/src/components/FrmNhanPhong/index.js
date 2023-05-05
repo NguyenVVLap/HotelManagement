@@ -104,7 +104,7 @@ function FrmNhanPhong() {
         }
       }
       const nhanVien = JSON.parse(localStorage.getItem("nhanVien"));
-
+      console.log(new Date(phieuDatPhongSelected.ngayNhanPhong));
       const { data } = await axios.post(
         `${addBillsRoute}`,
         {
