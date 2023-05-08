@@ -19,4 +19,5 @@ public interface ChiTietPhanCongRepo extends JpaRepository<ChiTietPhanCong, Long
 //	@Query(nativeQuery = true, value = "select thu from thu t "
 //			+ "where t.ma_chi_tiet_phan_cong = :maChiTietPhanCong")
 //	List<Integer> findThuByMaPhanCong(@Param("maChiTietPhanCong") long maChiTietPhanCong);
+	
 }

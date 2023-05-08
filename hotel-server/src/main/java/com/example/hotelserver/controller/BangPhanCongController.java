@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.hotelserver.dto.BangPhanCongDto;
+import com.example.hotelserver.dto.ChiTietPhanCongDto;
+import com.example.hotelserver.dto.RequestChiTietPhanCongDto;
 import com.example.hotelserver.dto.ThemBangPhanCongDto;
 import com.example.hotelserver.entity.CaLamViec;
 import com.example.hotelserver.entity.ChiTietPhanCong;
@@ -40,17 +42,20 @@ public class BangPhanCongController {
 	@PostMapping
 	public BangPhanCongDto themBangPhanCong(@RequestBody ThemBangPhanCongDto request) {
 		
-		System.out.println(request);
+//		System.out.println(request);
 		List<ChiTietPhanCong> dsChiTietPhanCong = new ArrayList<>();
 		for (Map<String, Object> chiTietPhanCongMap : request.getDsChiTietPhanCong()) {
-			ChiTietPhanCong chiTietPhanCong = ChiTietPhanCong.builder()
-											.maChiTietPhanCong(Long.parseLong(chiTietPhanCongMap.get("maChiTietPhanCong").toString()))
-											.caLamViec(CaLamViec.builder()
-													.maCa(Long.parseLong(chiTietPhanCongMap.get("maCa").toString()))
-													.build())
-											.thu((List<Integer>) chiTietPhanCongMap.get("thu"))
-											.build();
-			dsChiTietPhanCong.add(chiTietPhanCong);
+//			System.out.println(chiTietPhanCongMap.get("duocChon").toString());
+//			if (chiTietPhanCongMap.get("duocChon").toString() == "true") {
+				ChiTietPhanCong chiTietPhanCong = ChiTietPhanCong.builder()
+						.maChiTietPhanCong(Long.parseLong(chiTietPhanCongMap.get("maChiTietPhanCong").toString()))
+						.caLamViec(CaLamViec.builder()
+								.maCa(Long.parseLong(chiTietPhanCongMap.get("maCa").toString()))
+								.build())
+						.thu((List<Integer>) chiTietPhanCongMap.get("thu"))
+						.build();
+				dsChiTietPhanCong.add(chiTietPhanCong);	
+//			}
 		}
 		NhanVien nv = new NhanVien(request.getMaNhanVien(), "", "", "", "", "", null, 0, null, null);
 		BangPhanCongDto bangPhanCongDto = BangPhanCongDto.builder()
@@ -63,5 +68,11 @@ public class BangPhanCongController {
 				.build();
 		return bangPhanCongService.themBangPhanCong(bangPhanCongDto);
 //		return null;
+	}
+	
+	@PostMapping("/getDetailByThu")
+	public List<ChiTietPhanCongDto> layBangPhanCongTheoThu(@RequestBody RequestChiTietPhanCongDto request) {
+		return bangPhanCongService.layBangPhanCongTheoThu(request.getThu()
+				, request.getNgayHienTai());
 	}
 }

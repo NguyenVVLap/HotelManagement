@@ -82,3 +82,8 @@ export const getShiftsOrderGioBatDauRoute = `${host}/api/caLamViec/orderByGioBat
 export const getAssignmentsRoute = `${host}/api/bangPhanCong`;
 export const getAssignmentByNhanVienRoute = `${host}/api/bangPhanCong/getByMaNhanVien`;
 export const addAssignment = `${host}/api/bangPhanCong`;
+export const getAssignDetailDtos = `${host}/api/bangPhanCong/getDetailByThu`;
+
+//Chấm công
+export const getTimekeeping = `${host}/api/bangChamCong/getByThuAndMaChiTietPhanCong`;
+export const addTimekeeping = `${host}/api/bangChamCong/themBangChamCong`;

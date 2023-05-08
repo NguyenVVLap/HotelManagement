@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -20,23 +21,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "bang_phan_cong")
-public class BangPhanCong {
+@Table(name = "bang_cham_cong")
+public class BangChamCong {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ma_bang_phan_cong")
-	private long maBangPhanCong;
+	@Column(name = "ma_bang_cham_cong")
+	private long maBangChamCong;
 	
-	@Column(name = "ngay_phan_cong")
-	private Date ngayPhanCong;
+	@Column(name = "ngay_cham_cong")
+	private Date ngayChamCong;
 	
-	@Column(name = "ngay_chinh_sua")
-	private Date ngayChinhSua;
+	private int thu;
 	
-	@Column(name = "ngay_bat_dau")
-	private Date ngayBatDau;
-
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ma_chi_tiet_phan_cong")
+	private ChiTietPhanCong chiTietPhanCong;
+	
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ma_nhan_vien")
 	private NhanVien nhanVien;
 }

@@ -11,7 +11,9 @@ select * from nhan_vien
 select * from khach_hang
 select * from ca_lam_viec
 select * from bang_phan_cong
-
+select * from chi_tiet_phan_cong
+select * from bang_cham_cong where Day(ngay_cham_cong) = '09' and MONTH(ngay_cham_cong) = '05' and YEAR(ngay_cham_cong) = '2023';
+select * from bang_phan_cong where ngay_bat_dau <= '2023-05-06';
 -- 12345678
 --$2a$10$h27./FD4LJEPvDPtqHeWOeA2Ec3EMJ6lXNq8UeF9bY0VKQtCwmV4G 
 

@@ -16,9 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BangPhanCongDto {
 	private long maBangPhanCong;
-//	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	private Date ngayPhanCong;
-//	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	private Date ngayChinhSua;
 	private Date ngayBatDau;
 	private NhanVien nhanVien;

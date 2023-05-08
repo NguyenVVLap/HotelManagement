@@ -390,6 +390,18 @@ function Menu({
                   </button>
                   <button
                     className={`btn-sub ${
+                      subNavSelected.subnav === "timekeeping" &&
+                      "btn-sub-selected"
+                    }`}
+                    onClick={() =>
+                      onHandleSelectedSubNav("timekeeping", "staff")
+                    }
+                  >
+                    <SearchIcon />
+                    <p className="btn-sub-title">Chấm công</p>
+                  </button>
+                  <button
+                    className={`btn-sub ${
                       subNavSelected.subnav === "report-staff" &&
                       "btn-sub-selected"
                     }`}

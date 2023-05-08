@@ -341,7 +341,7 @@ insert into thu (ma_chi_tiet_phan_cong, thu) values
 */
 
 insert into bang_phan_cong (ngay_chinh_sua, ngay_phan_cong, ngay_bat_dau, ma_nhan_vien) values
-('2023-04-13 00:41:20.526000', '2023-04-13 00:41:20.526000', '2023-04-15 00:00:00', 1);
+('2023-04-13 00:00:00.000000', '2023-04-13 00:00:00.000000', '2023-04-15 00:00:00', 1);
 
 insert into chi_tiet_phan_cong (ma_ca, ma_bang_phan_cong) values
 (1, 1),
@@ -360,7 +360,11 @@ insert into thu (ma_chi_tiet_phan_cong, thu) values
 (2, 6),
 (3, 5),
 (3, 6);
-
+/*
+insert into bang_cham_cong (ma_chi_tiet_phan_cong, thu, ma_nhan_vien, ngay_cham_cong) values
+(1, 0, 1, '2023-05-08 00:00:00'),
+(6, 0, 2, '2023-05-08 00:00:00');
+*/
 update hoa_don set ngay_lap ='2023-04-13 00:41:20.526000' where ma_hoa_don=15
 
 /*

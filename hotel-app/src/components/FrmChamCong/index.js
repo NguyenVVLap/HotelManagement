@@ -14,11 +14,10 @@ import dayjs from "dayjs";
 
 import {
   addAssignment,
-  getAllNhanVienRoute,
-  getAssignmentByNhanVienRoute,
-  getAssignmentsRoute,
+  addTimekeeping,
+  getAssignDetailDtos,
   getShiftsOrderGioBatDauRoute,
-  getShiftsRoute,
+  getTimekeeping,
 } from "../../utils/APIRoutes";
 import {
   LocalizationProvider,
@@ -27,267 +26,139 @@ import {
 } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { GrRadial, GrRadialSelected } from "react-icons/gr";
 
-function FrmPhanCong() {
+function FrmChamCong() {
   const [toast, setToast] = useState(null);
-  const [dsNhanVien, setDsNhanVien] = useState([]);
-  const [dsCa, setDsCa] = useState([]);
-  const [nhanVienSelected, setNhanVienSelected] = useState({});
-  const [bangPhanCong, setBangPhanCong] = useState({});
-  const [searchInput, setSearchInput] = useState("");
+  const [chiTietPhanCongDtoSelected, setChiTietPhanCongDtoSelected] = useState(
+    {}
+  );
+  const [dsChiTietPhanCongDto, setDsChiTietPhanCongDto] = useState([]);
+  const [dsBangChamCong, setDsBangChamCong] = useState([]);
 
   useEffect(() => {
+    loadBangChamCongFromDB();
+  }, [chiTietPhanCongDtoSelected]);
+  const loadBangChamCongFromDB = async () => {
     if (
-      nhanVienSelected &&
-      nhanVienSelected.nhanvien &&
-      nhanVienSelected.nhanvien.maNhanVien
+      chiTietPhanCongDtoSelected &&
+      chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto &&
+      chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto.length > 0
     ) {
-      loadBangPhanCongTheoNhanVien();
-    }
-  }, [nhanVienSelected]);
-  useEffect(() => {
-    loadNhanVien();
-    loadCaFromDB();
-  }, []);
-  const loadNhanVien = async () => {
-    const { data } = await axios.get(
-      `${getAllNhanVienRoute}`,
-      {},
-      {
+      const config = {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
-          "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Credentials": "true",
         },
+      };
+      let thu = new Date().getDay();
+      if (thu === 0) {
+        thu = 6;
+      } else {
+        thu -= 1;
       }
-    );
-    if (data && data.length > 0) {
-      setDsNhanVien(data);
-    } else {
-      setDsNhanVien([]);
-    }
-  };
-  const loadCaFromDB = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-    };
-    const { data } = await axios.get(
-      `${getShiftsOrderGioBatDauRoute}`,
-      {},
-      config
-    );
-    if (data && data.length > 0) {
-      setDsCa(data);
-    }
-  };
-  const loadBangPhanCongTheoNhanVien = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-    };
-    const { data } = await axios.post(
-      `${getAssignmentByNhanVienRoute}`,
-      Number(nhanVienSelected.nhanvien.maNhanVien),
-      config
-    );
-    if (data) {
-      setBangPhanCong(data);
-    }
-  };
-  //   console.log([0, 1, 2, 3, 4].includes(0));
-  const isCaSelected = (maCa, index) => {
-    if (bangPhanCong && bangPhanCong.dsChiTietPhanCong) {
-      //   console.log(bangPhanCong, index);
-      for (let i = 0; i < bangPhanCong.dsChiTietPhanCong.length; i++) {
-        if (
-          bangPhanCong.dsChiTietPhanCong[i].thu.includes(index) &&
-          bangPhanCong.dsChiTietPhanCong[i].caLamViec.maCa == maCa
-        ) {
-          //   console.log(
-          //     bangPhanCong.dsChiTietPhanCong[i].thu,
-          //     bangPhanCong.dsChiTietPhanCong[i].thu.includes(index),
-          //     bangPhanCong.dsChiTietPhanCong[i].caLamViec.maCa === maCa,
-          //     index,
-          //     maCa
-          //   );
-          return true;
-        }
-      }
-    }
-    // if (checkBangPhanCongSelect && checkBangPhanCongSelect.length > 0) {
-    //   for (let i = 0; i < checkBangPhanCongSelect.length; i++) {
-    //     if (
-    //       checkBangPhanCongSelect[i].maCa == maCa &&
-    //       checkBangPhanCongSelect[i].thu.includes(index)
-    //     ) {
-    //       return true;
-    //     }
-    //   }
-    // }
-    return false;
-  };
-  const onHandleSelectCa = (maCa, index, gioBatDau, gioKetThuc) => {
-    // console.log(bangPhanCong);
-    // console.log(maCa, index);
-    if (!isConflictTime(gioBatDau, gioKetThuc, index)) {
-      let temp = JSON.parse(JSON.stringify(bangPhanCong));
-      if (temp && temp.dsChiTietPhanCong) {
-        for (let i = 0; i < temp.dsChiTietPhanCong.length; i++) {
-          // console.log(temp.dsChiTietPhanCong[i].caLamViec.maCa);
-          if (temp.dsChiTietPhanCong[i].caLamViec.maCa === maCa) {
-            if (temp.dsChiTietPhanCong[i].thu.includes(index)) {
-              if (temp.dsChiTietPhanCong[i].thu.length === 1) {
-                if (temp.dsChiTietPhanCong.length === 1) {
-                  temp = {
-                    nhanVien: nhanVienSelected,
-                    ngayPhanCong: new Date(temp.ngayPhanCong),
-                    ngayBatDau: new Date(temp.ngayBatDau),
-                    maBangPhanCong: temp.maBangPhanCong,
-                    ngayChinhSua: new Date(),
-                  };
-                } else {
-                  temp.dsChiTietPhanCong[i].thu = [];
-                }
-                break;
-              } else {
-                temp.dsChiTietPhanCong[i].thu.splice(
-                  temp.dsChiTietPhanCong[i].thu.indexOf(index),
-                  1
-                );
-              }
-            } else {
-              temp.dsChiTietPhanCong[i].thu = [
-                ...temp.dsChiTietPhanCong[i].thu,
-                index,
-              ];
-            }
-            break;
-          } else if (i === temp.dsChiTietPhanCong.length - 1) {
-            temp.dsChiTietPhanCong[i + 1] = {
-              maChiTietPhanCong: 0,
-              caLamViec: {
-                maCa: maCa,
-                gioBatDau: "",
-                gioKetThuc: "",
-                soGio: 3.5,
-                tenCa: "",
-              },
-              thu: [index],
-            };
-            //   console.log(temp);
-          }
-        }
-        // console.log(temp);
-      } else if (
-        nhanVienSelected &&
-        nhanVienSelected.nhanvien &&
-        nhanVienSelected.nhanvien.maNhanVien
+      let temp = [];
+      for (
+        let i = 0;
+        i < chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto.length;
+        i++
       ) {
-        temp = {
-          maBangPhanCong: 0,
-          ngayPhanCong: new Date(),
-          ngayBatDau: new Date(bangPhanCong.ngayBatDau),
-          ngayChinhSua: new Date(),
-          nhanVien: nhanVienSelected,
-          dsChiTietPhanCong: [
-            {
-              maChiTietPhanCong: 0,
-              caLamViec: {
-                maCa: maCa,
-                gioBatDau: "",
-                gioKetThuc: "",
-                soGio: 3.5,
-                tenCa: "",
-              },
-              thu: [index],
-            },
-          ],
-        };
-      }
-      setBangPhanCong(temp);
-    }
-  };
-  const isConflictTime = (gioBatDau, gioKetThuc, index) => {
-    if (bangPhanCong && bangPhanCong.dsChiTietPhanCong) {
-      for (let i = 0; i < bangPhanCong.dsChiTietPhanCong.length; i++) {
-        if (bangPhanCong.dsChiTietPhanCong[i].thu.includes(index)) {
-          let dateIn1 = new Date("2023-04-04T" + gioBatDau).getTime();
-          let dateIn2 = new Date("2023-04-04T" + gioKetThuc).getTime();
-          let date1 = new Date(
-            "2023-04-04T" +
-              bangPhanCong.dsChiTietPhanCong[i].caLamViec.gioBatDau
-          ).getTime();
-          let date2 = new Date(
-            "2023-04-04T" +
-              bangPhanCong.dsChiTietPhanCong[i].caLamViec.gioKetThuc
-          ).getTime();
-          //   console.log(dateIn1, dateIn2, date1, date2);
-          if (
-            (date1 < dateIn1 && dateIn1 < date2) ||
-            (date1 < dateIn2 && dateIn2 < date2) ||
-            (dateIn1 < date1 && date1 < dateIn2) ||
-            (dateIn1 < date2 && date2 < dateIn2)
-          ) {
-            return true;
-          }
+        console.log({
+          thu: thu,
+          maChiTietPhanCong:
+            chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto[i]
+              .maChiTietPhanCong,
+        });
+        const { data } = await axios.post(
+          `${getTimekeeping}`,
+          {
+            thu: thu,
+            maChiTietPhanCong:
+              chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto[i]
+                .maChiTietPhanCong,
+          },
+          config
+        );
+        console.log(data);
+        if (data) {
+          temp = [...temp, { ...data, selected: true }];
         }
       }
+      setDsBangChamCong(temp);
     }
-    return false;
   };
+  useEffect(() => {
+    loadChiTietPhaDtoFromDB();
+  }, []);
+  const loadChiTietPhaDtoFromDB = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+      },
+    };
+    let thu = new Date().getDay();
+    if (thu === 0) {
+      thu = 6;
+    } else {
+      thu -= 1;
+    }
+    const { data } = await axios.post(
+      `${getAssignDetailDtos}`,
+      { thu: thu, ngayHienTai: new Date() },
+      config
+    );
+    console.log(data);
+    if (data && data.length > 0) {
+      setDsChiTietPhanCongDto(data);
+    }
+  };
+
   //   console.log(bangPhanCong);
   const onHandleSearch = async () => {};
 
   const onHandleSave = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-    };
-    bangPhanCong.ngayChinhSua = new Date();
-    let dsCTPC = [];
-    for (let i = 0; i < bangPhanCong.dsChiTietPhanCong.length; i++) {
-      dsCTPC = [
-        ...dsCTPC,
-        {
-          maCa: bangPhanCong.dsChiTietPhanCong[i].caLamViec.maCa,
-          thu: bangPhanCong.dsChiTietPhanCong[i].thu,
-          maChiTietPhanCong:
-            bangPhanCong.dsChiTietPhanCong[i].maChiTietPhanCong,
+    if (dsBangChamCong && dsBangChamCong.length > 0) {
+      const config = {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
         },
-      ];
-    }
-    let reqData = {
-      maBangPhanCong: bangPhanCong.maBangPhanCong,
-      ngayChinhSua: new Date(),
-      ngayPhanCong: new Date(bangPhanCong.ngayPhanCong),
-      ngayBatDau: bangPhanCong.ngayBatDau
-        ? new Date(bangPhanCong.ngayBatDau)
-        : new Date(),
-      maNhanVien: nhanVienSelected.nhanvien.maNhanVien,
-      dsChiTietPhanCong: dsCTPC,
-    };
-    console.log(reqData);
-
-    const { data } = await axios.post(`${addAssignment}`, reqData, config);
-    if (data) {
-      setBangPhanCong(data);
-      setToast({
-        header: "Lưu thành công",
-        content: "",
-        bg: "success",
-        textColor: "#fff",
-      });
-    } else {
-      setToast({
-        header: "Đã xảy ra lỗi",
-        content: "",
-        bg: "danger",
-        textColor: "#fff",
-      });
+      };
+      let reqData = [];
+      for (let i = 0; i < dsBangChamCong.length; i++) {
+        reqData = [
+          ...reqData,
+          {
+            maChiTietPhanCong:
+              dsBangChamCong[i].chiTietPhanCong.maChiTietPhanCong,
+            maBangChamCong: dsBangChamCong[i].maBangChamCong,
+            ngayChamCong: dsBangChamCong[i].ngayChamCong,
+            maNhanVien: dsBangChamCong[i].nhanVien.maNhanVien,
+            thu: dsBangChamCong[i].thu,
+            duocChon: dsBangChamCong[i].selected,
+          },
+        ];
+      }
+      const { data } = await axios.post(`${addTimekeeping}`, reqData, config);
+      // const data = {};
+      if (data && data.length > 0) {
+        let temp = [];
+        for (let i = 0; i < data.length; i++) {
+          temp = [...temp, { ...data[i], selected: true }];
+        }
+        setDsBangChamCong(temp);
+        setToast({
+          header: "Lưu thành công",
+          content: "",
+          bg: "success",
+          textColor: "#fff",
+        });
+      } else {
+        setToast({
+          header: "Đã xảy ra lỗi",
+          content: "",
+          bg: "danger",
+          textColor: "#fff",
+        });
+      }
     }
   };
   const tConvert = (time) => {
@@ -316,62 +187,6 @@ function FrmPhanCong() {
     }
     return tConvert([hour, min].join(":"));
   };
-  //   console.log(dsNhanVien);
-  //   console.log(dsCa[0].gioBatDau);
-  //   console.log(isCaSelected(1, 0));
-  // console.log(bangPhanCong);
-  const getCaDisplay = (ca, index) => {
-    if (isCaSelected(ca.maCa, index)) {
-      return (
-        <td
-          className={"selected"}
-          onClick={() =>
-            onHandleSelectCa(ca.maCa, index, ca.gioBatDau, ca.gioKetThuc)
-          }
-        >
-          <b>
-            {ca.maCa} - {ca.tenCa}
-          </b>{" "}
-          <br></br>Thời gian:{" "}
-          <b>{formatTime(new Date("2023-04-04T" + ca.gioBatDau))}</b> -
-          <b>{formatTime(new Date("2023-04-04T" + ca.gioKetThuc))}</b> <br></br>
-          Số giờ: {ca.soGio}
-        </td>
-      );
-    }
-    if (isConflictTime(ca.gioBatDau, ca.gioKetThuc, index))
-      return (
-        <td
-          className="disable"
-          onClick={() =>
-            onHandleSelectCa(ca.maCa, index, ca.gioBatDau, ca.gioKetThuc)
-          }
-        >
-          <b>
-            {ca.maCa} - {ca.tenCa}
-          </b>{" "}
-          <br></br>Thời gian:{" "}
-          <b>{formatTime(new Date("2023-04-04T" + ca.gioBatDau))}</b> -
-          <b>{formatTime(new Date("2023-04-04T" + ca.gioKetThuc))}</b> <br></br>
-          Số giờ: {ca.soGio}
-        </td>
-      );
-    return (
-      <td
-        onClick={() =>
-          onHandleSelectCa(ca.maCa, index, ca.gioBatDau, ca.gioKetThuc)
-        }
-      >
-        <b>
-          {ca.maCa} - {ca.tenCa}
-        </b>{" "}
-        <br></br>Thời gian:{" "}
-        <b>{formatTime(new Date("2023-04-04T" + ca.gioBatDau))}</b> -
-        <b>{formatTime(new Date("2023-04-04T" + ca.gioKetThuc))}</b> <br></br>
-        Số giờ: {ca.soGio}
-      </td>
-    );
-  };
   const formatDate = (date) => {
     let month = date.getMonth() + 1;
     let monthStr = month + "";
@@ -389,17 +204,117 @@ function FrmPhanCong() {
   const isDate = (myDate) => {
     return myDate.constructor.toString().indexOf("Date") > -1;
   };
-  const onHandeChangeDate = (date, name) => {
-    setBangPhanCong({ ...bangPhanCong, [name]: dayjs(date).toDate() });
+  const onHandleSelect = (nhanVienMaChiTietPhanCongDto) => {
+    console.log(nhanVienMaChiTietPhanCongDto);
+    let thu = new Date().getDay();
+    if (thu === 0) {
+      thu = 6;
+    } else {
+      thu -= 1;
+    }
+    if (dsBangChamCong && dsBangChamCong.length > 0) {
+      let temp = JSON.parse(JSON.stringify(dsBangChamCong));
+      // let temp = dsBangChamCong;
+      let outLoop = false;
+      for (let i = 0; i < dsBangChamCong.length; i++) {
+        if (
+          nhanVienMaChiTietPhanCongDto.nhanVien.maNhanVien ===
+            dsBangChamCong[i].nhanVien.maNhanVien &&
+          dsBangChamCong[i].chiTietPhanCong.maChiTietPhanCong ===
+            nhanVienMaChiTietPhanCongDto.maChiTietPhanCong
+        ) {
+          temp[i] = {
+            ...dsBangChamCong[i],
+            ngayChamCong: new Date(),
+            selected: !dsBangChamCong[i].selected,
+          };
+          outLoop = true;
+          setDsBangChamCong(temp);
+        } else if (i >= dsBangChamCong.length - 1 && !outLoop) {
+          temp = [
+            ...temp,
+            {
+              chiTietPhanCong: {
+                maChiTietPhanCong:
+                  nhanVienMaChiTietPhanCongDto.maChiTietPhanCong,
+              },
+              maBangChamCong: 0,
+              ngayChamCong: new Date(),
+              nhanVien: {
+                maNhanVien: nhanVienMaChiTietPhanCongDto.nhanVien.maNhanVien,
+              },
+              thu: thu,
+              selected: true,
+            },
+          ];
+          setDsBangChamCong(temp);
+        }
+      }
+    } else {
+      setDsBangChamCong([
+        {
+          chiTietPhanCong: {
+            maChiTietPhanCong: nhanVienMaChiTietPhanCongDto.maChiTietPhanCong,
+          },
+          maBangChamCong: 0,
+          ngayChamCong: new Date(),
+          nhanVien: {
+            maNhanVien: nhanVienMaChiTietPhanCongDto.nhanVien.maNhanVien,
+          },
+          thu: thu,
+          selected: true,
+        },
+      ]);
+    }
   };
+
+  const isChecked = (nhanVienMaChiTietPhanCongDto) => {
+    if (dsBangChamCong && dsBangChamCong.length > 0) {
+      for (let i = 0; i < dsBangChamCong.length; i++) {
+        if (
+          dsBangChamCong[i].nhanVien.maNhanVien ===
+            nhanVienMaChiTietPhanCongDto.nhanVien.maNhanVien &&
+          dsBangChamCong[i].chiTietPhanCong.maChiTietPhanCong ===
+            nhanVienMaChiTietPhanCongDto.maChiTietPhanCong
+        ) {
+          return dsBangChamCong[i].selected;
+        }
+      }
+    }
+    return false;
+  };
+
+  const countCoMat = () => {
+    if (
+      chiTietPhanCongDtoSelected &&
+      chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto &&
+      chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto.length > 0
+    ) {
+      let coMat = 0;
+      if (dsBangChamCong && dsBangChamCong.length > 0) {
+        for (let i = 0; i < dsBangChamCong.length; i++) {
+          if (dsBangChamCong[i].selected) {
+            coMat++;
+          }
+        }
+        return coMat;
+      }
+    }
+    return 0;
+  };
+
+  // const onHandeChangeDate = (date, name) => {
+  //   setBangPhanCong({ ...bangPhanCong, [name]: dayjs(date).toDate() });
+  // };
+  console.log(dsBangChamCong);
   return (
     <StyledContainer>
       <div className="container">
-        <h1>Phân công</h1>
+        <h1>Chấm công</h1>
         <div className="content">
           <div className="booking-container">
-            <h4>Danh sách nhân viên</h4>
-            <div className="search-container">
+            <h4>Danh sách ca trong ngày</h4>
+            {/* <div className="search-container">
               <Form.Control
                 type="text"
                 placeholder="nhập cccd"
@@ -409,31 +324,63 @@ function FrmPhanCong() {
               <Button variant="success" onClick={() => onHandleSearch()}>
                 <AiOutlineSearch />
               </Button>
-              <Button variant="warning" onClick={() => loadNhanVien()}>
+              <Button
+                variant="warning"
+                onClick={() => loadChiTietPhaDtoFromDB()}
+              >
                 <BiRefresh />
               </Button>
-            </div>
+            </div> */}
             <div className="list-booking">
-              {dsNhanVien &&
-                dsNhanVien.length > 0 &&
-                dsNhanVien.map((nhanVien, index) => {
+              {dsChiTietPhanCongDto &&
+                dsChiTietPhanCongDto.length > 0 &&
+                dsChiTietPhanCongDto.map((chiTietPhanCongDto, index) => {
                   return (
                     <div
                       className={`booking-item ${
-                        nhanVienSelected.nhanvien &&
-                        nhanVienSelected.nhanvien.maNhanVien &&
-                        nhanVien.nhanvien.maNhanVien ===
-                          nhanVienSelected.nhanvien.maNhanVien
+                        chiTietPhanCongDto.caLamViec &&
+                        chiTietPhanCongDto.caLamViec.maCa &&
+                        chiTietPhanCongDtoSelected &&
+                        chiTietPhanCongDtoSelected.caLamViec &&
+                        chiTietPhanCongDtoSelected.caLamViec.maCa &&
+                        chiTietPhanCongDto.caLamViec.maCa ===
+                          chiTietPhanCongDtoSelected.caLamViec.maCa
                           ? "selected"
                           : ""
                       }`}
-                      onClick={() => setNhanVienSelected(nhanVien)}
+                      onClick={() =>
+                        setChiTietPhanCongDtoSelected(chiTietPhanCongDto)
+                      }
                       key={index}
                     >
                       <div>
-                        Mã nhân viên: <b>{nhanVien.nhanvien.maNhanVien}</b>{" "}
+                        Mã ca: {chiTietPhanCongDto.caLamViec.maCa} <br></br>
+                        Tên ca: {chiTietPhanCongDto.caLamViec.tenCa}
                         <br></br>
-                        Tên: <b>{nhanVien.nhanvien.hoTen}</b>
+                        Thời gian:{" "}
+                        <b>
+                          {isDate(chiTietPhanCongDto.caLamViec.gioBatDau)
+                            ? formatTime(chiTietPhanCongDto.caLamViec.gioBatDau)
+                            : formatTime(
+                                new Date(
+                                  "2023-04-04T" +
+                                    chiTietPhanCongDto.caLamViec.gioBatDau
+                                )
+                              )}{" "}
+                          -{" "}
+                          {isDate(chiTietPhanCongDto.caLamViec.gioKetThuc)
+                            ? formatTime(
+                                chiTietPhanCongDto.caLamViec.gioKetThuc
+                              )
+                            : formatTime(
+                                new Date(
+                                  "2023-04-04T" +
+                                    chiTietPhanCongDto.caLamViec.gioKetThuc
+                                )
+                              )}
+                        </b>
+                        <br></br>
+                        Sồ giờ: <b>{chiTietPhanCongDto.caLamViec.soGio}</b>
                       </div>
                       {/* <div className="item-body">
                         <div className="check-in-date">
@@ -463,9 +410,19 @@ function FrmPhanCong() {
             </div>
           </div>
           <div className="booking-detail">
-            <h3>Lịch phân công</h3>
+            <h3>
+              Danh sách (Có mặt: {countCoMat()} - Vắng:{" "}
+              {chiTietPhanCongDtoSelected &&
+              chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto &&
+              chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto.length >
+                0
+                ? chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto
+                    .length - countCoMat()
+                : 0}
+              )
+            </h3>
             <div className="content-detail">
-              <div className="guest-info">
+              {/* <div className="guest-info">
                 <h4>Thông tin chung</h4>
                 <div className="info-content">
                   - Nhân viên:{" "}
@@ -515,36 +472,61 @@ function FrmPhanCong() {
                     </DemoContainer>
                   </LocalizationProvider>
                 </div>
-              </div>
+              </div> */}
               <div className="room-info">
-                <h4>Lịch biểu</h4>
+                {/* <h4>Lịch biểu</h4> */}
                 <div className="info-content">
                   <div className="phong-container">
-                    <Table bordered={true}>
+                    <Table bordered={true} striped>
                       <thead>
                         <tr>
-                          <th>Thứ 2</th>
-                          <th>Thứ 3</th>
-                          <th>Thứ 4</th>
-                          <th>Thứ 5</th>
-                          <th>Thứ 6</th>
-                          <th>Thứ 7</th>
-                          <th>Chủ nhật</th>
+                          <th>Mã nhân viên</th>
+                          <th>Tên nhân viên</th>
+                          <th>Điểm danh</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {dsCa &&
-                          dsCa.length > 0 &&
-                          dsCa.map((ca, index) => {
-                            //   isCaSelected(ca.maCa, 0) ? "selected" : ""
-                            return (
-                              <tr key={index}>
-                                {[0, 1, 2, 3, 4, 5, 6].map((i) => {
-                                  return getCaDisplay(ca, i);
-                                })}
-                              </tr>
-                            );
-                          })}
+                        {chiTietPhanCongDtoSelected &&
+                          chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto &&
+                          chiTietPhanCongDtoSelected
+                            .dsNhanVienMaChiTietPhanCongDto.length > 0 &&
+                          chiTietPhanCongDtoSelected.dsNhanVienMaChiTietPhanCongDto.map(
+                            (nhanVienMaChiTietPhanCongDto, index) => {
+                              //   isCaSelected(ca.maCa, 0) ? "selected" : ""
+                              return (
+                                <tr
+                                  key={index}
+                                  onClick={() =>
+                                    onHandleSelect(nhanVienMaChiTietPhanCongDto)
+                                  }
+                                >
+                                  <td>
+                                    {
+                                      nhanVienMaChiTietPhanCongDto.nhanVien
+                                        .maNhanVien
+                                    }
+                                  </td>
+                                  <td>
+                                    {
+                                      nhanVienMaChiTietPhanCongDto.nhanVien
+                                        .hoTen
+                                    }
+                                  </td>
+                                  <td>
+                                    {isChecked(nhanVienMaChiTietPhanCongDto) ? (
+                                      <p>
+                                        <GrRadialSelected /> Có mặt
+                                      </p>
+                                    ) : (
+                                      <p>
+                                        <GrRadial /> Vắng
+                                      </p>
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            }
+                          )}
                       </tbody>
                     </Table>
                   </div>
@@ -623,7 +605,7 @@ const StyledContainer = styled.div`
         padding: 0.5rem;
         height: 615px;
         box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
-        h3 {
+        h4 {
           display: flex;
           align-items: center;
           margin-bottom: 0;
@@ -776,4 +758,4 @@ const StyledContainer = styled.div`
   }
 `;
 
-export default FrmPhanCong;
+export default FrmChamCong;
