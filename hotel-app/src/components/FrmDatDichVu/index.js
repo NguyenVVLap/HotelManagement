@@ -215,6 +215,7 @@ function FrmDatDichVu() {
         ];
       }
     }
+    // console.log('dịch vụ đặt:',newDichVuUpdate);
     const { data } = await axios.post(
       `${bookingServices}`,
       {

@@ -4,5 +4,7 @@ module.exports = {
         fallback: {
             "crypto": false
         }
+
     }
+
 };

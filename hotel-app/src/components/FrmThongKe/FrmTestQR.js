@@ -1,111 +1,105 @@
 import { Box, Grid, Paper, TextField, Typography, Button, Radio, Chip, TableContainer, Stack, Autocomplete } from '@mui/material';
-import React from 'react'
+import { Toast, ToastContainer, FloatingLabel, Form, Table } from "react-bootstrap";
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import styled from 'styled-components';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
-import { Buffer } from 'buffer';
-function FrmTestQR() {
-    var partnerCode = "MOMO";
-    var accessKey = "F8BBA842ECF85";
-    var secretkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
-    var requestId = partnerCode + new Date().getTime();
-    var orderId = requestId;
-    var orderInfo = "pay with MoMo";
-    var redirectUrl = "https://momo.vn/return";
-    var ipnUrl = "https://callback.url/notify";
-    // var ipnUrl = redirectUrl = "https://webhook.site/454e7b77-f177-4ece-8236-ddf1c26ba7f8";
-    var amount = "50000";
-    var requestType = "captureWallet"
-    var extraData = ""; //pass empty value if your merchant does not have stores
 
-    //before sign HMAC SHA256 with format
-    //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
-    var rawSignature = "accessKey=" + accessKey + "&amount=" + amount + "&extraData=" + extraData + "&ipnUrl=" + ipnUrl + "&orderId=" + orderId + "&orderInfo=" + orderInfo + "&partnerCode=" + partnerCode + "&redirectUrl=" + redirectUrl + "&requestId=" + requestId + "&requestType=" + requestType
-    //puts raw signature
-    // console.log("--------------------RAW SIGNATURE----------------")
-    // console.log(rawSignature)
-    //signature
-    const signature = CryptoJS.HmacSHA256(rawSignature, secretkey).toString(CryptoJS.enc.Hex);
-    // console.log("--------------------SIGNATURE----------------")
-    // console.log(signature)
-    const requestBody = JSON.stringify({
-        partnerCode: partnerCode,
-        accessKey: accessKey,
-        requestId: requestId,
-        amount: amount,
-        orderId: orderId,
-        orderInfo: orderInfo,
-        redirectUrl: redirectUrl,
-        ipnUrl: ipnUrl,
-        extraData: extraData,
-        requestType: requestType,
-        signature: signature,
-        lang: 'en'
+function FrmTestQR() {
+
+    const [toast, setToast] = useState(null);
+    const [ketQuaThanhToan, setKetQuaThanhToan] = useState([]);
+    const [showButtonXacNhan, setShowButtonXacNhan] = useState(true);
+    const [generateQR, setgenrateQR] = useState(undefined);
+    const [priceMOMO, setPriceMOMO] = useState({
+        price: ""
     });
 
+    useEffect(() => {
+        let intervalidID;
 
-
-
-
-
-    const handleQRMOMO = () => {
-        const options = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': Buffer.byteLength(requestBody)
-            }
+        if (ketQuaThanhToan.length === 0) {
+            intervalidID = setInterval(async () => {
+                const { data } = await axios.get("https://nhatminh3004-momo.onrender.com/resultQR", {
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8",
+                    },
+                });
+                console.log('Kết quả Mảng Thanh Toán MOMO', data);
+                if (data.length > 0) {
+                    setKetQuaThanhToan(data)
+                    setShowButtonXacNhan(false);
+                    clearInterval(intervalidID);
+                }
+            }, 15000);
+        } else {
+            clearInterval(intervalidID);
         }
-        axios.post('https://test-payment.momo.vn/v2/gateway/api/create', requestBody, options)
-            .then(response => {
-                console.log(`Status: ${response.status}`);
-                console.log(`Headers: ${JSON.stringify(response.headers)}`);
-                console.log('Body: ');
-                console.log(response.data);
-                console.log('payUrl: ');
-                console.log(response.data.payUrl);
-            })
-            .catch(error => {
-                console.log(`problem with request: ${error.message}`);
-            });
+
+        return () => clearInterval(intervalidID);
+    }, [generateQR])
+
+    const handleOnChangePriceMOMO = (e) => {
+        setPriceMOMO({ ...priceMOMO, [e.target.name]: e.target.value });
+    }
+
+
+    const handleQRMOMO = async () => {
+        // const object = {
+        //     name: 'Minh',
+        //     age: 12
+        // }
+        // const { data } = await axios.post("http://cpic.com:4000/notify", object, {
+        //     headers: {
+        //         "Content-Type": "application/json;charset=UTF-8",
+        //     },
+        // });
+        // console.log('Data test QR :', data);
+        const priceObject = {
+            price: priceMOMO.price
+        }
+        const { data } = await axios.post("https://nhatminh3004-momo.onrender.com/momo", priceObject, {
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8",
+            },
+        });
+        setgenrateQR(data);
+        // console.log('Price MOMO:', priceObject);
 
     }
-    // const handleThongKeTongDoanhThuTheoTungPhong = async () => {
-    //     console.log("Thống kê theo :", search);
-    //     const { data } = await axios.post(thongKeDoanhThuTheoPhong, search, {
-    //         headers: {
-    //             "Content-Type": "application/json;charset=UTF-8",
-    //             "Access-Control-Allow-Origin": "http://localhost:3000",
-    //             "Access-Control-Allow-Credentials": "true",
-    //         },
-    //     });
-    //     // console.log("Data Thong Ke Doanh Thu :", data);
-    //     if (data) {
-    //         setTempdsHoaDon(data);
-    //     }
-    // }
 
-    // const tinhTongTienCuaMoiPhongMangLai = (phong) => {
-    //     let price = 0;
-    //     tempdsHoaDon.map((hoadon) => {
-    //         hoadon.dsPhong.map((phongofHoaDon) => {
-    //             if (phongofHoaDon.maPhong === phong.maPhong) {
-    //                 let giaPhong = phongofHoaDon.giaPhong;
-    //                 let ngayNhan = new Date(hoadon.ngayNhanPhong)
-    //                 let ngayTra = new Date(hoadon.ngayTraPhong);
-    //                 let totalHour = diff_hours(ngayNhan, ngayTra)
-    //                 let tongTien = giaPhong * totalHour;
-    //                 price = Number(price) + Number(tongTien)
-    //                 // price = price + 2;
-    //             }
-    //         })
-    //     })
+    const handleXacNhanThanhToan = async () => {
 
-    //     return price;
-    // }
-    // console.log("DSTEMPHOADON:", tempdsHoaDon);
-    // console.log("DSPhong:", dsPhong);
+        if (ketQuaThanhToan[0].message === "Thành công.") {
+            setToast({
+                header: "Thanh toán MOMO thành công",
+                content: "",
+                bg: "success",
+                textColor: "#fff",
+            });
+            // setKetQuaThanhToan([]);
+            // setgenrateQR([]);
+            // setShowButtonXacNhan(true);
+        }
+        else {
+            setToast({
+                header: "Thanh toán thất bại",
+                content: "",
+                bg: "danger",
+                textColor: "#fff",
+            });
+            setKetQuaThanhToan([]);
+            setgenrateQR([]);
+            setShowButtonXacNhan(true);
 
+        }
+
+    }
+
+    console.log('Price MOMO OBJECT:', priceMOMO);
+    console.log('GenerateQR:', generateQR);
+    console.log('Kết quả thanh toán:', ketQuaThanhToan);
     return (
         <StyledContainer>
             <Box sx={{ background: 'linear-gradient(to left, #77a1d3, #79cbca, #e684ae)', display: 'flex', justifyContent: 'center' }}>
@@ -113,7 +107,24 @@ function FrmTestQR() {
 
             </Box>
             <Box>
-                <Button variant='contained' onClick={() => handleQRMOMO()}>Click QR</Button>
+                <Grid item md={4}>
+                    <FloatingLabel
+                        controlId="floatingInput"
+                        label="Giá tiền"
+                        className="mb-1"
+                    >
+                        <Form.Control
+                            type="number"
+                            name="price"
+                            value={priceMOMO && priceMOMO.price !== "" ? priceMOMO.price : ""}
+                            onChange={(e) => handleOnChangePriceMOMO(e)}
+                        />
+                    </FloatingLabel>
+                </Grid>
+                <Button disabled={priceMOMO.price != "" ? false : true} variant='contained' onClick={() => handleQRMOMO()}>Thanh toán QR MoMo</Button>
+                <Button disabled={showButtonXacNhan} variant='contained' onClick={() => handleXacNhanThanhToan()}>Xác nhận</Button>
+                <Button variant='contained' onClick={() => { window.open('https://www.google.com', '_blank'); }}>Link</Button>
+
             </Box>
 
 
@@ -123,7 +134,30 @@ function FrmTestQR() {
 
 
             {/* Toast Thông báo */}
+            {toast && (
+                <ToastContainer
+                    position="bottom-end"
+                    style={{ bottom: "1rem", right: "1rem" }}
+                >
+                    <Toast
+                        onClose={() => setToast(null)}
+                        show={toast !== null}
+                        bg={toast.bg}
+                        autohide={true}
+                    >
+                        <Toast.Header>
+                            <img
+                                src="holder.js/20x20?text=%20"
+                                className="rounded me-2"
+                                alt=""
+                            />
+                            <strong className="me-auto">{toast.header}</strong>
+                            <small className="text-muted"></small>
+                        </Toast.Header>
 
+                    </Toast>
+                </ToastContainer>
+            )}
 
         </StyledContainer>
     )

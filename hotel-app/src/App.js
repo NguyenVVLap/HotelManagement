@@ -4,6 +4,7 @@ import Main from "./screens/Main";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import ForgotPassword from "./screens/ForgotPassword";
+import SuccessMoMo from "./screens/SuccessMoMo";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/return" element={<SuccessMoMo />} />
         </Routes>
       </BrowserRouter>
     </div>

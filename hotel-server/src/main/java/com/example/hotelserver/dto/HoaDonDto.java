@@ -34,6 +34,7 @@ public class HoaDonDto{
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Jakarta")
 	private Date ngayTraPhong;
 	private double tienNhan;
+//	private String hinhThucThanhToan;
 	private PhieuDatPhong phieuDatPhong;
 	private KhachHang khachHang;
 	private NhanVien nhanVien;

@@ -153,6 +153,7 @@ function FrmDatPhong() {
         dsMaPhong,
         khachHang: guestInfo,
       };
+      // console.log('requestDatPhongData:', requestData);
       const { data } = await axios.post(addBookingsRoute, requestData, {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",

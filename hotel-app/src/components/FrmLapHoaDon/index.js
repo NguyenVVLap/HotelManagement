@@ -6,26 +6,35 @@ import { Button, Form, Table, Toast, ToastContainer } from "react-bootstrap";
 import { AiFillCloseCircle, AiOutlineSearch } from "react-icons/ai";
 import { BiRefresh } from "react-icons/bi";
 import styled from "styled-components";
-import dayjs from "dayjs";
+import { } from "dayjs";
 
+// import { BrowserWindow } from 'electron'
 import {
   addBillsRoute,
   getBillsByCCCD,
   getBillsOrderDateRoute,
 } from "../../utils/APIRoutes";
 import FrmXacNhanHoaDon from "../FrmXacNhanHoaDon";
+import FrmXacNhanHoaDonMOMO from "../FrmXacNhanHoaDon/FrmXacNhanHoaDonMOMO";
 
 function FrmLapHoaDon() {
+
   const [toast, setToast] = useState(null);
   const [dsHoaDon, setDsHoaDon] = useState([]);
   const [hoaDonSelected, setHoaDonSelected] = useState({});
   const [searchInput, setSearchInput] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const [showConfirmBill, setShowConfirmBill] = useState(false);
+  const [showConfirmBill_MOMO, setShowConfirmBill_MOMO] = useState(false);
   const [totalHour, setTotalHour] = useState(0);
   const [totalRoomPrice, setTotalRoomPrice] = useState(0);
   const [totalServicePrice, setTotalServicePrice] = useState(0);
   const [isPrint, setIsPrint] = useState(false);
+  const [generateQR, setgenrateQR] = useState(undefined);
+  const [showThanhToanMOMO, setShowThanhToanMOMO] = useState(true);
+  const [showButtonXacNhan, setShowButtonXacNhan] = useState(false);
+  // const [isDisableXacNhanThanhToanMOMO, setIsDisableXacNhanThanhToanMOMO] = useState(true);
+  const [ketQuaThanhToan, setKetQuaThanhToan] = useState([]);
 
   const diff_hours = (dt2, dt1) => {
     // var diff = (dt2.getTime() - dt1.getTime()) / 1000;
@@ -45,6 +54,55 @@ function FrmLapHoaDon() {
     // console.log('totalHours', totalHours);
     return totalHours;
   };
+  const getQRMOMO = async (totalPrice) => {
+    const priceObject = {
+      price: totalPrice
+    }
+    console.log('trong functionGETMOMOO:', priceObject);
+    const { data } = await axios.post("https://nhatminh3004-momo.onrender.com/momo", priceObject, {
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+      },
+    });
+    console.log('data response functionGETMOMOO:', data);
+    return data;
+  }
+  useEffect(() => {
+    let intervalidID;
+
+    if (ketQuaThanhToan.length === 0) {
+      intervalidID = setInterval(async () => {
+        const { data } = await axios.get("https://nhatminh3004-momo.onrender.com/resultQR", {
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+        });
+        console.log('Kết quả Mảng Thanh Toán MOMO', data);
+        if (data.length > 0) {
+          setKetQuaThanhToan(data)
+          // setIsDisableXacNhanThanhToanMOMO(false);
+          clearInterval(intervalidID);
+        }
+      }, 15000);
+    } else {
+      clearInterval(intervalidID);
+    }
+
+    return () => clearInterval(intervalidID);
+  }, [generateQR])
+  useEffect(() => {
+    const fetchAPI = async () => {
+      if (hoaDonSelected.maHoaDon) {
+        const result = await getQRMOMO(totalPrice); // use await to wait for the response
+        // console.log('result:', result);
+        setgenrateQR(result);
+      } else {
+        console.log('NOT FOUND QR MOMO');
+      }
+    };
+    fetchAPI();
+
+  }, [totalPrice]);
   useEffect(() => {
     let price = 0;
     let ngayNhan = new Date();
@@ -129,6 +187,56 @@ function FrmLapHoaDon() {
     setShowConfirmBill(false);
     setIsPrint(false);
   };
+  const onHandleCheckInMOMO = async () => {
+    if (hoaDonSelected.maHoaDon) {
+      let dsMaPhong = [];
+      if (hoaDonSelected && hoaDonSelected.dsPhong) {
+        for (let i = 0; i < hoaDonSelected.dsPhong.length; i++) {
+          dsMaPhong = [...dsMaPhong, hoaDonSelected.dsPhong[i].maPhong];
+        }
+      }
+      const nhanVien = JSON.parse(localStorage.getItem("nhanVien"));
+
+      const { data } = await axios.post(
+        `${addBillsRoute}`,
+        {
+          maHoaDon: hoaDonSelected.maHoaDon,
+          ngayLap: hoaDonSelected.ngayLap,
+          ngayNhanPhong: hoaDonSelected.ngayNhanPhong,
+          ngayTraPhong: hoaDonSelected.ngayTraPhong,
+          tienNhan: totalPrice,
+          dsMaPhong,
+          maPhieuDatPhong: hoaDonSelected.phieuDatPhong.maPhieuDatPhong,
+          maKhachHang: hoaDonSelected.khachHang.maKhachHang,
+          maNhanVien: nhanVien.maNhanVien,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Access-Control-Allow-Credentials": "true",
+          },
+        }
+      );
+      if (data) {
+        // setHoaDonSelected({});
+        setToast({
+          header: "Lập hóa đơn thành công",
+          content: "",
+          bg: "success",
+          textColor: "#fff",
+        });
+        loadHoaDon();
+        // setShowConfirmBill(false);
+        setIsPrint(true);
+        setShowButtonXacNhan(false);
+        setShowThanhToanMOMO(true);
+        setgenrateQR(undefined);
+        setKetQuaThanhToan([]);
+      }
+    }
+  };
+
   const onHandleCheckIn = async () => {
     if (hoaDonSelected.maHoaDon && hoaDonSelected.tienNhan && validate()) {
       let dsMaPhong = [];
@@ -212,7 +320,7 @@ function FrmLapHoaDon() {
     return [date.getDate(), monthStr, date.getFullYear()].join("/");
   };
   const formatDate = (date) => {
-    console.log(date);
+    // console.log(date);
     let min = date.getMinutes() + "";
     if (date.getMinutes() < 10) {
       min = "0" + date.getMinutes();
@@ -228,6 +336,62 @@ function FrmLapHoaDon() {
       [date.getHours(), min].join(":")
     );
   };
+  const handleQRMOMO = () => {
+    setShowButtonXacNhan(true);
+    setShowThanhToanMOMO(false);
+    window.open(generateQR[0].payUrl, '_blank');
+    console.log('QR MOMO:', generateQR);
+  }
+
+  const handlXacNhanMOMO = () => {
+    if (ketQuaThanhToan.length !== 0) {
+      if (ketQuaThanhToan[0].message === "Thành công.") {
+        setToast({
+          header: "Thanh toán MOMO thành công",
+          content: "",
+          bg: "success",
+          textColor: "#fff",
+        });
+        setShowConfirmBill_MOMO(true);
+
+        // setShowButtonXacNhan(false);
+        // setShowThanhToanMOMO(true);
+        // setgenrateQR(undefined);
+        // setKetQuaThanhToan([]);
+      }
+      else if (ketQuaThanhToan[0].message === "Giao dịch bị từ chối bởi người dùng.") {
+        setToast({
+          header: "Thanh toán MOMO đã bị hủy",
+          content: "",
+          bg: "danger",
+          textColor: "#fff",
+        });
+        setShowButtonXacNhan(false);
+        setShowThanhToanMOMO(true);
+        setgenrateQR(undefined);
+        setKetQuaThanhToan([]);
+      }
+    }
+
+    else {
+      setToast({
+        header: "Bạn chưa thanh toán.",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+
+      // setIsDisableXacNhanThanhToanMOMO(true);
+
+    }
+    // -------------------
+
+
+  }
+  console.log('Hóa đơn selected:', hoaDonSelected);
+  // console.log('Tổng tiền:', totalPrice);
+  console.log('Generate QR MOMO:', generateQR);
+  console.log('Kết quả thanh toán:', ketQuaThanhToan);
   // console.log(`${dsHoaDon[0] && new Date(dsHoaDon[0].ngayNhanPhong)}`);
   // console.log(dsHoaDon);
   return (
@@ -257,12 +421,11 @@ function FrmLapHoaDon() {
                 dsHoaDon.map((hoaDon, index) => {
                   return (
                     <div
-                      className={`booking-item ${
-                        hoaDonSelected.maHoaDon &&
+                      className={`booking-item ${hoaDonSelected.maHoaDon &&
                         hoaDon.maHoaDon === hoaDonSelected.maHoaDon
-                          ? "selected"
-                          : ""
-                      }`}
+                        ? "selected"
+                        : ""
+                        }`}
                       onClick={() => setHoaDonSelected(hoaDon)}
                       key={index}
                     >
@@ -336,8 +499,8 @@ function FrmLapHoaDon() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                        hoaDonSelected.dsPhong &&
-                        hoaDonSelected.dsPhong.length > 0 ? (
+                          hoaDonSelected.dsPhong &&
+                          hoaDonSelected.dsPhong.length > 0 ? (
                           hoaDonSelected.dsPhong.map((room, index) => {
                             // console.log(isSelected(room));
                             return (
@@ -387,8 +550,8 @@ function FrmLapHoaDon() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                        hoaDonSelected.dsChiTietDichVuDto &&
-                        hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                          hoaDonSelected.dsChiTietDichVuDto &&
+                          hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
                           hoaDonSelected.dsChiTietDichVuDto.map(
                             (dichVu, index) => {
                               // console.log(isSelected(room));
@@ -484,11 +647,29 @@ function FrmLapHoaDon() {
                 </div>
               </div>
             </div>
+
             <div className="btn-function">
+              {/* Thanh toán momo */}
+              {showThanhToanMOMO && generateQR && <Button
+                variant="success"
+                onClick={() => handleQRMOMO()}
+              >
+                Thanh toán bằng MOMO
+              </Button>}
+              {showButtonXacNhan && <Button
+                // disabled={isDisableXacNhanThanhToanMOMO}
+                variant="success"
+                onClick={() => handlXacNhanMOMO()}
+              >
+                Xác nhận thanh toán MOMO.
+              </Button>}
+
+
+
               {hoaDonSelected &&
-              hoaDonSelected.maHoaDon &&
-              hoaDonSelected.tienNhan &&
-              hoaDonSelected.tienNhan >= totalPrice ? (
+                hoaDonSelected.maHoaDon &&
+                hoaDonSelected.tienNhan &&
+                hoaDonSelected.tienNhan >= totalPrice ? (
                 <Button
                   variant="success"
                   type="submit"
@@ -502,6 +683,7 @@ function FrmLapHoaDon() {
                 </Button>
               )}
             </div>
+
           </div>
         </div>
       </div>
@@ -514,6 +696,23 @@ function FrmLapHoaDon() {
           totalRoomPrice={totalRoomPrice}
           totalServicePrice={totalServicePrice}
           onHandleCheckIn={onHandleCheckIn}
+          isPrint={isPrint}
+          setIsPrint={setIsPrint}
+          setHoaDonSelected={setHoaDonSelected}
+          onHandleCancelPrint={onHandleCancelPrint}
+          formatDate={formatDate}
+        />
+      )}
+      {/* MOMO */}
+      {showConfirmBill_MOMO && (
+        <FrmXacNhanHoaDonMOMO
+          setShowConfirmBill_MOMO={setShowConfirmBill_MOMO}
+          hoaDonSelected={hoaDonSelected}
+          totalPrice={totalPrice}
+          totalHour={totalHour}
+          totalRoomPrice={totalRoomPrice}
+          totalServicePrice={totalServicePrice}
+          onHandleCheckInMOMO={onHandleCheckInMOMO}
           isPrint={isPrint}
           setIsPrint={setIsPrint}
           setHoaDonSelected={setHoaDonSelected}

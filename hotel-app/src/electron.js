@@ -1,6 +1,5 @@
 const path = require("path");
-
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const isDev = require("electron-is-dev");
 
 function createWindow() {
@@ -13,8 +12,8 @@ function createWindow() {
     autoHideMenuBar: true,
     // fullscreen: true,
     fullscreenable: true,
-    resizable: true,
-    // resizable: false,
+    // resizable: true,
+    resizable: false,
     simpleFullscreen: true,
     // titleBarStyle: "hidden",
   });
@@ -29,6 +28,7 @@ function createWindow() {
   // Open the DevTools.
   if (isDev) {
     win.webContents.openDevTools({ mode: "detach" });
+
   }
 }
 
@@ -51,3 +51,4 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
