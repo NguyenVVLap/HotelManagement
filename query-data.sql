@@ -5,6 +5,7 @@ select * from loai_phong
 select * from dich_vu
 select * from loai_dich_vu
 
+select * from vai_tro
 select * from tai_khoan
 select * from nhan_vien
 
@@ -14,6 +15,9 @@ select * from bang_phan_cong
 select * from chi_tiet_phan_cong
 select * from bang_cham_cong where Day(ngay_cham_cong) = '09' and MONTH(ngay_cham_cong) = '05' and YEAR(ngay_cham_cong) = '2023';
 select * from bang_phan_cong where ngay_bat_dau <= '2023-05-06';
+
+select COUNT(*) from bang_cham_cong where MONTH(ngay_cham_cong) = '04' and YEAR(ngay_cham_cong) = '2023';
+
 -- 12345678
 --$2a$10$h27./FD4LJEPvDPtqHeWOeA2Ec3EMJ6lXNq8UeF9bY0VKQtCwmV4G 
 
@@ -59,3 +63,5 @@ or pdp.ngay_tra_phong between '2023-04-17 09:14' and '2023-04-17 09:16'
 or '2023-04-17 09:16' between pdp.ngay_nhan_phong and pdp.ngay_tra_phong
 or '2023-04-17 09:14' between pdp.ngay_nhan_phong and pdp.ngay_tra_phong)
 ;
+
+select * from bang_luong where thang = 4 and nam = 2023;

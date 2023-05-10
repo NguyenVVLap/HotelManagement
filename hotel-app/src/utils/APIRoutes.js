@@ -87,3 +87,6 @@ export const getAssignDetailDtos = `${host}/api/bangPhanCong/getDetailByThu`;
 //Chấm công
 export const getTimekeeping = `${host}/api/bangChamCong/getByThuAndMaChiTietPhanCong`;
 export const addTimekeeping = `${host}/api/bangChamCong/themBangChamCong`;
+
+//Tính lương
+export const addPayrolls = `${host}/api/bangLuong`;

@@ -57,6 +57,8 @@ public class SecurityConfiguration {
     			.permitAll()
     			.requestMatchers("/api/bangChamCong/**")
     			.permitAll()
+    			.requestMatchers("/api/bangLuong/**")
+    			.permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

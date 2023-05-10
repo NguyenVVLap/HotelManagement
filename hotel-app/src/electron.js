@@ -12,8 +12,8 @@ function createWindow() {
     autoHideMenuBar: true,
     // fullscreen: true,
     fullscreenable: true,
-    // resizable: true,
-    resizable: false,
+    resizable: true,
+    // resizable: false,
     simpleFullscreen: true,
     // titleBarStyle: "hidden",
   });
@@ -28,7 +28,6 @@ function createWindow() {
   // Open the DevTools.
   if (isDev) {
     win.webContents.openDevTools({ mode: "detach" });
-
   }
 }
 
@@ -51,4 +50,3 @@ app.on("activate", () => {
     createWindow();
   }
 });
-

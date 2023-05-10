@@ -145,6 +145,7 @@ function Menu({
       }
     }
   };
+  console.log(nhanVien);
   const validateChangeMatKhau = () => {
     const { matKhauCu, matKhauMoi } = objectDoiMatKhau;
     if (matKhauCu === "") {
@@ -222,7 +223,7 @@ function Menu({
                       onHandleSelectedSubNav("update-room", "room")
                     }
                   >
-                    <BsDoorOpen />
+                    <ManageAccountsOutlinedIcon />
                     <p className="btn-sub-title">Cập nhật</p>
                   </button>
                   <button
@@ -234,7 +235,7 @@ function Menu({
                       onHandleSelectedSubNav("search-room", "room")
                     }
                   >
-                    <BsDoorOpen />
+                    <SearchIcon />
                     <p className="btn-sub-title">Tìm kiếm</p>
                   </button>
                 </div>
@@ -355,51 +356,86 @@ function Menu({
               </div>
               {navSelected.staff && (
                 <div className="sub-menu-container">
-                  <button
-                    className={`btn-sub ${
-                      subNavSelected.subnav === "update-staff" &&
-                      "btn-sub-selected"
-                    }`}
-                    onClick={() =>
-                      onHandleSelectedSubNav("update-staff", "staff")
-                    }
-                  >
-                    <GroupAddOutlinedIcon />
-                    <p className="btn-sub-title">Cập nhật</p>
-                  </button>
-                  <button
-                    className={`btn-sub ${
-                      subNavSelected.subnav === "search-staff" &&
-                      "btn-sub-selected"
-                    }`}
-                    onClick={() =>
-                      onHandleSelectedSubNav("search-staff", "staff")
-                    }
-                  >
-                    <SearchIcon />
-                    <p className="btn-sub-title">Tìm kiếm</p>
-                  </button>
-                  <button
-                    className={`btn-sub ${
-                      subNavSelected.subnav === "assign" && "btn-sub-selected"
-                    }`}
-                    onClick={() => onHandleSelectedSubNav("assign", "staff")}
-                  >
-                    <SearchIcon />
-                    <p className="btn-sub-title">Phân công</p>
-                  </button>
-                  <button
-                    className={`btn-sub ${
-                      subNavSelected.subnav === "timekeeping" &&
-                      "btn-sub-selected"
-                    }`}
-                    onClick={() =>
-                      onHandleSelectedSubNav("timekeeping", "staff")
-                    }
-                  >
-                    <SearchIcon />
-                    <p className="btn-sub-title">Chấm công</p>
-                  </button>
+                  {nhanVien &&
+                    nhanVien.taiKhoan.vaiTro.tenVaiTro ===
+                      "ROLE_MANAGEMENT" && (
+                      <button
+                        className={`btn-sub ${
+                          subNavSelected.subnav === "update-staff" &&
+                          "btn-sub-selected"
+                        }`}
+                        onClick={() =>
+                          onHandleSelectedSubNav("update-staff", "staff")
+                        }
+                      >
+                        <GroupAddOutlinedIcon />
+                        <p className="btn-sub-title">Cập nhật</p>
+                      </button>
+                    )}
+                  {nhanVien &&
+                    nhanVien.taiKhoan.vaiTro.tenVaiTro ===
+                      "ROLE_MANAGEMENT" && (
+                      <button
+                        className={`btn-sub ${
+                          subNavSelected.subnav === "search-staff" &&
+                          "btn-sub-selected"
+                        }`}
+                        onClick={() =>
+                          onHandleSelectedSubNav("search-staff", "staff")
+                        }
+                      >
+                        <SearchIcon />
+                        <p className="btn-sub-title">Tìm kiếm</p>
+                      </button>
+                    )}
+                  {nhanVien &&
+                    nhanVien.taiKhoan.vaiTro.tenVaiTro ===
+                      "ROLE_MANAGEMENT" && (
+                      <button
+                        className={`btn-sub ${
+                          subNavSelected.subnav === "assign" &&
+                          "btn-sub-selected"
+                        }`}
+                        onClick={() =>
+                          onHandleSelectedSubNav("assign", "staff")
+                        }
+                      >
+                        <SearchIcon />
+                        <p className="btn-sub-title">Phân công</p>
+                      </button>
+                    )}
+                  {nhanVien &&
+                    nhanVien.taiKhoan.vaiTro.tenVaiTro ===
+                      "ROLE_MANAGEMENT" && (
+                      <button
+                        className={`btn-sub ${
+                          subNavSelected.subnav === "timekeeping" &&
+                          "btn-sub-selected"
+                        }`}
+                        onClick={() =>
+                          onHandleSelectedSubNav("timekeeping", "staff")
+                        }
+                      >
+                        <SearchIcon />
+                        <p className="btn-sub-title">Chấm công</p>
+                      </button>
+                    )}
+                  {nhanVien &&
+                    nhanVien.taiKhoan.vaiTro.tenVaiTro ===
+                      "ROLE_MANAGEMENT" && (
+                      <button
+                        className={`btn-sub ${
+                          subNavSelected.subnav === "payrolls" &&
+                          "btn-sub-selected"
+                        }`}
+                        onClick={() =>
+                          onHandleSelectedSubNav("payrolls", "staff")
+                        }
+                      >
+                        <SearchIcon />
+                        <p className="btn-sub-title">Tính lương</p>
+                      </button>
+                    )}
                   <button
                     className={`btn-sub ${
                       subNavSelected.subnav === "report-staff" &&
@@ -443,7 +479,7 @@ function Menu({
                       onHandleSelectedSubNav("manage-booking", "bill")
                     }
                   >
-                    <BsDoorOpen />
+                    <ManageAccountsOutlinedIcon />
                     <p className="btn-sub-title">Cập nhật</p>
                   </button>
 
@@ -524,17 +560,23 @@ function Menu({
             </button>
 
             {/* Ca làm việc */}
-            <button className={`btn ${navSelected.shift && "btn-selected"}`}>
-              <div
-                className="menu-content"
-                onClick={() => onHandleSelectedNav("shift", !navSelected.shift)}
-              >
-                <FastfoodOutlinedIcon />
-                <p className="btn-title">Ca làm việc</p>
-              </div>
-              {navSelected.shift && (
-                <div className="sub-menu-container">
-                  {/* <button
+            {nhanVien &&
+              nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" && (
+                <button
+                  className={`btn ${navSelected.shift && "btn-selected"}`}
+                >
+                  <div
+                    className="menu-content"
+                    onClick={() =>
+                      onHandleSelectedNav("shift", !navSelected.shift)
+                    }
+                  >
+                    <FastfoodOutlinedIcon />
+                    <p className="btn-title">Ca làm việc</p>
+                  </div>
+                  {navSelected.shift && (
+                    <div className="sub-menu-container">
+                      {/* <button
                  className={`btn-sub ${subNavSelected.subnav === "update-type-service" &&
                    "btn-sub-selected"
                    }`}
@@ -545,21 +587,22 @@ function Menu({
                  <DiningOutlinedIcon />
                  <p className="btn-sub-title">Loại dịch vụ</p>
                </button> */}
-                  <button
-                    className={`btn-sub ${
-                      subNavSelected.subnav === "update-shift" &&
-                      "btn-sub-selected"
-                    }`}
-                    onClick={() =>
-                      onHandleSelectedSubNav("update-shift", "shift")
-                    }
-                  >
-                    <ManageAccountsOutlinedIcon />
-                    <p className="btn-sub-title">Cập nhật</p>
-                  </button>
-                </div>
+                      <button
+                        className={`btn-sub ${
+                          subNavSelected.subnav === "update-shift" &&
+                          "btn-sub-selected"
+                        }`}
+                        onClick={() =>
+                          onHandleSelectedSubNav("update-shift", "shift")
+                        }
+                      >
+                        <ManageAccountsOutlinedIcon />
+                        <p className="btn-sub-title">Cập nhật</p>
+                      </button>
+                    </div>
+                  )}
+                </button>
               )}
-            </button>
 
             {/* Thống Kê */}
             {/* <button className={`btn ${navSelected.report && "btn-selected"}`}>

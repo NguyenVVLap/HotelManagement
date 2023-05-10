@@ -28,6 +28,7 @@ import FrmThongKeDichVu from "../components/FrmThongKe/FrmThongKeDichVu";
 import TabThongKe from "../components/FrmThongKe/TabThongKe";
 import FrmPhanCong from "../components/FrmPhanCong";
 import FrmChamCong from "../components/FrmChamCong";
+import FrmTinhLuong from "../components/FrmTinhLuong";
 
 function Main() {
   const navigate = useNavigate();
@@ -94,6 +95,7 @@ function Main() {
           {subNavSelected.subnav === "update-shift" && <FrmCapNhatCa />}
           {subNavSelected.subnav === "assign" && <FrmPhanCong />}
           {subNavSelected.subnav === "timekeeping" && <FrmChamCong />}
+          {subNavSelected.subnav === "payrolls" && <FrmTinhLuong />}
         </div>
       </div>
     </Container>

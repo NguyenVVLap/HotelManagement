@@ -191,11 +191,11 @@ function FrmCapNhatCa() {
           onHandleRefresh={onHandleRefresh}
           formatTime={formatTime}
         />
-        <Search
+        {/* <Search
           search={search}
           setSearch={setSearch}
           onHandleSearch={onHandleSearch}
-        />
+        /> */}
         <TableData
           dsCa={dsCa}
           caSelected={caSelected}

@@ -179,10 +179,17 @@ insert into dich_vu (gia_dich_vu, so_luong, ten_dich_vu, ma_loai_dich_vu) values
 INSERT INTO vai_tro(ten_vai_tro) values('ROLE_EMPLOYEE'),('ROLE_MANAGEMENT');
 INSERT INTO tai_khoan(da_kich_hoat,mat_khau,ten_tai_khoan,ma_vai_tro) values 
 (1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84392589774',1),
-(1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84523564371',2);
+(1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84523564371',2),
+(1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84111111111',1),
+(1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+82222222222',1),
+(1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84333333333',1);
+
 insert into nhan_vien(cccd, dia_chi, email, ho_ten, luong_co_ban, ngay_sinh,ngay_vao_lam, so_dien_thoai,ma_tai_khoan) values 
-('012345678900', N'12 Trần Hưng Đạo','lap@gmail.com', N'Nguyễn Võ Vươn Lập',1000000, '2001-03-19T10:00:56.117+00:00','2022-03-19T10:00:56.117+00:00', '+84392589774',1),
-('012345678901', N'19 Trần Hưng Đạo','minh@gmail.com',N'Nguyễn Lâm Nhật Minh',900000, '2001-04-19T10:00:56.117+00:00','2023-03-19T10:00:56.117+00:00', '+84523564371',2);
+('012345678900', N'12 Trần Hưng Đạo','lap@gmail.com', N'Nguyễn Võ Vươn Lập',100000, '2001-03-19T10:00:56.117+00:00','2022-03-19T10:00:56.117+00:00', '+84392589774',1),
+('012345678901', N'19 Trần Hưng Đạo','minh@gmail.com',N'Nguyễn Lâm Nhật Minh',300000, '2001-04-19T10:00:56.117+00:00','2023-03-19T10:00:56.117+00:00', '+84523564371',2),
+('012345678902', N'12 Lê Lợi','nam@gmail.com', N'Lê Công Nam',200000, '2000-03-30T10:00:56.117+00:00','2022-12-20T10:00:56.117+00:00', '+84111111111',3),
+('012345678903', N'141 Lê Duẩn','huong@gmail.com', N'Trần Thanh Hương',150000, '2001-02-12T10:00:56.117+00:00','2022-04-22T10:00:56.117+00:00', '+82222222222',4),
+('012345678904', N'515 Trường Chinh','long@gmail.com', N'Lê Thành Long',120000, '2001-06-20T10:00:56.117+00:00','2022-05-21T10:00:56.117+00:00', '+84333333333',5);
 
 Insert into khach_hang(cccd_khach_hang, dia_chi_kh, email_kh, ho_ten, so_dien_thoai_kh) values 
 ('123456789000', N'12 Lê Lợi', 'test@gmail.com', N'Trần Quang Linh', '0123456789'),
@@ -360,11 +367,18 @@ insert into thu (ma_chi_tiet_phan_cong, thu) values
 (2, 6),
 (3, 5),
 (3, 6);
-/*
+
 insert into bang_cham_cong (ma_chi_tiet_phan_cong, thu, ma_nhan_vien, ngay_cham_cong) values
-(1, 0, 1, '2023-05-08 00:00:00'),
-(6, 0, 2, '2023-05-08 00:00:00');
-*/
+(1, 0, 1, '2023-04-08 00:00:00'),
+(2, 0, 1, '2023-04-08 00:00:00');
+
+insert into bang_luong (ma_bang_luong, thang, nam, ma_nhan_vien) values
+('042023NV1', 4, 2023, 1);
+
+insert into chi_tiet_bang_luong (ma_bang_cham_cong, ma_bang_luong) values
+(1, '042023NV1'),
+(2, '042023NV1');
+
 update hoa_don set ngay_lap ='2023-04-13 00:41:20.526000' where ma_hoa_don=15
 
 /*

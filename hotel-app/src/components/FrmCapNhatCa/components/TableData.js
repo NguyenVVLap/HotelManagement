@@ -67,8 +67,9 @@ function TableData({ dsCa, caSelected, setCaSelected, formatTime, isDate }) {
 }
 const StyledContainer = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  margin-top: 0.5rem;
   padding: 0.5rem;
-  height: 65%;
+  height: 75%;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 0.2rem;

@@ -148,7 +148,7 @@ function FrmNhanPhong() {
         if (res.data) {
           setPhieuDatPhongSelected({});
           setToast({
-            header: "Thêm hóa đơn thành công",
+            header: "Nhận phòng thành công",
             content: "",
             bg: "success",
             textColor: "#fff",
@@ -315,7 +315,6 @@ function FrmNhanPhong() {
                     <Table striped>
                       <thead>
                         <tr>
-                          <th></th>
                           <th>Phòng</th>
                           <th>Loại phòng</th>
                           <th>Tầng</th>
@@ -330,7 +329,7 @@ function FrmNhanPhong() {
                             // console.log(isSelected(room));
                             return (
                               <tr key={index}>
-                                <td
+                                {/* <td
                                   style={{
                                     cursor: "pointer",
                                     position: "relative",
@@ -339,7 +338,7 @@ function FrmNhanPhong() {
                                   <AiFillCloseCircle
                                     style={{ color: "red", fontSize: "2rem" }}
                                   />
-                                </td>
+                                </td> */}
                                 <td>{room.maPhong}</td>
                                 <td>{room.tenLoaiPhong}</td>
                                 <td>{room.tenTang}</td>
