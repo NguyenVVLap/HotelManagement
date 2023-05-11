@@ -30,6 +30,7 @@ import FrmPhanCong from "../components/FrmPhanCong";
 import FrmChamCong from "../components/FrmChamCong";
 import FrmTinhLuong from "../components/FrmTinhLuong";
 import FrmTimKiemHoaDon from "../components/FrmTimKiemHoaDon";
+import { Result } from "antd";
 
 function Main() {
   const navigate = useNavigate();
@@ -178,7 +179,14 @@ function Main() {
             subNavSelected.subnav === "search-bill" && <FrmTimKiemHoaDon />}
           {nhanVien && nhanVien.taiKhoan && !nhanVien.taiKhoan.daKichHoat && (
             <div className="non-access">
-              <h2>Tài khoản của bạn chưa được kích hoạt</h2>
+              <Result
+                status="403"
+                title="Tài khoản của bạn đã bị khóa"
+                subTitle="Vui lòng liên hệ nhân viên quản lý để mở khóa"
+                extra={[
+
+                ]}
+              />
             </div>
           )}
         </div>
