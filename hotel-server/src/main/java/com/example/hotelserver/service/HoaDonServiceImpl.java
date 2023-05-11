@@ -480,13 +480,186 @@ public class HoaDonServiceImpl implements HoaDonService{
 	}
 
 	@Override
-	public List<HoaDonDto> layHoaDonTheoTenPhong(String tenPhong) {
-		List<Phong> dsPhong = phongRepo.findByTenPhongLike(tenPhong);
+	public List<HoaDonDto> layHoaDonTheoTenPhong(String maPhong) {
+//		Phong phong = phongRepo.findById(maPhong).get();
 		List<HoaDonDto> results = new ArrayList<>();
-		if (!dsPhong.isEmpty()) {
-
+		List<ChiTietHoaDon> dsChiTietHoaDon = chiTietHoaDonRepo.layChiTietHoaDonTheoPhong(maPhong);
+		if (dsChiTietHoaDon != null && !dsChiTietHoaDon.isEmpty()) {
+			for (ChiTietHoaDon chiTietHoaDon : dsChiTietHoaDon) {
+				HoaDon hoaDon = hoaDonRepo.findById(chiTietHoaDon.getHoaDon().getMaHoaDon()).get();
+				if (hoaDon != null) {
+					if (hoaDon.getTienNhan() == 0) {
+						return this.timHoaDonTheoMa(hoaDon.getMaHoaDon());
+					}
+				}
+			}
 		}
 
-		return null;
+		return results;
+	}
+	@Override
+	public List<HoaDonDto> layHetHoaDon() {
+		List<HoaDonDto> dsHoaDonDto = new ArrayList<>();
+		try {
+			List<HoaDon> dsHoaDon = hoaDonRepo.findAll();
+			for (HoaDon hoaDon : dsHoaDon) {
+				KhachHang khachHang = khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get();
+//				PhieuDatPhong p = hoaDon.getPhieuDatPhong();
+//				PhieuDatPhongDto phieuDatPhongDto = PhieuDatPhongDto.builder()
+//					.maPhieuDatPhong(p.getMaPhieuDatPhong())
+//					.ngayDatPhong(p.getNgayDatPhong())
+//					.ngayTraPhong(p.getNgayTraPhong())
+//					.ngayNhanPhong(p.getNgayNhanPhong())
+//					.trangThaiDatPhong(p.getTrangThaiDatPhong())
+//					.khachHang(khachHang)
+//					.build();
+						
+				HoaDonDto hoaDonDto = HoaDonDto.builder()
+						.maHoaDon(hoaDon.getMaHoaDon())
+						.ngayLap(hoaDon.getNgayLap())
+						.ngayNhanPhong(hoaDon.getNgayNhanPhong())
+						.ngayTraPhong(hoaDon.getNgayTraPhong())
+						.tienNhan(hoaDon.getTienNhan())
+						.phieuDatPhong(hoaDon.getPhieuDatPhong())
+						.nhanVien(hoaDon.getNhanVien())
+						.build();
+				List<Phong> dsPhong = new ArrayList<>();
+				List<String> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
+				if (!dsMaPhong.isEmpty()) {
+					for (String maPhong : dsMaPhong) {
+						Phong phong = phongRepo.findById(maPhong).get();
+						dsPhong.add(phong);
+					}
+				}
+				List<PhongResponseDto> phongResponseDtos = new ArrayList<>();
+				if (!dsPhong.isEmpty()) {
+					for (Phong phong : dsPhong) {
+						phongResponseDtos.add(convertPhongToPhongDto(phong));
+					}
+				}
+				List<Map<String, Object>> listObject = hoaDonRepo.layChiTietDichVuTuMaHoaDon(hoaDon.getMaHoaDon());
+				List<ChiTietDichVuDto> dsChiTietDichVuDto = new ArrayList<>();
+				if (!listObject.isEmpty()) {
+					for (Map<String, Object> obj : listObject) {
+						ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
+								, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
+								, Integer.parseInt(obj.get("soLuong").toString()),  obj.get("tenLoaiDichVu").toString());
+						dsChiTietDichVuDto.add(chiTietDichVuDto);
+					}
+				}
+				hoaDonDto.setDsPhong(phongResponseDtos);
+				hoaDonDto.setDsChiTietDichVuDto(dsChiTietDichVuDto);
+				hoaDonDto.setKhachHang(khachHang);
+				dsHoaDonDto.add(hoaDonDto);
+			}
+		} catch (Exception e) {
+			System.out.println("Error at layPhieuDatPhong: " + e);
+		}
+		return dsHoaDonDto;
+	}
+	@Override
+	public List<HoaDonDto> layHetHoaDonTheoCCCD(String cccd) {
+		List<HoaDonDto> dsHoaDonDto = new ArrayList<>();
+		try {
+			KhachHang khachHang = khachHangRepo.timKhachHangBangCCCD(cccd);
+			if (khachHang != null) {
+				List<HoaDon> dsHoaDon = hoaDonRepo.layTatCaHoaDonTheoKhach(khachHang.getMaKhachHang());
+				for (HoaDon hoaDon : dsHoaDon) {
+					HoaDonDto hoaDonDto = HoaDonDto.builder()
+							.maHoaDon(hoaDon.getMaHoaDon())
+							.ngayLap(hoaDon.getNgayLap())
+							.ngayNhanPhong(hoaDon.getNgayNhanPhong())
+							.ngayTraPhong(hoaDon.getNgayTraPhong())
+							.tienNhan(hoaDon.getTienNhan())
+							.phieuDatPhong(hoaDon.getPhieuDatPhong())
+							.nhanVien(hoaDon.getNhanVien())
+							.khachHang(hoaDon.getKhachHang())
+							.build();
+					List<Phong> dsPhong = new ArrayList<>();
+					List<String> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
+					if (!dsMaPhong.isEmpty()) {
+						for (String maPhong : dsMaPhong) {
+							Phong phong = phongRepo.findById(maPhong).get();
+							dsPhong.add(phong);
+						}
+					}
+					List<PhongResponseDto> phongResponseDtos = new ArrayList<>();
+					if (!dsPhong.isEmpty()) {
+						for (Phong phong : dsPhong) {
+							phongResponseDtos.add(convertPhongToPhongDto(phong));
+						}
+					}
+					hoaDonDto.setDsPhong(phongResponseDtos);
+					dsHoaDonDto.add(hoaDonDto);
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Error at layPhieuDatPhong: " + e);
+		}
+		return dsHoaDonDto;
+	}
+	@Override
+	public List<HoaDonDto> timHoaDonTheoMa(long maHoaDon) {
+		List<HoaDonDto> dsHoaDonDto = new ArrayList<>();
+		try {
+			HoaDon hoaDonResult = hoaDonRepo.findById(maHoaDon).get();
+			List<HoaDon> dsHoaDon = new ArrayList<>();
+			if (hoaDonResult != null) {
+				dsHoaDon.add(hoaDonResult);
+			}
+			for (HoaDon hoaDon : dsHoaDon) {
+				KhachHang khachHang = khachHangRepo.findById(hoaDon.getKhachHang().getMaKhachHang()).get();
+//				PhieuDatPhong p = hoaDon.getPhieuDatPhong();
+//				PhieuDatPhongDto phieuDatPhongDto = PhieuDatPhongDto.builder()
+//					.maPhieuDatPhong(p.getMaPhieuDatPhong())
+//					.ngayDatPhong(p.getNgayDatPhong())
+//					.ngayTraPhong(p.getNgayTraPhong())
+//					.ngayNhanPhong(p.getNgayNhanPhong())
+//					.trangThaiDatPhong(p.getTrangThaiDatPhong())
+//					.khachHang(khachHang)
+//					.build();
+						
+				HoaDonDto hoaDonDto = HoaDonDto.builder()
+						.maHoaDon(hoaDon.getMaHoaDon())
+						.ngayLap(hoaDon.getNgayLap())
+						.ngayNhanPhong(hoaDon.getNgayNhanPhong())
+						.ngayTraPhong(hoaDon.getNgayTraPhong())
+						.tienNhan(hoaDon.getTienNhan())
+						.phieuDatPhong(hoaDon.getPhieuDatPhong())
+						.nhanVien(hoaDon.getNhanVien())
+						.build();
+				List<Phong> dsPhong = new ArrayList<>();
+				List<String> dsMaPhong = hoaDonRepo.layMaPhongTuMaHoaDon(hoaDon.getMaHoaDon());
+				if (!dsMaPhong.isEmpty()) {
+					for (String maPhong : dsMaPhong) {
+						Phong phong = phongRepo.findById(maPhong).get();
+						dsPhong.add(phong);
+					}
+				}
+				List<PhongResponseDto> phongResponseDtos = new ArrayList<>();
+				if (!dsPhong.isEmpty()) {
+					for (Phong phong : dsPhong) {
+						phongResponseDtos.add(convertPhongToPhongDto(phong));
+					}
+				}
+				List<Map<String, Object>> listObject = hoaDonRepo.layChiTietDichVuTuMaHoaDon(hoaDon.getMaHoaDon());
+				List<ChiTietDichVuDto> dsChiTietDichVuDto = new ArrayList<>();
+				if (!listObject.isEmpty()) {
+					for (Map<String, Object> obj : listObject) {
+						ChiTietDichVuDto chiTietDichVuDto = new ChiTietDichVuDto(Long.parseLong(obj.get("maDichVu").toString())
+								, obj.get("tenDichVu").toString(), Double.parseDouble(obj.get("giaDichVu").toString())
+								, Integer.parseInt(obj.get("soLuong").toString()),  obj.get("tenLoaiDichVu").toString());
+						dsChiTietDichVuDto.add(chiTietDichVuDto);
+					}
+				}
+				hoaDonDto.setDsPhong(phongResponseDtos);
+				hoaDonDto.setDsChiTietDichVuDto(dsChiTietDichVuDto);
+				hoaDonDto.setKhachHang(khachHang);
+				dsHoaDonDto.add(hoaDonDto);
+			}
+		} catch (Exception e) {
+			System.out.println("Error at layPhieuDatPhong: " + e);
+		}
+		return dsHoaDonDto;
 	}
 }

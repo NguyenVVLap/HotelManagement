@@ -63,8 +63,9 @@ function TableData({ dsPhong, phongSelected, setPhongSelected }) {
 }
 const StyledContainer = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  margin-top: 1rem;
   padding: 0.5rem;
-  height: 41%;
+  height: 50%;
   display: flex;
   flex-direction: column;
   position: relative;

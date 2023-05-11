@@ -17,6 +17,7 @@ import {
   bookingServices,
   getBillsByCCCD,
   getBillsOrderDateRoute,
+  searchBillsByPhongRoute,
 } from "../../utils/APIRoutes";
 import ListDichVu from "./components/ListDichVu";
 
@@ -76,8 +77,8 @@ function FrmDatDichVu() {
 
   const onHandleSearch = async () => {
     const { data } = await axios.post(
-      `${getBillsByCCCD}`,
-      { cccd: searchInput },
+      `${searchBillsByPhongRoute}`,
+      { maPhong: searchInput },
       {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -254,7 +255,7 @@ function FrmDatDichVu() {
             <div className="search-container">
               <Form.Control
                 type="text"
-                placeholder="nhập cccd"
+                placeholder="nhập mã phòng"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
               />

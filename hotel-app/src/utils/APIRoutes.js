@@ -21,6 +21,9 @@ export const addBillsRoute = `${host}/api/hoaDon`;
 export const getBillsOrderDateRoute = `${host}/api/hoaDon/orderDate`;
 export const getBillsByCCCD = `${host}/api/hoaDon/searchByCCCD`;
 export const bookingServices = `${host}/api/hoaDon/datDichVu`;
+export const getAllBillsRoute = `${host}/api/hoaDon`;
+export const getSearchBillsRoute = `${host}/api/hoaDon/searchHoaDon`;
+export const searchBillsByPhongRoute = `${host}/api/hoaDon/searchHoaDonByPhong`;
 
 //Floor
 export const getFloorsRoute = `${host}/api/tang`;

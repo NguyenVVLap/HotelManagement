@@ -17,5 +17,8 @@ public interface HoaDonService {
 	List<HoaDonDto> layDanhSachHoaDonDeThongKeTheoPhongTheoThang(@RequestBody Map<String, Object> request );
 	List<HoaDonDto> layHoaDonTheoNgayCCCD(String cccd);
 	List<HoaDonDto> layHoaDonTheoTenPhong(String tenPhong);
+	List<HoaDonDto> layHetHoaDon();
+	List<HoaDonDto> timHoaDonTheoMa(long maHoaDon);
+	List<HoaDonDto> layHetHoaDonTheoCCCD(String cccd);
 	HoaDonDto datDichVu(long maHoaDon, List<DatDichVuDto> datDichVuDtos);
 }	

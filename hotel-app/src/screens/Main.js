@@ -29,6 +29,7 @@ import TabThongKe from "../components/FrmThongKe/TabThongKe";
 import FrmPhanCong from "../components/FrmPhanCong";
 import FrmChamCong from "../components/FrmChamCong";
 import FrmTinhLuong from "../components/FrmTinhLuong";
+import FrmTimKiemHoaDon from "../components/FrmTimKiemHoaDon";
 
 function Main() {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ function Main() {
     nav: "guest",
     subnav: "book",
   });
-
+  const [nhanVien, setNhanVien] = useState(undefined);
   useEffect(() => {
     checkLogin();
   });
@@ -56,6 +57,7 @@ function Main() {
     if (!localStorage.getItem("token")) {
       navigate("/login");
     } else {
+      setNhanVien(JSON.parse(localStorage.getItem("nhanVien")));
     }
   };
   return (
@@ -69,33 +71,116 @@ function Main() {
       <div className="big-container">
         {/* <TitleBar /> */}
         <div className="wrapper">
-          {subNavSelected.subnav === "book" && <FrmDatPhong />}
-          {subNavSelected.subnav === "update-room" && <FrmQuanLyPhong />}
-          {subNavSelected.subnav === "search-room" && <FrmTimKiemPhong />}
-          {subNavSelected.subnav === "check-in" && <FrmNhanPhong />}
-          {subNavSelected.subnav === "add-bill" && <FrmLapHoaDon />}
-          {subNavSelected.subnav === "update-floor" && <FrmTang />}
-          {subNavSelected.subnav === "search-floor" && <FrmTimKiemTang />}
-          {subNavSelected.subnav === "search-room-type" && (
-            <FrmTimKiemLoaiPhong />
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "book" && <FrmDatPhong />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "update-room" && <FrmQuanLyPhong />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "search-room" && <FrmTimKiemPhong />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "check-in" && <FrmNhanPhong />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "add-bill" && <FrmLapHoaDon />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "update-floor" && <FrmTang />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "search-floor" && <FrmTimKiemTang />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "search-room-type" && (
+              <FrmTimKiemLoaiPhong />
+            )}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "update-service" && <FrmDichVu />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "booking-service" && <FrmDatDichVu />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "update-guest" && <FrmKhachHang />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+            subNavSelected.subnav === "update-staff" && <FrmNhanVien />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "search-service" && <FrmTimKiemDichVu />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "search-guest" && <FrmTimKiemKhachHang />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "search-staff" && <FrmTimKiemNhanVien />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "room-report" && <FrmThongKePhong />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "service-report" && <FrmThongKeDichVu />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "doanhthu-report" && (
+              <FrmThongKeDoanhThu />
+            )}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "report-staff" && <TabThongKe />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+            subNavSelected.subnav === "update-shift" && <FrmCapNhatCa />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+            subNavSelected.subnav === "assign" && <FrmPhanCong />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+            subNavSelected.subnav === "timekeeping" && <FrmChamCong />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" &&
+            subNavSelected.subnav === "payrolls" && <FrmTinhLuong />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "search-bill" && <FrmTimKiemHoaDon />}
+          {nhanVien && nhanVien.taiKhoan && !nhanVien.taiKhoan.daKichHoat && (
+            <div className="non-access">
+              <h2>Tài khoản của bạn chưa được kích hoạt</h2>
+            </div>
           )}
-          {subNavSelected.subnav === "update-service" && <FrmDichVu />}
-          {subNavSelected.subnav === "booking-service" && <FrmDatDichVu />}
-          {subNavSelected.subnav === "update-guest" && <FrmKhachHang />}
-          {subNavSelected.subnav === "update-staff" && <FrmNhanVien />}
-          {subNavSelected.subnav === "search-service" && <FrmTimKiemDichVu />}
-          {subNavSelected.subnav === "search-guest" && <FrmTimKiemKhachHang />}
-          {subNavSelected.subnav === "search-staff" && <FrmTimKiemNhanVien />}
-          {subNavSelected.subnav === "room-report" && <FrmThongKePhong />}
-          {subNavSelected.subnav === "service-report" && <FrmThongKeDichVu />}
-          {subNavSelected.subnav === "doanhthu-report" && (
-            <FrmThongKeDoanhThu />
-          )}
-          {subNavSelected.subnav === "report-staff" && <TabThongKe />}
-          {subNavSelected.subnav === "update-shift" && <FrmCapNhatCa />}
-          {subNavSelected.subnav === "assign" && <FrmPhanCong />}
-          {subNavSelected.subnav === "timekeeping" && <FrmChamCong />}
-          {subNavSelected.subnav === "payrolls" && <FrmTinhLuong />}
         </div>
       </div>
     </Container>
@@ -114,6 +199,13 @@ const Container = styled.div`
       width: 100%;
       height: 100vh;
       /* background-color: black; */
+      .non-access {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
 `;

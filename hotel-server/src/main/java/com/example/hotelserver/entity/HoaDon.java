@@ -45,7 +45,7 @@ public class HoaDon {
 	
 	@Column(name = "tien_nhan")
 	private double tienNhan;
-	@Column(name = "hinh_thuc_thanh_toan")
+//	@Column(name = "hinh_thuc_thanh_toan")
 //	private String hinhThucThanhToan;
 	
 	@OneToMany(mappedBy = "hoaDon")

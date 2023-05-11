@@ -248,7 +248,7 @@ function FrmQuanLyPhong() {
       setPhongMoi({ ...phongMoi, hinhAnhPhong: [downloadURL] });
     }
   };
-  console.log('Mã phòng cũ :', maPhongCu);
+  console.log("Mã phòng cũ :", maPhongCu);
   return (
     <StyleContainer>
       <h1>Cập nhật phòng</h1>
@@ -266,13 +266,13 @@ function FrmQuanLyPhong() {
           onHandleUpdate={onHandleUpdate}
           onHandleRefresh={onHandleRefresh}
         />
-        <Search
+        {/* <Search
           search={search}
           setSearch={setSearch}
           onHandleSearch={onHandleSearch}
           tempTang={tempTang}
           tempLoaiPhong={tempLoaiPhong}
-        />
+        /> */}
         <TableData
           dsPhong={dsPhong}
           phongSelected={phongSelected}

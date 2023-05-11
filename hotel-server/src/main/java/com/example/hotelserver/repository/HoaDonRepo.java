@@ -66,4 +66,8 @@ public interface HoaDonRepo extends JpaRepository<HoaDon, Long>{
 	@Query(name = "danhSachSoLanHuyDatPhongVaMaKhachHang", nativeQuery = true)
 	List<DanhSachSoLanHuyDatPhongVaMaKhachHangDto> getDanhSachSoLanHuyDatPhongVaMaKhachHang(@Param("start") Date start
 			, @Param("end") Date end);
+	
+	@Query(nativeQuery = true, value = "select * from hoa_don "
+			+ "where ma_khach_hang = :maKhachHang")
+	List<HoaDon> layTatCaHoaDonTheoKhach(@Param("maKhachHang") int maKhachHang);
 }

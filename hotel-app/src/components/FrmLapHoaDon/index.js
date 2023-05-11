@@ -6,19 +6,19 @@ import { Button, Form, Table, Toast, ToastContainer } from "react-bootstrap";
 import { AiFillCloseCircle, AiOutlineSearch } from "react-icons/ai";
 import { BiRefresh } from "react-icons/bi";
 import styled from "styled-components";
-import { } from "dayjs";
+import {} from "dayjs";
 
 // import { BrowserWindow } from 'electron'
 import {
   addBillsRoute,
   getBillsByCCCD,
   getBillsOrderDateRoute,
+  searchBillsByPhongRoute,
 } from "../../utils/APIRoutes";
 import FrmXacNhanHoaDon from "../FrmXacNhanHoaDon";
 import FrmXacNhanHoaDonMOMO from "../FrmXacNhanHoaDon/FrmXacNhanHoaDonMOMO";
 
 function FrmLapHoaDon() {
-
   const [toast, setToast] = useState(null);
   const [dsHoaDon, setDsHoaDon] = useState([]);
   const [hoaDonSelected, setHoaDonSelected] = useState({});
@@ -56,30 +56,37 @@ function FrmLapHoaDon() {
   };
   const getQRMOMO = async (totalPrice) => {
     const priceObject = {
-      price: totalPrice
-    }
-    console.log('trong functionGETMOMOO:', priceObject);
-    const { data } = await axios.post("https://nhatminh3004-momo.onrender.com/momo", priceObject, {
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-    });
-    console.log('data response functionGETMOMOO:', data);
+      price: totalPrice,
+    };
+    console.log("trong functionGETMOMOO:", priceObject);
+    const { data } = await axios.post(
+      "https://nhatminh3004-momo.onrender.com/momo",
+      priceObject,
+      {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+      }
+    );
+    console.log("data response functionGETMOMOO:", data);
     return data;
-  }
+  };
   useEffect(() => {
     let intervalidID;
 
     if (ketQuaThanhToan.length === 0) {
       intervalidID = setInterval(async () => {
-        const { data } = await axios.get("https://nhatminh3004-momo.onrender.com/resultQR", {
-          headers: {
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-        });
-        console.log('Kết quả Mảng Thanh Toán MOMO', data);
+        const { data } = await axios.get(
+          "https://nhatminh3004-momo.onrender.com/resultQR",
+          {
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+            },
+          }
+        );
+        console.log("Kết quả Mảng Thanh Toán MOMO", data);
         if (data.length > 0) {
-          setKetQuaThanhToan(data)
+          setKetQuaThanhToan(data);
           // setIsDisableXacNhanThanhToanMOMO(false);
           clearInterval(intervalidID);
         }
@@ -89,7 +96,7 @@ function FrmLapHoaDon() {
     }
 
     return () => clearInterval(intervalidID);
-  }, [generateQR])
+  }, [generateQR]);
   useEffect(() => {
     const fetchAPI = async () => {
       if (hoaDonSelected.maHoaDon) {
@@ -97,11 +104,10 @@ function FrmLapHoaDon() {
         // console.log('result:', result);
         setgenrateQR(result);
       } else {
-        console.log('NOT FOUND QR MOMO');
+        console.log("NOT FOUND QR MOMO");
       }
     };
     fetchAPI();
-
   }, [totalPrice]);
   useEffect(() => {
     let price = 0;
@@ -168,8 +174,8 @@ function FrmLapHoaDon() {
 
   const onHandleSearch = async () => {
     const { data } = await axios.post(
-      `${getBillsByCCCD}`,
-      { cccd: searchInput },
+      `${searchBillsByPhongRoute}`,
+      { maPhong: searchInput },
       {
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -339,9 +345,9 @@ function FrmLapHoaDon() {
   const handleQRMOMO = () => {
     setShowButtonXacNhan(true);
     setShowThanhToanMOMO(false);
-    window.open(generateQR[0].payUrl, '_blank');
-    console.log('QR MOMO:', generateQR);
-  }
+    window.open(generateQR[0].payUrl, "_blank");
+    console.log("QR MOMO:", generateQR);
+  };
 
   const handlXacNhanMOMO = () => {
     if (ketQuaThanhToan.length !== 0) {
@@ -358,8 +364,9 @@ function FrmLapHoaDon() {
         // setShowThanhToanMOMO(true);
         // setgenrateQR(undefined);
         // setKetQuaThanhToan([]);
-      }
-      else if (ketQuaThanhToan[0].message === "Giao dịch bị từ chối bởi người dùng.") {
+      } else if (
+        ketQuaThanhToan[0].message === "Giao dịch bị từ chối bởi người dùng."
+      ) {
         setToast({
           header: "Thanh toán MOMO đã bị hủy",
           content: "",
@@ -371,9 +378,7 @@ function FrmLapHoaDon() {
         setgenrateQR(undefined);
         setKetQuaThanhToan([]);
       }
-    }
-
-    else {
+    } else {
       setToast({
         header: "Bạn chưa thanh toán.",
         content: "",
@@ -382,16 +387,13 @@ function FrmLapHoaDon() {
       });
 
       // setIsDisableXacNhanThanhToanMOMO(true);
-
     }
     // -------------------
-
-
-  }
-  console.log('Hóa đơn selected:', hoaDonSelected);
+  };
+  console.log("Hóa đơn selected:", hoaDonSelected);
   // console.log('Tổng tiền:', totalPrice);
-  console.log('Generate QR MOMO:', generateQR);
-  console.log('Kết quả thanh toán:', ketQuaThanhToan);
+  console.log("Generate QR MOMO:", generateQR);
+  console.log("Kết quả thanh toán:", ketQuaThanhToan);
   // console.log(`${dsHoaDon[0] && new Date(dsHoaDon[0].ngayNhanPhong)}`);
   // console.log(dsHoaDon);
   return (
@@ -404,7 +406,7 @@ function FrmLapHoaDon() {
             <div className="search-container">
               <Form.Control
                 type="text"
-                placeholder="nhập cccd"
+                placeholder="nhập mã phòng"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
               />
@@ -421,11 +423,12 @@ function FrmLapHoaDon() {
                 dsHoaDon.map((hoaDon, index) => {
                   return (
                     <div
-                      className={`booking-item ${hoaDonSelected.maHoaDon &&
+                      className={`booking-item ${
+                        hoaDonSelected.maHoaDon &&
                         hoaDon.maHoaDon === hoaDonSelected.maHoaDon
-                        ? "selected"
-                        : ""
-                        }`}
+                          ? "selected"
+                          : ""
+                      }`}
                       onClick={() => setHoaDonSelected(hoaDon)}
                       key={index}
                     >
@@ -499,8 +502,8 @@ function FrmLapHoaDon() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                          hoaDonSelected.dsPhong &&
-                          hoaDonSelected.dsPhong.length > 0 ? (
+                        hoaDonSelected.dsPhong &&
+                        hoaDonSelected.dsPhong.length > 0 ? (
                           hoaDonSelected.dsPhong.map((room, index) => {
                             // console.log(isSelected(room));
                             return (
@@ -550,8 +553,8 @@ function FrmLapHoaDon() {
                       </thead>
                       <tbody>
                         {hoaDonSelected &&
-                          hoaDonSelected.dsChiTietDichVuDto &&
-                          hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                        hoaDonSelected.dsChiTietDichVuDto &&
+                        hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
                           hoaDonSelected.dsChiTietDichVuDto.map(
                             (dichVu, index) => {
                               // console.log(isSelected(room));
@@ -650,26 +653,25 @@ function FrmLapHoaDon() {
 
             <div className="btn-function">
               {/* Thanh toán momo */}
-              {showThanhToanMOMO && generateQR && <Button
-                variant="success"
-                onClick={() => handleQRMOMO()}
-              >
-                Thanh toán bằng MOMO
-              </Button>}
-              {showButtonXacNhan && <Button
-                // disabled={isDisableXacNhanThanhToanMOMO}
-                variant="success"
-                onClick={() => handlXacNhanMOMO()}
-              >
-                Xác nhận thanh toán MOMO.
-              </Button>}
-
-
+              {showThanhToanMOMO && generateQR && (
+                <Button variant="success" onClick={() => handleQRMOMO()}>
+                  Thanh toán bằng MOMO
+                </Button>
+              )}
+              {showButtonXacNhan && (
+                <Button
+                  // disabled={isDisableXacNhanThanhToanMOMO}
+                  variant="success"
+                  onClick={() => handlXacNhanMOMO()}
+                >
+                  Xác nhận thanh toán MOMO.
+                </Button>
+              )}
 
               {hoaDonSelected &&
-                hoaDonSelected.maHoaDon &&
-                hoaDonSelected.tienNhan &&
-                hoaDonSelected.tienNhan >= totalPrice ? (
+              hoaDonSelected.maHoaDon &&
+              hoaDonSelected.tienNhan &&
+              hoaDonSelected.tienNhan >= totalPrice ? (
                 <Button
                   variant="success"
                   type="submit"
@@ -683,7 +685,6 @@ function FrmLapHoaDon() {
                 </Button>
               )}
             </div>
-
           </div>
         </div>
       </div>

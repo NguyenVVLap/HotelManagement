@@ -184,6 +184,13 @@ INSERT INTO tai_khoan(da_kich_hoat,mat_khau,ten_tai_khoan,ma_vai_tro) values
 (1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+82222222222',1),
 (1,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84333333333',1);
 
+/*
+INSERT INTO tai_khoan(da_kich_hoat,mat_khau,ten_tai_khoan,ma_vai_tro) values 
+(0,'$2a$10$ggqnnTxpQEg2jqu9MGU5QeeK1X78pLukgyzlRA1opIqdnMuUa/Oli','+84392589772',1);
+insert into nhan_vien(cccd, dia_chi, email, ho_ten, luong_co_ban, ngay_sinh,ngay_vao_lam, so_dien_thoai,ma_tai_khoan) values 
+('012345678905', N'12 Trần Hưng Đạo','lap@gmail.com', N'Nguyễn Võ Vươn Lập',100000, '2001-03-19T10:00:56.117+00:00','2022-03-19T10:00:56.117+00:00', '+84392589772', 6);
+*/
+
 insert into nhan_vien(cccd, dia_chi, email, ho_ten, luong_co_ban, ngay_sinh,ngay_vao_lam, so_dien_thoai,ma_tai_khoan) values 
 ('012345678900', N'12 Trần Hưng Đạo','lap@gmail.com', N'Nguyễn Võ Vươn Lập',100000, '2001-03-19T10:00:56.117+00:00','2022-03-19T10:00:56.117+00:00', '+84392589774',1),
 ('012345678901', N'19 Trần Hưng Đạo','minh@gmail.com',N'Nguyễn Lâm Nhật Minh',300000, '2001-04-19T10:00:56.117+00:00','2023-03-19T10:00:56.117+00:00', '+84523564371',2),
