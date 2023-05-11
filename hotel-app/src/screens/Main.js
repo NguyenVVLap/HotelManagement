@@ -53,7 +53,7 @@ function Main() {
   const [nhanVien, setNhanVien] = useState(undefined);
   useEffect(() => {
     checkLogin();
-  });
+  }, []);
   const checkLogin = async () => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
@@ -61,6 +61,7 @@ function Main() {
       setNhanVien(JSON.parse(localStorage.getItem("nhanVien")));
     }
   };
+  console.log(subNavSelected);
   return (
     <Container>
       <Menu
@@ -183,12 +184,23 @@ function Main() {
                 status="403"
                 title="Tài khoản của bạn đã bị khóa"
                 subTitle="Vui lòng liên hệ nhân viên quản lý để mở khóa"
-                extra={[
-
-                ]}
+                extra={[]}
               />
             </div>
           )}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            (!subNavSelected.subnav || subNavSelected.subnav === "") && (
+              <div className="non-access">
+                <Result
+                  status="403"
+                  title="Tài khoản của bạn đã bị khóa"
+                  subTitle="Vui lòng liên hệ nhân viên quản lý để mở khóa"
+                  extra={[]}
+                />
+              </div>
+            )}
         </div>
       </div>
     </Container>
