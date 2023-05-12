@@ -222,7 +222,8 @@ const Container = styled.div`
       height: 100vh;
       /* background-color: black; */
       .non-access {
-        width: 100%;
+        /* width: 100%; */
+        overflow: hidden;
         height: 100%;
         display: flex;
         align-items: center;
