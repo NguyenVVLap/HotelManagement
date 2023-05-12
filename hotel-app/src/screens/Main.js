@@ -31,6 +31,8 @@ import FrmChamCong from "../components/FrmChamCong";
 import FrmTinhLuong from "../components/FrmTinhLuong";
 import FrmTimKiemHoaDon from "../components/FrmTimKiemHoaDon";
 import { Result } from "antd";
+import Robot from "../assets/robot.gif";
+import HomePage from "./HomePage";
 
 function Main() {
   const navigate = useNavigate();
@@ -194,9 +196,9 @@ function Main() {
             (!subNavSelected.subnav || subNavSelected.subnav === "") && (
               <div className="non-access">
                 <Result
-                  status="403"
-                  title="Tài khoản của bạn đã bị khóa"
-                  subTitle="Vui lòng liên hệ nhân viên quản lý để mở khóa"
+                  icon={<HomePage />}
+                  title={`Xin chào ${nhanVien.hoTen}`}
+                  subTitle="Chào mừng bạn đã quay trở lại với ứng dụng quản lý khách sạn Sama"
                   extra={[]}
                 />
               </div>
