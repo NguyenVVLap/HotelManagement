@@ -116,9 +116,6 @@ function FrmLapHoaDon() {
     if (hoaDonSelected.ngayNhanPhong) {
       ngayNhan = new Date(hoaDonSelected.ngayNhanPhong);
     }
-    if (hoaDonSelected.ngayTraPhong) {
-      ngayTra = new Date(hoaDonSelected.ngayTraPhong);
-    }
     let totalHours = diff_hours(ngayNhan, ngayTra);
     setTotalHour(totalHours);
     if (
@@ -209,7 +206,7 @@ function FrmLapHoaDon() {
           maHoaDon: hoaDonSelected.maHoaDon,
           ngayLap: hoaDonSelected.ngayLap,
           ngayNhanPhong: hoaDonSelected.ngayNhanPhong,
-          ngayTraPhong: hoaDonSelected.ngayTraPhong,
+          ngayTraPhong: new Date(),
           tienNhan: totalPrice,
           dsMaPhong,
           maPhieuDatPhong: hoaDonSelected.phieuDatPhong.maPhieuDatPhong,
@@ -259,7 +256,7 @@ function FrmLapHoaDon() {
           maHoaDon: hoaDonSelected.maHoaDon,
           ngayLap: hoaDonSelected.ngayLap,
           ngayNhanPhong: hoaDonSelected.ngayNhanPhong,
-          ngayTraPhong: hoaDonSelected.ngayTraPhong,
+          ngayTraPhong: new Date(),
           tienNhan: hoaDonSelected.tienNhan,
           dsMaPhong,
           maPhieuDatPhong: hoaDonSelected.phieuDatPhong.maPhieuDatPhong,
@@ -613,7 +610,7 @@ function FrmLapHoaDon() {
                     - Ngày trả phòng:{" "}
                     {hoaDonSelected &&
                       hoaDonSelected.ngayLap &&
-                      formatDate(new Date(hoaDonSelected.ngayTraPhong))}
+                      formatDate(new Date())}
                   </div>
                   <div className="price-container">
                     <p>Tổng tiền</p>
