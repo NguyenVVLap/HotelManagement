@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.hotelserver.dto.BangLuongDto;
-import com.example.hotelserver.entity.BangLuong;
 import com.example.hotelserver.service.BangLuongService;
 
 @RestController
@@ -26,6 +25,14 @@ public class BangLuongController {
 		List<BangLuongDto> dsBangLuongDto =bangLuongService.themBangLuong(Integer.parseInt(request.get("thang").toString())
 				, Integer.parseInt(request.get("nam").toString()));
 //		System.out.println(dsBangLuongDto);
+		return dsBangLuongDto;
+	}
+	
+	@PostMapping("/getByMaNhanVien")
+	public List<BangLuongDto> getBangLuongTheoMaNhanVien(@RequestBody Long maNhanVien) {
+		System.out.println(maNhanVien);
+		List<BangLuongDto> dsBangLuongDto =bangLuongService.layBangLuongTheoMaNhanVien(maNhanVien);
+		System.out.println(dsBangLuongDto);
 		return dsBangLuongDto;
 	}
 }

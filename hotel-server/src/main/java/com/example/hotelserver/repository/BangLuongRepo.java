@@ -17,4 +17,7 @@ public interface BangLuongRepo extends JpaRepository<BangLuong, String> {
 	
 	@Query(nativeQuery = true, value = "select ma_bang_luong as maBangLuong, thang, nam, ma_nhan_vien as maNhanVien from bang_luong where thang = :thang and nam = :nam and ma_nhan_vien = :maNhanVien")
 	Map<String, Object> findBangLuongByThangAndNamAndMaNhanVien(@Param("thang") int thang, @Param("nam") int nam, @Param("maNhanVien") long maNhanVien);
+
+	@Query(nativeQuery = true, value = "select ma_bang_luong as maBangLuong, thang, nam, ma_nhan_vien as maNhanVien from bang_luong where ma_nhan_vien = :maNhanVien")
+	List<Map<String, Object>> findBangLuongByMaNhanVien(@Param("maNhanVien") long maNhanVien);
 }

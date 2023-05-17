@@ -97,6 +97,18 @@ function FrmNhanPhong() {
 
   const onHandleCheckIn = async () => {
     if (phieuDatPhongSelected.maPhieuDatPhong) {
+      if (
+        new Date(phieuDatPhongSelected.ngayNhanPhong).getTime() >
+        new Date().getTime()
+      ) {
+        setToast({
+          header: "Ngày nhận phòng phải < ngày trả phòng",
+          content: "",
+          bg: "danger",
+          textColor: "#fff",
+        });
+        return;
+      }
       let dsMaPhong = [];
       if (phieuDatPhongSelected && phieuDatPhongSelected.dsPhong) {
         for (let i = 0; i < phieuDatPhongSelected.dsPhong.length; i++) {

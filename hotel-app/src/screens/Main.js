@@ -33,13 +33,15 @@ import FrmTimKiemHoaDon from "../components/FrmTimKiemHoaDon";
 import { Result } from "antd";
 import Robot from "../assets/robot.gif";
 import HomePage from "./HomePage";
+import FrmXemLich from "../components/FrmXemLich";
+import FrmXemBangLuong from "../components/FrmXemBangLuong";
 
 function Main() {
   const navigate = useNavigate();
   const [navSelected, setNavSelected] = useState({
     room: false,
-    guest: true,
-    staff: false,
+    guest: false,
+    staff: true,
     bill: false,
     roomType: false,
     floor: false,
@@ -49,7 +51,7 @@ function Main() {
     shift: false,
   });
   const [subNavSelected, setSubNavSelected] = useState({
-    nav: "guest",
+    nav: "staff",
     subnav: "book",
   });
   const [nhanVien, setNhanVien] = useState(undefined);
@@ -203,6 +205,14 @@ function Main() {
                 />
               </div>
             )}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "watch-assignment" && <FrmXemLich />}
+          {nhanVien &&
+            nhanVien.taiKhoan &&
+            nhanVien.taiKhoan.daKichHoat &&
+            subNavSelected.subnav === "watch-payrolls" && <FrmXemBangLuong />}
         </div>
       </div>
     </Container>

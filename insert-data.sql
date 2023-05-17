@@ -309,16 +309,9 @@ INSERT INTO chi_tiet_dich_vu(ma_dich_vu,ma_hoa_don,so_luong) values
 (8,12,5);
 
 insert into ca_lam_viec (ten_ca, gio_bat_dau, so_gio, gio_ket_thuc) values
-(N'Ca 1', '09:00:00', 3.5, '12:30:00'),
-(N'Ca 2', '12:30:00', 4, '16:30:00'),
-(N'Ca 3', '16:30:00', 2, '18:30:00'),
-(N'Ca 4', '18:30:00', 3.5, '22:00:00'),
-(N'Ca 5', '22:30:00', 3, '01:30:00'),
-(N'Ca 6', '01:30:00', 3.5, '05:00:00'),
-(N'Ca 7', '05:30:00', 4, '09:00:00'),
-(N'Ca 8', '09:30:00', 2.5, '12:00:00'),
-(N'Ca 9', '12:00:00', 4, '16:00:00'),
-(N'Ca 10', '16:00:00', 4, '18:30:00');
+(N'Ca ngày', '06:00:00', 8, '14:00:00'),
+(N'Ca chiều', '14:00:00', 8, '22:00:00'),
+(N'Ca tối', '22:00:00', 8, '6:00:00');
 
 /*
 insert into bang_phan_cong (ngay_chinh_sua, ngay_phan_cong, ma_nhan_vien) values
@@ -360,7 +353,7 @@ insert into bang_phan_cong (ngay_chinh_sua, ngay_phan_cong, ngay_bat_dau, ma_nha
 insert into chi_tiet_phan_cong (ma_ca, ma_bang_phan_cong) values
 (1, 1),
 (2, 1),
-(4, 1);
+(3, 1);
 
 insert into thu (ma_chi_tiet_phan_cong, thu) values
 (1, 0),

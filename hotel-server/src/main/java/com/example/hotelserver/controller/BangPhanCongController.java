@@ -36,6 +36,7 @@ public class BangPhanCongController {
 	@PostMapping("/getByMaNhanVien")
 	public BangPhanCongDto layBangPhanCongTheoMaNhanVien(@RequestBody long request) {
 //		System.out.println(request.get("maNhanVien").toString());
+		System.out.println(request);
 		return bangPhanCongService.layHetBangPhanCongTheoMaNhanVien(request);
 	}
 	

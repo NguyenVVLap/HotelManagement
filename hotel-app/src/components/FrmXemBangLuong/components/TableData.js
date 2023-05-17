@@ -21,6 +21,8 @@ function TableData({ dsBangLuong, bangLuongSelected, setBangLuongSelected }) {
             <th>Mã bảng lương</th>
             <th>Mã nhân viên</th>
             <th>Tên nhân viên</th>
+            <th>Tháng</th>
+            <th>Năm</th>
             <th>Tổng lương</th>
           </tr>
         </thead>
@@ -43,6 +45,8 @@ function TableData({ dsBangLuong, bangLuongSelected, setBangLuongSelected }) {
                   <td>{bangLuong.maBangLuong}</td>
                   <td>{bangLuong.nhanVien.maNhanVien}</td>
                   <td>{bangLuong.nhanVien.hoTen}</td>
+                  <td>{bangLuong.thang}</td>
+                  <td>{bangLuong.nam}</td>
                   <td>{bangLuong.tongLuong.toLocaleString()} VND</td>
                 </tr>
               );
@@ -56,7 +60,7 @@ const StyledContainer = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
   margin-top: 1rem;
-  height: 75%;
+  height: 95%;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 0.2rem;

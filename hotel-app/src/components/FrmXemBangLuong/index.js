@@ -3,13 +3,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styled from "styled-components";
-import { addPayrolls } from "../../utils/APIRoutes";
+import { addPayrolls, getPayrollsByNhanVienRoute } from "../../utils/APIRoutes";
 import Inputs from "./components/Inputs";
-import Search from "./components/Search";
 import TableData from "./components/TableData";
 import ChiTietLuong from "./components/ChiTietLuong";
 
-function FrmTinhLuong() {
+function FrmXemBangLuong() {
   const [bangLuongSelected, setBangLuongSelected] = useState(undefined);
   const [dsBangLuong, setDsBangLuong] = useState([]);
   const [search, setSearch] = useState({ keyword: "", theo: "Theo mã" });
@@ -18,7 +17,28 @@ function FrmTinhLuong() {
     nam: new Date().getFullYear(),
   });
   const [toast, setToast] = useState(null);
-
+  useEffect(() => {
+    loadDSBangLuong();
+  }, []);
+  const loadDSBangLuong = async () => {
+    const thongTinNhanVien = localStorage.getItem("nhanVien");
+    const nhanVien = JSON.parse(thongTinNhanVien);
+    const { data } = await axios.post(
+      getPayrollsByNhanVienRoute,
+      nhanVien.maNhanVien,
+      {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      }
+    );
+    if (data && data.length !== []) {
+      setDsBangLuong(data);
+      setBangLuongSelected(undefined);
+    }
+  };
   const onHandleAdd = async () => {
     const { data } = await axios.post(addPayrolls, requestData, {
       headers: {
@@ -35,14 +55,8 @@ function FrmTinhLuong() {
   console.log(bangLuongSelected);
   return (
     <StyleContainer>
-      <h1>Tính lương</h1>
+      <h1>Xem bảng lương</h1>
       <div className="container">
-        <Inputs
-          requestData={requestData}
-          setRequestData={setRequestData}
-          onHandleAdd={onHandleAdd}
-        />
-
         <TableData
           dsBangLuong={dsBangLuong}
           bangLuongSelected={bangLuongSelected}
@@ -103,4 +117,4 @@ const StyleContainer = styled.div`
   }
 `;
 
-export default FrmTinhLuong;
+export default FrmXemBangLuong;

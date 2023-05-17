@@ -135,6 +135,50 @@ public class BangLuongServiceImpl implements BangLuongService {
 		
 		return dsBangLuongDto;
 	}
+
+	@Override
+	public List<BangLuongDto> layBangLuongTheoMaNhanVien(long maNhanVien) {
+		NhanVien nhanVien = nhanVienRepo.findById(maNhanVien).get();
+		List<BangLuongDto> dsBangLuongDto = new ArrayList<>();
+		if (nhanVien != null) {
+			List<Map<String, Object>> dsMapBangLuong = bangLuongRepo.findBangLuongByMaNhanVien(maNhanVien);
+			if (dsMapBangLuong != null && !dsMapBangLuong.isEmpty()) {
+				for (Map<String, Object> mapBangLuong : dsMapBangLuong) {
+					BangLuong bangLuong = BangLuong.builder()
+							.nam(Integer.parseInt(mapBangLuong.get("nam").toString()))
+							.maBangLuong(mapBangLuong.get("maBangLuong").toString())
+							.thang(Integer.parseInt(mapBangLuong.get("thang").toString()))
+							.nhanVien(nhanVien)
+							.build();
+					List<Map<String, Object>> dsChiTietBangLuongMap = chiTietBangLuongRepo.findChiTietBangLuongByMaBangLuong(bangLuong.getMaBangLuong());
+					List<ChiTietBangLuong> dsChiTietBangLuong = new ArrayList<>();
+					if (dsChiTietBangLuongMap != null && !dsChiTietBangLuongMap.isEmpty()) {
+						for (Map<String, Object> mapChiTietBangLuong : dsChiTietBangLuongMap) {
+							BangChamCong bangChamCong = bangChamCongRepo.findById(Long.parseLong(mapChiTietBangLuong.get("maBangChamCong").toString())).get();
+							ChiTietBangLuong chiTietBangLuong = ChiTietBangLuong.builder()
+									.maChiTietBangLuong(Long.parseLong(mapChiTietBangLuong.get("maChiTietBangLuong").toString()))
+									.bangChamCong(bangChamCong)
+									.build();
+							dsChiTietBangLuong.add(chiTietBangLuong);
+						}
+						bangLuong.setDsChiTietBangLuong(dsChiTietBangLuong);
+						BangLuongDto bangLuongDto = BangLuongDto.builder()
+								.nam(bangLuong.getNam())
+								.maBangLuong(bangLuong.getMaBangLuong())
+								.thang(bangLuong.getThang())
+								.nhanVien(nhanVien)
+								.dsChiTietBangLuong(dsChiTietBangLuong)
+								.tongLuong(bangLuong.tinhLuong())
+								.build();
+						dsBangLuongDto.add(bangLuongDto);
+					}
+				}
+				
+			}
+		}
+		
+		return dsBangLuongDto;
+	}
 	
 //	@Override
 //	public List<BangLuongDto> themBangLuong(int thang, int nam) {

@@ -93,3 +93,4 @@ export const addTimekeeping = `${host}/api/bangChamCong/themBangChamCong`;
 
 //Tính lương
 export const addPayrolls = `${host}/api/bangLuong`;
+export const getPayrollsByNhanVienRoute = `${host}/api/bangLuong/getByMaNhanVien`;
