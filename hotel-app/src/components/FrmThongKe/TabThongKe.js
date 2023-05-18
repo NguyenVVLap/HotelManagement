@@ -28,7 +28,7 @@ function TabThongKe() {
                     <Tab icon={<MeetingRoomOutlinedIcon />} label="Thống kê phòng" />
                     <Tab icon={<MonetizationOnOutlinedIcon />} label="Thống kê doanh thu" />
                     <Tab icon={<PermContactCalendarOutlinedIcon />} label="Thống kê khách hàng" />
-                    <Tab icon={<MonetizationOnOutlinedIcon />} label="Test QR" />
+                    {/* <Tab icon={<MonetizationOnOutlinedIcon />} label="Test QR" /> */}
                 </Tabs>
             </div>
             <div style={{}}>
@@ -36,7 +36,7 @@ function TabThongKe() {
                     {value === 0 && <div><FrmThongKeDichVu /></div>}
                     {value === 1 && <div><FrmThongKePhong /></div>}
                     {value === 2 && <div><FrmThongKeDoanhThu /></div>}
-                    {value === 4 && <div><FrmTestQR /></div>}
+                    {/* {value === 4 && <div><FrmTestQR /></div>} */}
                     {value === 3 && <div><FrmThongKeKhachHang /></div>}
                 </div>
             </div>
