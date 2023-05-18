@@ -29,6 +29,7 @@ public class HoaDonController {
 	
 	@PostMapping
 	public ResponseEntity<Boolean> themHoaDon(@RequestBody TaoHoaDonRequestDto hoaDonDto) {
+		System.out.println(hoaDonDto.getNgayLap());
 		if (hoaDonService.themHoaDon(hoaDonDto)) {
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		}

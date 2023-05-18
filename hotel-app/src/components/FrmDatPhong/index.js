@@ -116,6 +116,15 @@ function FrmDatPhong() {
       });
       return false;
     }
+    if (dayjs(ngayNhanPhong).toDate().getTime() < new Date().getTime()) {
+      setToast({
+        header: "Ngày nhận phòng phải trước ngày hiện tại",
+        content: "",
+        bg: "danger",
+        textColor: "#fff",
+      });
+      return false;
+    }
     // if (dayjs(new Date()).isAfter(dayjs(ngayNhanPhong))) {
     //   setToast({
     //     header: "Ngày nhận phòng không được trước ngày hiện tại",
@@ -289,6 +298,7 @@ function FrmDatPhong() {
                         <MobileDateTimePicker
                           sx={{ width: "100%" }}
                           label="Ngày nhận phòng"
+                          disabled={roomChoosen.length > 0 ? true : false}
                           value={
                             bookingInfo.ngayNhanPhong
                               ? bookingInfo.ngayNhanPhong
@@ -308,6 +318,7 @@ function FrmDatPhong() {
                         <MobileDateTimePicker
                           sx={{ width: "100%" }}
                           label="Ngày trả phòng"
+                          disabled={roomChoosen.length > 0 ? true : false}
                           value={
                             bookingInfo.ngayTraPhong
                               ? bookingInfo.ngayTraPhong

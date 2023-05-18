@@ -254,8 +254,8 @@ function FrmLapHoaDon() {
         `${addBillsRoute}`,
         {
           maHoaDon: hoaDonSelected.maHoaDon,
-          ngayLap: hoaDonSelected.ngayLap,
-          ngayNhanPhong: hoaDonSelected.ngayNhanPhong,
+          ngayLap: new Date(),
+          ngayNhanPhong: new Date(hoaDonSelected.ngayNhanPhong),
           ngayTraPhong: new Date(),
           tienNhan: hoaDonSelected.tienNhan,
           dsMaPhong,
