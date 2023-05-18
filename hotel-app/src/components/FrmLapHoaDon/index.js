@@ -13,6 +13,7 @@ import {
   addBillsRoute,
   getBillsByCCCD,
   getBillsOrderDateRoute,
+  getBillsRoomOrderDateRoute,
   searchBillsByPhongRoute,
 } from "../../utils/APIRoutes";
 import FrmXacNhanHoaDon from "../FrmXacNhanHoaDon";
@@ -152,7 +153,7 @@ function FrmLapHoaDon() {
   }, []);
   const loadHoaDon = async () => {
     const { data } = await axios.get(
-      `${getBillsOrderDateRoute}`,
+      `${getBillsRoomOrderDateRoute}`,
       {},
       {
         headers: {
@@ -541,6 +542,7 @@ function FrmLapHoaDon() {
                     <Table striped>
                       <thead>
                         <tr>
+                          <th>Phòng</th>
                           <th>Tên</th>
                           <th>Đơn vị</th>
                           <th>Giá</th>
@@ -557,6 +559,7 @@ function FrmLapHoaDon() {
                               // console.log(isSelected(room));
                               return (
                                 <tr key={index}>
+                                  <td>{dichVu.maPhong}</td>
                                   <td>{dichVu.tenDichVu}</td>
                                   <td>{dichVu.tenLoaiDichVu}</td>
                                   <td>{dichVu.giaDichVu.toLocaleString()}</td>
@@ -579,7 +582,7 @@ function FrmLapHoaDon() {
                         )}
                         <tr>
                           <td
-                            colSpan={4}
+                            colSpan={5}
                             style={{ fontWeight: "bold", textAlign: "center" }}
                           >
                             Tồng thành tiền

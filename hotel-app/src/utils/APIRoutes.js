@@ -19,9 +19,11 @@ export const addBookingsRoute = `${host}/api/phieuDatPhong/themPhieu`;
 //Bill
 export const addBillsRoute = `${host}/api/hoaDon`;
 export const getBillsOrderDateRoute = `${host}/api/hoaDon/orderDate`;
+export const getBillsRoomOrderDateRoute = `${host}/api/hoaDon/phongOrderDate`;
 export const getBillsByCCCD = `${host}/api/hoaDon/searchByCCCD`;
 export const bookingServices = `${host}/api/hoaDon/datDichVu`;
 export const getAllBillsRoute = `${host}/api/hoaDon`;
+export const getAllRoomBillsRoute = `${host}/api/hoaDon/layHetHoaDonPhong`;
 export const getSearchBillsRoute = `${host}/api/hoaDon/searchHoaDon`;
 export const searchBillsByPhongRoute = `${host}/api/hoaDon/searchHoaDonByPhong`;
 

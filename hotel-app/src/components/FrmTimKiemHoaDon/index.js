@@ -13,7 +13,11 @@ import {
 } from "react-bootstrap";
 import { BiRefresh } from "react-icons/bi";
 import styled from "styled-components";
-import { getAllBillsRoute, getSearchBillsRoute } from "../../utils/APIRoutes";
+import {
+  getAllBillsRoute,
+  getAllRoomBillsRoute,
+  getSearchBillsRoute,
+} from "../../utils/APIRoutes";
 import ChiTietHoaDon from "./components/ChiTietHoaDon";
 
 function FrmTimKiemHoaDon() {
@@ -173,7 +177,7 @@ function FrmTimKiemHoaDon() {
         "Content-Type": "application/json;charset=UTF-8",
       },
     };
-    const { data } = await axios.get(`${getAllBillsRoute}`, {}, config);
+    const { data } = await axios.get(`${getAllRoomBillsRoute}`, {}, config);
     setDsHoaDon(data);
   };
   const isDate = (myDate) => {

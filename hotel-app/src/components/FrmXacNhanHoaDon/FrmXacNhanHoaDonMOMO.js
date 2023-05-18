@@ -6,299 +6,303 @@ import ReactToPrint from "react-to-print";
 import styled from "styled-components";
 
 function FrmXacNhanHoaDonMOMO({
-    setShowConfirmBill_MOMO,
-    hoaDonSelected,
-    totalPrice,
-    totalHour,
-    totalRoomPrice,
-    totalServicePrice,
-    isPrint,
-    onHandleCheckInMOMO,
-    setIsPrint,
-    setHoaDonSelected,
-    onHandleCancelPrint,
-    formatDate,
-
+  setShowConfirmBill_MOMO,
+  hoaDonSelected,
+  totalPrice,
+  totalHour,
+  totalRoomPrice,
+  totalServicePrice,
+  isPrint,
+  onHandleCheckInMOMO,
+  setIsPrint,
+  setHoaDonSelected,
+  onHandleCancelPrint,
+  formatDate,
 }) {
-    // console.log(hoaDonSelected);
-    const [nhanVien, setNhanVien] = useState();
-    const handlePrint = () => {
-        window.print();
-    };
-    const componentRef = useRef();
-    useEffect(() => {
-        const nhanVienTemp = JSON.parse(localStorage.getItem("nhanVien"));
-        setNhanVien(nhanVienTemp);
-    }, []);
-    return (
-        <StyledContainer>
-            <div className="container-styled">
-                <div ref={componentRef} className="booking-detail">
-                    <div className="content-detail">
-                        <div
-                            className="bill-title"
-                            style={{
-                                display: "flex",
-                                gap: "0.1rem",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
+  // console.log(hoaDonSelected);
+  const [nhanVien, setNhanVien] = useState();
+  const handlePrint = () => {
+    window.print();
+  };
+  const componentRef = useRef();
+  useEffect(() => {
+    const nhanVienTemp = JSON.parse(localStorage.getItem("nhanVien"));
+    setNhanVien(nhanVienTemp);
+  }, []);
+  return (
+    <StyledContainer>
+      <div className="container-styled">
+        <div ref={componentRef} className="booking-detail">
+          <div className="content-detail">
+            <div
+              className="bill-title"
+              style={{
+                display: "flex",
+                gap: "0.1rem",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div className="img-container">
+                <img
+                  className="logo-img"
+                  src="/logo1.png"
+                  alt="logo"
+                  style={{
+                    width: "100px",
+                    backgroundColor: "white",
+                    borderRadius: "150px",
+                  }}
+                />
+              </div>
+              <p
+                className="title"
+                style={{
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                  marginBottom: 0,
+                }}
+              >
+                Khách Sạn Sama
+              </p>
+            </div>
+            <div className="bill-header">
+              <h3>Hóa đơn MOMO</h3>
+            </div>
+            <div className="bill-info">
+              - Mà hóa đơn: {hoaDonSelected && hoaDonSelected.maHoaDon}
+              <br></br>- Ngày đặt phòng:{" "}
+              {hoaDonSelected &&
+                hoaDonSelected.ngayLap &&
+                formatDate(new Date(hoaDonSelected.phieuDatPhong.ngayDatPhong))}
+              <br></br>- Ngày nhận phòng:{" "}
+              {hoaDonSelected &&
+                hoaDonSelected.ngayLap &&
+                formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
+              <br></br>- Ngày trả phòng:{" "}
+              {hoaDonSelected &&
+                hoaDonSelected.ngayLap &&
+                formatDate(new Date(hoaDonSelected.ngayTraPhong))}
+              <br></br> - Thu ngân:{" "}
+              {nhanVien && `${nhanVien.hoTen} - ${nhanVien.maNhanVien}`}
+              <br></br>
+            </div>
+            <div className="guest-info">
+              <h4>Thông tin khách hàng</h4>
+              <div className="info-content">
+                - Họ tên:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.hoTen}
+                <br></br>- CCCD:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.cccdKhachHang}
+                <br></br>- Số điện thoại:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.soDienThoaiKH}
+                <br></br>- Email:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.emailKH}
+                <br></br>- Địa chỉ:{" "}
+                {hoaDonSelected &&
+                  hoaDonSelected.khachHang &&
+                  hoaDonSelected.khachHang.diaChiKH}
+                <br></br>
+              </div>
+            </div>
+            <div className="room-info">
+              <div className="info-content">
+                <h4>Chi tiết hóa đơn</h4>
+                <div className="phong-container">
+                  <Table bordered={true}>
+                    <thead>
+                      <tr>
+                        <th>Phòng</th>
+                        <th>Loại</th>
+                        <th>Giá (1 giờ)</th>
+                        <th>Tổng giờ</th>
+                        <th>T tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {hoaDonSelected &&
+                      hoaDonSelected.dsPhong &&
+                      hoaDonSelected.dsPhong.length > 0 ? (
+                        hoaDonSelected.dsPhong.map((room, index) => {
+                          // console.log(isSelected(room));
+                          return (
+                            <tr key={index}>
+                              <td>{room.maPhong}</td>
+                              <td>{room.tenLoaiPhong}</td>
+                              <td>{room.giaPhong.toLocaleString()}</td>
+                              <td>{totalHour}</td>
+                              <td>
+                                {(totalHour * room.giaPhong).toLocaleString()}
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan={5} style={{ textAlign: "center" }}>
+                            Không có dữ liệu
+                          </td>
+                        </tr>
+                      )}
+                      <tr>
+                        <td
+                          colSpan={4}
+                          style={{ fontWeight: "bold", textAlign: "center" }}
                         >
-                            <div className="img-container">
-                                <img
-                                    className="logo-img"
-                                    src="/logo1.png"
-                                    alt="logo"
-                                    style={{
-                                        width: "100px",
-                                        backgroundColor: "white",
-                                        borderRadius: "150px",
-                                    }}
-                                />
-                            </div>
-                            <p
-                                className="title"
-                                style={{
-                                    fontSize: "2rem",
-                                    fontWeight: "bold",
-                                    marginBottom: 0,
-                                }}
-                            >
-                                Khách Sạn Sama
-                            </p>
-                        </div>
-                        <div className="bill-header">
-                            <h3>Hóa đơn MOMO</h3>
-                        </div>
-                        <div className="bill-info">
-                            - Mà hóa đơn: {hoaDonSelected && hoaDonSelected.maHoaDon}
-                            <br></br>- Ngày đặt phòng:{" "}
-                            {hoaDonSelected &&
-                                hoaDonSelected.ngayLap &&
-                                formatDate(new Date(hoaDonSelected.phieuDatPhong.ngayDatPhong))}
-                            <br></br>- Ngày nhận phòng:{" "}
-                            {hoaDonSelected &&
-                                hoaDonSelected.ngayLap &&
-                                formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
-                            <br></br>- Ngày trả phòng:{" "}
-                            {hoaDonSelected &&
-                                hoaDonSelected.ngayLap &&
-                                formatDate(new Date(hoaDonSelected.ngayTraPhong))}
-                            <br></br> - Thu ngân:{" "}
-                            {nhanVien && `${nhanVien.hoTen} - ${nhanVien.maNhanVien}`}
-                            <br></br>
-                        </div>
-                        <div className="guest-info">
-                            <h4>Thông tin khách hàng</h4>
-                            <div className="info-content">
-                                - Họ tên:{" "}
-                                {hoaDonSelected &&
-                                    hoaDonSelected.khachHang &&
-                                    hoaDonSelected.khachHang.hoTen}
-                                <br></br>- CCCD:{" "}
-                                {hoaDonSelected &&
-                                    hoaDonSelected.khachHang &&
-                                    hoaDonSelected.khachHang.cccdKhachHang}
-                                <br></br>- Số điện thoại:{" "}
-                                {hoaDonSelected &&
-                                    hoaDonSelected.khachHang &&
-                                    hoaDonSelected.khachHang.soDienThoaiKH}
-                                <br></br>- Email:{" "}
-                                {hoaDonSelected &&
-                                    hoaDonSelected.khachHang &&
-                                    hoaDonSelected.khachHang.emailKH}
-                                <br></br>- Địa chỉ:{" "}
-                                {hoaDonSelected &&
-                                    hoaDonSelected.khachHang &&
-                                    hoaDonSelected.khachHang.diaChiKH}
-                                <br></br>
-                            </div>
-                        </div>
-                        <div className="room-info">
-                            <div className="info-content">
-                                <h4>Chi tiết hóa đơn</h4>
-                                <div className="phong-container">
-                                    <Table bordered={true}>
-                                        <thead>
-                                            <tr>
-                                                <th>Phòng</th>
-                                                <th>Loại</th>
-                                                <th>Giá (1 giờ)</th>
-                                                <th>Tổng giờ</th>
-                                                <th>T tiền</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {hoaDonSelected &&
-                                                hoaDonSelected.dsPhong &&
-                                                hoaDonSelected.dsPhong.length > 0 ? (
-                                                hoaDonSelected.dsPhong.map((room, index) => {
-                                                    // console.log(isSelected(room));
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{room.maPhong}</td>
-                                                            <td>{room.tenLoaiPhong}</td>
-                                                            <td>{room.giaPhong.toLocaleString()}</td>
-                                                            <td>{totalHour}</td>
-                                                            <td>
-                                                                {(totalHour * room.giaPhong).toLocaleString()}
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan={5} style={{ textAlign: "center" }}>
-                                                        Không có dữ liệu
-                                                    </td>
-                                                </tr>
-                                            )}
-                                            <tr>
-                                                <td
-                                                    colSpan={4}
-                                                    style={{ fontWeight: "bold", textAlign: "center" }}
-                                                >
-                                                    Tồng thành tiền
-                                                </td>
-                                                <td style={{ fontWeight: "bold" }}>
-                                                    {totalRoomPrice.toLocaleString()} VND
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
-                                <h4>Chi tiết dịch vụ</h4>
-                                <div className="phong-container">
-                                    <Table bordered={true}>
-                                        <thead>
-                                            <tr>
-                                                <th>Tên</th>
-                                                <th>Đơn vị</th>
-                                                <th>Giá</th>
-                                                <th>SL</th>
-                                                <th>T tiền</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {hoaDonSelected &&
-                                                hoaDonSelected.dsChiTietDichVuDto &&
-                                                hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
-                                                hoaDonSelected.dsChiTietDichVuDto.map(
-                                                    (dichVu, index) => {
-                                                        // console.log(isSelected(room));
-                                                        return (
-                                                            <tr key={index}>
-                                                                <td>{dichVu.tenDichVu}</td>
-                                                                <td>{dichVu.tenLoaiDichVu}</td>
-                                                                <td>{dichVu.giaDichVu.toLocaleString()}</td>
-                                                                <td>{dichVu.soLuong}</td>
-                                                                <td>
-                                                                    {(
-                                                                        dichVu.giaDichVu * dichVu.soLuong
-                                                                    ).toLocaleString()}
-                                                                </td>
-                                                            </tr>
-                                                        );
-                                                    }
-                                                )
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan={5} style={{ textAlign: "center" }}>
-                                                        Không có dữ liệu
-                                                    </td>
-                                                </tr>
-                                            )}
-                                            <tr>
-                                                <td
-                                                    colSpan={4}
-                                                    style={{ fontWeight: "bold", textAlign: "center" }}
-                                                >
-                                                    Tồng thành tiền
-                                                </td>
-                                                <td style={{ fontWeight: "bold" }}>
-                                                    {totalServicePrice.toLocaleString()} VND
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
-                                <div
-                                    className="price-container"
-                                    style={{ display: "flex", justifyContent: "space-between" }}
-                                >
-                                    <p style={{ fontWeight: "bold" }}>Tổng tiền</p>
-                                    <div className="total-price" style={{ fontWeight: "bold" }}>
-                                        {totalPrice && totalPrice.toLocaleString()} VND
-                                    </div>
-                                </div>
-                                <div
-                                    className="price-container"
-                                    style={{ display: "flex", justifyContent: "space-between" }}
-                                >
-                                    <p style={{ fontWeight: "bold" }}>Tiền nhận</p>
-                                    <div className="total-price" style={{ fontWeight: "bold" }}>
-                                        {totalPrice && totalPrice.toLocaleString()}
-                                        VND
-                                    </div>
-                                </div>
-                                <div
-                                    className="price-container"
-                                    style={{ display: "flex", justifyContent: "space-between" }}
-                                >
-                                    <p style={{ fontWeight: "bold" }}>Tiền thừa</p>
-                                    <div className="total-price" style={{ fontWeight: "bold" }}>
-                                        {totalPrice &&
-                                            (totalPrice - totalPrice).toLocaleString()}
-                                        {/* {hoaDonSelected.tienNhan - totalPrice < 0
+                          Tồng thành tiền
+                        </td>
+                        <td style={{ fontWeight: "bold" }}>
+                          {totalRoomPrice.toLocaleString()} VND
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </div>
+                <h4>Chi tiết dịch vụ</h4>
+                <div className="phong-container">
+                  <Table bordered={true}>
+                    <thead>
+                      <tr>
+                        <th>Phòng</th>
+                        <th>Tên</th>
+                        <th>Đơn vị</th>
+                        <th>Giá</th>
+                        <th>SL</th>
+                        <th>T tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {hoaDonSelected &&
+                      hoaDonSelected.dsChiTietDichVuDto &&
+                      hoaDonSelected.dsChiTietDichVuDto.length > 0 ? (
+                        hoaDonSelected.dsChiTietDichVuDto.map(
+                          (dichVu, index) => {
+                            // console.log(isSelected(room));
+                            return (
+                              <tr key={index}>
+                                <td>{dichVu.maPhong}</td>
+                                <td>{dichVu.tenDichVu}</td>
+                                <td>{dichVu.tenLoaiDichVu}</td>
+                                <td>{dichVu.giaDichVu.toLocaleString()}</td>
+                                <td>{dichVu.soLuong}</td>
+                                <td>
+                                  {(
+                                    dichVu.giaDichVu * dichVu.soLuong
+                                  ).toLocaleString()}
+                                </td>
+                              </tr>
+                            );
+                          }
+                        )
+                      ) : (
+                        <tr>
+                          <td colSpan={6} style={{ textAlign: "center" }}>
+                            Không có dữ liệu
+                          </td>
+                        </tr>
+                      )}
+                      <tr>
+                        <td
+                          colSpan={5}
+                          style={{ fontWeight: "bold", textAlign: "center" }}
+                        >
+                          Tồng thành tiền
+                        </td>
+                        <td style={{ fontWeight: "bold" }}>
+                          {totalServicePrice.toLocaleString()} VND
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </div>
+                <div
+                  className="price-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ fontWeight: "bold" }}>Tổng tiền</p>
+                  <div className="total-price" style={{ fontWeight: "bold" }}>
+                    {totalPrice && totalPrice.toLocaleString()} VND
+                  </div>
+                </div>
+                <div
+                  className="price-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ fontWeight: "bold" }}>Tiền nhận</p>
+                  <div className="total-price" style={{ fontWeight: "bold" }}>
+                    {totalPrice && totalPrice.toLocaleString()}
+                    VND
+                  </div>
+                </div>
+                <div
+                  className="price-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p style={{ fontWeight: "bold" }}>Tiền thừa</p>
+                  <div className="total-price" style={{ fontWeight: "bold" }}>
+                    {totalPrice && (totalPrice - totalPrice).toLocaleString()}
+                    {/* {hoaDonSelected.tienNhan - totalPrice < 0
                         ? 0
                         : (
                             hoaDonSelected.tienNhan - totalPrice
                           ).toLocaleString()}{" "} */}{" "}
-                                        VND
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    VND
+                  </div>
                 </div>
-                {!isPrint ? (
-                    <div className="btn-container">
-                        <Button variant="success" type="submit" onClick={onHandleCheckInMOMO}>
-                            Xác nhận
-                        </Button>
-                        <Button
-                            variant="danger"
-                            type="submit"
-                            onClick={() => {
-                                setShowConfirmBill_MOMO(false);
-                                setIsPrint(false);
-                            }}
-                        >
-                            Hủy
-                        </Button>
-                    </div>
-                ) : (
-                    <div className="btn-container">
-                        <ReactToPrint
-                            trigger={() => (
-                                <Button variant="primary" onClick={() => handlePrint()}>
-                                    In hóa đơn
-                                </Button>
-                            )}
-                            content={() => componentRef.current}
-                        />
-                        <Button
-                            variant="danger"
-                            type="submit"
-                            onClick={onHandleCancelPrint}
-                        >
-                            Hủy
-                        </Button>
-                    </div>
-                )}
+              </div>
             </div>
-        </StyledContainer>
-    );
+          </div>
+        </div>
+        {!isPrint ? (
+          <div className="btn-container">
+            <Button
+              variant="success"
+              type="submit"
+              onClick={onHandleCheckInMOMO}
+            >
+              Xác nhận
+            </Button>
+            <Button
+              variant="danger"
+              type="submit"
+              onClick={() => {
+                setShowConfirmBill_MOMO(false);
+                setIsPrint(false);
+              }}
+            >
+              Hủy
+            </Button>
+          </div>
+        ) : (
+          <div className="btn-container">
+            <ReactToPrint
+              trigger={() => (
+                <Button variant="primary" onClick={() => handlePrint()}>
+                  In hóa đơn
+                </Button>
+              )}
+              content={() => componentRef.current}
+            />
+            <Button
+              variant="danger"
+              type="submit"
+              onClick={onHandleCancelPrint}
+            >
+              Hủy
+            </Button>
+          </div>
+        )}
+      </div>
+    </StyledContainer>
+  );
 }
 
 const StyledContainer = styled.div`

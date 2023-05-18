@@ -17,6 +17,7 @@ import {
   bookingServices,
   getBillsByCCCD,
   getBillsOrderDateRoute,
+  getBillsRoomOrderDateRoute,
   searchBillsByPhongRoute,
 } from "../../utils/APIRoutes";
 import ListDichVu from "./components/ListDichVu";
@@ -29,6 +30,7 @@ function FrmDatDichVu() {
   const [hoaDonPrice, setHoaDonPrice] = useState(0);
   const [selectPrice, setSelectPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [phongSelected, setPhongSelected] = useState("");
   const [dichVuNew, setDichVuNew] = useState([]);
   const [showDichVu, setShowDichVu] = useState(undefined);
   useEffect(() => {
@@ -58,7 +60,7 @@ function FrmDatDichVu() {
   }, []);
   const loadHoaDon = async () => {
     const { data } = await axios.get(
-      `${getBillsOrderDateRoute}`,
+      `${getBillsRoomOrderDateRoute}`,
       {},
       {
         headers: {
@@ -92,72 +94,6 @@ function FrmDatDichVu() {
     }
   };
 
-  const onHandleCheckIn = async () => {
-    if (hoaDonSelected.maHoaDon && hoaDonSelected.tienNhan && validate()) {
-      let dsMaPhong = [];
-      if (hoaDonSelected && hoaDonSelected.dsPhong) {
-        for (let i = 0; i < hoaDonSelected.dsPhong.length; i++) {
-          dsMaPhong = [...dsMaPhong, hoaDonSelected.dsPhong[i].maPhong];
-        }
-      }
-      const nhanVien = JSON.parse(localStorage.getItem("nhanVien"));
-
-      const { data } = await axios.post(
-        `${addBillsRoute}`,
-        {
-          maHoaDon: hoaDonSelected.maHoaDon,
-          ngayLap: hoaDonSelected.ngayLap,
-          ngayNhanPhong: hoaDonSelected.ngayNhanPhong,
-          ngayTraPhong: hoaDonSelected.ngayTraPhong,
-          tienNhan: hoaDonSelected.tienNhan,
-          dsMaPhong,
-          maPhieuDatPhong: hoaDonSelected.phieuDatPhong.maPhieuDatPhong,
-          maKhachHang: hoaDonSelected.khachHang.maKhachHang,
-          maNhanVien: nhanVien.maNhanVien,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json;charset=UTF-8",
-            "Access-Control-Allow-Origin": "http://localhost:3000",
-            "Access-Control-Allow-Credentials": "true",
-          },
-        }
-      );
-      if (data) {
-        setHoaDonSelected({});
-        setToast({
-          header: "Lập hóa đơn thành công",
-          content: "",
-          bg: "success",
-          textColor: "#fff",
-        });
-        loadHoaDon();
-      }
-    }
-  };
-  const validate = () => {
-    if (
-      !hoaDonSelected ||
-      !hoaDonSelected.tienNhan ||
-      hoaDonSelected.tienNhan <= 0 ||
-      hoaDonSelected.tienNhan - totalPrice < 0
-    ) {
-      setToast({
-        header: "Tiền nhận phải >= tổng tiền",
-        content: "",
-        bg: "danger",
-        textColor: "#fff",
-      });
-      return false;
-    }
-
-    return true;
-  };
-  const onHandleChange = (e) => {
-    if (hoaDonSelected && hoaDonSelected.maHoaDon) {
-      setHoaDonSelected({ ...hoaDonSelected, [e.target.name]: e.target.value });
-    }
-  };
   const onHandleXoaDichVuSelected = (maDichVu) => {
     let temp = [...dichVuNew];
     for (let i = 0; i < dichVuNew.length; i++) {
@@ -178,7 +114,8 @@ function FrmDatDichVu() {
         for (let j = 0; j < hoaDonSelected.dsChiTietDichVuDto.length; j++) {
           if (
             dichVuNew[i].maDichVu ==
-            hoaDonSelected.dsChiTietDichVuDto[j].maDichVu
+              hoaDonSelected.dsChiTietDichVuDto[j].maDichVu &&
+            phongSelected === hoaDonSelected.dsChiTietDichVuDto[j].maPhong
           ) {
             newDichVuUpdate = [
               ...newDichVuUpdate,
@@ -188,6 +125,7 @@ function FrmDatDichVu() {
                   dichVuNew[i].soLuongChon +
                   hoaDonSelected.dsChiTietDichVuDto[j].soLuong,
                 soLuongMoi: dichVuNew[i].soLuongChon,
+                maPhong: phongSelected,
               },
             ];
             break;
@@ -197,10 +135,9 @@ function FrmDatDichVu() {
               ...newDichVuUpdate,
               {
                 maDichVu: dichVuNew[i].maDichVu,
-                soLuongTong:
-                  dichVuNew[i].soLuongChon +
-                  hoaDonSelected.dsChiTietDichVuDto[j].soLuong,
+                soLuongTong: dichVuNew[i].soLuongChon,
                 soLuongMoi: dichVuNew[i].soLuongChon,
+                maPhong: phongSelected,
               },
             ];
           }
@@ -212,6 +149,7 @@ function FrmDatDichVu() {
             maDichVu: dichVuNew[i].maDichVu,
             soLuongTong: dichVuNew[i].soLuongChon,
             soLuongMoi: dichVuNew[i].soLuongChon,
+            maPhong: phongSelected,
           },
         ];
       }
@@ -222,6 +160,7 @@ function FrmDatDichVu() {
       {
         maHoaDon: hoaDonSelected.maHoaDon,
         dsDichVu: newDichVuUpdate,
+        maPhong: phongSelected,
       },
       {
         headers: {
@@ -232,8 +171,10 @@ function FrmDatDichVu() {
       }
     );
     if (data && data.maHoaDon) {
+      console.log(data);
       setHoaDonSelected(data);
       setDichVuNew([]);
+      loadHoaDon();
       setToast({
         header: "Đặt dịch vụ thành công",
         content: "",
@@ -242,7 +183,7 @@ function FrmDatDichVu() {
       });
     }
   };
-  // console.log(hoaDonSelected.dsChiTietDichVuDto);
+  console.log(hoaDonSelected.dsChiTietDichVuDto);
   // console.log(dichVuNew);
   console.log(dsHoaDon);
   return (
@@ -251,7 +192,7 @@ function FrmDatDichVu() {
         <h1>Đặt dịch vụ</h1>
         <div className="content">
           <div className="booking-container">
-            <h4>Danh sách hóa đơn</h4>
+            <h4>Danh sách phòng</h4>
             <div className="search-container">
               <Form.Control
                 type="text"
@@ -269,46 +210,25 @@ function FrmDatDichVu() {
             <div className="list-booking">
               {dsHoaDon &&
                 dsHoaDon.length > 0 &&
-                dsHoaDon.map((hoaDon, index) => {
-                  return (
-                    <div
-                      className={`booking-item ${
-                        hoaDonSelected.maHoaDon &&
-                        hoaDon.maHoaDon === hoaDonSelected.maHoaDon
-                          ? "selected"
-                          : ""
-                      }`}
-                      onClick={() => setHoaDonSelected(hoaDon)}
-                      key={index}
-                    >
-                      <div className="item-header">
-                        {hoaDon.khachHang.hoTen} -{" "}
-                        {hoaDon.khachHang.cccdKhachHang}
+                dsHoaDon.map((hoaDon) => {
+                  return hoaDon.dsPhong.map((phong, index) => {
+                    return (
+                      <div
+                        className={`booking-item ${
+                          phong.maPhong && phong.maPhong === phongSelected
+                            ? "selected"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setHoaDonSelected(hoaDon);
+                          setPhongSelected(phong.maPhong);
+                        }}
+                        key={index}
+                      >
+                        <div className="item-header">Phòng {phong.maPhong}</div>
                       </div>
-                      <div className="item-body">
-                        <div className="check-in-date">
-                          Ngày nhận phòng:{" "}
-                          <p>
-                            {moment(hoaDon.ngayNhanPhong).format("DD/MM/YYYY")}
-                          </p>
-                        </div>
-                        <div className="booking-date">
-                          Phòng:{" "}
-                          <p>
-                            {hoaDon.dsPhong &&
-                              hoaDon.dsPhong.length > 0 &&
-                              hoaDon.dsPhong.map((phong, index) => {
-                                return `${
-                                  index === hoaDon.dsPhong.length - 1
-                                    ? phong.maPhong + "."
-                                    : phong.maPhong + ","
-                                } `;
-                              })}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
+                    );
+                  });
                 })}
             </div>
           </div>
@@ -343,7 +263,10 @@ function FrmDatDichVu() {
                 </div>
               </div>
               <div className="room-info">
-                <h4>Chi tiết dich vụ</h4>
+                <h4>
+                  Chi tiết dich vụ{" "}
+                  {phongSelected !== "" ? "(Phòng " + phongSelected + ")" : ""}
+                </h4>
                 <div className="info-content">
                   <div className="phong-container">
                     <Table striped>
@@ -363,16 +286,18 @@ function FrmDatDichVu() {
                           hoaDonSelected.dsChiTietDichVuDto.map(
                             (dichVu, index) => {
                               // console.log(isSelected(room));
-                              return (
-                                <tr key={index}>
-                                  <td></td>
-                                  <td>{dichVu.tenDichVu}</td>
-                                  <td>{dichVu.giaDichVu.toLocaleString()}</td>
-                                  <td>{dichVu.soLuong}</td>
-                                  <td>{dichVu.tenLoaiDichVu}</td>
-                                  <td></td>
-                                </tr>
-                              );
+                              console.log(dichVu.maPhong + " " + phongSelected);
+                              console.log(dichVu.maPhong === phongSelected);
+                              if (dichVu.maPhong === phongSelected)
+                                return (
+                                  <tr key={index}>
+                                    <td></td>
+                                    <td>{dichVu.tenDichVu}</td>
+                                    <td>{dichVu.giaDichVu.toLocaleString()}</td>
+                                    <td>{dichVu.soLuong}</td>
+                                    <td>{dichVu.tenLoaiDichVu}</td>
+                                  </tr>
+                                );
                             }
                           )
                         ) : (

@@ -173,6 +173,7 @@ function FrmXacNhanHoaDon({
                   <Table bordered={true}>
                     <thead>
                       <tr>
+                        <th>Phòng</th>
                         <th>Tên</th>
                         <th>Đơn vị</th>
                         <th>Giá</th>
@@ -189,6 +190,7 @@ function FrmXacNhanHoaDon({
                             // console.log(isSelected(room));
                             return (
                               <tr key={index}>
+                                <td>{dichVu.maPhong}</td>
                                 <td>{dichVu.tenDichVu}</td>
                                 <td>{dichVu.tenLoaiDichVu}</td>
                                 <td>{dichVu.giaDichVu.toLocaleString()}</td>
@@ -204,14 +206,14 @@ function FrmXacNhanHoaDon({
                         )
                       ) : (
                         <tr>
-                          <td colSpan={5} style={{ textAlign: "center" }}>
+                          <td colSpan={6} style={{ textAlign: "center" }}>
                             Không có dữ liệu
                           </td>
                         </tr>
                       )}
                       <tr>
                         <td
-                          colSpan={4}
+                          colSpan={5}
                           style={{ fontWeight: "bold", textAlign: "center" }}
                         >
                           Tồng thành tiền
