@@ -870,7 +870,7 @@ function FrmLapHoaDon() {
             <div className="btn-function">
               {/* Thanh toán momo */}
               {showThanhToanMOMO && generateQR && (
-                <Button variant="success" onClick={() => handleQRMOMO()}>
+                <Button style={{backgroundColor:'#D82D8B'}} variant="success" onClick={() => handleQRMOMO()}>
                   Thanh toán bằng MOMO
                 </Button>
               )}
