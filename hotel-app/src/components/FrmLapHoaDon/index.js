@@ -928,6 +928,7 @@ function FrmLapHoaDon() {
           hoaDonSelected={hoaDonSelected}
           totalPrice={totalPrice}
           totalHour={totalHour}
+          totalRoomServicePrice={totalRoomServicePrice}
           totalRoomPrice={totalRoomPrice}
           totalServicePrice={totalServicePrice}
           onHandleCheckInMOMO={onHandleCheckInMOMO}
