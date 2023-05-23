@@ -159,7 +159,7 @@ insert into loai_dich_vu (don_vi_loai_dich_vu, ten_loai_dich_vu) values
 
 insert into dich_vu (gia_dich_vu, so_luong, ten_dich_vu, ma_loai_dich_vu) values
 (20000, 100, N'Nước suối Aqua', 1),
-(30000, 50, N'Bia Heniken', 3),
+(30000, 50, N'Bia Heniken', 2),
 (30000, 50, N'Bia Tiger', 2),
 (300000, 50, N'Bia Heniken', 3),
 (30000, 50, N'Pizza thập cẩm', 5),
