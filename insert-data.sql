@@ -38,38 +38,38 @@ Insert into tang(ten_tang) values
 Insert into phong(ma_phong, mo_ta_phong, ten_phong, trang_thai_phong, mang_thu_cung, gia_phong, duoc_hut_thuoc, suc_chua, so_giuong, ma_tang, ma_loai_phong) values
 ('0101', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 1, 1, 10000, 1, 4, 2, 1, 1),
 ('0102', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 2', 1, 1, 20000, 0, 2, 1, 1, 2),
-('0103', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 0, 0, 30000, 0, 1, 1, 1, 3),
-('0104', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 4', 0, 1, 50000, 1, 5, 4, 1, 4),
+('0103', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 1, 0, 30000, 0, 1, 1, 1, 3),
+('0104', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 4', 1, 1, 50000, 1, 5, 4, 1, 4),
 ('0105', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 5', 1, 1, 20000, 0, 4, 3, 1, 2),
 ('0106', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 6', 1, 0, 10000, 1, 6, 6, 1, 1),
 
 ('0201', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 1, 0, 5000, 0, 3, 2, 2, 1),
 ('0202', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 2', 1, 1, 10000, 1, 5, 5, 2, 2),
-('0203', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 0, 0, 15000, 0, 7, 6, 2, 3),
-('0204', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 4', 0, 1, 20000, 1, 7, 7, 2, 4),
-('0205', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 5', 0, 0, 30000, 1, 8, 8, 2, 4),
-('0206', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 6', 0, 1, 20000, 0, 1, 1, 2, 1),
+('0203', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 1, 0, 15000, 0, 7, 6, 2, 3),
+('0204', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 4', 1, 1, 20000, 1, 7, 7, 2, 4),
+('0205', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 5', 1, 0, 30000, 1, 8, 8, 2, 4),
+('0206', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 6', 1, 1, 20000, 0, 1, 1, 2, 1),
 
-('0301', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 0, 1, 12000, 1, 2, 2, 3, 1),
+('0301', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 1, 1, 12000, 1, 2, 2, 3, 1),
 ('0302', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 2', 1, 1, 40000, 1, 2, 1, 3, 2),
-('0303', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 0, 1, 12000, 1, 3, 3, 3, 3),
+('0303', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 1, 1, 12000, 1, 3, 3, 3, 3),
 ('0304', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 4', 1, 1, 50000, 1, 4, 4, 3, 4),
-('0305', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 5', 0, 1, 35000, 1, 4, 3, 3, 3),
+('0305', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 5', 1, 1, 35000, 1, 4, 3, 3, 3),
 ('0306', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 6', 1, 0, 10000, 0, 1, 1, 3, 1),
 
-('0401', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 0, 1, 10000, 1, 2, 1, 4, 1),
-('0402', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 2', 0, 1, 20000, 0, 3, 2, 4, 2),
-('0403', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 0, 0, 30000, 1, 4, 3, 4, 3),
-('0404', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 4', 0, 1, 5000, 1, 4, 4, 4, 4),
-('0405', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 5', 0, 1, 12000, 0, 5, 5, 4, 1),
+('0401', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 1, 1, 10000, 1, 2, 1, 4, 1),
+('0402', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 2', 1, 1, 20000, 0, 3, 2, 4, 2),
+('0403', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 1, 0, 30000, 1, 4, 3, 4, 3),
+('0404', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 4', 1, 1, 5000, 1, 4, 4, 4, 4),
+('0405', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 5', 1, 1, 12000, 0, 5, 5, 4, 1),
 ('0406', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 6', 1, 1, 13000, 1, 6, 5, 4, 1),
 
-('0501', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 0, 1, 30000, 1, 7, 7, 5, 1),
+('0501', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 1', 1, 1, 30000, 1, 7, 7, 5, 1),
 ('0502', N'Trang bị nhiều trang thiết bị tiện nghi, có view đẹp, diện tích trung bình', N'Phòng 2', 1, 0, 10000, 1, 1, 1, 5, 2),
-('0503', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 1, 0, 4000, 1, 2, 1, 5, 3),
+('0503', N'Diện tích rộng, có tầm nhìn đẹp với các trang thiết bị cao cấp', N'Phòng 3', 1, 1, 4000, 1, 2, 1, 5, 3),
 ('0504', N'Có phòng khách và phòng ngủ riêng biệt, có ban công với view đẹp nhất khách sạn', N'Phòng 4', 1, 1, 8000, 1, 3, 2, 5, 4),
 ('0505', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 5', 1, 1, 9000, 0, 3, 3, 5, 1),
-('0506', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 6', 0, 1, 55000, 0, 4, 3, 5, 1);
+('0506', N'Phòng đơn giản với những trang bị tối thiểu, có diện tích nhỏ', N'Phòng 6', 1, 1, 55000, 0, 4, 3, 5, 1);
 
 
 Insert into hinh_anh_phong(ma_phong, hinh_anh_phong) values
