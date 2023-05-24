@@ -32,6 +32,13 @@ select ma_phieu_dat_phong from phieu_dat_phong pdp where
 pdp.ngay_nhan_phong between '2023-03-19' and '2023-03-20'
 or pdp.ngay_tra_phong between '2023-03-19' and '2023-03-20'
 
+select ma_hoa_don from hoa_don hd where 
+hd.tien_nhan > 0 and 
+(hd.ngay_nhan_phong between '2023-05-24 20:00' and '2023-05-25 20:00' or hd.ngay_tra_phong between '2023-05-24 20:00' and '2023-05-25 20:00'
+or '2023-05-24 20:00' between hd.ngay_nhan_phong and hd.ngay_tra_phong 
+or '2023-05-25 20:00' between hd.ngay_nhan_phong and hd.ngay_tra_phong)
+
+
 select * from phong p inner join chi_tiet_phieu_dat_phong ctpdp 
 on p.ma_phong = ctpdp.ma_phong 
 where ctpdp.ma_phieu_dat_phong = 52
