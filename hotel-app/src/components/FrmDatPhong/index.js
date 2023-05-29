@@ -12,6 +12,7 @@ import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import {
   DateTimePicker,
   LocalizationProvider,
+  MobileDatePicker,
   MobileDateTimePicker,
 } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -26,6 +27,7 @@ import {
   addBookingsRoute,
   timKiemKhachHangWithCCCD,
 } from "../../utils/APIRoutes";
+import { diff_dates } from "../../utils/functions";
 
 function FrmDatPhong() {
   const [showRooms, setShowRooms] = useState(false);
@@ -66,10 +68,12 @@ function FrmDatPhong() {
       ngayTra = bookingInfo.ngayTraPhong.toDate();
     }
     let totalHours = diff_hours(ngayNhan, ngayTra);
+    let totalDates = diff_dates(ngayNhan, ngayTra);
     for (let i = 0; i < roomChoosen.length; i++) {
-      price += roomChoosen[i].giaPhong * totalHours;
+      price += roomChoosen[i].giaPhong * totalDates;
     }
     setTotalPrice(price);
+    // console.log(diff_dates(ngayNhan, ngayTra));
   }, [roomChoosen]);
 
   useEffect(() => {
@@ -83,11 +87,13 @@ function FrmDatPhong() {
       ngayTra = bookingInfo.ngayTraPhong.toDate();
     }
     let totalHours = diff_hours(ngayNhan, ngayTra);
+    let totalDates = diff_dates(ngayNhan, ngayTra);
 
     for (let i = 0; i < roomChoosen.length; i++) {
-      price += roomChoosen[i].giaPhong * totalHours;
+      price += roomChoosen[i].giaPhong * totalDates;
     }
     setTotalPrice(price);
+    // console.log(diff_dates(ngayNhan, ngayTra));
   }, [bookingInfo]);
 
   const handleOnChangeGuestInfo = (e) => {
@@ -116,7 +122,14 @@ function FrmDatPhong() {
       });
       return false;
     }
-    if (dayjs(ngayNhanPhong).toDate().getTime() < new Date().getTime()) {
+    // console.log(dayjs(ngayNhanPhong).toDate());
+    const currentDate = new Date();
+    currentDate.setHours(0);
+    currentDate.setMinutes(0);
+    currentDate.setSeconds(0);
+    // console.log(currentDate);
+
+    if (dayjs(ngayNhanPhong).toDate().getTime() < currentDate) {
       setToast({
         header: "Ngày nhận phòng phải trước ngày hiện tại",
         content: "",
@@ -231,33 +244,33 @@ function FrmDatPhong() {
       });
       return false;
     }
-    if (!soDienThoaiKH || soDienThoaiKH === "") {
-      setToast({
-        header: "Số điện thoại không được trống",
-        content: "",
-        bg: "danger",
-        textColor: "#fff",
-      });
-      return false;
-    }
-    if (!emailKH || emailKH === "") {
-      setToast({
-        header: "Email không được trống",
-        content: "",
-        bg: "danger",
-        textColor: "#fff",
-      });
-      return false;
-    }
-    if (!diaChiKH || diaChiKH === "") {
-      setToast({
-        header: "Địa chỉ không được trống",
-        content: "",
-        bg: "danger",
-        textColor: "#fff",
-      });
-      return false;
-    }
+    // if (!soDienThoaiKH || soDienThoaiKH === "") {
+    //   setToast({
+    //     header: "Số điện thoại không được trống",
+    //     content: "",
+    //     bg: "danger",
+    //     textColor: "#fff",
+    //   });
+    //   return false;
+    // }
+    // if (!emailKH || emailKH === "") {
+    //   setToast({
+    //     header: "Email không được trống",
+    //     content: "",
+    //     bg: "danger",
+    //     textColor: "#fff",
+    //   });
+    //   return false;
+    // }
+    // if (!diaChiKH || diaChiKH === "") {
+    //   setToast({
+    //     header: "Địa chỉ không được trống",
+    //     content: "",
+    //     bg: "danger",
+    //     textColor: "#fff",
+    //   });
+    //   return false;
+    // }
     return true;
   };
 
@@ -296,7 +309,7 @@ function FrmDatPhong() {
             <div className="room-select-container">
               <Container fluid>
                 <Row>
-                  <Col md={3}>
+                  <Col md={3} style={{ display: "flex", alignItems: "center" }}>
                     <Button
                       variant="primary"
                       onClick={() => onHandeOpenSelectRoom()}
@@ -307,10 +320,11 @@ function FrmDatPhong() {
                   <Col md={4}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={["MobileDatePicker"]}>
-                        <MobileDateTimePicker
+                        <MobileDatePicker
                           sx={{ width: "100%" }}
                           label="Ngày nhận phòng"
                           disabled={roomChoosen.length > 0 ? true : false}
+                          inputFormat="DD-MM-YYYY"
                           value={
                             bookingInfo.ngayNhanPhong
                               ? bookingInfo.ngayNhanPhong
@@ -327,7 +341,7 @@ function FrmDatPhong() {
                   <Col md={4}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={["MobileDatePicker"]}>
-                        <MobileDateTimePicker
+                        <MobileDatePicker
                           sx={{ width: "100%" }}
                           label="Ngày trả phòng"
                           disabled={roomChoosen.length > 0 ? true : false}
@@ -362,7 +376,7 @@ function FrmDatPhong() {
                 <div className="cccd-container">
                   <FloatingLabel
                     controlId="floatingInput"
-                    label="CCCD"
+                    label="CCCD *"
                     className="mb-3"
                   >
                     <Form.Control
@@ -391,7 +405,7 @@ function FrmDatPhong() {
                 <div className="customer-common-info">
                   <FloatingLabel
                     controlId="floatingInput"
-                    label="Họ tên"
+                    label="Họ tên *"
                     className="mb-3"
                   >
                     <Form.Control

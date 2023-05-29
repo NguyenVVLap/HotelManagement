@@ -84,7 +84,7 @@ function Rooms({
                 <th>Số giường</th>
                 <th>Sức chứa</th>
                 <th>Tầng</th>
-                <th>Giá (1 đêm)</th>
+                <th>Giá (1 ngày)</th>
                 <th></th>
               </tr>
             </thead>

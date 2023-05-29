@@ -14,6 +14,7 @@ import {
   getBookingsByCCCD,
   getBookingsOrderDateRoute,
 } from "../../utils/APIRoutes";
+import { diff_dates } from "../../utils/functions";
 
 function FrmNhanPhong() {
   const [toast, setToast] = useState(null);
@@ -45,13 +46,14 @@ function FrmNhanPhong() {
     let ngayNhan = new Date(phieuDatPhongSelected.ngayNhanPhong);
     let ngayTra = new Date(phieuDatPhongSelected.ngayTraPhong);
     let totalHours = diff_hours(ngayNhan, ngayTra);
+    let totalDates = diff_dates(ngayNhan, ngayTra);
     if (
       phieuDatPhongSelected &&
       phieuDatPhongSelected.dsPhong &&
       phieuDatPhongSelected.dsPhong.length > 0
     )
       for (let i = 0; i < phieuDatPhongSelected.dsPhong.length; i++) {
-        price += phieuDatPhongSelected.dsPhong[i].giaPhong * totalHours;
+        price += phieuDatPhongSelected.dsPhong[i].giaPhong * totalDates;
       }
     setTotalPrice(price);
   }, [phieuDatPhongSelected]);
@@ -116,7 +118,7 @@ function FrmNhanPhong() {
         }
       }
       const nhanVien = JSON.parse(localStorage.getItem("nhanVien"));
-      console.log(new Date(phieuDatPhongSelected.ngayNhanPhong));
+      // console.log(new Date(phieuDatPhongSelected.ngayNhanPhong));
       const { data } = await axios.post(
         `${addBillsRoute}`,
         {
@@ -218,6 +220,18 @@ function FrmNhanPhong() {
     if (month < 10) {
       monthStr = "0" + month;
     }
+    return [date.getDate(), monthStr, date.getFullYear()].join("/");
+  };
+  const formatDatetime = (date) => {
+    let min = date.getMinutes() + "";
+    if (date.getMinutes() < 10) {
+      min = "0" + date.getMinutes();
+    }
+    let month = date.getMonth() + 1;
+    let monthStr = month + "";
+    if (month < 10) {
+      monthStr = "0" + month;
+    }
     return (
       [date.getDate(), monthStr, date.getFullYear()].join("/") +
       " " +
@@ -276,7 +290,9 @@ function FrmNhanPhong() {
                             {/* {moment(
                               new Date(phieuDatPhong.ngayDatPhong)
                             ).format("DD/MM/YYYY HH:MM")} */}
-                            {formatDate(new Date(phieuDatPhong.ngayDatPhong))}
+                            {formatDatetime(
+                              new Date(phieuDatPhong.ngayDatPhong)
+                            )}
                           </p>
                         </div>
                         <div className="check-in-date">
@@ -330,7 +346,7 @@ function FrmNhanPhong() {
                           <th>Phòng</th>
                           <th>Loại phòng</th>
                           <th>Tầng</th>
-                          <th>Giá (1 đêm)</th>
+                          <th>Giá (1 ngày)</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -378,7 +394,9 @@ function FrmNhanPhong() {
                     - Ngày đặt phòng:{" "}
                     {phieuDatPhongSelected &&
                       phieuDatPhongSelected.ngayDatPhong &&
-                      formatDate(new Date(phieuDatPhongSelected.ngayDatPhong))}
+                      formatDatetime(
+                        new Date(phieuDatPhongSelected.ngayDatPhong)
+                      )}
                     <br></br>- Ngày nhận phòng:{" "}
                     {phieuDatPhongSelected &&
                       phieuDatPhongSelected.ngayNhanPhong &&
