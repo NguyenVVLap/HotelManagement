@@ -614,7 +614,7 @@ function Menu({
             )}
 
             {/* Ca làm việc */}
-            {nhanVien &&
+            {/* {nhanVien &&
               nhanVien.taiKhoan.daKichHoat &&
               nhanVien.taiKhoan.vaiTro.tenVaiTro === "ROLE_MANAGEMENT" && (
                 <button
@@ -631,17 +631,6 @@ function Menu({
                   </div>
                   {navSelected.shift && (
                     <div className="sub-menu-container">
-                      {/* <button
-                 className={`btn-sub ${subNavSelected.subnav === "update-type-service" &&
-                   "btn-sub-selected"
-                   }`}
-                 onClick={() =>
-                   onHandleSelectedSubNav("update-type-service", "service")
-                 }
-               >
-                 <DiningOutlinedIcon />
-                 <p className="btn-sub-title">Loại dịch vụ</p>
-               </button> */}
                       <button
                         className={`btn-sub ${
                           subNavSelected.subnav === "update-shift" &&
@@ -657,7 +646,7 @@ function Menu({
                     </div>
                   )}
                 </button>
-              )}
+              )} */}
 
             {/* Thống Kê */}
             {/* <button className={`btn ${navSelected.report && "btn-selected"}`}>
@@ -703,6 +692,50 @@ function Menu({
                 </div>
               )}
             </button> */}
+            {nhanVien.taiKhoan.daKichHoat && (
+              <button
+                className={`btn ${navSelected.booking && "btn-selected"}`}
+              >
+                <div
+                  className="menu-content"
+                  onClick={() =>
+                    onHandleSelectedNav("booking", !navSelected.booking)
+                  }
+                >
+                  <BsDoorOpen />
+                  <p className="btn-title">Phiếu đặt phòng</p>
+                </div>
+
+                {navSelected.booking && (
+                  <div className="sub-menu-container">
+                    <button
+                      className={`btn-sub ${
+                        subNavSelected.subnav === "update-booking" &&
+                        "btn-sub-selected"
+                      }`}
+                      onClick={() =>
+                        onHandleSelectedSubNav("update-booking", "booking")
+                      }
+                    >
+                      <ManageAccountsOutlinedIcon />
+                      <p className="btn-sub-title">Cập nhật</p>
+                    </button>
+                    <button
+                      className={`btn-sub ${
+                        subNavSelected.subnav === "search-booking" &&
+                        "btn-sub-selected"
+                      }`}
+                      onClick={() =>
+                        onHandleSelectedSubNav("search-booking", "booking")
+                      }
+                    >
+                      <SearchIcon />
+                      <p className="btn-sub-title">Tìm kiếm</p>
+                    </button>
+                  </div>
+                )}
+              </button>
+            )}
           </div>
           <div
             style={{
