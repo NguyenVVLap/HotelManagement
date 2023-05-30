@@ -20,6 +20,7 @@ function FrmXacNhanHoaDonMOMO({
   setHoaDonSelected,
   onHandleCancelPrint,
   formatDate,
+  formatOnlyDate,
 }) {
   // console.log(hoaDonSelected);
   const [nhanVien, setNhanVien] = useState();
@@ -80,11 +81,11 @@ function FrmXacNhanHoaDonMOMO({
               <br></br>- Ngày nhận phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
+                formatOnlyDate(new Date(hoaDonSelected.ngayNhanPhong))}
               <br></br>- Ngày trả phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                formatDate(new Date(hoaDonSelected.ngayTraPhong))}
+                formatDate(new Date())}
               <br></br> - Thu ngân:{" "}
               {nhanVien && `${nhanVien.hoTen} - ${nhanVien.maNhanVien}`}
               <br></br>
@@ -548,7 +549,7 @@ function FrmXacNhanHoaDonMOMO({
               <br></br>- Ngày nhận phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
+                formatOnlyDate(new Date(hoaDonSelected.ngayNhanPhong))}
               <br></br>- Ngày trả phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&

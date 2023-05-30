@@ -171,18 +171,33 @@ function FrmDatPhong() {
     // const { data } = await axios.get(`${getBookingsRoute}`, {}, config);
     // console.log(data);
     if (validateBooking()) {
-      console.log(bookingInfo.ngayNhanPhong);
+      console.log(bookingInfo.ngayTraPhong);
       let dsMaPhong = [];
       for (let i = 0; i < roomChoosen.length; i++) {
         dsMaPhong = [...dsMaPhong, roomChoosen[i].maPhong];
       }
+      let ngayNhanPhong =
+        (bookingInfo.ngayNhanPhong && bookingInfo.ngayNhanPhong.toDate()) ||
+        new Date();
+      let ngayTraPhong =
+        (bookingInfo.ngayTraPhong && bookingInfo.ngayTraPhong.toDate()) ||
+        new Date();
+      ngayNhanPhong.setHours(0);
+      ngayNhanPhong.setMinutes(0);
+      ngayNhanPhong.setSeconds(0);
+      ngayNhanPhong.setMilliseconds(0);
+
+      ngayTraPhong.setHours(0);
+      ngayTraPhong.setMinutes(0);
+      ngayTraPhong.setSeconds(0);
+      ngayTraPhong.setMilliseconds(0);
       const requestData = {
         maPhieuDatPhong: 0,
         ngayDatPhong: new Date(),
         giamGia: 0,
         ghiChuDatPhong: bookingInfo.ghiChuDatPhong,
-        ngayNhanPhong: bookingInfo.ngayNhanPhong || new Date(),
-        ngayTraPhong: bookingInfo.ngayTraPhong || new Date(),
+        ngayNhanPhong: ngayNhanPhong,
+        ngayTraPhong: ngayTraPhong,
         trangThaiDatPhong: "MOI_DAT",
         dsMaPhong,
         khachHang: guestInfo,

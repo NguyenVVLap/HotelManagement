@@ -99,12 +99,16 @@ function FrmNhanPhong() {
 
   const onHandleCheckIn = async () => {
     if (phieuDatPhongSelected.maPhieuDatPhong) {
+      let currentDate = new Date();
+      currentDate.setHours(0);
+      currentDate.setMinutes(0);
+      currentDate.setSeconds(0);
       if (
         new Date(phieuDatPhongSelected.ngayNhanPhong).getTime() >
-        new Date().getTime()
+        currentDate.getTime()
       ) {
         setToast({
-          header: "Ngày nhận phòng phải < ngày trả phòng",
+          header: "Ngày nhận phòng phải <= ngày hiện tại",
           content: "",
           bg: "danger",
           textColor: "#fff",
@@ -220,7 +224,12 @@ function FrmNhanPhong() {
     if (month < 10) {
       monthStr = "0" + month;
     }
-    return [date.getDate(), monthStr, date.getFullYear()].join("/");
+    let dateNum = date.getDate();
+    let dateStr = dateNum + "";
+    if (dateNum < 10) {
+      dateStr = "0" + dateNum;
+    }
+    return [dateStr, monthStr, date.getFullYear()].join("/");
   };
   const formatDatetime = (date) => {
     let min = date.getMinutes() + "";
@@ -232,8 +241,13 @@ function FrmNhanPhong() {
     if (month < 10) {
       monthStr = "0" + month;
     }
+    let dateNum = date.getDate();
+    let dateStr = dateNum + "";
+    if (dateNum < 10) {
+      dateStr = "0" + dateNum;
+    }
     return (
-      [date.getDate(), monthStr, date.getFullYear()].join("/") +
+      [dateNum, monthStr, date.getFullYear()].join("/") +
       " " +
       [date.getHours(), min].join(":")
     );

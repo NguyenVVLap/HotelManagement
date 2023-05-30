@@ -872,7 +872,7 @@ function FrmLapHoaDon() {
                     - Ngày nhận phòng:{" "}
                     {hoaDonSelected &&
                       hoaDonSelected.ngayLap &&
-                      formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
+                      formatOnlyDate(new Date(hoaDonSelected.ngayNhanPhong))}
                   </div>
                   <div className="date-info">
                     - Ngày trả phòng:{" "}
@@ -973,6 +973,7 @@ function FrmLapHoaDon() {
           setHoaDonSelected={setHoaDonSelected}
           onHandleCancelPrint={onHandleCancelPrint}
           formatDate={formatDate}
+          formatOnlyDate={formatOnlyDate}
         />
       )}
       {/* MOMO */}
@@ -992,6 +993,7 @@ function FrmLapHoaDon() {
           setHoaDonSelected={setHoaDonSelected}
           onHandleCancelPrint={onHandleCancelPrint}
           formatDate={formatDate}
+          formatOnlyDate={formatOnlyDate}
         />
       )}
       {toast && (

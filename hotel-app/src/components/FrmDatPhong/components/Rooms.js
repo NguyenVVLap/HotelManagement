@@ -29,11 +29,27 @@ function Rooms({
         "Content-Type": "application/json;charset=UTF-8",
       },
     };
+    let ngayNhanPhong =
+      (bookingInfo.ngayNhanPhong && bookingInfo.ngayNhanPhong.toDate()) ||
+      new Date();
+    let ngayTraPhong =
+      (bookingInfo.ngayTraPhong && bookingInfo.ngayTraPhong.toDate()) ||
+      new Date();
+    ngayNhanPhong.setHours(0);
+    ngayNhanPhong.setMinutes(0);
+    ngayNhanPhong.setSeconds(0);
+    ngayNhanPhong.setMilliseconds(0);
+
+    ngayTraPhong.setHours(0);
+    ngayTraPhong.setMinutes(0);
+    ngayTraPhong.setSeconds(0);
+    ngayTraPhong.setMilliseconds(0);
+
     const { data } = await axios.post(
       `${getRoomsOrderRoute}`,
       {
-        ngayNhanPhong: bookingInfo.ngayNhanPhong || new Date(),
-        ngayTraPhong: bookingInfo.ngayTraPhong || new Date(),
+        ngayNhanPhong: ngayNhanPhong,
+        ngayTraPhong: ngayTraPhong,
       },
       config
     );

@@ -22,6 +22,7 @@ function FrmXacNhanHoaDon({
   setHoaDonSelected,
   onHandleCancelPrint,
   formatDate,
+  formatOnlyDate,
 }) {
   // console.log(hoaDonSelected);
   const [nhanVien, setNhanVien] = useState();
@@ -81,7 +82,7 @@ function FrmXacNhanHoaDon({
               <br></br>- Ngày nhận phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
-                formatDate(new Date(hoaDonSelected.ngayNhanPhong))}
+                formatOnlyDate(new Date(hoaDonSelected.ngayNhanPhong))}
               <br></br>- Ngày trả phòng:{" "}
               {hoaDonSelected &&
                 hoaDonSelected.ngayLap &&
