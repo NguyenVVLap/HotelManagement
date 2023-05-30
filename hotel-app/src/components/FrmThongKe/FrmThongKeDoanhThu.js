@@ -2669,9 +2669,10 @@ function FrmThongKeDoanhThu() {
                   dataKey="tongTien"
                   fill="#f64f59"
                   stroke="#f64f59"
+                  name="Tổng tiền"
                 />
-                <Bar dataKey="tienPhong" barSize={10} fill="#5433ff" />
-                <Line type="monotone" dataKey="tienDichVu" stroke="#ffd200" />
+                <Bar dataKey="tienPhong" barSize={10} fill="#5433ff" name="Tiền phòng" />
+                <Line type="monotone" dataKey="tienDichVu" stroke="#ffd200" name="Tiền dịch vụ" />
               </ComposedChart>
             </ResponsiveContainer>
           </Stack>
@@ -2698,9 +2699,10 @@ function FrmThongKeDoanhThu() {
                   dataKey="tongTien"
                   fill="#f64f59"
                   stroke="#f64f59"
+                  name="Tổng tiền"
                 />
-                <Bar dataKey="tienPhong" barSize={10} fill="#5433ff" />
-                <Line type="monotone" dataKey="tienDichVu" stroke="#ffd200" />
+                <Bar dataKey="tienPhong" barSize={10} fill="#5433ff" name="Tiền phòng" />
+                <Line type="monotone" dataKey="tienDichVu" stroke="#ffd200" name="Tiền dịch vụ"/>
               </ComposedChart>
             </ResponsiveContainer>
           </Stack>
