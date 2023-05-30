@@ -388,7 +388,7 @@ function Menu({
                       <MdOutlinePayments />
                       <p className="btn-sub-title">Lập hóa đơn</p>
                     </button>
-                    <button
+                    {/* <button
                       className={`btn-sub ${
                         subNavSelected.subnav === "watch-assignment" &&
                         "btn-sub-selected"
@@ -411,7 +411,7 @@ function Menu({
                     >
                       <TbReportMoney />
                       <p className="btn-sub-title">Xem bảng lương</p>
-                    </button>
+                    </button> */}
                     {nhanVien &&
                       nhanVien.taiKhoan.vaiTro.tenVaiTro ===
                         "ROLE_MANAGEMENT" && (
@@ -444,7 +444,7 @@ function Menu({
                           <p className="btn-sub-title">Tìm kiếm</p>
                         </button>
                       )}
-                    {nhanVien &&
+                    {/* {nhanVien &&
                       nhanVien.taiKhoan.vaiTro.tenVaiTro ===
                         "ROLE_MANAGEMENT" && (
                         <button
@@ -491,7 +491,7 @@ function Menu({
                           <AdfScannerOutlinedIcon />
                           <p className="btn-sub-title">Tính lương</p>
                         </button>
-                      )}
+                      )} */}
                     <button
                       className={`btn-sub ${
                         subNavSelected.subnav === "report-staff" &&
